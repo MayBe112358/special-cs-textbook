@@ -8,4 +8,4 @@
 npm run dev
 ```
 
-浏览器打开 <http://localhost:3000>，应只看到 `Hello`。
+浏览器打开 <http://localhost:3000>，应只看到 `Hello, CS!`。

@@ -16,7 +16,7 @@ import { readFile, watch } from "node:fs";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 
-const root = fileURLToPath(new URL(".", import.meta.url));
+const publicRoot = fileURLToPath(new URL("public/", import.meta.url));
 const clients = new Set();
 
 const server = createServer((request, response) => {
@@ -36,7 +36,7 @@ const server = createServer((request, response) => {
     return;
   }
 
-  readFile(new URL("index.html", import.meta.url), "utf8", (error, html) => {
+  readFile(new URL("public/index.html", import.meta.url), "utf8", (error, html) => {
     if (error) {
       response.writeHead(500).end("Could not read index.html");
       return;
@@ -49,7 +49,7 @@ const server = createServer((request, response) => {
   });
 });
 
-watch(root, { recursive: false }, (_event, filename) => {
+watch(publicRoot, { recursive: false }, (_event, filename) => {
   if (filename === "index.html") {
     for (const client of clients) client.write("data: reload\n\n");
   }

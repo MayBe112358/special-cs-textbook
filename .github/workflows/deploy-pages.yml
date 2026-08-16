@@ -12,7 +12,8 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # Pages 部署不能安全地半途取消；连续推送时让当前部署完成，再部署最新版本。
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -25,7 +26,7 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: public
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
