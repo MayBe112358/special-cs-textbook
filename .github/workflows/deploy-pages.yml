@@ -1,3 +1,15 @@
+# @module        GitHub Pages 自动部署流程
+# @problem       GitHub Pages 只能托管已经生成的静态文件，不能直接运行 Next.js 源代码。
+# @design        先在独立构建任务中生成 out，再把同一份产物交给 Pages 发布任务。
+# @courses       The Missing Semester: Git 与自动化; CS50x Week 8 HTML, CSS, JavaScript
+# @exercises     https://missing.csail.mit.edu/2020/version-control/ ; https://cs50.harvard.edu/x/psets/8/homepage/
+# @prereq        知道提交会触发 GitHub Actions，而 Actions 会在云端依次执行命令。
+# @unclear       免费额度与 Actions 平台策略可能变化，届时以 GitHub 官方文档为准。
+# @letter
+# 你把代码推到 main 后，不需要在自己电脑上手工复制 out 文件。GitHub 会从一份干净的仓库重新安装
+# 依赖和构建，这也顺便证明“不是只有开发者这台电脑能跑”。构建与发布分成两段：只有前一段成功，
+# 后一段才有资格把产物公开，避免把残缺页面覆盖到读者正在访问的网址。
+
 name: Deploy to GitHub Pages
 
 on:
@@ -16,17 +28,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build static site
+        env:
+          GITHUB_PAGES_BASE_PATH: /special-cs-textbook
+        run: npm run build
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: out
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: public
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4

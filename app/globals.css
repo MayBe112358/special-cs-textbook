@@ -1,0 +1,16 @@
+/**
+ * @module        全站默认样式入口
+ * @problem       Fumadocs 的三栏排版与正文组件需要加载官方样式才能正常显示。
+ * @design        只导入 Tailwind 和 Fumadocs 的默认样式，不写项目自定义样式。
+ * @courses       CS50x Week 8 HTML, CSS, JavaScript
+ * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/
+ * @prereq        CSS 会影响页面布局和可读性。
+ * @unclear       项目自己的视觉语言要到 ROADMAP 14 才决定。
+ *
+ * @letter
+ * 这三行提供侧边栏、正文和页内导航的基础排版。现在不追加任何规则，是为了保留一个可比较的起点：
+ * 你验收的是 Fumadocs 的默认能力，而不是一层尚未讨论过的装饰。
+ */
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
