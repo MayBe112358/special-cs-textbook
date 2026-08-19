@@ -2,10 +2,15 @@
   "name": "a-special-cs-textbook",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
+    "index": "node scripts/build-knowledge-index.ts",
+    "predev": "npm run index",
     "dev": "next dev",
+    "prebuild": "npm run index",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "node --test \"core/**/*.test.ts\""
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",

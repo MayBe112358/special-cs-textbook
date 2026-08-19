@@ -215,7 +215,7 @@ vibecoding 最难的不是让 AI 写代码，是**判断它写的到底成没成
 
 **验收清单**
 - [ ] 临时页面上能输入一个路径，显示"这个路径存在吗、里面有什么"
-- [ ] 试这几个：`/`、`/systems`、`/systems/os`、`/systems/os/..`、`~`、不存在的路径
+- [ ] 试这几个：`/`、`/systems`、`/systems/operating-systems`、`/systems/operating-systems/..`、`~`、不存在的路径
 - [ ] 不存在的路径返回明确的"找不到"，不是白屏或崩溃
 
 ---

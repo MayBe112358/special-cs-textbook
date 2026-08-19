@@ -5,3 +5,6 @@ out/
 .playwright-cli/
 output/
 *.tsbuildinfo
+
+# 知识索引是构建时生成的，不进版本库
+core/knowledge/generated/

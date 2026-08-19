@@ -29,7 +29,8 @@
       "fumadocs-mdx:collections/*": [
         "./.source/*"
       ]
-    }
+    },
+    "allowImportingTsExtensions": true
   },
   "include": [
     "next-env.d.ts",
