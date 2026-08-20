@@ -5,7 +5,7 @@
  *                如果命令直接吐出拼好的字符串，界面就只剩一个选择——把它当纯文本显示；
  *                想让某一项可点，就得反过来解析那段文字（“第几列是名字？”），
  *                那是把已经有的信息先扔掉再猜回来，既脆又蠢。
- * @design        命令返回一组“块”，每一块自带类型：现在只有文字块和列表块，
+ * @design        命令返回一组“块”，每一块自带类型：现在有文字块和列表块，
  *                将来会有链接、树、进度条、表格、代码块。界面看类型决定怎么画。
  *                这些类型里没有任何颜色、字号、间距——那是界面的事；这里只说“这是什么”，不说“长什么样”。
  *                另一种做法是让命令直接返回 React 组件，那样最省事，但命令引擎会立刻和网页绑死，
@@ -17,8 +17,8 @@
  *                https://web.stanford.edu/class/cs143/               —— 编译器各阶段之间传的是结构，不是文本
  *                https://missing.csail.mit.edu/2020/data-wrangling/  —— 体会一下“只能传文本”的代价
  * @prereq        知道一个对象可以有一个叫 type 的字段，用来表明它是哪一种东西。
- * @unclear       现在只定义了文字块和列表块，因为 help 只需要这两种。
- *                链接、树、进度条、表格、代码块会在真正有命令产出它们时再加（ls 会带来可点的列表项）。
+ * @unclear       ls 让列表项多了一条可选 command，从而能点击；它仍是列表，不需要另造一种输出块。
+ *                树、进度条、表格、代码块会在真正有命令产出它们时再加。
  *                提前定义没人产出的类型，只会得到一堆没被验证过的猜测。
  *
  * @letter
@@ -55,7 +55,12 @@ export type OutputTone =
 export type TextBlock = { type: "text"; text: string; tone: OutputTone };
 
 /** 列表里的一项：一个标签，外加一句可选的说明。 */
-export type ListItem = { label: string; description?: string };
+export type ListItem = {
+  label: string;
+  description?: string;
+  /** 有这个字段时，界面把条目画成按钮；点击就像亲手输入这条命令。 */
+  command?: string;
+};
 
 /** 一组并列的条目，比如 help 列出的命令、将来 ls 列出的课程。 */
 export type ListBlock = { type: "list"; items: ListItem[] };

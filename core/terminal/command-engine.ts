@@ -21,7 +21,7 @@
  * @unclear       拆词现在只按空白切开，还不认识引号（cd "my dir"）、不认识管道（find | grep）、
  *                也不认识重定向。管道要到 ROADMAP 阶段 10.4 才做，届时“命令之间传结构化数据而不是文本”
  *                这条要求会反过来影响这里的设计——那时可能需要真正的语法分析，而不是切一刀。
- *                另外命令还不能返回“我想跳转页面”这类动作，见 command.ts 的说明。
+ *                命令现在可以返回站内导航动作，但引擎只负责原样交出去，仍然不执行浏览器副作用。
  *
  * @letter
  * 这是这本教材里最重要的一章，请你慢慢读这一段。
@@ -73,6 +73,10 @@ import type {
   SessionContext,
 } from "./command.ts";
 import { helpCommand } from "./commands/help.ts";
+import { lsCommand } from "./commands/ls.ts";
+import { cdCommand } from "./commands/cd.ts";
+import { catCommand } from "./commands/cat.ts";
+import { openCommand } from "./commands/open.ts";
 import { text } from "./output.ts";
 
 /**
@@ -80,7 +84,7 @@ import { text } from "./output.ts";
  *
  * 新增一条命令，只需要写好它、然后把它加进这个数组，引擎和 help 都会自动认识它。
  */
-export const COMMANDS: readonly CommandDefinition[] = [helpCommand];
+export const COMMANDS: readonly CommandDefinition[] = [helpCommand, lsCommand, cdCommand, catCommand, openCommand];
 
 /**
  * 第一步：拆词。把一整行字切成命令名和参数。
@@ -105,7 +109,7 @@ export function runCommand(line: string, session: SessionContext): CommandResult
   const invocation = parseCommandLine(line);
 
   // 敲了空行：真终端只是换一行继续等你，不显示任何东西，也不算出错。
-  if (invocation === null) return { status: "ok", blocks: [] };
+  if (invocation === null) return { status: "ok", blocks: [], actions: [] };
 
   // 第二步：查表。注意这里是精确匹配，大小写敏感——真 Unix 里 HELP 和 help 不是同一个命令。
   const command = COMMANDS.find((candidate) => candidate.name === invocation.name);
@@ -114,6 +118,7 @@ export function runCommand(line: string, session: SessionContext): CommandResult
       status: "error",
       // 照抄 Unix 的说法。不猜、不纠正、不建议。
       blocks: [text(`command not found: ${invocation.name}`, "error")],
+      actions: [],
     };
   }
 

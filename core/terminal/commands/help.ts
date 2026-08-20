@@ -10,8 +10,8 @@
  *                软件工程类课程（单一事实来源）
  * @exercises     https://missing.csail.mit.edu/2020/course-shell/  —— 在真终端里用 man 和 --help 找答案
  * @prereq        知道数组可以被遍历成一组显示项。
- * @unclear       真终端里可以 help 某条命令看详细用法（man ls），这里还没做，
- *                因为现在只有一条命令，做了也验证不出什么。等命令多起来再加。
+ * @unclear       真终端里可以 help 某条命令看详细用法（man ls），这里还没做；
+ *                ROADMAP 3.1—3.3 只要求总览，逐命令帮助应在有明确验收目标时再加。
  *                另外首页那个面向陌生访客的终端要“极度友善”（示例可点、提示更多），
  *                那属于界面层的默认设置，不是这条命令的事——同一个内核，两种友善度。
  *
@@ -48,6 +48,7 @@ export const helpCommand: CommandDefinition = {
       return {
         status: "error",
         blocks: [text("help: too many arguments", "error"), text(`usage: ${USAGE}`, "muted")],
+        actions: [],
       };
     }
 
@@ -62,6 +63,7 @@ export const helpCommand: CommandDefinition = {
           })),
         ),
       ],
+      actions: [],
     };
   },
 };

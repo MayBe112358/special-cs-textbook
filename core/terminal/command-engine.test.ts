@@ -31,10 +31,62 @@
  */
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import type { KnowledgeIndex } from "../knowledge/knowledge-index.ts";
+import { createVirtualFileSystem } from "../filesystem/virtual-file-system.ts";
 import { COMMANDS, parseCommandLine, runCommand } from "./command-engine.ts";
+import { pathnameToWorkingDirectory } from "./location.ts";
 
-/** 测试里统一用的“外部世界”：只要告诉引擎你在哪就够了。 */
-const session = { currentPath: "/" };
+/** 用一棵很小但有两层分类与一门课程的树，把 3.1—3.3 的行为钉死。 */
+const fixture: KnowledgeIndex = {
+  version: 1,
+  generatedAt: "2026-01-01T00:00:00.000Z",
+  sourceDir: "test/fixture",
+  categories: [
+    {
+      id: "",
+      title: "测试目录",
+      description: "",
+      path: "/",
+      url: "/docs",
+      parentPath: null,
+      childPaths: ["/programming-intro", "/systems"],
+    },
+    {
+      id: "programming-intro",
+      title: "编程入门",
+      description: "",
+      path: "/programming-intro",
+      url: null,
+      parentPath: "/",
+      childPaths: ["/programming-intro/cs61a"],
+    },
+    {
+      id: "systems",
+      title: "系统",
+      description: "",
+      path: "/systems",
+      url: null,
+      parentPath: "/",
+      childPaths: [],
+    },
+  ],
+  courses: [
+    {
+      id: "cs61a",
+      title: "UC Berkeley CS61A",
+      description: "以函数、抽象和解释器为主线的程序设计导论。",
+      path: "/programming-intro/cs61a",
+      url: "/docs/programming-intro/cs61a",
+      categoryPath: "/programming-intro",
+      prereq: { courses: [], knowledge: [] },
+      file: "test/fixture/programming-intro/cs61a.mdx",
+    },
+  ],
+};
+
+const fileSystem = createVirtualFileSystem(fixture);
+/** 测试里统一用的“外部世界”：当前位置来自网址，OLDPWD 是会话历史。 */
+const session = { currentPath: "/", previousPath: null, fileSystem };
 
 test("拆词：第一个词是命令名，剩下的是参数", () => {
   assert.deepEqual(parseCommandLine("help"), { name: "help", args: [] });
@@ -107,4 +159,79 @@ test("输出是结构化数据，不是拼好的字符串", () => {
   for (const block of result.blocks) {
     assert.ok(block.type === "text" || block.type === "list", `没见过的块类型：${block.type}`);
   }
+});
+
+test("ls：列出当前位置的直接子项，而且每一项都能等价执行 open", () => {
+  const result = runCommand("ls", session);
+  assert.equal(result.status, "ok");
+  const block = result.blocks[0];
+  assert.ok(block?.type === "list");
+  assert.deepEqual(block.items.map((item) => item.label), ["programming-intro", "systems"]);
+  assert.deepEqual(block.items.map((item) => item.command), [
+    "open /programming-intro",
+    "open /systems",
+  ]);
+});
+
+test("cd：进入目录只申请导航，不在引擎里执行跳转", () => {
+  const result = runCommand("cd systems", session);
+  assert.equal(result.status, "ok");
+  assert.deepEqual(result.actions, [
+    { type: "navigate", href: "/docs/systems", reason: "change-directory" },
+  ]);
+});
+
+test("cd：..、~ 与 - 都使用文件系统规则", () => {
+  assert.equal(
+    runCommand("cd ..", { ...session, currentPath: "/systems" }).actions[0]?.href,
+    "/docs",
+  );
+  assert.equal(
+    runCommand("cd ~", { ...session, currentPath: "/systems" }).actions[0]?.href,
+    "/docs",
+  );
+  const previous = runCommand("cd -", {
+    ...session,
+    currentPath: "/systems",
+    previousPath: "/programming-intro",
+  });
+  assert.equal(previous.actions[0]?.href, "/docs/programming-intro");
+  assert.equal(previous.blocks[0]?.type === "text" ? previous.blocks[0].text : "", "/programming-intro");
+});
+
+test("cd：不存在的路径严格照规定报错，不附带猜测", () => {
+  const result = runCommand("cd nowhere", session);
+  assert.deepEqual(result.blocks[0], {
+    type: "text",
+    text: "cd: no such file or directory: nowhere",
+    tone: "error",
+  });
+  assert.equal(result.actions.length, 0);
+});
+
+test("cat：课程显示简介，分类明确报 Is a directory", () => {
+  const course = runCommand("cat cs61a", { ...session, currentPath: "/programming-intro" });
+  assert.deepEqual(course.blocks[0], {
+    type: "text",
+    text: "以函数、抽象和解释器为主线的程序设计导论。",
+    tone: "normal",
+  });
+  const directory = runCommand("cat systems", session);
+  assert.equal(directory.status, "error");
+  assert.equal(directory.blocks[0]?.type === "text" ? directory.blocks[0].text : "", "cat: systems: Is a directory");
+});
+
+test("open：课程只返回正文页导航动作", () => {
+  const result = runCommand("open cs61a", { ...session, currentPath: "/programming-intro" });
+  assert.deepEqual(result.actions, [
+    { type: "navigate", href: "/docs/programming-intro/cs61a", reason: "open" },
+  ]);
+});
+
+test("网址是当前位置的唯一真相：分类是目录，课程页落在其父目录", () => {
+  assert.equal(pathnameToWorkingDirectory("/docs/systems/", fileSystem), "/systems");
+  assert.equal(
+    pathnameToWorkingDirectory("/special-cs-textbook/docs/programming-intro/cs61a/", fileSystem),
+    "/programming-intro",
+  );
 });

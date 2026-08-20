@@ -13,9 +13,8 @@
  * @exercises     https://cs61a.org/                     —— Scheme 解释器项目：eval 的签名为什么长那样
  *                https://web.stanford.edu/class/cs143/  —— 编译器各阶段的接口划分
  * @prereq        知道函数可以作为对象的一个字段；知道“接口”就是双方说好的形状。
- * @unclear       CommandContext 现在只有当前位置。等 ls / cd / cat 到来时，
- *                这里会多出虚拟文件系统；等命令需要跳转页面时，CommandResult 会多出一个
- *                “我想执行的动作”清单（见下面 @letter 最后一段）。那些字段现在不写，因为还没有命令用得上。
+ * @unclear       现在的动作只有站内导航。等命令需要修改访问者状态或下载文件时，是否沿用同一份 actions，
+ *                要由真实命令需要的数据决定；不要提前把所有浏览器能力枚举进来。
  *
  * @letter
  * 这个文件定义的是“一条命令得长什么样”。四个字段：名字、一句话说明、用法、以及真正干活的 run。
@@ -35,21 +34,27 @@
  * 不需要真的跳；而所有真正的动作都汇集在一个地方发生，出问题一眼能找到。
  * 这个思路有个通行的名字叫“把副作用推到边界”，函数式编程课（CS61A 后半程）会正面讲它。
  *
- * 现在 CommandResult 里还没有那份动作清单，因为 help 不需要跳转，也不需要存任何东西。
- * 不提前写，是这个项目的另一条纪律：没有用户的接口没法被验证，写下来的只是猜测。
- * 等 open 真的来了（ROADMAP 3.3），这里会多一个字段，那时它的形状会由真实需要决定，而不是由想象决定。
+ * 到 ROADMAP 3.3 的 open 真正需要跳转时，CommandResult 才长出 actions 字段；现在里面也只定义一种 navigate。
+ * 这不是忘了提前做完整，而是刻意等真实使用者决定接口形状。未来若需要保存心得或下载文件，
+ * 也应先看那条命令到底要表达什么，再增加一种动作，而不是把整套浏览器 API 搬进约定。
  */
 import type { OutputBlock } from "./output.ts";
+import type { VirtualFileSystem } from "../filesystem/virtual-file-system.ts";
 
 /**
  * 外部世界在执行命令前必须告诉引擎的东西。
  *
- * 现在只有一件：你在这棵知识树的哪个位置。注意这个位置是外面传进来的——
- * 它来自浏览器地址栏，而不是终端自己记着的一份副本。整个项目只有地址栏这一个真相。
+ * 最重要的一件是：你在这棵知识树的哪个位置。注意这个位置是外面传进来的——
+ * 它来自浏览器地址栏，而不是终端自己记着的一份副本。文件系统同样由外面递进来，只读不存会话；
+ * previousPath 是 cd - 所需的历史事实。整个项目仍只有地址栏这一个“当前位置”真相。
  */
 export type SessionContext = {
   /** 当前所在位置，例如 "/" 或 "/systems/operating-systems"。 */
   currentPath: string;
+  /** 上一次由 cd 离开的目录；null 表示这次会话还没有切换过目录。 */
+  previousPath: string | null;
+  /** 从知识索引建立的只读文件系统。命令只能查询它，不能往里面写状态。 */
+  fileSystem: VirtualFileSystem;
 };
 
 /** 一条命令在运行时能看到的全部东西：外部给的 + 引擎补上的。 */
@@ -72,6 +77,17 @@ export type CommandResult = {
   status: "ok" | "error";
   /** 要显示的内容，一组有类型的块；空数组表示什么也不显示（比如敲了个空行）。 */
   blocks: OutputBlock[];
+  /** 命令希望外层执行的动作。命令本身不碰浏览器，所以这里只描述意图。 */
+  actions: CommandAction[];
+};
+
+/** 命令不能自己跳转页面，只能交回这样一张“导航申请”。 */
+export type CommandAction = {
+  type: "navigate";
+  /** 交给网页路由器的站内地址。 */
+  href: string;
+  /** 为什么导航：外层只在 cd 时更新 OLDPWD，open 不改变它。 */
+  reason: "change-directory" | "open";
 };
 
 /** 一条命令。 */
