@@ -1,6 +1,9 @@
 {
   "title": "操作系统",
   "pages": [
-    "mit-6-s081"
+    "mit-6-s081",
+    "cs162",
+    "nju-os",
+    "hit-os"
   ]
 }
