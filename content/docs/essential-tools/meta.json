@@ -1,1 +1,20 @@
-{ "title": "必学工具", "pages": ["missing-semester"] }
+{
+  "title": "必学工具",
+  "pages": [
+    "missing-semester",
+    "cmake",
+    "docker",
+    "emacs",
+    "git",
+    "github",
+    "gnu-make",
+    "information-retrieval",
+    "latex",
+    "network-access",
+    "scoop",
+    "thesis",
+    "toolbox",
+    "vim",
+    "workflow"
+  ]
+}

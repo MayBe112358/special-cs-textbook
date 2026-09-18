@@ -1,1 +1,10 @@
-{ "title": "数据结构与算法", "pages": ["cs61b"] }
+{
+  "title": "数据结构与算法",
+  "pages": [
+    "cs61b",
+    "cs170",
+    "mit-6-006",
+    "mit-6-046j",
+    "princeton-algorithms"
+  ]
+}
