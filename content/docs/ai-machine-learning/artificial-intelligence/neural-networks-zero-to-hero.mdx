@@ -1,26 +1,40 @@
 ---
 title: "Karpathy 神经网络：从零到英雄"
-description: "从反向传播和 micrograd 写起，一步步手写出语言模型、WaveNet 直到 GPT。"
+description: "Karpathy 带你从反向传播一行行写到 GPT，全程手写、不调框架。"
 prereqCourses: []
 prereqKnowledge: ["Python 基础与基本的微积分"]
 ---
 
 ## 课程简介
 
-从反向传播和 micrograd 写起，一步步手写出语言模型、WaveNet 直到 GPT。
+这是 Andrej Karpathy 的公开课程，主张是：理解神经网络的最好方式是从零把它写出来。
+
+课程从最基础的地方开始——micrograd，一个只有一百多行的自动微分引擎，
+用它把反向传播讲得极其透彻。然后逐步往上：
+makemore 系列从二元语法模型讲到多层感知机、批归一化、
+再到 WaveNet 风格的卷积结构；最后是 nanoGPT，
+从零实现一个 Transformer 并训练出能生成文本的 GPT。
+
+作者本人的说法是：语言模型是学深度学习的绝佳入口，
+即使你最终想做的是计算机视觉，这里学到的大部分东西都能直接迁移。
+
+每一讲都是两三个小时的完整编码过程，代码全部开源。
+它不是一门有作业和考试的课，而是一套可以跟着敲的实录。
 
 ## 先修要求
 
-指南列出的学前准备：Python 基础与基本的微积分。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要扎实的 Python 编程能力。
+- 需要入门级数学：导数与高斯分布的概念即可。
 
 ## 官方资源
 
-- [课程团队资源入口](https://karpathy.ai/zero-to-hero.html)。
+- [课程主页](https://karpathy.ai/zero-to-hero.html)：全部讲次的顺序与说明。
+- [代码仓库](https://github.com/karpathy/nn-zero-to-hero)：每一讲对应的 Jupyter Notebook。
+- [micrograd](https://github.com/karpathy/micrograd)：第一讲构建的自动微分引擎。
+- [nanoGPT](https://github.com/karpathy/nanoGPT)：课程末尾实现的最小 GPT。
 
 ## 官方作业
 
-- [官方作业入口](https://github.com/karpathy/nn-zero-to-hero)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [跟着视频重写一遍](https://github.com/karpathy/nn-zero-to-hero)：每个 Notebook 末尾都有作者留的练习与扩展建议。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/Neural%20Networks%EF%BC%9AZero%20to%20Hero/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+没有自动评分；检验方式是不看视频能不能自己把那一讲的代码复现出来。
