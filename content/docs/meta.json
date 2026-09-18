@@ -5,12 +5,15 @@
     "essential-tools",
     "programming-intro",
     "mathematics",
+    "advanced-mathematics",
     "data-structures-algorithms",
     "systems",
+    "computer-graphics",
     "ai-machine-learning",
+    "data-science",
+    "web-development",
+    "software-engineering",
     "theoretical-computer-science",
-    "advanced-mathematics",
-    "electronics",
-    "software-engineering"
+    "electronics"
   ]
 }

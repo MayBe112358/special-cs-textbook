@@ -2,7 +2,7 @@
   "reference": "https://github.com/PKUFlyingPig/cs-self-learning",
   "revision": "2c591834a1e4101e2e7579dc7f49bdeb4a6153a2",
   "checkedAt": "2026-09-18",
-  "scope": "已导入：必学工具、编程入门、数学基础、数学进阶、数据结构与算法、电子基础、软件工程，以及操作系统与人工智能各一门样板课。未导入：体系结构、计算机网络、数据库、编译原理、分布式系统、计算机安全、图形学、理论计算机科学等分支的其余条目，属于阶段 7 的后续批次。不导入推荐路线、书单和前后记。保留已有课程地址。",
+  "scope": "CS 自学指南全部课程与必学工具条目（129 条），不导入推荐路线、书单和前后记。课程分类照搬指南的侧边栏结构；已有课程页保留原有地址与内容。",
   "entries": [
     {
       "source": "必学工具/翻墙.md",
@@ -466,11 +466,704 @@
     {
       "source": "人工智能/CS188.md",
       "sourceUrl": "https://csdiy.wiki/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/CS188/",
-      "path": "/ai-machine-learning/cs188",
+      "path": "/ai-machine-learning/artificial-intelligence/cs188",
       "title": "UC Berkeley CS188",
       "official": "https://inst.eecs.berkeley.edu/~cs188/",
       "practice": "https://inst.eecs.berkeley.edu/~cs188/fa26/projects/",
       "accessNote": "课程每学期换一次网址；带 ~cs188 的主页会自动转到当前学期。页面由作者手写，不是批量生成。"
+    },
+    {
+      "source": "计算机系统基础/CSAPP.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/CSAPP/",
+      "path": "/systems/systems-fundamentals/cmu-15-213-csapp",
+      "title": "CMU 15-213 深入理解计算机系统",
+      "official": "http://csapp.cs.cmu.edu/",
+      "practice": "http://csapp.cs.cmu.edu/3e/labs.html",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机系统基础/CS110.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/CS110/",
+      "path": "/systems/systems-fundamentals/stanford-cs110",
+      "title": "Stanford CS110 计算机系统原理",
+      "official": "https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/",
+      "practice": "https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/",
+      "accessNote": ""
+    },
+    {
+      "source": "体系结构/CS61C.md",
+      "sourceUrl": "https://csdiy.wiki/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/CS61C/",
+      "path": "/systems/computer-architecture/cs61c",
+      "title": "UC Berkeley CS61C",
+      "official": "https://cs61c.org/",
+      "practice": "https://cs61c.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "体系结构/DDCA.md",
+      "sourceUrl": "https://csdiy.wiki/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/DDCA/",
+      "path": "/systems/computer-architecture/eth-ddca",
+      "title": "ETH Zurich 数字设计与计算机体系结构",
+      "official": "https://safari.ethz.ch/digitaltechnik/spring2023/",
+      "practice": "https://safari.ethz.ch/digitaltechnik/spring2023/doku.php?id=labs",
+      "accessNote": ""
+    },
+    {
+      "source": "体系结构/CA.md",
+      "sourceUrl": "https://csdiy.wiki/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/CA/",
+      "path": "/systems/computer-architecture/eth-computer-architecture",
+      "title": "ETH Zurich 计算机体系结构",
+      "official": "https://safari.ethz.ch/architecture/fall2022/doku.php?id=start",
+      "practice": "https://safari.ethz.ch/architecture/fall2022/doku.php?id=labs",
+      "accessNote": ""
+    },
+    {
+      "source": "体系结构/N2T.md",
+      "sourceUrl": "https://csdiy.wiki/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/N2T/",
+      "path": "/systems/computer-architecture/nand2tetris",
+      "title": "Nand2Tetris 从与非门到俄罗斯方块",
+      "official": "https://www.nand2tetris.org/",
+      "practice": "https://www.nand2tetris.org/course",
+      "accessNote": ""
+    },
+    {
+      "source": "操作系统/CS162.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CS162/",
+      "path": "/systems/operating-systems/cs162",
+      "title": "UC Berkeley CS162",
+      "official": "https://cs162.org/",
+      "practice": "https://cs162.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "操作系统/NJUOS.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/NJUOS/",
+      "path": "/systems/operating-systems/nju-os",
+      "title": "南京大学 操作系统：设计与实现",
+      "official": "https://jyywiki.cn/OS/2022/index.html",
+      "practice": "https://jyywiki.cn/OS/2022/index.html",
+      "accessNote": ""
+    },
+    {
+      "source": "操作系统/HITOS.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/HITOS/",
+      "path": "/systems/operating-systems/hit-os",
+      "title": "哈尔滨工业大学 操作系统",
+      "official": "https://www.icourse163.org/course/HIT-1002531008",
+      "practice": "https://www.lanqiao.cn/courses/115",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机网络/CS144.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/CS144/",
+      "path": "/systems/networking/cs144",
+      "title": "Stanford CS144 计算机网络",
+      "official": "https://online.stanford.edu/courses/cs144-introduction-computer-networking",
+      "practice": "https://online.stanford.edu/courses/cs144-introduction-computer-networking",
+      "accessNote": "课程自建实验站点 cs144.github.io 于 2026-09-18 核对时已无法访问；这里改用 Stanford Online 的官方课程页。"
+    },
+    {
+      "source": "计算机网络/CS168.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/CS168/",
+      "path": "/systems/networking/cs168",
+      "title": "UC Berkeley CS168",
+      "official": "https://textbook.cs168.io/",
+      "practice": "https://sp25.cs168.io/",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机网络/topdown.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/topdown/",
+      "path": "/systems/networking/kurose-ross-top-down",
+      "title": "《计算机网络：自顶向下方法》配套课程",
+      "official": "https://gaia.cs.umass.edu/kurose_ross/index.php",
+      "practice": "https://gaia.cs.umass.edu/kurose_ross/wireshark.php",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机网络/topdown_ustc.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/topdown_ustc/",
+      "path": "/systems/networking/ustc-networking",
+      "title": "中国科学技术大学 计算机网络",
+      "official": "http://staff.ustc.edu.cn/~qzheng/teaching.html",
+      "practice": "http://staff.ustc.edu.cn/~qzheng/teaching.html",
+      "accessNote": ""
+    },
+    {
+      "source": "数据库系统/15445.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/15445/",
+      "path": "/systems/databases/cmu-15-445",
+      "title": "CMU 15-445 数据库系统",
+      "official": "https://15445.courses.cs.cmu.edu/",
+      "practice": "https://15445.courses.cs.cmu.edu/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据库系统/CS186.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/CS186/",
+      "path": "/systems/databases/cs186",
+      "title": "UC Berkeley CS186 数据库系统导论",
+      "official": "https://cs186berkeley.net/",
+      "practice": "https://cs186berkeley.net/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据库系统/CS122.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/CS122/",
+      "path": "/systems/databases/caltech-cs122",
+      "title": "Caltech CS122 数据库系统实现",
+      "official": "http://courses.cms.caltech.edu/cs122/",
+      "practice": "http://courses.cms.caltech.edu/cs122/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据库系统/CS346.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/CS346/",
+      "path": "/systems/databases/stanford-cs346",
+      "title": "Stanford CS346 数据库系统实现",
+      "official": "https://web.stanford.edu/class/cs346/2015/",
+      "practice": "https://web.stanford.edu/class/cs346/2015/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据库系统/15799.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/15799/",
+      "path": "/systems/databases/cmu-15-799",
+      "title": "CMU 15-799 数据库系统前沿专题",
+      "official": "https://15799.courses.cs.cmu.edu/spring2022/",
+      "practice": "https://15799.courses.cs.cmu.edu/spring2022/",
+      "accessNote": ""
+    },
+    {
+      "source": "编译原理/CS143.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/CS143/",
+      "path": "/systems/compilers/cs143",
+      "title": "Stanford CS143 编译原理",
+      "official": "http://web.stanford.edu/class/cs143/",
+      "practice": "http://web.stanford.edu/class/cs143/",
+      "accessNote": ""
+    },
+    {
+      "source": "编译原理/NJU-Compilers.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/NJU-Compilers/",
+      "path": "/systems/compilers/nju-compilers",
+      "title": "南京大学 编译原理",
+      "official": "http://docs.compilers.cpl.icu/",
+      "practice": "http://docs.compilers.cpl.icu/",
+      "accessNote": ""
+    },
+    {
+      "source": "编译原理/PKU-Compilers.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/PKU-Compilers/",
+      "path": "/systems/compilers/pku-compilers",
+      "title": "北京大学 编译原理实践",
+      "official": "https://pku-minic.github.io/online-doc/#/",
+      "practice": "https://pku-minic.github.io/online-doc/#/",
+      "accessNote": ""
+    },
+    {
+      "source": "编译原理/SJTU-Compilers.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/SJTU-Compilers/",
+      "path": "/systems/compilers/sjtu-compilers",
+      "title": "上海交通大学 编译原理",
+      "official": "https://ipads.se.sjtu.edu.cn/courses/compilers/",
+      "practice": "https://ipads.se.sjtu.edu.cn/courses/compilers/",
+      "accessNote": ""
+    },
+    {
+      "source": "编译原理/USTC-Compilers.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/USTC-Compilers/",
+      "path": "/systems/compilers/ustc-compilers",
+      "title": "中国科学技术大学 编译原理和技术",
+      "official": "https://ustc-compiler-principles.github.io/2023/",
+      "practice": "https://ustc-compiler-principles.github.io/textbook/",
+      "accessNote": ""
+    },
+    {
+      "source": "编译原理/CS420.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/CS420/",
+      "path": "/systems/compilers/kaist-cs420",
+      "title": "KAIST CS420 编译器设计",
+      "official": "https://github.com/kaist-cp/cs420",
+      "practice": "https://github.com/kaist-cp/cs420",
+      "accessNote": ""
+    },
+    {
+      "source": "编程语言设计与分析/Cambridge-Semantics.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/Cambridge-Semantics/",
+      "path": "/systems/programming-languages/cambridge-semantics",
+      "title": "剑桥大学 程序设计语言语义学",
+      "official": "https://www.cl.cam.ac.uk/teaching/2324/Semantics/",
+      "practice": "https://www.cl.cam.ac.uk/teaching/exams/pastpapers/t-Semantics.html",
+      "accessNote": ""
+    },
+    {
+      "source": "编程语言设计与分析/CS242.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/CS242/",
+      "path": "/systems/programming-languages/stanford-cs242",
+      "title": "Stanford CS242 程序设计语言",
+      "official": "https://stanford-cs242.github.io/f19/",
+      "practice": "https://stanford-cs242.github.io/f19/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程语言设计与分析/NJU-SoftwareAnalysis.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/NJU-SoftwareAnalysis/",
+      "path": "/systems/programming-languages/nju-software-analysis",
+      "title": "南京大学 软件分析",
+      "official": "https://tai-e.pascal-lab.net/lectures.html",
+      "practice": "https://tai-e.pascal-lab.net/intro/overview.html",
+      "accessNote": ""
+    },
+    {
+      "source": "编程语言设计与分析/PKU-SoftwareAnalysis.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/PKU-SoftwareAnalysis/",
+      "path": "/systems/programming-languages/pku-software-analysis",
+      "title": "北京大学 软件分析技术",
+      "official": "https://xiongyingfei.github.io/SA/2020/main.htm",
+      "practice": "https://xiongyingfei.github.io/SA/2020/main.htm",
+      "accessNote": ""
+    },
+    {
+      "source": "并行与分布式系统/MIT6.824.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/MIT6.824/",
+      "path": "/systems/parallel-and-distributed/mit-6-5840",
+      "title": "MIT 6.5840 分布式系统",
+      "official": "https://pdos.csail.mit.edu/6.5840/",
+      "practice": "https://pdos.csail.mit.edu/6.5840/schedule.html",
+      "accessNote": "课程编号自 2023 年春季由 6.824 改为 6.5840，内容不变。"
+    },
+    {
+      "source": "并行与分布式系统/CS149.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/CS149/",
+      "path": "/systems/parallel-and-distributed/cmu-15-418-cs149",
+      "title": "CMU 15-418 / Stanford CS149 并行计算",
+      "official": "https://gfxcourses.stanford.edu/cs149/fall23",
+      "practice": "https://gfxcourses.stanford.edu/cs149/fall23",
+      "accessNote": ""
+    },
+    {
+      "source": "系统安全/CS161.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/CS161/",
+      "path": "/systems/security/cs161",
+      "title": "UC Berkeley CS161 计算机安全",
+      "official": "https://su20.cs161.org/",
+      "practice": "https://su20.cs161.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "系统安全/MIT6.858.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/MIT6.858/",
+      "path": "/systems/security/mit-6-858",
+      "title": "MIT 6.858 计算机系统安全",
+      "official": "http://css.csail.mit.edu/6.858/2022/",
+      "practice": "http://css.csail.mit.edu/6.858/2022/labs/",
+      "accessNote": ""
+    },
+    {
+      "source": "系统安全/MIT6.1600.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/MIT6.1600/",
+      "path": "/systems/security/mit-6-1600",
+      "title": "MIT 6.1600 计算机安全基础",
+      "official": "https://61600.csail.mit.edu/2023/",
+      "practice": "https://61600.csail.mit.edu/2023/",
+      "accessNote": ""
+    },
+    {
+      "source": "系统安全/CSE365.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/CSE365/",
+      "path": "/systems/security/asu-cse365",
+      "title": "ASU CSE365 网络安全导论",
+      "official": "https://pwn.college/cse365-s2025/",
+      "practice": "https://pwn.college/cse365-s2025/",
+      "accessNote": ""
+    },
+    {
+      "source": "系统安全/CSE466.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/CSE466/",
+      "path": "/systems/security/asu-cse466",
+      "title": "ASU CSE466 系统安全",
+      "official": "https://pwn.college/cse466-f2025/",
+      "practice": "https://pwn.college/cse466-f2025/",
+      "accessNote": ""
+    },
+    {
+      "source": "系统安全/SEEDLabs.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/SEEDLabs/",
+      "path": "/systems/security/seed-labs",
+      "title": "雪城大学 SEED Labs 安全实验",
+      "official": "https://seedsecuritylabs.org/index.html",
+      "practice": "https://seedsecuritylabs.org/labs.html",
+      "accessNote": ""
+    },
+    {
+      "source": "人工智能/CS50.md",
+      "sourceUrl": "https://csdiy.wiki/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/CS50/",
+      "path": "/ai-machine-learning/artificial-intelligence/cs50-ai",
+      "title": "Harvard CS50 AI with Python",
+      "official": "https://cs50.harvard.edu/ai/",
+      "practice": "https://cs50.harvard.edu/ai/2024/",
+      "accessNote": ""
+    },
+    {
+      "source": "人工智能/Neural Networks：Zero to Hero.md",
+      "sourceUrl": "https://csdiy.wiki/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/Neural%20Networks%EF%BC%9AZero%20to%20Hero/",
+      "path": "/ai-machine-learning/artificial-intelligence/neural-networks-zero-to-hero",
+      "title": "Karpathy 神经网络：从零到英雄",
+      "official": "https://karpathy.ai/zero-to-hero.html",
+      "practice": "https://github.com/karpathy/nn-zero-to-hero",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习/ML.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/ML/",
+      "path": "/ai-machine-learning/machine-learning/coursera-machine-learning",
+      "title": "吴恩达 机器学习专项课程",
+      "official": "https://www.coursera.org/specializations/machine-learning-introduction",
+      "practice": "https://www.coursera.org/specializations/machine-learning-introduction",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习/CS229.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CS229/",
+      "path": "/ai-machine-learning/machine-learning/cs229",
+      "title": "Stanford CS229 机器学习",
+      "official": "https://cs229.stanford.edu/",
+      "practice": "https://cs229.stanford.edu/",
+      "accessNote": "官方作业不对公众开放，公开的是课程讲义与往年题目。"
+    },
+    {
+      "source": "机器学习/CS189.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/CS189/",
+      "path": "/ai-machine-learning/machine-learning/cs189",
+      "title": "UC Berkeley CS189 机器学习导论",
+      "official": "https://www.eecs189.org/",
+      "practice": "https://www.eecs189.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/CS230.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CS230/",
+      "path": "/ai-machine-learning/deep-learning/cs230",
+      "title": "吴恩达 深度学习专项课程",
+      "official": "https://www.coursera.org/specializations/deep-learning",
+      "practice": "https://www.coursera.org/specializations/deep-learning",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/CS231.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CS231/",
+      "path": "/ai-machine-learning/deep-learning/cs231n",
+      "title": "Stanford CS231n 视觉识别中的卷积神经网络",
+      "official": "http://cs231n.stanford.edu/",
+      "practice": "http://cs231n.stanford.edu/schedule.html",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/CS224n.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CS224n/",
+      "path": "/ai-machine-learning/deep-learning/cs224n",
+      "title": "Stanford CS224n 自然语言处理",
+      "official": "http://web.stanford.edu/class/cs224n/",
+      "practice": "http://web.stanford.edu/class/cs224n/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/CS224w.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CS224w/",
+      "path": "/ai-machine-learning/deep-learning/cs224w",
+      "title": "Stanford CS224w 图机器学习",
+      "official": "http://web.stanford.edu/class/cs224w/",
+      "practice": "http://web.stanford.edu/class/cs224w/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/CS285.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CS285/",
+      "path": "/ai-machine-learning/deep-learning/cs285",
+      "title": "UC Berkeley CS285 深度强化学习",
+      "official": "http://rail.eecs.berkeley.edu/deeprlcourse/",
+      "practice": "http://rail.eecs.berkeley.edu/deeprlcourse/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/EECS498-007.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/EECS498-007/",
+      "path": "/ai-machine-learning/deep-learning/umich-eecs-498-007",
+      "title": "UMich EECS 498-007 计算机视觉中的深度学习",
+      "official": "https://www.youtube.com/playlist?list=PL5-TkQAfAZFbzxjBHtzdVCWE0Zbhomg7r",
+      "practice": "https://www.youtube.com/playlist?list=PL5-TkQAfAZFbzxjBHtzdVCWE0Zbhomg7r",
+      "accessNote": "授课教师的课程站点 web.eecs.umich.edu/~justincj 于 2026-09-18 核对时已下线；仍然有效的官方入口是教师本人发布的讲座播放列表。"
+    },
+    {
+      "source": "深度学习/CMU11-785.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CMU11-785/",
+      "path": "/ai-machine-learning/deep-learning/cmu-11-785",
+      "title": "CMU 11-785 深度学习导论",
+      "official": "https://deeplearning.cs.cmu.edu/",
+      "practice": "https://deeplearning.cs.cmu.edu/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/LHY.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/LHY/",
+      "path": "/ai-machine-learning/deep-learning/ntu-hung-yi-lee-ml",
+      "title": "台湾大学 李宏毅 机器学习",
+      "official": "https://speech.ee.ntu.edu.tw/~hylee/ml/2023-spring.php",
+      "practice": "https://speech.ee.ntu.edu.tw/~hylee/ml/2023-spring.php",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/MIT6-7960.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/MIT6-7960/",
+      "path": "/ai-machine-learning/deep-learning/mit-6-7960",
+      "title": "MIT 6.7960 深度学习",
+      "official": "https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/",
+      "practice": "https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/lists/homework/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度学习/NYU-DLSP21.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/NYU-DLSP21/",
+      "path": "/ai-machine-learning/deep-learning/nyu-dlsp21",
+      "title": "NYU 深度学习（Yann LeCun 主讲）",
+      "official": "https://atcold.github.io/NYU-DLSP21/",
+      "practice": "https://atcold.github.io/NYU-DLSP21/",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习进阶/CMU10-708.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%9B%E9%98%B6/CMU10-708/",
+      "path": "/ai-machine-learning/advanced-machine-learning/cmu-10-708",
+      "title": "CMU 10-708 概率图模型",
+      "official": "https://sailinglab.github.io/pgm-spring-2019/",
+      "practice": "https://sailinglab.github.io/pgm-spring-2019/",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习进阶/CS229M.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%9B%E9%98%B6/CS229M/",
+      "path": "/ai-machine-learning/advanced-machine-learning/stanford-cs229m",
+      "title": "Stanford STATS214 / CS229M 机器学习理论",
+      "official": "http://web.stanford.edu/class/stats214/",
+      "practice": "http://web.stanford.edu/class/stats214/",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习进阶/STA4273.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%9B%E9%98%B6/STA4273/",
+      "path": "/ai-machine-learning/advanced-machine-learning/toronto-sta4273",
+      "title": "多伦多大学 STA4273 最小化期望",
+      "official": "https://www.cs.toronto.edu/~cmaddis/courses/sta4273_w21/",
+      "practice": "https://www.cs.toronto.edu/~cmaddis/courses/sta4273_w21/",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习进阶/STAT8201.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%9B%E9%98%B6/STAT8201/",
+      "path": "/ai-machine-learning/advanced-machine-learning/columbia-stat-8201",
+      "title": "哥伦比亚大学 STAT8201 深度生成模型",
+      "official": "http://stat.columbia.edu/~cunningham/teaching/GR8201/",
+      "practice": "http://stat.columbia.edu/~cunningham/teaching/GR8201/",
+      "accessNote": "stat.columbia.edu 对部分网络和客户端返回 403；核对时无法直接读取页面内容，打不开时需换网络环境重试。"
+    },
+    {
+      "source": "机器学习系统/CMU10-414.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F/CMU10-414/",
+      "path": "/ai-machine-learning/machine-learning-systems/cmu-10-414",
+      "title": "CMU 10-414 深度学习系统",
+      "official": "https://dlsyscourse.org/",
+      "practice": "https://dlsyscourse.org/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习系统/MLC.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F/MLC/",
+      "path": "/ai-machine-learning/machine-learning-systems/mlc",
+      "title": "陈天奇 机器学习编译",
+      "official": "https://mlc.ai/summer22-zh/",
+      "practice": "https://github.com/mlc-ai/notebooks",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习系统/EML.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F/EML/",
+      "path": "/ai-machine-learning/machine-learning-systems/mit-6-5940",
+      "title": "MIT 6.5940 TinyML 与高效深度学习计算",
+      "official": "https://hanlab.mit.edu/courses/2024-fall-65940",
+      "practice": "https://hanlab.mit.edu/courses/2024-fall-65940",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习系统/CMU15-442.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F/CMU15-442/",
+      "path": "/ai-machine-learning/machine-learning-systems/cmu-15-442",
+      "title": "CMU 15-442 机器学习系统",
+      "official": "https://mlsyscourse.org/",
+      "practice": "https://mlsyscourse.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习系统/CSE234.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F/CSE234/",
+      "path": "/ai-machine-learning/machine-learning-systems/ucsd-cse234",
+      "title": "UCSD CSE234 面向机器学习的数据系统",
+      "official": "https://hao-ai-lab.github.io/cse234-w25/",
+      "practice": "https://hao-ai-lab.github.io/cse234-w25/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "机器学习系统/AICS.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F/AICS/",
+      "path": "/ai-machine-learning/machine-learning-systems/aics",
+      "title": "中科院 智能计算系统",
+      "official": "https://novel.ict.ac.cn/aics/",
+      "practice": "https://novel.ict.ac.cn/aics/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度生成模型/MIT6.S184.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/MIT6.S184/",
+      "path": "/ai-machine-learning/generative-models/mit-6-s184",
+      "title": "MIT 6.S184 用随机微分方程理解生成式 AI",
+      "official": "https://diffusion.csail.mit.edu/",
+      "practice": "https://diffusion.csail.mit.edu/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度生成模型/大语言模型/CMU11-711.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/CMU11-711/",
+      "path": "/ai-machine-learning/generative-models/large-language-models/cmu-11-711",
+      "title": "CMU 11-711 高级自然语言处理",
+      "official": "https://www.phontron.com/class/anlp-fall2024/",
+      "practice": "https://www.phontron.com/class/anlp-fall2024/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度生成模型/大语言模型/CMU11-667.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/CMU11-667/",
+      "path": "/ai-machine-learning/generative-models/large-language-models/cmu-11-667",
+      "title": "CMU 11-667 大语言模型方法与应用",
+      "official": "https://cmu-llms.org/",
+      "practice": "https://cmu-llms.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "深度生成模型/大语言模型/CMU11-868.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/CMU11-868/",
+      "path": "/ai-machine-learning/generative-models/large-language-models/cmu-11-868",
+      "title": "CMU 11-868 大语言模型系统",
+      "official": "https://llmsystem.github.io/llmsystem2025spring/",
+      "practice": "https://llmsystem.github.io/llmsystem2025spring/",
+      "accessNote": "课程单独的作业站点 llmsystem2025springhw 于 2026-09-18 核对时已下线；作业信息见课程主页。"
+    },
+    {
+      "source": "深度生成模型/大语言模型/CMU15-779.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/CMU15-779/",
+      "path": "/ai-machine-learning/generative-models/large-language-models/cmu-15-779",
+      "title": "CMU 15-779 机器学习系统前沿专题",
+      "official": "https://www.cs.cmu.edu/~zhihaoj2/15-779/",
+      "practice": "https://www.cs.cmu.edu/~zhihaoj2/15-779/",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机图形学/GAMES101.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/GAMES101/",
+      "path": "/computer-graphics/games101",
+      "title": "GAMES101 现代计算机图形学入门",
+      "official": "https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html",
+      "practice": "https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机图形学/GAMES202.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/GAMES202/",
+      "path": "/computer-graphics/games202",
+      "title": "GAMES202 高质量实时渲染",
+      "official": "https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html",
+      "practice": "https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机图形学/GAMES103.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/GAMES103/",
+      "path": "/computer-graphics/games103",
+      "title": "GAMES103 基于物理的计算机动画",
+      "official": "http://games-cn.org/games103/",
+      "practice": "http://games-cn.org/games103/",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机图形学/15462.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/15462/",
+      "path": "/computer-graphics/cmu-15-462",
+      "title": "CMU 15-462 计算机图形学",
+      "official": "http://15462.courses.cs.cmu.edu/fall2022/",
+      "practice": "http://15462.courses.cs.cmu.edu/fall2022/",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机图形学/CS148.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/CS148/",
+      "path": "/computer-graphics/stanford-cs148",
+      "title": "Stanford CS148 图形学与成像导论",
+      "official": "https://web.stanford.edu/class/cs148/index.html",
+      "practice": "https://web.stanford.edu/class/cs148/assignments.html",
+      "accessNote": ""
+    },
+    {
+      "source": "计算机图形学/USTC ComputerGraphics.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/USTC%20ComputerGraphics/",
+      "path": "/computer-graphics/ustc-computer-graphics",
+      "title": "中国科学技术大学 计算机图形学",
+      "official": "http://staff.ustc.edu.cn/~lgliu/Courses/ComputerGraphics_2020_spring-summer/default.htm",
+      "practice": "http://staff.ustc.edu.cn/~lgliu/Courses/ComputerGraphics_2020_spring-summer/default.htm",
+      "accessNote": ""
+    },
+    {
+      "source": "数据科学/Data100.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/Data100/",
+      "path": "/data-science/ucb-data100",
+      "title": "UC Berkeley Data100 数据科学原理与技术",
+      "official": "https://ds100.org/",
+      "practice": "https://ds100.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "Web开发/CS142.md",
+      "sourceUrl": "https://csdiy.wiki/Web%E5%BC%80%E5%8F%91/CS142/",
+      "path": "/web-development/stanford-cs142",
+      "title": "Stanford CS142 Web 应用开发",
+      "official": "https://web.stanford.edu/class/cs142/index.html",
+      "practice": "https://web.stanford.edu/class/cs142/projects.html",
+      "accessNote": ""
+    },
+    {
+      "source": "Web开发/fullstackopen.md",
+      "sourceUrl": "https://csdiy.wiki/Web%E5%BC%80%E5%8F%91/fullstackopen/",
+      "path": "/web-development/full-stack-open",
+      "title": "赫尔辛基大学 Full Stack Open",
+      "official": "https://fullstackopen.com/zh/",
+      "practice": "https://fullstackopen.com/zh/",
+      "accessNote": ""
+    },
+    {
+      "source": "Web开发/mitweb.md",
+      "sourceUrl": "https://csdiy.wiki/Web%E5%BC%80%E5%8F%91/mitweb/",
+      "path": "/web-development/mit-web-dev",
+      "title": "MIT Web 开发速成课",
+      "official": "https://weblab.mit.edu/",
+      "practice": "https://weblab.mit.edu/schedule/",
+      "accessNote": ""
+    },
+    {
+      "source": "Web开发/CS571.md",
+      "sourceUrl": "https://csdiy.wiki/Web%E5%BC%80%E5%8F%91/CS571/",
+      "path": "/web-development/cs571",
+      "title": "UW-Madison CS571 构建用户界面",
+      "official": "https://cs571.org/",
+      "practice": "https://cs571.org/",
+      "accessNote": ""
     }
   ]
 }

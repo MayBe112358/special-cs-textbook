@@ -1,6 +1,14 @@
 {
   "title": "系统",
   "pages": [
-    "operating-systems"
+    "systems-fundamentals",
+    "computer-architecture",
+    "operating-systems",
+    "networking",
+    "databases",
+    "compilers",
+    "programming-languages",
+    "parallel-and-distributed",
+    "security"
   ]
 }

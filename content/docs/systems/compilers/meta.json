@@ -1,0 +1,11 @@
+{
+  "title": "编译原理",
+  "pages": [
+    "cs143",
+    "nju-compilers",
+    "pku-compilers",
+    "sjtu-compilers",
+    "ustc-compilers",
+    "kaist-cs420"
+  ]
+}
