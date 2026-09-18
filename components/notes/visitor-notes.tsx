@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @module        访问者的私人心得编辑器
  * @problem       读者需要在当前页留下自己的理解，刷新仍能继续写，同时不把文字发给作者或其他读者。
  * @design        只在浏览器挂载后读 localStorage，点保存才写；按页面标识重建编辑器，避免翻页时把上一页草稿写到下一页。
@@ -15,6 +15,7 @@
  * 也不悄悄抹掉另一边。这里没有云同步，你的心得只在自己的浏览器，公开评论是另一件事。
  */
 'use client';
+import {NotesBackup} from './notes-backup';
 import {useEffect, useState} from 'react';
 import {MAX_NOTE_LENGTH, noteKey, readNote} from '@/core/notes/notes';
 
@@ -24,14 +25,15 @@ export function VisitorNotes({pageId}: {pageId: string}) {
   const [ready, setReady] = useState(false);
   const [savedText, setSavedText] = useState('');
   const [message, setMessage] = useState('正在读取本机心得……');
-  useEffect(() => {
+  function load() {
     try {
       const raw = localStorage.getItem(noteKey(pageId));
       const note = readNote(raw, pageId);
       setOriginal(raw); setDraft(note?.text ?? ''); setSavedText(note?.text ?? '');
       setReady(true); setMessage(note ? '已读取本机保存的心得。' : '这一页还没有私人心得。');
     } catch { setMessage('无法读取本机心得。原数据未改动，请检查浏览器存储设置。'); }
-  }, [pageId]);
+  }
+  useEffect(load, [pageId]);
 
   function persist(remove: boolean) {
     try {
@@ -58,5 +60,6 @@ export function VisitorNotes({pageId}: {pageId: string}) {
       <button type="button" disabled={!ready || original === null} onClick={() => {if (window.confirm('删除这页已保存的私人心得？')) persist(true);}} className="rounded border px-3 py-1 disabled:opacity-50">删除心得</button>
     </div>
     <p role="status" className="my-2 text-sm">{draft !== savedText && ready ? '有未保存的修改。' : ''} {message}</p>
+    {ready ? <NotesBackup dirty={draft !== savedText} onImported={load} /> : null}
   </section>;
 }
