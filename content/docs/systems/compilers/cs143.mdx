@@ -1,26 +1,38 @@
 ---
 title: "Stanford CS143 编译原理"
-description: "为教学语言 COOL 实现一个完整编译器，把它编译成能在模拟器上运行的 MIPS 汇编。"
+description: "为教学语言 COOL 实现完整编译器，一路编译到能在模拟器上跑的汇编。"
 prereqCourses: []
 prereqKnowledge: ["计算机体系结构"]
 ---
 
 ## 课程简介
 
-为教学语言 COOL 实现一个完整编译器，把它编译成能在模拟器上运行的 MIPS 汇编。
+CS143 是 Stanford 的编译原理课，也是这个方向流传最广的公开课之一。
+课程设计了一门教学语言 COOL（Classroom Object-Oriented Language），
+整门课的主线就是为它实现一个完整的编译器，
+把 COOL 源程序编译成 MIPS 汇编并在 Spim 模拟器上成功运行。
+
+理论部分基本按龙书的顺序：词法分析（正则与有限自动机）、
+语法分析（上下文无关文法、LL 与 LR 分析）、语义分析与类型检查、
+运行时环境与活动记录、代码生成、寄存器分配与代码优化。
+
+实践部分相应地分成词法、语法、语义、代码生成四个编程作业，
+外加五次书面作业。每个阶段都有官方测试用例，
+做完最后一个阶段，你会有一个真正能用的编译器。
 
 ## 先修要求
 
-指南列出的学前准备：计算机体系结构。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要计算机体系结构基础（要能读懂汇编）。
+- 需要 C++ 或 Java 编程能力，以及基本的形式语言概念。
 
 ## 官方资源
 
-- [课程团队资源入口](http://web.stanford.edu/class/cs143/)。
+- [课程主页](http://web.stanford.edu/class/cs143/)：作业、讲义与全部材料。
+- [课程信息](https://web.stanford.edu/class/cs143/course_info.html)：先修要求、教材、评分与课程安排。
 
 ## 官方作业
 
-- [官方作业入口](http://web.stanford.edu/class/cs143/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [编程作业 PA1](https://web.stanford.edu/class/cs143/handouts/PA1.pdf)：词法分析；PA2–PA5 在课程主页上依次列出。
+- [书面作业 WA1](https://web.stanford.edu/class/cs143/handouts/WA1.pdf)：配套理论题，覆盖自动机与文法分析。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/CS143/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+作业框架与测试用例公开；官方评分依赖校内系统，本地可运行测试脚本自测。

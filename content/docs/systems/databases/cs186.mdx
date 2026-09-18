@@ -1,26 +1,39 @@
 ---
 title: "UC Berkeley CS186 数据库系统导论"
-description: "从 SQL 查询如何被拆解优化讲起，用 Java 实现支持并发、B+ 树与故障恢复的数据库。"
+description: "伯克利的数据库导论：讲清 SQL 如何被执行，再用 Java 实现一个数据库。"
 prereqCourses: [cs61a, cs61b, cs61c]
 prereqKnowledge: ["CS61A, CS61B, CS61C"]
 ---
 
 ## 课程简介
 
-从 SQL 查询如何被拆解优化讲起，用 Java 实现支持并发、B+ 树与故障恢复的数据库。
+CS186 从一串很具体的问题开始：一条 SQL 查询是怎么被拆解、优化、
+变成一个个磁盘操作的？怎么让很多人同时读写还不出错？数据库崩了怎么恢复？
+
+课程依次讲 SQL 与关系模型、磁盘与缓冲区管理、B+ 树索引、
+排序与哈希、连接算法、查询优化与代价估计、
+并发控制（两阶段锁、死锁处理）、日志与恢复（ARIES），
+最后是分布式事务与 NoSQL。
+
+项目用 Java 完成，你会实现一个支持 SQL 查询、B+ 树索引、
+并发控制和故障恢复的关系型数据库。
+和 CMU 15-445 相比，这门课的 SQL 与关系理论部分讲得更多，
+项目语言是 Java 而不是 C++。
 
 ## 先修要求
 
-指南列出的学前准备：CS61A, CS61B, CS61C。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 指南列出的学前准备是 CS61A、CS61B、CS61C。
+- 需要 Java 编程能力。
 
 ## 官方资源
 
-- [课程团队资源入口](https://cs186berkeley.net/)。
+- [课程主页](https://cs186berkeley.net/)：当前学期的日程与材料。
+- [课程大纲](https://cs186berkeley.net/syllabus)：课程范围、先修要求与评分。
+- [课程讲义](https://cs186berkeley.net/notes/)：每讲一份的自编 Notes。
 
 ## 官方作业
 
-- [官方作业入口](https://cs186berkeley.net/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Projects](https://cs186berkeley.net/projects/)：六个项目，逐步实现一个关系型数据库。
+- [Homework](https://cs186berkeley.net/)：日程页上发布的 SQL 与理论作业。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/CS186/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+项目框架公开在 GitHub 上，自带单元测试，本地可运行。

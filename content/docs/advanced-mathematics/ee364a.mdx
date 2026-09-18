@@ -1,26 +1,37 @@
 ---
 title: "Stanford EE364A 凸优化"
-description: "学习凸集、凸函数、对偶性与优化算法。"
+description: "Stephen Boyd 的凸优化：识别凸问题，再把它交给求解器。"
 prereqCourses: []
 prereqKnowledge: ["Python，微积分，线性代数，概率论，数值分析"]
 ---
 
 ## 课程简介
 
-学习凸集、凸函数、对偶性与优化算法。
+EE364a 是 Stanford 的凸优化第一门课，由 Stephen Boyd 讲授。
+课程的核心主张是：优化问题的难易分界线不在线性与非线性之间，而在凸与非凸之间。
+只要你能把问题写成凸的形式，就有成熟的理论和可靠的求解器。
+
+内容依次是：凸集与凸函数、凸优化问题的标准形式（线性规划、二次规划、
+半定规划）、对偶理论与 KKT 条件，然后是应用——逼近与拟合、统计估计、
+几何问题，最后是内点法等数值算法。
+
+课程配套的教材《Convex Optimization》是这个领域的标准参考，作者把 PDF 免费公开。
+作业用 CVXPY 完成，你会发现一旦问题被正确建模，求解本身反而是最简单的一步。
 
 ## 先修要求
 
-指南列出的学前准备：Python，微积分，线性代数，概率论，数值分析。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要扎实的线性代数，以及微积分。
+- 需要概率论基础与 Python 编程能力（作业用 CVXPY）。
 
 ## 官方资源
 
-- [课程团队资源入口](https://web.stanford.edu/class/ee364a/)。
+- [课程主页](https://web.stanford.edu/class/ee364a/)：讲座、讲义与作业的入口。
+- [官方教材（免费 PDF）](https://stanford.edu/~boyd/cvxbook/)：《Convex Optimization》，Boyd 与 Vandenberghe 著。
+- [CVXPY 文档](https://www.cvxpy.org/)：作业使用的建模工具。
 
 ## 官方作业
 
-- [官方作业入口](https://web.stanford.edu/class/ee364a/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [讲座与作业材料](https://web.stanford.edu/class/ee364a/lectures.html)：按主题排列的讲义，作业题目多来自配套教材。
+- [教材习题与解答](https://stanford.edu/~boyd/cvxbook/)：官方另外提供了一本配套的习题解答集。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/convex/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+题目与解答都公开，自学时可以边做边核对。

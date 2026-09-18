@@ -1,26 +1,33 @@
 ---
 title: "Docker"
-description: "用镜像与容器封装程序运行环境。"
+description: "把程序连同它依赖的环境一起打包，让“在我机器上能跑”变成可复现的事实。"
 prereqCourses: []
 prereqKnowledge: []
 ---
 
 ## 课程简介
 
-用镜像与容器封装程序运行环境。
+很多课程的实验环境配置比实验本身还费时间：版本对不上、依赖装不全、
+不同操作系统行为不一致。Docker 的做法是把运行环境本身描述成一个可构建、可分发的镜像，
+任何人拉下来跑，得到的环境都一样。
+
+这对自学者的意义很直接：越来越多的公开课（比如 SEED Labs、CMU 15-445）直接提供
+Docker 环境，省掉你在配置上卡住的那几天。
+
+概念上要分清三样东西：Dockerfile 是构建说明，镜像是构建结果，容器是镜像的运行实例。
+理清这三者，大部分命令就不用死记了。
 
 ## 先修要求
 
-能够使用文件和浏览器即可开始；涉及命令行的部分可配合 Missing Semester 官方课程练习。
+- 会用命令行。
+- 了解操作系统里进程和文件系统的基本概念会更容易理解它在做什么。
 
 ## 官方资源
 
-- [官方文档与教程](https://docs.docker.com/)。
+- [Docker 官方文档](https://docs.docker.com/)：指南、手册与参考的总入口。
+- [Docker 基础概念](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)：容器、镜像、仓库分别是什么。
+- [Dockerfile 参考](https://docs.docker.com/reference/dockerfile/)：构建说明文件的完整语法。
 
 ## 官方作业
 
-- [官方教程与实践](https://docs.docker.com/get-started/tutorials/run-an-app/)：按教程完成操作；如使用 Missing Semester 链接，练习位于官方课程页末尾。
-
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/Docker/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+- [官方入门教程](https://docs.docker.com/get-started/tutorials/run-an-app/)：从跑起一个应用开始，逐步到自己构建镜像。

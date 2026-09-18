@@ -1,26 +1,33 @@
 ---
 title: "CMake"
-description: "用跨平台构建配置组织编译、库与测试。"
+description: "跨平台描述构建过程，再由它生成各平台各自的构建系统。"
 prereqCourses: []
 prereqKnowledge: []
 ---
 
 ## 课程简介
 
-用跨平台构建配置组织编译、库与测试。
+CMake 不直接编译代码，它生成构建系统：Makefile、Ninja 文件，或者 Visual Studio、
+Xcode 的工程文件。你写一份 `CMakeLists.txt`，在不同平台上得到各自能用的构建方式。
+
+官方文档按人群分了几条入口：只想编译别人的源码包，看 User Interaction Guide；
+想在自己的项目里用第三方库，看 Using Dependencies Guide；从零开始建项目，
+从 CMake Tutorial 开始。这几条路要求的知识量差别很大，先认准自己属于哪一类。
+
+CMake 主要服务 C 和 C++，但也能用于其他语言。它是许多公开课（比如 CMU 15-445、
+KAIST CS420）实验框架的构建方式，所以即使你不打算深入，也值得会读。
 
 ## 先修要求
 
-能够使用文件和浏览器即可开始；涉及命令行的部分可配合 Missing Semester 官方课程练习。
+- 了解编译、链接的基本概念。
+- 最好先用过 Make 一类的构建工具。
 
 ## 官方资源
 
-- [官方文档与教程](https://cmake.org/cmake/help/latest/)。
+- [CMake 官方文档](https://cmake.org/cmake/help/latest/)：参考手册总入口。
+- [使用者指南](https://cmake.org/cmake/help/latest/guide/user-interaction/index.html)：只想把别人的源码编译出来时看这个。
+- [依赖管理指南](https://cmake.org/cmake/help/latest/guide/using-dependencies/index.html)：在自己的项目里引入第三方库。
 
 ## 官方作业
 
-- [官方教程与实践](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：按教程完成操作；如使用 Missing Semester 链接，练习位于官方课程页末尾。
-
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/CMake/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+- [官方 CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：分十几步从一个最小项目建到安装与打包。

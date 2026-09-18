@@ -1,26 +1,39 @@
 ---
 title: "CMU 15-445 数据库系统"
-description: "在教学数据库 bustub 上实现缓存池、B+ 树索引、执行器与并发控制。"
+description: "在教学数据库 bustub 上，亲手实现缓存池、B+ 树、执行器与并发控制。"
 prereqCourses: [cmu-15-213-csapp]
 prereqKnowledge: ["C++，数据结构与算法，CMU 15-213（CSAPP）"]
 ---
 
 ## 课程简介
 
-在教学数据库 bustub 上实现缓存池、B+ 树索引、执行器与并发控制。
+15-445 是 CMU 的数据库入门课，由 Andy Pavlo 讲授，
+被广泛认为是这个领域资源最齐全的公开课——讲座、讲义、作业、
+自动评分系统乃至讨论社区全部开放。
+
+课程内容按数据库内部结构组织：数据模型、存储模型（行存与列存）、
+缓冲池管理、索引（B+ 树、哈希表）、查询执行（连接、排序、聚合）、
+查询优化、事务与并发控制（ACID、两阶段锁、MVCC）、
+日志与故障恢复，最后是分布式与并行架构。
+
+项目围绕课程自研的教学数据库 bustub 展开：四个 Project 依次实现
+缓冲池管理器、B+ 树索引、查询执行器与优化器、并发控制。
+你可以编译出 `bustub-shell` 当场执行 SQL，看自己写的部件对不对，正反馈很强。
 
 ## 先修要求
 
-指南列出的学前准备：C++，数据结构与算法，CMU 15-213（CSAPP）。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要扎实的 C++ 能力与数据结构基础。
+- 指南建议先完成 CMU 15-213（CSAPP）或同等的系统课程。
 
 ## 官方资源
 
-- [课程团队资源入口](https://15445.courses.cs.cmu.edu/)。
+- [课程主页](https://15445.courses.cs.cmu.edu/)：当前学期的日程、讲义与政策。
+- [课程日程](https://15445.courses.cs.cmu.edu/fall2025/schedule.html)：按周排列的主题、阅读与视频。
+- [bustub 代码库](https://github.com/cmu-db/bustub)：课程自研的教学数据库。
 
 ## 官方作业
 
-- [官方作业入口](https://15445.courses.cs.cmu.edu/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Projects](https://15445.courses.cs.cmu.edu/fall2025/assignments.html)：四个项目：缓冲池、B+ 树、执行器与优化器、并发控制。
+- [Homework](https://15445.courses.cs.cmu.edu/fall2025/assignments.html)：配套书面作业，覆盖讲座中的理论部分。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/15445/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+项目自带测试；课程的公开自动评分平台按学期开放，具体以课程页说明为准。

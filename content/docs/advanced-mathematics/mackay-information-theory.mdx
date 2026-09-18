@@ -1,26 +1,37 @@
 ---
 title: "信息论、推断与学习算法"
-description: "连接信息论、概率推断、模式识别与神经网络。"
+description: "MacKay 的经典教材：把信息论、推断和纠错码放在同一套框架里讲。"
 prereqCourses: []
 prereqKnowledge: ["Calculus, Linear Algebra, Probabilities and Statistics"]
 ---
 
 ## 课程简介
 
-连接信息论、概率推断、模式识别与神经网络。
+这是 David MacKay 的《Information Theory, Inference, and Learning Algorithms》
+及其配套讲座。这本书的独特之处在于它把三件通常分开教的事情放在了一起：
+香农的信息论、贝叶斯推断，以及现代纠错码。
+
+作者的论点是它们本来就是一件事——信息论问的是“一个消息含多少信息”，
+推断问的是“看到数据之后该相信什么”，纠错码问的是“怎样在噪声里可靠地传递”，
+三者共用同一套概率工具。书里从熵和信源编码讲起，
+经过信道编码定理，一路讲到 LDPC 码、蒙特卡洛方法和神经网络。
+
+全书 PDF 由作者免费公开，网站上还有配套的讲座视频和软件。
+它比一般教材更难，但写得极有个人风格，读起来不闷。
 
 ## 先修要求
 
-指南列出的学前准备：Calculus, Linear Algebra, Probabilities and Statistics。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要概率论、微积分与线性代数。
+- 有一定的编程能力更好，书中许多例子值得自己算一遍。
 
 ## 官方资源
 
-- [课程团队资源入口](https://www.inference.org.uk/mackay/itila/)。
+- [官方书籍主页](https://www.inference.org.uk/mackay/itila/)：免费 PDF、勘误与配套软件。
+- [讲座视频](https://www.inference.org.uk/itprnn_lectures/)：作者本人讲授的配套课程录像。
+- [配套软件](https://www.inference.org.uk/mackay/itila/)：书中算法的示例实现。
 
 ## 官方作业
 
-- [官方作业入口](https://www.inference.org.uk/mackay/itila/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [书中习题](https://www.inference.org.uk/mackay/itila/)：每章穿插大量练习，作者按难度和重要性做了标注，并给出解答。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/The_Information_Theory_Pattern_Recognition_and_Neural_Networks/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+这是教材而非开课，练习与解答都在书里。

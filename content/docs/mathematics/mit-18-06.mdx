@@ -1,26 +1,36 @@
 ---
 title: "MIT 18.06 线性代数"
-description: "学习向量空间、线性变换、矩阵分解与正交投影。"
+description: "Gilbert Strang 的线性代数：从消元法出发，把四个基本子空间讲透。"
 prereqCourses: []
 prereqKnowledge: ["英文"]
 ---
 
 ## 课程简介
 
-学习向量空间、线性变换、矩阵分解与正交投影。
+18.06 是 MIT 的线性代数课，讲授者 Gilbert Strang 的这套讲座是公认的经典。
+它的组织方式很有辨识度：不从抽象的向量空间公理开始，而是从解方程组 Ax = b 入手，
+先讲消元法，再讲矩阵乘法与逆，然后是 LU 分解，一路推到列空间、零空间，
+最后归结为四个基本子空间和它们之间的关系。
+
+这条路线的好处是每一个抽象概念出现时你都知道它是从哪个具体问题里长出来的。
+后半程是正交性与投影、最小二乘、特征值与特征向量、对称矩阵与正定性、
+奇异值分解（SVD），这些正是机器学习和数据科学里天天用到的工具。
+
+OCW 的 Scholar 版除了讲座，还配了助教讲解的例题视频和完整的习题与考试。
 
 ## 先修要求
 
-指南列出的学前准备：英文。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要高中代数；不要求微积分，但学过会更从容。
+- 没有编程要求。
 
 ## 官方资源
 
-- [课程团队资源入口](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/)。
+- [课程主页（OCW Scholar）](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/)：讲座、例题视频与习题的总入口。
+- [课程大纲](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/syllabus/)：单元划分与学习路线。
+- [Unit I：Ax = b 与四个子空间](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/resources/unit-i-ax-b-and-the-four-subspaces/index.html)：全课的骨架，建议先把这部分吃透。
 
 ## 官方作业
 
-- [官方作业入口](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [各单元习题与考试](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/)：课程按 Unit 组织，每个单元都有配套习题与阶段考试。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/MITLA/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+OCW 提供官方解答；配套教材《Introduction to Linear Algebra》需另行购买。

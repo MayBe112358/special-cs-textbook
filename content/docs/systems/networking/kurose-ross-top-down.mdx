@@ -1,26 +1,40 @@
 ---
 title: "《计算机网络：自顶向下方法》配套课程"
-description: "教材作者自制的配套网课，含交互式章节测试与 WireShark 抓包实验。"
+description: "《自顶向下方法》作者自制的配套课程：视频、交互测验与抓包实验。"
 prereqCourses: []
 prereqKnowledge: ["有一定的计算机系统基础"]
 ---
 
 ## 课程简介
 
-教材作者自制的配套网课，含交互式章节测试与 WireShark 抓包实验。
+《Computer Networking: A Top-Down Approach》是计算机网络领域流传最广的教材之一，
+两位作者 Jim Kurose 和 Keith Ross 为它做了一整套公开的配套材料。
+
+“自顶向下”指的是讲授顺序：从你最熟悉的应用层（HTTP、DNS、邮件）开始，
+再往下走到传输层（UDP、TCP、拥塞控制）、网络层（IP、路由、SDN）、
+链路层，最后是无线与安全。这个顺序对自学者很友好——
+一开始讲的就是你每天在用的东西。
+
+配套材料包括作者录制的讲座视频、交互式的章节测验、
+可以直接在浏览器里做的章末习题，以及一组 Wireshark 抓包实验——
+用真实的数据包验证书上写的协议行为。
+
+它的短板是没有硬核的编程作业，这一点可以用 CS144 来补。
 
 ## 先修要求
 
-指南列出的学前准备：有一定的计算机系统基础。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要一定的计算机系统基础。
+- 没有编程要求，但抓包实验需要安装 Wireshark。
 
 ## 官方资源
 
-- [课程团队资源入口](https://gaia.cs.umass.edu/kurose_ross/index.php)。
+- [配套资源主页](https://gaia.cs.umass.edu/kurose_ross/index.php)：视频、幻灯片与全部公开材料。
+- [在线讲座视频](https://gaia.cs.umass.edu/kurose_ross/videos/1/)：作者录制的分节讲解。
+- [交互式章末习题](https://gaia.cs.umass.edu/kurose_ross/interactive/)：可在浏览器里作答并即时判分。
 
 ## 官方作业
 
-- [官方作业入口](https://gaia.cs.umass.edu/kurose_ross/wireshark.php)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Wireshark Labs](https://gaia.cs.umass.edu/kurose_ross/wireshark.php)：抓真实数据包，对照书上的协议格式逐字段核实。
+- [Knowledge Checks](https://gaia.cs.umass.edu/kurose_ross/interactive/)：按章组织的交互式自测。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/topdown/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+习题自动判分；实验需要本地安装 Wireshark。
