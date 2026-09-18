@@ -1,8 +1,10 @@
 /**
- * @module        知识索引的生成器——构建前扫一遍内容目录，把课程信息汇总成一份 JSON
- * @problem       内容写在人看着舒服的地方：标题写在 MDX 开头、分类名写在 meta.json、层级靠文件夹表示。
- *                但程序要回答“当前位置下有什么”“这门课先修是什么”，需要的是一份规整、可直接查询的数据。
- *                让网页在浏览器里现读几十个 MDX 文件既慢又做不到（浏览器根本看不见你的磁盘），
+ * @module        知识索引的生成器——构建前扫一遍内容目录和源码，把课程与模块信息汇总成一份 JSON
+ * @problem       内容写在人看着舒服的地方：标题写在 MDX 开头、分类名写在 meta.json、层级靠文件夹表示，
+ *                而这本教材的正文干脆写在源码文件顶部的注释块里。
+ *                但程序要回答“当前位置下有什么”“这门课先修是什么”“读懂这段代码要先学哪门课”，
+ *                需要的是一份规整、可直接查询的数据。
+ *                让网页在浏览器里现读几十个 MDX 文件和源文件既慢又做不到（浏览器根本看不见你的磁盘），
  *                所以这件事必须在构建时做完，把结果固定成一个文件。
  * @design        写成一个不依赖任何框架的独立 Node 脚本，只用内置的 fs 读文件，
  *                在 npm 的 predev / prebuild 阶段自动跑一次，产物写进 core/knowledge/generated/。
@@ -22,7 +24,8 @@
  * @unclear       这里手写了一个极小的 frontmatter 解析器（见 readFrontmatter），只认识本项目用到的那几种写法。
  *                它不是完整的 YAML 解析器，遇到没见过的写法会直接报错而不是猜——这是故意的，但也意味着
  *                将来内容格式变复杂时，要么扩展它，要么改用现成的解析库（那需要先讨论新依赖）。
- *                另外，代码注释块（@module / @letter 这一套）还没有被扫进来，那是 ROADMAP 5.1 的事。
+ *                另外，扫源码时“没有注释块的文件直接跳过”是宽容的：AGENTS.md 要求每个核心文件都写注释块，
+ *                但这里不会因为某个文件没写就让构建失败。要不要把它变成硬性检查，等核心文件都补齐了再说。
  *
  * @letter
  * 这是整个数据层的第一块砖，也是这个项目里第一段“不为了显示、只为了整理”的代码。我想跟你讲清楚
@@ -52,6 +55,17 @@
  * 在真实工程里到处都是；你以后做编译器作业（CS143）会更强烈地感受到——
  * 一个编译器有相当一部分工作量，花在“怎么把错误说清楚”上面。
  *
+ * ——以上说的都是扫内容目录。从 ROADMAP 阶段 5 起，这个脚本还要扫第二样东西：仓库里的源码。
+ *
+ * 原因是这本教材的正文写在源文件顶部的注释里。那些注释本来只有打开源文件的人读得到，
+ * 而扫描它们、把每个文件登记成一个“模块”之后，它们就能在网站上有自己的一页、能被终端 cat、
+ * 能和课程互相链接。扫的办法和扫课程是同一个套路，只是反着来：课程那边有一份 meta.json 说明
+ * 目录里该有什么，源码这边什么都没有——所以这里的规则是“默认全都要，只把明确不该看的目录挡在外面”。
+ *
+ * 这个区别值得多想一秒。写一份“要扫哪些文件”的清单更省事，也更可控；代价是你哪天新写一个文件、
+ * 忘了往清单里加，它就永远不会出现在教材里，而且不会有任何报错。这类“忘了登记”的毛病，
+ * 和前面说的“手工维护课程列表”是同一种病。所以这里宁可扫多一点，再把 node_modules 那种地方排除掉。
+ *
  * 最后一句提醒：这个文件里没有 import react，也没有 import next，它只 import 了 node:fs 和 node:path。
  * 这不是巧合，是这个项目的一条硬规矩：数据层和命令引擎必须能脱离网页单独跑。
  * 你可以在任何一台装了 Node 的电脑上直接执行 node scripts/build-knowledge-index.ts，
@@ -65,8 +79,17 @@ import type {
   CourseEntry,
   CoursePrerequisites,
   KnowledgeIndex,
+  ModuleEntry,
 } from "../core/knowledge/knowledge-index.ts";
-import { KNOWLEDGE_INDEX_VERSION } from "../core/knowledge/knowledge-index.ts";
+import {
+  INTERNALS_DESCRIPTION,
+  INTERNALS_PATH,
+  INTERNALS_TITLE,
+  KNOWLEDGE_INDEX_VERSION,
+} from "../core/knowledge/knowledge-index.ts";
+import type { DocComment } from "../core/knowledge/doc-comment.ts";
+import { readDocComment } from "../core/knowledge/doc-comment.ts";
+import { matchCourseIds } from "../core/knowledge/cross-reference.ts";
 
 /** 仓库根目录。脚本自己在 scripts/ 里，所以往上一层就是根。 */
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -78,6 +101,8 @@ const DOCS_BASE_URL = "/docs";
 const OUTPUT_FILE = "core/knowledge/generated/knowledge-index.json";
 /** 目录自己那张页面用这个文件名，它不算一门课。 */
 const DIRECTORY_PAGE_NAME = "index";
+/** 树根在知识树里的写法。课程分类和源码讲解都挂在它下面。 */
+const ROOT_TREE_PATH = "/";
 
 /**
  * frontmatter 里允许出现的字段。写了别的字段会直接报错——
@@ -360,6 +385,191 @@ function readCourse(absFile: string, id: string, path: string, categoryPath: str
 }
 
 /**
+ * 扫描源码时不进去的目录。以点开头的目录（.git、.next、.source……）另有一条规则统一跳过。
+ *
+ * content 在这里被跳过，是因为课程 MDX 里也有注释块，但那是“这一页该怎么写”的说明，
+ * 不是源码模块——它们已经作为课程进了清单，再当模块登记一遍就成了两份。
+ */
+const SOURCE_SKIP_DIRECTORIES = new Set([
+  "node_modules",
+  "out",
+  "output",
+  "public",
+  "content",
+  "开发指导文档",
+]);
+
+/** 会被当成源码来看的文件后缀。顺序无所谓，只用来判断“要不要打开看看”。 */
+const SOURCE_EXTENSIONS = [".ts", ".tsx", ".mjs", ".js", ".css"];
+
+/** 源码讲解那一支在树里的位置前缀。 */
+const INTERNALS_SEGMENT = INTERNALS_PATH.slice(1);
+
+/**
+ * 走一遍仓库，把所有可能带注释块的源文件列出来（相对仓库根目录，用正斜杠）。
+ *
+ * 注意这里没有一份“要扫哪些文件”的清单。清单是会过期的：新写一个文件却忘了登记，
+ * 它就永远不会出现在教材里，而且不报错。所以这里的做法是反过来——默认全都要，
+ * 只把明确不该看的目录挡在外面。
+ */
+function collectSourceFiles(absDir: string, into: string[]): void {
+  const entries = readdirSync(absDir, { withFileTypes: true });
+  // 自己排序，不依赖操作系统给的顺序：同一份仓库在两台电脑上必须生成一模一样的清单。
+  entries.sort((left, right) => (left.name < right.name ? -1 : left.name > right.name ? 1 : 0));
+
+  for (const entry of entries) {
+    const absolute = join(absDir, entry.name);
+    if (entry.isDirectory()) {
+      if (entry.name.startsWith(".")) continue;
+      if (SOURCE_SKIP_DIRECTORIES.has(entry.name)) continue;
+      collectSourceFiles(absolute, into);
+      continue;
+    }
+    if (!entry.isFile()) continue;
+    if (!SOURCE_EXTENSIONS.some((extension) => entry.name.endsWith(extension))) continue;
+    into.push(relative(REPO_ROOT, absolute).replaceAll("\\", "/"));
+  }
+}
+
+/**
+ * 把一段文件名或目录名变成能安全放进网址的一节。
+ *
+ * 绝大多数名字本来就合规，原样通过。真正需要它的是 Next.js 那种带方括号的目录名
+ * （app/docs/[[...slug]]），那些符号进了网址会一路带来麻烦。规整之后位置变成 .../docs/slug/page，
+ * 而讲解页上仍然原样显示真实文件路径——位置是给机器用的编号，路径才是事实。
+ */
+function toPathSegment(name: string, file: string): string {
+  const segment = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  if (segment === "") {
+    throw new ContentError(file, `文件名 ${name} 里没有一个字母或数字，无法作为位置的一节`);
+  }
+  return segment;
+}
+
+/** 去掉最后一个扩展名：command-engine.ts → command-engine，virtual-file-system.test.ts → virtual-file-system.test。 */
+function stripExtension(fileName: string): string {
+  const dot = fileName.lastIndexOf(".");
+  return dot <= 0 ? fileName : fileName.slice(0, dot);
+}
+
+/** 标题取破折号前那半句；没有破折号就取第一个逗号前那半句；都没有就整句。 */
+function moduleTitle(moduleLine: string): string {
+  for (const separator of ["——", "，"]) {
+    const at = moduleLine.indexOf(separator);
+    if (at > 0) return moduleLine.slice(0, at).trim();
+  }
+  return moduleLine;
+}
+
+/**
+ * 扫描仓库里的源码，把每个带注释块的文件登记成一个模块。
+ *
+ * 位置是照着源码的真实层级算出来的，不是谁手写的：core/terminal/command-engine.ts
+ * 变成 /internals/core/terminal/command-engine。这样这棵讲解树和仓库长得一模一样，
+ * 你在网站上走到哪一层，就知道去仓库的哪个文件夹找它。
+ */
+function scanModules(courseIds: string[]): ModuleEntry[] {
+  const files: string[] = [];
+  collectSourceFiles(REPO_ROOT, files);
+
+  const modules: ModuleEntry[] = [];
+  for (const file of files) {
+    const comment = readDocComment(readFileSync(join(REPO_ROOT, file), "utf8"), file);
+    if (comment === null) continue; // 没有注释块的文件不是教材的一章，跳过它不是错误
+
+    const parts = file.split("/");
+    const fileName = parts.pop() ?? "";
+    const segments = [
+      ...parts.map((part) => toPathSegment(part, file)),
+      toPathSegment(stripExtension(fileName), file),
+    ];
+    const path = `${INTERNALS_PATH}/${segments.join("/")}`;
+
+    modules.push({
+      id: segments.at(-1) ?? "",
+      title: moduleTitle(comment.module),
+      path,
+      url: urlFromPath(path),
+      categoryPath: path.slice(0, path.lastIndexOf("/")) || INTERNALS_PATH,
+      file,
+      courseIds: matchCourseIds(paragraphsToText(comment.courses), courseIds),
+      comment,
+    });
+  }
+
+  return modules;
+}
+
+/** 把一组段落接回一整段文字。认课程编号时只需要文字本身，不关心它原来分几段。 */
+function paragraphsToText(paragraphs: DocComment["courses"]): string {
+  return paragraphs
+    .map((paragraph) => (paragraph.kind === "text" ? paragraph.text : paragraph.lines.join(" ")))
+    .join("\n");
+}
+
+/**
+ * 照着模块的位置，把它们头上那些目录生出来。
+ *
+ * 课程分类的目录是内容作者一个个建的文件夹，还配了 meta.json 写中文标题；
+ * 源码这一支不一样——它的目录就是仓库里真实的文件夹，所以这里不做任何登记，
+ * 而是从每个模块的位置倒推：/internals/core/terminal/command-engine 这一条，
+ * 顺带就说明了 /internals/core 和 /internals/core/terminal 必须存在。
+ *
+ * 目录标题直接用文件夹名（core、terminal、commands）。给它们编一个中文名会好看一点，
+ * 但那要么需要一份手写的对照表（每加一个文件夹就得回来登记，正是这个项目一直在躲的事），
+ * 要么就得瞎猜。用真名还有个好处：你在网站上看到 core/terminal，去仓库里就能原样找到它。
+ */
+function buildInternalsDirectories(modules: ModuleEntry[]): CategoryEntry[] {
+  const directories = new Map<string, CategoryEntry>();
+  directories.set(INTERNALS_PATH, {
+    id: INTERNALS_SEGMENT,
+    title: INTERNALS_TITLE,
+    description: INTERNALS_DESCRIPTION,
+    path: INTERNALS_PATH,
+    url: urlFromPath(INTERNALS_PATH),
+    parentPath: ROOT_TREE_PATH,
+    childPaths: [],
+  });
+
+  for (const module of modules) {
+    // 去掉开头的 /internals 和结尾的模块自己，中间剩下的就是要确认的每一层目录。
+    const segments = module.path.slice(INTERNALS_PATH.length + 1).split("/").slice(0, -1);
+    let parentPath = INTERNALS_PATH;
+    for (const segment of segments) {
+      const path = `${parentPath}/${segment}`;
+      if (!directories.has(path)) {
+        directories.set(path, {
+          id: segment,
+          title: segment,
+          description: "",
+          path,
+          url: urlFromPath(path),
+          parentPath,
+          childPaths: [],
+        });
+      }
+      parentPath = path;
+    }
+  }
+
+  // 每个目录里的东西按名字排，和真终端 ls 的默认顺序一致：目录和文件混在一起，不分开摆。
+  for (const directory of directories.values()) {
+    const children = [
+      ...[...directories.values()]
+        .filter((candidate) => candidate.parentPath === directory.path)
+        .map((candidate) => candidate.path),
+      ...modules.filter((module) => module.categoryPath === directory.path).map((module) => module.path),
+    ];
+    directory.childPaths = children.sort();
+  }
+
+  return [...directories.values()];
+}
+
+/**
  * 生成之后再自查一遍。这一步对应数据库课上的“完整性约束”：
  * 编号不能重复，指向别人的引用必须真的存在。
  */
@@ -390,17 +600,46 @@ function checkIndex(index: KnowledgeIndex): void {
       }
     }
   }
+
+  // 树里的每个位置只能住一样东西。源码目录名被规整过（[[...slug]] → slug），
+  // 万一两个不同的文件夹规整成同一个名字，必须当场说清楚是哪两个，而不是让后来的悄悄盖掉前面的。
+  const occupied = new Map<string, string>();
+  for (const entry of [...index.categories, ...index.courses, ...index.modules]) {
+    // 出问题时人要能一眼认出是谁：文件有路径就报路径，目录只能报它的标题。
+    const who = "file" in entry ? entry.file : entry.title;
+    const previous = occupied.get(entry.path);
+    if (previous !== undefined) {
+      throw new ContentError(entry.path, `这个位置上有两样东西：${previous}，以及 ${who}`);
+    }
+    occupied.set(entry.path, who);
+  }
+
+  // 每样东西头上那一层必须真的存在，否则终端走到一半会发现脚下没有地板。
+  for (const module of index.modules) {
+    if (!occupied.has(module.categoryPath)) {
+      throw new ContentError(module.file, `它所在的目录 ${module.categoryPath} 不在清单里`);
+    }
+  }
 }
 
 function buildKnowledgeIndex(): KnowledgeIndex {
   const result: ScanResult = { categories: [], courses: [] };
-  scanDirectory(join(REPO_ROOT, CONTENT_DIR), "/", null, result);
+  scanDirectory(join(REPO_ROOT, CONTENT_DIR), ROOT_TREE_PATH, null, result);
+  const modules = scanModules(result.courses.map((course) => course.id));
+
+  // 源码讲解是这棵树的第二支，挂在根下面，和课程分类并列——
+  // 这本教材的正文就在源码里，它不是某个课程分类的附属品。
+  const root = result.categories.find((category) => category.path === ROOT_TREE_PATH);
+  if (root === undefined) throw new Error("内容目录里没有根分类");
+  root.childPaths.push(INTERNALS_PATH);
+
   const index: KnowledgeIndex = {
     version: KNOWLEDGE_INDEX_VERSION,
     generatedAt: new Date().toISOString(),
     sourceDir: CONTENT_DIR,
-    categories: result.categories,
+    categories: [...result.categories, ...buildInternalsDirectories(modules)],
     courses: result.courses,
+    modules,
   };
   checkIndex(index);
   return index;
@@ -412,7 +651,7 @@ function main(): void {
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(index, null, 2)}\n`, "utf8");
   console.log(
-    `知识索引已生成：${OUTPUT_FILE}（分类 ${index.categories.length} 个，课程 ${index.courses.length} 门）`,
+    `知识索引已生成：${OUTPUT_FILE}（目录 ${index.categories.length} 个，课程 ${index.courses.length} 门，源码模块 ${index.modules.length} 个）`,
   );
 }
 

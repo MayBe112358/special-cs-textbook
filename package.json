@@ -10,7 +10,8 @@
     "prebuild": "npm run index",
     "build": "next build",
     "start": "next start",
-    "test": "node --test \"core/**/*.test.ts\""
+    "test": "node --test \"core/**/*.test.ts\"",
+    "postbuild": "node scripts/fix-static-prefetch.ts"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",

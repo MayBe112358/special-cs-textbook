@@ -7,6 +7,8 @@
  * @design        把约定单独放在这个文件：引擎 import 它，每条命令也 import 它，两边互不认识。
  *                约定里最要紧的一条是 run 必须返回结果，而不是自己动手——
  *                想跳转页面、想存东西，都只能在返回值里“说出来”，由外层决定做不做、怎么做。
+ *                上下文里既有文件系统，也有原始的知识索引：前者按位置回答问题（cd、ls 用它），
+ *                后者按关系回答问题（refs 用它）。它们是同一份数据的两种看法，不是两份数据。
  * @courses       UC Berkeley CS61A（高阶函数与数据抽象：把“要做的事”当值传来传去）；
  *                Stanford CS143 与 UCB CS164（解释器的求值接口）；软件工程类课程（依赖方向与接口设计）；
  *                MIT Missing Semester（Unix 命令的统一形状：名字、参数、退出状态）
@@ -40,6 +42,7 @@
  */
 import type { OutputBlock } from "./output.ts";
 import type { VirtualFileSystem } from "../filesystem/virtual-file-system.ts";
+import type { KnowledgeIndex } from "../knowledge/knowledge-index.ts";
 
 /**
  * 外部世界在执行命令前必须告诉引擎的东西。
@@ -55,6 +58,14 @@ export type SessionContext = {
   previousPath: string | null;
   /** 从知识索引建立的只读文件系统。命令只能查询它，不能往里面写状态。 */
   fileSystem: VirtualFileSystem;
+  /**
+   * 构建时生成的那份知识索引本身。
+   *
+   * 文件系统是它的一种视图：按位置一层层往下走时用那个视图最顺手。
+   * 但有些问题问的不是位置，而是关系——“哪些模块提到了这门课”要把所有模块过一遍，
+   * 那种问题在原始的平表上问最直接。两者是同一份数据的两种看法，不是两份数据。
+   */
+  knowledge: KnowledgeIndex;
 };
 
 /** 一条命令在运行时能看到的全部东西：外部给的 + 引擎补上的。 */

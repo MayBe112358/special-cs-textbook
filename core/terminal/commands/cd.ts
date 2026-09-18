@@ -24,7 +24,7 @@ import { knowledgePathToUrl, lookupError, usageError } from "./shared.ts";
 
 export const cdCommand: CommandDefinition = {
   name: "cd",
-  summary: "切换到另一个课程分类",
+  summary: "切换到另一个目录",
   usage: "cd [directory]",
   run(invocation, context): CommandResult {
     if (invocation.args.length > 1) return usageError("cd", "cd [directory]");

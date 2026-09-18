@@ -4,7 +4,9 @@
  *                还有一个只有真用起来才会发现的问题：终端如果只是“浮”在页面底部，它会盖住正文的最后几行，
  *                也会盖住侧边栏最下面几项——而侧边栏恰恰是 cd 之后要去确认高亮的地方。
  *                一个会挡住验收对象的界面，等于没做完。
- * @design        用普通 React 表单和结构化输出组件实现，不使用 xterm.js。命令历史、输出、OLDPWD 都是会话状态，
+ * @design        用普通 React 表单和结构化输出组件实现，不使用 xterm.js。执行命令时把文件系统和知识索引
+ *                一起递给引擎——它们都是构建时生成、之后只读的东西，终端只负责转交，不保存也不修改。
+ *                命令历史、输出、OLDPWD 都是会话状态，
  *                留在这个常驻布局组件的内存里；当前目录则每次从 usePathname 推导，绝不复制进 state。
  *                router.push 是唯一真正执行副作用的位置，命令只交回动作描述。
  *                布局上，这个组件同时充当“底座”：它把文档区当 children 包进来，用一个 CSS 变量宣布
@@ -69,7 +71,8 @@ import {
   type ReactNode,
 } from "react";
 
-const fileSystem = createVirtualFileSystem(knowledgeIndexJson as KnowledgeIndex);
+const knowledgeIndex = knowledgeIndexJson as KnowledgeIndex;
+const fileSystem = createVirtualFileSystem(knowledgeIndex);
 
 /**
  * 终端底座占住的高度，也就是文档区要让出来的那一条。
@@ -138,7 +141,7 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   const executeLine = useCallback((line: string) => {
     if (line.trim() === "") return;
 
-    const result = runCommand(line, { currentPath, previousPath, fileSystem });
+    const result = runCommand(line, { currentPath, previousPath, fileSystem, knowledge: knowledgeIndex });
     const entryId = nextEntryId.current++;
     setEntries((oldEntries) => [...oldEntries, {
       id: entryId,

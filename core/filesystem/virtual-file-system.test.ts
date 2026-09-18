@@ -121,6 +121,8 @@ const fixture: KnowledgeIndex = {
       file: "test/fixture/systems/os/pintos.mdx",
     },
   ],
+  // 这两个测试只关心课程树；源码模块那一支由它自己的测试负责。
+  modules: [],
 };
 
 const vfs = createVirtualFileSystem(fixture);

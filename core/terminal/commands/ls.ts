@@ -1,5 +1,5 @@
 /**
- * @module        ls 命令——列出知识树当前位置直接包含的分类与课程
+ * @module        ls 命令——列出知识树当前位置直接包含的分类、课程和源码模块
  * @problem       终端使用者看不到侧边栏时，需要用和真 Unix 相同的方式回答“这里有什么”。
  * @design        ls 只查询虚拟文件系统，输出保留每一项的名字、标题与可执行命令。
  *                可点击不是 React 写进命令，而是列表项携带一条绝对路径 open 命令，由界面决定是否画成按钮。
@@ -24,7 +24,7 @@ import { lookupError, usageError } from "./shared.ts";
 
 export const lsCommand: CommandDefinition = {
   name: "ls",
-  summary: "列出当前位置的分类与课程",
+  summary: "列出当前位置下有什么",
   usage: "ls [path]",
   run(invocation, context): CommandResult {
     if (invocation.args.length > 1) return usageError("ls", "ls [path]");

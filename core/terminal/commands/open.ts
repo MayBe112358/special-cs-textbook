@@ -1,5 +1,5 @@
 /**
- * @module        open 命令——请求让中间正文区打开课程或分类页面
+ * @module        open 命令——请求让中间正文区打开课程、分类或源码讲解页
  * @problem       cat 适合快速读简介，但完整课程资源仍在正文页面；终端需要一种不直接依赖 Next 的跳转方式。
  * @design        open 先在虚拟文件系统中严格查找目标，再返回 navigate 动作。课程使用索引里的 url，
  *                分类使用统一的 /docs + 知识路径；命令本身不读取 window，也不调用路由器。
@@ -24,7 +24,7 @@ import { lookupError, knowledgePathToUrl, usageError } from "./shared.ts";
 
 export const openCommand: CommandDefinition = {
   name: "open",
-  summary: "打开课程或分类页面",
+  summary: "打开课程、分类或源码讲解页",
   usage: "open <path>",
   run(invocation, context): CommandResult {
     if (invocation.args.length === 0) {

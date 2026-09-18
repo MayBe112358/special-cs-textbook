@@ -1,6 +1,6 @@
 /**
  * @module        虚拟文件系统——把知识索引变成一棵“能用路径访问”的树
- * @problem       知识索引是两张平表：一张分类、一张课程，每条记录自带一个 path 字符串。
+ * @problem       知识索引是三张平表：目录、课程、源码模块，每条记录自带一个 path 字符串。
  *                但终端里的人不会说“请给我 path 等于 /systems/operating-systems 的那条记录”，
  *                他会站在 /systems 里敲 cd operating-systems，或者敲 cd ..、cd ~、cd ../mathematics。
  *                也就是说：需要有人把“我在哪 + 我想去哪”这两个信息，算成一个确定的位置，
@@ -33,8 +33,14 @@
  *
  * @letter
  * 这个文件里没有一个真的文件。我们管它叫“文件系统”，是因为它借用了文件系统那套操作方式——
- * 目录、路径、cd、ls——但它管理的东西是课程和分类。为什么要借这套？因为你在这里练熟的操作，
- * 到了真的终端里一模一样能用。这本教材希望你带走的东西里，这是最实用的一件。
+ * 目录、路径、cd、ls——但它管理的东西是课程、分类，以及这个项目自己的源码模块。
+ * 为什么要借这套？因为你在这里练熟的操作，到了真的终端里一模一样能用。
+ * 这本教材希望你带走的东西里，这是最实用的一件。
+ *
+ * 顺带说一句“文件”在这棵树里指两种东西：一门课，或者一个带注释块的源码文件。
+ * 它们能做的事完全一样（ls 列得出、cat 读得到、open 打得开），只是背后的记录不同。
+ * 所以文件系统这一层根本不问你是哪一种——真要问的时候，看节点上那个 source 字段。
+ * 这正是这本教材的设定在数据里的样子：课程是目录，源码是正文，而它们放在同一棵树上。
  *
  * 先说清楚它到底解决什么问题。索引里的每门课都带着一个位置，比如 /systems/operating-systems/mit-6-s081。
  * 如果你已经站在 /systems，想去操作系统那一格，你会敲 cd operating-systems——注意你没有写全那一长串。
@@ -98,7 +104,12 @@
  * 少了一类根本不会发生的 bug。你以后会反复遇到这个取舍，它有个通俗的说法：
  * 与其同步两份数据，不如让它们只有一份。
  */
-import type { CategoryEntry, CourseEntry, KnowledgeIndex } from "../knowledge/knowledge-index.ts";
+import type {
+  CategoryEntry,
+  CourseEntry,
+  KnowledgeIndex,
+  ModuleEntry,
+} from "../knowledge/knowledge-index.ts";
 
 /** 知识树的根。 */
 export const ROOT_PATH = "/";
@@ -126,21 +137,32 @@ export type DirectoryNode = {
   category: CategoryEntry;
 };
 
-/** 一门课，对应文件系统里的文件。 */
+/**
+ * 一份“文件”背后的原始记录：要么是一门课，要么是一个源码模块。
+ *
+ * 它们在树里的地位完全一样——都能被 ls 列出来、被 cat、被 open——所以文件系统本身不区分它们，
+ * 只在需要更多字段（课程的先修、模块的那封信）时，由上层看一眼 kind 再取。
+ * 这种“先按共同点组织，需要时再问是哪一种”的写法，是数据抽象里最常用的一招。
+ */
+export type FileSource =
+  | { kind: "course"; course: CourseEntry }
+  | { kind: "module"; module: ModuleEntry };
+
+/** 一门课或一个源码模块，对应文件系统里的文件。 */
 export type FileNode = {
   kind: "file";
-  /** 课程编号，例如 cs61a。 */
+  /** 文件名，例如 cs61a、command-engine。 */
   name: string;
   /** 完整位置，例如 /programming-intro/cs61a。 */
   path: string;
   title: string;
   description: string;
-  /** 这门课的网页地址。 */
+  /** 这份内容的网页地址。 */
   url: string;
-  /** 所属分类的位置。 */
+  /** 所在目录的位置。 */
   parentPath: string;
   /** 索引里那条原始记录。 */
-  course: CourseEntry;
+  source: FileSource;
 };
 
 export type VfsNode = DirectoryNode | FileNode;
@@ -238,7 +260,22 @@ export function createVirtualFileSystem(index: KnowledgeIndex): VirtualFileSyste
       description: course.description,
       url: course.url,
       parentPath: course.categoryPath,
-      course,
+      source: { kind: "course", course },
+    });
+  }
+
+  // 源码模块和课程一样是文件。它的“简介”就是注释块里 @module 那一行——
+  // 也就是这个文件自己对自己的一句话交代，cat 出来的正是它。
+  for (const module of index.modules) {
+    nodes.set(module.path, {
+      kind: "file",
+      name: module.id,
+      path: module.path,
+      title: module.title,
+      description: module.comment.module,
+      url: module.url,
+      parentPath: module.categoryPath,
+      source: { kind: "module", module },
     });
   }
 

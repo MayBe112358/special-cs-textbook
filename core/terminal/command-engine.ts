@@ -77,6 +77,7 @@ import { lsCommand } from "./commands/ls.ts";
 import { cdCommand } from "./commands/cd.ts";
 import { catCommand } from "./commands/cat.ts";
 import { openCommand } from "./commands/open.ts";
+import { refsCommand } from "./commands/refs.ts";
 import { text } from "./output.ts";
 
 /**
@@ -84,7 +85,14 @@ import { text } from "./output.ts";
  *
  * 新增一条命令，只需要写好它、然后把它加进这个数组，引擎和 help 都会自动认识它。
  */
-export const COMMANDS: readonly CommandDefinition[] = [helpCommand, lsCommand, cdCommand, catCommand, openCommand];
+export const COMMANDS: readonly CommandDefinition[] = [
+  helpCommand,
+  lsCommand,
+  cdCommand,
+  catCommand,
+  openCommand,
+  refsCommand,
+];
 
 /**
  * 第一步：拆词。把一整行字切成命令名和参数。
