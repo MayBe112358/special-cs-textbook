@@ -34,7 +34,7 @@
  * 这听起来有点奇怪，但它正是这本教材的设定：课程是目录，源码是正文。
  * 既然是正文，它就该和课程页一样有地址、能被链接、能被 cd 进去——所以它们从同一只信封里出去。
  */
-import { VisitorNotes } from "@/components/notes/visitor-notes";
+import { PageNotes } from "@/components/notes/page-notes";
 import { CourseModules } from "@/components/internals/cross-links";
 import { ModulePage } from "@/components/internals/module-page";
 import { getMDXComponents } from "@/components/mdx";
@@ -70,7 +70,7 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
         <DocsBody>
           <Content components={getMDXComponents()} />
           {course === null ? null : <CourseModules courseId={course.id} />}
-          <VisitorNotes key={slugToKnowledgePath(slug)} pageId={slugToKnowledgePath(slug)} />
+          <PageNotes key={slugToKnowledgePath(slug)} pageId={slugToKnowledgePath(slug)} />
         </DocsBody>
       </DocsPage>
     );
@@ -97,7 +97,7 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
             </li>
           ))}
         </ul>
-        <VisitorNotes key={node.path} pageId={node.path} />
+        <PageNotes key={node.path} pageId={node.path} />
       </DocsBody>
     </DocsPage>
   );
