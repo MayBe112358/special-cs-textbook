@@ -1,0 +1,476 @@
+{
+  "reference": "https://github.com/PKUFlyingPig/cs-self-learning",
+  "revision": "2c591834a1e4101e2e7579dc7f49bdeb4a6153a2",
+  "checkedAt": "2026-09-18",
+  "scope": "已导入：必学工具、编程入门、数学基础、数学进阶、数据结构与算法、电子基础、软件工程，以及操作系统与人工智能各一门样板课。未导入：体系结构、计算机网络、数据库、编译原理、分布式系统、计算机安全、图形学、理论计算机科学等分支的其余条目，属于阶段 7 的后续批次。不导入推荐路线、书单和前后记。保留已有课程地址。",
+  "entries": [
+    {
+      "source": "必学工具/翻墙.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/%E7%BF%BB%E5%A2%99/",
+      "path": "/essential-tools/network-access",
+      "title": "网络访问与连通性检查",
+      "official": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work",
+      "practice": "https://missing.csail.mit.edu/2020/debugging-profiling/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/Vim.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/Vim/",
+      "path": "/essential-tools/vim",
+      "title": "Vim",
+      "official": "https://www.vim.org/docs.php",
+      "practice": "https://missing.csail.mit.edu/2020/editors/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/Emacs.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/Emacs/",
+      "path": "/essential-tools/emacs",
+      "title": "Emacs",
+      "official": "https://www.gnu.org/software/emacs/manual/html_node/emacs/",
+      "practice": "https://www.gnu.org/software/emacs/tour/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/Git.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/Git/",
+      "path": "/essential-tools/git",
+      "title": "Git",
+      "official": "https://git-scm.com/book/en/v2",
+      "practice": "https://missing.csail.mit.edu/2020/version-control/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/GitHub.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/GitHub/",
+      "path": "/essential-tools/github",
+      "title": "GitHub",
+      "official": "https://docs.github.com/en/get-started",
+      "practice": "https://docs.github.com/en/get-started/using-github/hello-world",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/GNU_Make.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/GNU_Make/",
+      "path": "/essential-tools/gnu-make",
+      "title": "GNU Make",
+      "official": "https://www.gnu.org/software/make/manual/make.html",
+      "practice": "https://missing.csail.mit.edu/2020/metaprogramming/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/CMake.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/CMake/",
+      "path": "/essential-tools/cmake",
+      "title": "CMake",
+      "official": "https://cmake.org/cmake/help/latest/",
+      "practice": "https://cmake.org/cmake/help/latest/guide/tutorial/index.html",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/LaTeX.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/LaTeX/",
+      "path": "/essential-tools/latex",
+      "title": "LaTeX",
+      "official": "https://www.latex-project.org/help/documentation/",
+      "practice": "https://www.learnlatex.org/en/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/Docker.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/Docker/",
+      "path": "/essential-tools/docker",
+      "title": "Docker",
+      "official": "https://docs.docker.com/",
+      "practice": "https://docs.docker.com/get-started/tutorials/run-an-app/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/Scoop.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/Scoop/",
+      "path": "/essential-tools/scoop",
+      "title": "Scoop",
+      "official": "https://scoop.sh/",
+      "practice": "https://github.com/ScoopInstaller/Scoop/wiki",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/workflow.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/workflow/",
+      "path": "/essential-tools/workflow",
+      "title": "日常学习工作流",
+      "official": "https://missing.csail.mit.edu/",
+      "practice": "https://missing.csail.mit.edu/2020/course-shell/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/tools.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/tools/",
+      "path": "/essential-tools/toolbox",
+      "title": "实用工具箱",
+      "official": "https://missing.csail.mit.edu/2020/command-line/",
+      "practice": "https://missing.csail.mit.edu/2020/data-wrangling/",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/thesis.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/thesis/",
+      "path": "/essential-tools/thesis",
+      "title": "毕业论文工具",
+      "official": "https://www.latex-project.org/help/documentation/",
+      "practice": "https://www.learnlatex.org/en/lesson-12",
+      "accessNote": ""
+    },
+    {
+      "source": "必学工具/信息检索.md",
+      "sourceUrl": "https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/",
+      "path": "/essential-tools/information-retrieval",
+      "title": "信息检索",
+      "official": "https://docs.github.com/en/search-github",
+      "practice": "https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax",
+      "accessNote": ""
+    },
+    {
+      "source": "数学基础/MITmaths.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/MITmaths/",
+      "path": "/mathematics/mit-18-01-18-02",
+      "title": "MIT 18.01 / 18.02 微积分",
+      "official": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/",
+      "practice": "https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/",
+      "accessNote": ""
+    },
+    {
+      "source": "数学基础/MITLA.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/MITLA/",
+      "path": "/mathematics/mit-18-06",
+      "title": "MIT 18.06 线性代数",
+      "official": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+      "practice": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+      "accessNote": ""
+    },
+    {
+      "source": "数学基础/information.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/information/",
+      "path": "/mathematics/mit-6-050j",
+      "title": "MIT 6.050J 信息与熵",
+      "official": "https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/",
+      "practice": "https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/",
+      "accessNote": ""
+    },
+    {
+      "source": "数学进阶/CS70.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/CS70/",
+      "path": "/advanced-mathematics/cs70",
+      "title": "UC Berkeley CS70",
+      "official": "https://www.eecs70.org/",
+      "practice": "https://www.eecs70.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "数学进阶/CS126.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/CS126/",
+      "path": "/advanced-mathematics/eecs126",
+      "title": "UC Berkeley EECS126",
+      "official": "https://jeanwalrand.github.io/PeecsJB/intro.html",
+      "practice": "https://inst.eecs.berkeley.edu/~ee126/fa26/",
+      "accessNote": "课程网站 inst.eecs.berkeley.edu/~ee126 全部学期均需 Berkeley 账号（CalNet）登录，校外访问会被转到登录页；页面改为以公开教材的章末习题为主。"
+    },
+    {
+      "source": "数学进阶/6.042J.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/6.042J/",
+      "path": "/mathematics/mit-6-042j",
+      "title": "MIT 6.042J 计算机科学数学",
+      "official": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/",
+      "practice": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/resources/mit6_042js15_textbook/",
+      "accessNote": "OCW 2015 春季存档版没有单独的作业页（原 pages/assignments 已成为死链），练习题随官方教材各章发布。"
+    },
+    {
+      "source": "数学进阶/numerical.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/numerical/",
+      "path": "/advanced-mathematics/mit-18-330",
+      "title": "MIT 18.330 数值分析",
+      "official": "https://github.com/mitmath/18330",
+      "practice": "https://github.com/mitmath/18330",
+      "accessNote": ""
+    },
+    {
+      "source": "数学进阶/convex.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/convex/",
+      "path": "/advanced-mathematics/ee364a",
+      "title": "Stanford EE364A 凸优化",
+      "official": "https://web.stanford.edu/class/ee364a/",
+      "practice": "https://web.stanford.edu/class/ee364a/",
+      "accessNote": ""
+    },
+    {
+      "source": "数学进阶/The_Information_Theory_Pattern_Recognition_and_Neural_Networks.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E5%AD%A6%E8%BF%9B%E9%98%B6/The_Information_Theory_Pattern_Recognition_and_Neural_Networks/",
+      "path": "/advanced-mathematics/mackay-information-theory",
+      "title": "信息论、推断与学习算法",
+      "official": "https://www.inference.org.uk/mackay/itila/",
+      "practice": "https://www.inference.org.uk/mackay/itila/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/MIT-Missing-Semester.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/MIT-Missing-Semester/",
+      "path": "/essential-tools/missing-semester",
+      "title": "MIT Missing Semester",
+      "official": "https://missing.csail.mit.edu/",
+      "practice": "https://missing.csail.mit.edu/2020/course-shell/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/DeCal.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/DeCal/",
+      "path": "/programming-intro/sysadmin-decal",
+      "title": "UC Berkeley Sysadmin DeCal",
+      "official": "https://decal.ocf.berkeley.edu/",
+      "practice": "https://decal.ocf.berkeley.edu/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Python/CS61A.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Python/CS61A/",
+      "path": "/programming-intro/cs61a",
+      "title": "UC Berkeley CS61A",
+      "official": "https://cs61a.org/",
+      "practice": "https://cs61a.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Python/CS50P.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Python/CS50P/",
+      "path": "/programming-intro/cs50p",
+      "title": "Harvard CS50P",
+      "official": "https://cs50.harvard.edu/python/",
+      "practice": "https://cs50.harvard.edu/python/psets/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Python/MIT6.100L.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Python/MIT6.100L/",
+      "path": "/programming-intro/mit-6-100l",
+      "title": "MIT 6.100L Python 程序设计",
+      "official": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/",
+      "practice": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/lists/problem-sets/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/C/CS50.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/C/CS50/",
+      "path": "/programming-intro/cs50x",
+      "title": "Harvard CS50x",
+      "official": "https://cs50.harvard.edu/x/",
+      "practice": "https://cs50.harvard.edu/x/psets/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/C/Duke-Coursera-Intro-C.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/C/Duke-Coursera-Intro-C/",
+      "path": "/programming-intro/duke-c",
+      "title": "Duke C 程序设计专项课程",
+      "official": "https://www.coursera.org/specializations/c-programming",
+      "practice": "https://www.coursera.org/specializations/c-programming",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/cpp/AUT1400.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/cpp/AUT1400/",
+      "path": "/programming-intro/aut-ap1400",
+      "title": "Amirkabir AP1400-2",
+      "official": "https://github.com/courseworks",
+      "practice": "https://github.com/courseworks",
+      "accessNote": "未找到独立课程主页，入口为课程作业发布组织；选择 AP1400-2-HW 系列仓库。"
+    },
+    {
+      "source": "编程入门/cpp/CS106L.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/cpp/CS106L/",
+      "path": "/programming-intro/cs106l",
+      "title": "Stanford CS106L",
+      "official": "https://web.stanford.edu/class/cs106l/",
+      "practice": "https://web.stanford.edu/class/cs106l/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/cpp/CS106B_CS106X.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/cpp/CS106B_CS106X/",
+      "path": "/programming-intro/cs106b-cs106x",
+      "title": "Stanford CS106B / CS106X",
+      "official": "https://web.stanford.edu/class/cs106b/",
+      "practice": "https://web.stanford.edu/class/cs106x/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Java/MIT 6.092.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Java/MIT%206.092/",
+      "path": "/programming-intro/mit-6-092",
+      "title": "MIT 6.092 Java 程序设计",
+      "official": "https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/",
+      "practice": "https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Rust/CS110L.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Rust/CS110L/",
+      "path": "/programming-intro/cs110l",
+      "title": "Stanford CS110L",
+      "official": "https://reberhardt.com/cs110l/spring-2020/",
+      "practice": "https://reberhardt.com/cs110l/spring-2020/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Rust/cs220.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Rust/cs220/",
+      "path": "/programming-intro/kaist-cs220",
+      "title": "KAIST CS220",
+      "official": "https://github.com/kaist-cp/cs220",
+      "practice": "https://github.com/kaist-cp/cs220/tree/main/src/assignments",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Rust/cs431.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Rust/cs431/",
+      "path": "/programming-intro/kaist-cs431",
+      "title": "KAIST CS431",
+      "official": "https://github.com/kaist-cp/cs431",
+      "practice": "https://github.com/kaist-cp/cs431",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Functional/CS3110.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Functional/CS3110/",
+      "path": "/programming-intro/cs3110",
+      "title": "Cornell CS3110",
+      "official": "https://cs3110.github.io/textbook/",
+      "practice": "https://cs3110.github.io/textbook/",
+      "accessNote": ""
+    },
+    {
+      "source": "编程入门/Functional/Haskell-MOOC.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Functional/Haskell-MOOC/",
+      "path": "/programming-intro/haskell-mooc",
+      "title": "Helsinki Haskell MOOC",
+      "official": "https://haskell.mooc.fi/",
+      "practice": "https://haskell.mooc.fi/",
+      "accessNote": ""
+    },
+    {
+      "source": "电子基础/EE16.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%94%B5%E5%AD%90%E5%9F%BA%E7%A1%80/EE16/",
+      "path": "/electronics/ee16a-ee16b",
+      "title": "UC Berkeley EE16A / EE16B",
+      "official": "https://eecs16a.org/",
+      "practice": "https://eecs16b.org/",
+      "accessNote": "EE16A/B 的课程名称与内容随改革调整，以下入口分别由课程团队维护；按所选学期的大纲学习。"
+    },
+    {
+      "source": "电子基础/signal.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%94%B5%E5%AD%90%E5%9F%BA%E7%A1%80/signal/",
+      "path": "/electronics/ee120",
+      "title": "UC Berkeley EE120",
+      "official": "https://ee120-course-staff.github.io/",
+      "practice": "https://ee120-course-staff.github.io/",
+      "accessNote": ""
+    },
+    {
+      "source": "电子基础/Signals_and_Systems_AVO.md",
+      "sourceUrl": "https://csdiy.wiki/%E7%94%B5%E5%AD%90%E5%9F%BA%E7%A1%80/Signals_and_Systems_AVO/",
+      "path": "/electronics/mit-res-6-007",
+      "title": "MIT RES.6-007 信号与系统",
+      "official": "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/",
+      "practice": "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据结构与算法/CS61B.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/CS61B/",
+      "path": "/data-structures-algorithms/cs61b",
+      "title": "UC Berkeley CS61B",
+      "official": "https://sp24.datastructur.es/",
+      "practice": "https://sp24.datastructur.es/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据结构与算法/Algo.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Algo/",
+      "path": "/data-structures-algorithms/princeton-algorithms",
+      "title": "Princeton Algorithms I / II",
+      "official": "https://algs4.cs.princeton.edu/home/",
+      "practice": "https://coursera.cs.princeton.edu/algs4/assignments/percolation/specification.php",
+      "accessNote": ""
+    },
+    {
+      "source": "数据结构与算法/6.006.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/6.006/",
+      "path": "/data-structures-algorithms/mit-6-006",
+      "title": "MIT 6.006 算法导论",
+      "official": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/",
+      "practice": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据结构与算法/6.046.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/6.046/",
+      "path": "/data-structures-algorithms/mit-6-046j",
+      "title": "MIT 6.046J 算法设计与分析",
+      "official": "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/",
+      "practice": "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/assignments/",
+      "accessNote": ""
+    },
+    {
+      "source": "数据结构与算法/CS170.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/CS170/",
+      "path": "/data-structures-algorithms/cs170",
+      "title": "UC Berkeley CS170",
+      "official": "https://cs170.org/",
+      "practice": "https://cs170.org/",
+      "accessNote": ""
+    },
+    {
+      "source": "软件工程/6031.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/6031/",
+      "path": "/software-engineering/mit-6-031",
+      "title": "MIT 6.031 软件构造",
+      "official": "https://web.mit.edu/6.031/www/sp22/",
+      "practice": "https://web.mit.edu/6.031/www/sp22/",
+      "accessNote": ""
+    },
+    {
+      "source": "软件工程/CS169.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/CS169/",
+      "path": "/software-engineering/cs169",
+      "title": "UC Berkeley CS169",
+      "official": "https://cs169.org/fa26/",
+      "practice": "https://cs169.org/fa26/",
+      "accessNote": ""
+    },
+    {
+      "source": "软件工程/17803.md",
+      "sourceUrl": "https://csdiy.wiki/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/17803/",
+      "path": "/software-engineering/cmu-17-803",
+      "title": "CMU 17-803 实证方法",
+      "official": "https://bvasiles.github.io/empirical-methods/",
+      "practice": "https://bvasiles.github.io/empirical-methods/",
+      "accessNote": ""
+    },
+    {
+      "source": "操作系统/MIT6.S081.md",
+      "sourceUrl": "https://csdiy.wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/MIT6.S081/",
+      "path": "/systems/operating-systems/mit-6-s081",
+      "title": "MIT 6.1810 / 6.S081 操作系统",
+      "official": "https://pdos.csail.mit.edu/6.1810/",
+      "practice": "https://pdos.csail.mit.edu/6.1810/2026/schedule.html",
+      "accessNote": "课程已改号为 6.1810，主页会自动转到当前学年；带年份的链接会随学期变化。页面由作者手写，不是批量生成。"
+    },
+    {
+      "source": "人工智能/CS188.md",
+      "sourceUrl": "https://csdiy.wiki/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/CS188/",
+      "path": "/ai-machine-learning/cs188",
+      "title": "UC Berkeley CS188",
+      "official": "https://inst.eecs.berkeley.edu/~cs188/",
+      "practice": "https://inst.eecs.berkeley.edu/~cs188/fa26/projects/",
+      "accessNote": "课程每学期换一次网址；带 ~cs188 的主页会自动转到当前学期。页面由作者手写，不是批量生成。"
+    }
+  ]
+}

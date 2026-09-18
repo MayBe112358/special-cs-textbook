@@ -1,1 +1,6 @@
-{ "title": "系统", "pages": ["operating-systems"] }
+{
+  "title": "系统",
+  "pages": [
+    "operating-systems"
+  ]
+}

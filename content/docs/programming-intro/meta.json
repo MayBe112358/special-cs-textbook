@@ -1,1 +1,20 @@
-{ "title": "编程入门", "pages": ["cs50x", "cs61a"] }
+{
+  "title": "编程入门",
+  "pages": [
+    "cs50x",
+    "cs61a",
+    "aut-ap1400",
+    "cs106b-cs106x",
+    "cs106l",
+    "cs110l",
+    "cs3110",
+    "cs50p",
+    "duke-c",
+    "haskell-mooc",
+    "kaist-cs220",
+    "kaist-cs431",
+    "mit-6-092",
+    "mit-6-100l",
+    "sysadmin-decal"
+  ]
+}

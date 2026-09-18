@@ -1,8 +1,8 @@
 ---
 title: MIT 6.S081 Operating System Engineering
-description: 通过 xv6 学习操作系统设计与实现。
+description: 通过动手改造 xv6 内核，学习虚拟内存、文件系统、线程与系统调用的设计与实现。
 prereqCourses: []
-prereqKnowledge: ["C 语言", "计算机组成基础"]
+prereqKnowledge: ["C 语言", "计算机组成基础（MIT 6.1910 / 6.004 或同等课程）", "基本的 Unix 命令行操作"]
 ---
 
 {/*
@@ -10,16 +10,51 @@ prereqKnowledge: ["C 语言", "计算机组成基础"]
   @problem       系统分支必须能在同一领域下并列容纳多所学校的课程，而不是把某一所学校写死成分类。
   @design        使用 systems/operating-systems/课程 的三级结构；未来其他学校的操作系统课可直接成为同级文件。
   @courses       MIT 6.S081 Operating System Engineering
-  @exercises     https://pdos.csail.mit.edu/6.S081/2021/tools.html
-  @prereq        C 语言、计算机组成基础。
-  @unclear       系统分支的其他领域和课程会在 ROADMAP 阶段 7 补齐。
+  @exercises     https://pdos.csail.mit.edu/6.1810/2026/schedule.html
+  @prereq        C 语言、计算机组成基础（官方点名 6.1910 / 6.004）、基本的 Unix 命令行操作。
+  @unclear       课程已改号为 6.1810，页面地址按年份分卷；带年份的链接会随学期变化，不带年份的主页会自动转到当前学年。
 
   @letter
   请留意这页上面的两层文件夹：“系统”是大领域，“操作系统”是其中一个主题，MIT 课程只是这个主题下
   的一个选择。以后加入 Berkeley 或其他学校的操作系统课时，它们会和 MIT 并排，而不是被迫塞进 MIT
   的目录。这一点看似只是文件夹安排，其实决定了课程树能不能诚实表达“同类课程有多种选择”。
+  这门课的名字本身也说明了为什么目录名要用英文课号而不是学校的当期编号：MIT 把它从 6.S081 改成了
+  6.1810，课号会变，网址会变，而这页的位置 /systems/operating-systems/mit-6-s081 不用跟着变。
 */}
 
-## 课程占位
+## 课程简介
 
-此页用于验收“系统 → 操作系统”的可扩展层级；正式课程页格式将在 ROADMAP 1.3 确定。
+6.S081（现已改号为 6.1810）是 MIT 的操作系统课。它不讲抽象的操作系统概念史，而是给你一个能真正
+启动起来的小型类 Unix 内核 xv6，让你一个 lab 一个 lab 地改造它：加系统调用、实现页表、处理陷阱、
+写写时复制、写网卡驱动、写文件系统。课程的说法是 learning by doing——你对操作系统的理解来自
+你亲手让内核跑起来或者亲手让它崩溃。
+
+xv6 运行在 RISC-V 上，代码规模远小于 Linux，但结构相似。读完之后再去看 Linux 内核，会发现许多
+东西是眼熟的。
+
+## 先修要求
+
+- 编程语言：labs 全部用 C 写，需要能读写指针、结构体和手工内存管理。
+- 计算机组成：官方写明这门课面向“上过并且喜欢 6.1910（原 6.004）计算机系统结构”的学生。
+  需要知道寄存器、内存地址、中断大致是怎么回事。
+- 工具：labs 在 Unix 环境里用 make、gdb 和 QEMU 完成，需要基本的命令行操作能力。
+
+## 官方资源
+
+- [课程主页](https://pdos.csail.mit.edu/6.1810/)：这个地址会自动转到当前学年，学年更替后依然有效。
+- [2026 学年课程概览](https://pdos.csail.mit.edu/6.1810/2026/overview.html)：课程目标与 xv6 的选用理由。
+- [2026 学年课程说明](https://pdos.csail.mit.edu/6.1810/2026/general.html)：适合谁上、评分规则、教材与协作政策。
+- [2026 学年日程](https://pdos.csail.mit.edu/6.1810/2026/schedule.html)：讲座顺序、配套阅读与各次 lab 的时间点。
+- [实验环境搭建](https://pdos.csail.mit.edu/6.1810/2026/tools.html)：RISC-V 工具链与 QEMU 的安装步骤。
+- [xv6 教材](https://pdos.csail.mit.edu/6.1810/2026/xv6.html)：课程自编的 xv6 讲义，labs 的主要阅读材料。
+
+## 官方作业
+
+- [Lab 指引](https://pdos.csail.mit.edu/6.1810/2026/labs/guidance.html)：开始做 lab 之前先读这一页。
+- [第一个 lab：Utilities](https://pdos.csail.mit.edu/6.1810/2026/labs/util.html)：从这里入手，后续 labs 在日程页上按顺序列出。
+
+labs 自带 `make grade` 评分脚本，本地即可自测；这里不链接非官方题解，也不自编替代题目。
+
+## 收录来源
+
+[CS 自学指南课程条目](https://csdiy.wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/MIT6.S081/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
