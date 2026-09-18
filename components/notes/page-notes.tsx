@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @module        每页的作者心得与私人心得
  * @problem       作者公开的记录跟着项目走，访问者自己的笔记只在本机；两者必须在来源和界面上分清。
  * @design        构建时从 content/author-notes.json 按知识路径读取作者文字，再接上独立的私人编辑器；内容文件不读浏览器状态。
@@ -14,6 +14,7 @@
  * 而不是让 AI 冒充作者说自己学会了什么。教材尤其需要诚实地留下这些空白。
  */
 import authorNotes from '@/content/author-notes.json';
+import {PublicComments} from './public-comments';
 import {VisitorNotes} from './visitor-notes';
 export function PageNotes({pageId}:{pageId:string}) {
   const records=(authorNotes as Record<string,{title:string;source?:string;text:string}[]>)[pageId]??[];
@@ -27,5 +28,6 @@ export function PageNotes({pageId}:{pageId:string}) {
       </div>)}
     </section>
     <VisitorNotes key={pageId} pageId={pageId}/>
+    <PublicComments key={`comments:${pageId}`} pageId={pageId}/>
   </>;
 }
