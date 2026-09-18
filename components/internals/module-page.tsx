@@ -39,6 +39,7 @@
  * 等于悄悄把没收录的那几门抹掉了；而它们恰恰是这棵课程树将来该长出来的枝。
  * 宁可给你一个点不动的课名，也不假装那门课不存在。
  */
+import { VisitorNotes } from "@/components/notes/visitor-notes";
 import { ModuleCourses } from "@/components/internals/cross-links";
 import type { ModuleEntry } from "@/core/knowledge/knowledge-index";
 import type { Paragraph } from "@/core/knowledge/doc-comment";
@@ -161,6 +162,7 @@ export function ModulePage({ module }: { module: ModuleEntry }) {
             {content[section.id]}
           </Section>
         ))}
+        <VisitorNotes key={module.path} pageId={module.path} />
       </DocsBody>
     </DocsPage>
   );
