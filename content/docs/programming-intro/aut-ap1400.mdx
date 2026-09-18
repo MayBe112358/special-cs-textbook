@@ -1,28 +1,36 @@
 ---
 title: "Amirkabir AP1400-2"
-description: "通过矩阵、树与智能指针等作业练习 C++ 程序设计。"
+description: "德黑兰理工的高级编程课，用一系列 C++ 作业练工程化写法。"
 prereqCourses: []
 prereqKnowledge: ["无"]
 ---
 
 ## 课程简介
 
-通过矩阵、树与智能指针等作业练习 C++ 程序设计。
+AP1400-2 是德黑兰理工大学（AUT）的高级编程课，
+课程本身以 C++ 作业为主线，全部作业框架公开在 GitHub 上。
+
+它和入门课的差别在于工程化：每个作业都是一个带 CMake 构建、
+Google Test 单元测试的完整项目，你要做的是在给定的骨架里把功能补完，
+并让全部测试通过。题目涉及矩阵运算、智能指针、模板、
+运算符重载、异常处理这些实际写 C++ 会碰到的东西。
+
+对自学者来说，它最有用的地方是提供了一批有测试、可自测的 C++ 练习，
+填补了很多 C++ 教程只讲语法不给练习的空缺。
 
 ## 先修要求
 
-指南列出的学前准备：无。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要 C++ 基础，建议先完成 CS106B/X 或同等课程。
+- 需要会用 CMake 构建项目。
 
 ## 官方资源
 
-- [课程团队资源入口](https://github.com/courseworks)。
+- [作业仓库集合](https://github.com/courseworks)：课程全部作业框架所在的组织。
+- [第一次作业](https://github.com/courseworks/AP1400-2-HW1)：从这里开始，README 里有环境与构建说明。
+- [CMake 官方教程](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：作业构建方式的参考。
 
 ## 官方作业
 
-- [官方作业入口](https://github.com/courseworks)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [HW1 – HW7](https://github.com/courseworks)：七次作业，每次一个独立仓库，自带 Google Test 测试。
 
-未找到独立课程主页，入口为课程作业发布组织；选择 AP1400-2-HW 系列仓库。
-
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/cpp/AUT1400/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+克隆仓库后按 README 构建并运行测试，测试全绿即为通过。

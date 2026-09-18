@@ -1,28 +1,35 @@
 ---
 title: "Stanford CS144 计算机网络"
-description: "用 C++ 循序渐进地实现整个 TCP/IP 协议栈，把协议从文字变成能跑的代码。"
+description: "用 C++ 从头实现整个 TCP/IP 协议栈，把协议文本变成能跑的代码。"
 prereqCourses: [cs106l]
 prereqKnowledge: ["一定的计算机系统基础，CS106L"]
 ---
 
 ## 课程简介
 
-用 C++ 循序渐进地实现整个 TCP/IP 协议栈，把协议从文字变成能跑的代码。
+CS144 的讲授者之一是网络领域的 Nick McKeown。
+课程按自顶向下的顺序讲：应用层、传输层、网络层、链路层，
+每一层都先讲设计目标，再讲具体协议。
+
+真正让这门课与众不同的是它的项目：你要用现代 C++ 循序渐进地实现一个完整的 TCP 协议栈——
+先写字节流抽象，再写重组器处理乱序到达的分片，然后是接收方、发送方、
+重传逻辑，最后把它接到真实网络上，用你自己写的协议栈和外部服务器通信。
+
+做完之后，TCP 对你来说不再是 RFC 里的名词，而是你调试过的代码。
+很多人说这门课同时也是一门很好的现代 C++ 实践课。
 
 ## 先修要求
 
-指南列出的学前准备：一定的计算机系统基础，CS106L。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要一定的计算机系统基础与 C++ 能力（指南建议先修 CS106L）。
+- 需要会用 Linux 命令行与调试工具。
 
 ## 官方资源
 
-- [课程团队资源入口](https://online.stanford.edu/courses/cs144-introduction-computer-networking)。
+- [Stanford Online 课程页](https://online.stanford.edu/courses/cs144-introduction-computer-networking)：仍然有效的官方课程入口。
+- [Stanford 课程页](https://web.stanford.edu/class/cs144/)：学校的课程主页。
 
 ## 官方作业
 
-- [官方作业入口](https://online.stanford.edu/courses/cs144-introduction-computer-networking)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Lab Checkpoints](https://online.stanford.edu/courses/cs144-introduction-computer-networking)：分阶段实现字节流、重组器、TCP 接收方与发送方。
 
-课程自建实验站点 cs144.github.io 于 2026-09-18 核对时已无法访问；这里改用 Stanford Online 的官方课程页。
-
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/CS144/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+课程自建实验站点 cs144.github.io 于 2026-09-18 核对时已无法访问；实验框架仍可从课程发布的仓库获取。

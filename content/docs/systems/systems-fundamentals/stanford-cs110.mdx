@@ -1,26 +1,35 @@
 ---
 title: "Stanford CS110 计算机系统原理"
-description: "在多进程、多线程与网络编程的实践中，理解大型系统的设计取舍。"
+description: "Stanford 的系统编程课：多进程、多线程、网络与大型系统的取舍。"
 prereqCourses: []
 prereqKnowledge: ["编程基础、Unix、GDB、Valgrind"]
 ---
 
 ## 课程简介
 
-在多进程、多线程与网络编程的实践中，理解大型系统的设计取舍。
+CS110 接在 CS107 之后，主题是“一个程序怎么跨越进程、线程和机器运行”。
+
+课程按主题推进：文件系统与文件描述符、多进程与 Unix 工具的实现方式、
+信号与进程间通信、多线程与同步原语、线程池，然后是网络编程——
+HTTP 服务器、并发爬虫，最后讨论跨多台机器的系统设计。
+
+它和 CSAPP 有相当的重叠，但重心不同：CSAPP 更偏“机器内部发生了什么”，
+CS110 更偏“怎么用系统调用把并发和网络组织好”。作业量大，
+每个 assignment 都是一个完整的可运行程序，比如 Unix 工具的重实现、
+多线程的新闻聚合器、网络代理。
 
 ## 先修要求
 
-指南列出的学前准备：编程基础、Unix、GDB、Valgrind。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要扎实的 C/C++ 编程基础（官方按 CS107 设定）。
+- 需要会用 Unix 命令行、gdb 与 valgrind。
 
 ## 官方资源
 
-- [课程团队资源入口](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/)。
+- [课程主页](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/)：2020 冬季存档，讲义与实验齐全。
+- [课程日程](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/calendar.html)：按周排列的主题、阅读与作业。
 
 ## 官方作业
 
-- [官方作业入口](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Labs 与 Assignments](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/)：七个实验与八个作业，课程页左侧导航里按编号列出，多数附官方解答。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/CS110/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+存档课程，无自动评分；部分实验提供官方解答可供对照。

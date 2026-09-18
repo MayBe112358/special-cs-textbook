@@ -1,26 +1,38 @@
 ---
 title: "UC Berkeley CS162"
-description: "系统讲授进程、并发、内存、文件系统与分布式，理论比重高于纯实验型课程。"
+description: "伯克利的操作系统课：理论完整，配 Pintos 实验从零实现内核功能。"
 prereqCourses: [cs61a, cs61b, cs61c]
 prereqKnowledge: ["CS61A, CS61B, CS61C，扎实的 C 语言与 GDB 调试能力"]
 ---
 
 ## 课程简介
 
-系统讲授进程、并发、内存、文件系统与分布式，理论比重高于纯实验型课程。
+CS162 是伯克利的操作系统课，和偏动手的 MIT 6.S081 相比，它的理论比重更高，
+覆盖面也更广：进程与线程、调度、同步与死锁、地址转换与虚拟内存、
+文件系统、I/O、网络与分布式系统、事务与一致性都在其中。
+
+课程实验用 Pintos——一个教学用的小型操作系统。
+你要依次实现用户程序支持（系统调用、参数传递）、线程调度器、
+以及文件系统的扩展。和 xv6 的实验风格不同，Pintos 更强调设计文档：
+每个项目都要求你先写清楚打算怎么改、为什么这么改。
+
+这门课的教材《Operating Systems: Principles and Practice》写得深入浅出，
+可以很好地补上纯实验型课程在理论上的空缺。
 
 ## 先修要求
 
-指南列出的学前准备：CS61A, CS61B, CS61C，扎实的 C 语言与 GDB 调试能力。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 指南列出的学前准备是 CS61A、CS61B、CS61C。
+- 需要扎实的 C 语言能力与 GDB 调试能力。
 
 ## 官方资源
 
-- [课程团队资源入口](https://cs162.org/)。
+- [课程主页](https://cs162.org/)：当前学期日程、讲义与实验。
+- [课程政策](https://cs162.org/policies/)：课程范围、先修要求与评分。
+- [Pintos 文档](https://cs162.org/static/proj/pintos-docs/)：实验用操作系统的完整说明。
 
 ## 官方作业
 
-- [官方作业入口](https://cs162.org/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Homework](https://cs162.org/)：日程页上按周发布，多为系统编程练习。
+- [Pintos Projects](https://cs162.org/static/proj/pintos-docs/)：用户程序、线程调度与文件系统三个大项目。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CS162/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+Pintos 自带测试套件，本地运行 `make check` 即可自测。

@@ -1,26 +1,36 @@
 ---
 title: "上海交通大学 编译原理"
-description: "实现一个 Tiger 语言编译器，覆盖逃逸分析、LLVM IR、寄存器分配与垃圾收集。"
+description: "上海交大的编译原理课：实现一个 Tiger 语言编译器，覆盖到垃圾收集。"
 prereqCourses: []
 prereqKnowledge: ["计算机系统基础、数据结构与算法、编程基础"]
 ---
 
 ## 课程简介
 
-实现一个 Tiger 语言编译器，覆盖逃逸分析、LLVM IR、寄存器分配与垃圾收集。
+这门课的目标是实现一个 Tiger 语言的编译器。Tiger 来自 Andrew Appel 的
+《Modern Compiler Implementation》，是一门带嵌套函数、记录和数组的小语言。
+
+课程覆盖面很宽：词法分析、语法分析、语义分析、逃逸分析、
+活动记录（栈帧布局）、LLVM IR 生成、活跃变量分析、寄存器分配、
+垃圾收集，还会讲到面向对象与函数式语言的实现。
+你会用到 Flex、Bison 和 LLVM 这一套真实工具链。
+
+和北大那门课类似，这门课也给了很大的设计自由度：
+测试只检查输出汇编的正确性。区别在于覆盖的主题更多，
+尤其是寄存器分配和垃圾收集这两块，在多数编译课里会被跳过。
 
 ## 先修要求
 
-指南列出的学前准备：计算机系统基础、数据结构与算法、编程基础。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要计算机系统基础、数据结构与算法。
+- 需要 C++ 编程能力。
 
 ## 官方资源
 
-- [课程团队资源入口](https://ipads.se.sjtu.edu.cn/courses/compilers/)。
+- [课程主页](https://ipads.se.sjtu.edu.cn/courses/compilers/)：讲义与实验说明。
+- [LLVM 官方文档](https://llvm.org/docs/)：课程使用的中间表示与工具链。
 
 ## 官方作业
 
-- [官方作业入口](https://ipads.se.sjtu.edu.cn/courses/compilers/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Lab 系列](https://ipads.se.sjtu.edu.cn/courses/compilers/)：从词法分析到寄存器分配与垃圾收集，逐步实现 Tiger 编译器。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/SJTU-Compilers/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+测试检查生成汇编的正确性，对编译器内部设计不作限制。

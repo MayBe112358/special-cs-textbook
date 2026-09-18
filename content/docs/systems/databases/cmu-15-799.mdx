@@ -1,26 +1,39 @@
 ---
 title: "CMU 15-799 数据库系统前沿专题"
-description: "论文研讨课，围绕自治数据库、流式处理、图数据库与非易失内存等前沿方向。"
+description: "CMU 的数据库前沿专题：用机器学习让数据库自己调优。"
 prereqCourses: [cmu-15-445]
 prereqKnowledge: ["CMU 15-445"]
 ---
 
 ## 课程简介
 
-论文研讨课，围绕自治数据库、流式处理、图数据库与非易失内存等前沿方向。
+15-799 是 CMU 数据库方向的专题研讨课。2022 春季这一版的主题是
+自治数据库（Self-Driving DBMS）——用机器学习自动完成数据库的配置、
+优化与管理，而不是靠 DBA 手工调参。
+
+课程形式以论文研读加动手项目为主。内容涉及负载预测、
+索引与物化视图的自动选择、旋钮配置的自动调优、
+查询优化器的学习化，以及这些方法在真实系统里的代价。
+
+项目在真实数据库上进行：先手工调优 PostgreSQL 建立基线，
+再基于 NoisePage Pilot 实现自动化的调优组件。
+2013 秋季那一版的主题不同，讨论的是流式处理、图数据库与非易失内存。
+
+这门课面向已经有系统基础的人，官方的说法是需要“dirty systems programming skills”。
 
 ## 先修要求
 
-指南列出的学前准备：CMU 15-445。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要完成 CMU 15-445 或同等的数据库课程。
+- 需要较强的系统编程能力，项目在真实数据库代码上进行。
 
 ## 官方资源
 
-- [课程团队资源入口](https://15799.courses.cs.cmu.edu/spring2022/)。
+- [课程主页（2022 春季）](https://15799.courses.cs.cmu.edu/spring2022/)：日程、论文列表与项目说明。
+- [课程日程](https://15799.courses.cs.cmu.edu/spring2022/schedule.html)：每次课的论文与讨论主题。
+- [NoisePage Pilot](https://github.com/cmu-db/noisepage-pilot)：项目所基于的自治数据库组件。
 
 ## 官方作业
 
-- [官方作业入口](https://15799.courses.cs.cmu.edu/spring2022/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Projects](https://15799.courses.cs.cmu.edu/spring2022/project1.html)：两个个人项目加一个小组项目，都在真实数据库上完成。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/15799/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+论文列表与项目说明公开；评分依赖校内系统。

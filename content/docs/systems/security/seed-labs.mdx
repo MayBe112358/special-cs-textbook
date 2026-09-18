@@ -1,26 +1,38 @@
 ---
 title: "雪城大学 SEED Labs 安全实验"
-description: "四十多个动手实验覆盖软件安全、网络安全与 Web 安全，配套虚拟机和 Docker 环境。"
+description: "雪城大学的安全实验集：四十多个动手实验，覆盖软件、网络与 Web 安全。"
 prereqCourses: []
 prereqKnowledge: ["无"]
 ---
 
 ## 课程简介
 
-四十多个动手实验覆盖软件安全、网络安全与 Web 安全，配套虚拟机和 Docker 环境。
+SEED Labs 是雪城大学开发的一套安全教学实验，
+由美国国家科学基金会资助，目前全球有上千家院校在使用。
+
+它不是一门课，而是一个实验库：四十多个实验按主题分类，
+包括软件安全（缓冲区溢出、格式化字符串、竞态、脏牛漏洞）、
+网络安全（ARP 欺骗、TCP 攻击、DNS 攻击、防火墙、VPN）、
+Web 安全（XSS、CSRF、SQL 注入）、密码学（加密、哈希、PKI、TLS），
+以及区块链等新主题。
+
+每个实验都有详细的实验手册，说明背景、步骤和思考题。
+环境可以用官方提供的虚拟机或 Docker 快速搭好，
+省掉了安全实验里最耗时的配置环节。
 
 ## 先修要求
 
-指南列出的学前准备：无。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 没有硬性先修要求，不同实验的难度差别很大。
+- 需要 C 语言与 Linux 基础；部分实验涉及汇编。
 
 ## 官方资源
 
-- [课程团队资源入口](https://seedsecuritylabs.org/index.html)。
+- [SEED 官网](https://seedsecuritylabs.org/index.html)：全部实验与配套材料的入口。
+- [实验环境搭建](https://seedsecuritylabs.org/labsetup.html)：虚拟机与 Docker 环境的安装说明。
+- [开源讲义](https://github.com/seed-labs/seed-labs)：全部实验手册的源文件。
 
 ## 官方作业
 
-- [官方作业入口](https://seedsecuritylabs.org/labs.html)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Labs](https://seedsecuritylabs.org/Labs_20.04/)：四十多个实验，按软件、网络、Web、密码学分类。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/SEEDLabs/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+实验手册含思考题；没有自动评分，以能否复现攻击与防御为准。

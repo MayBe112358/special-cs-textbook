@@ -1,26 +1,38 @@
 ---
 title: "KAIST CS420 编译器设计"
-description: "在 Rust 编写的 KECC 框架上实现 SSA 中间代码生成、优化与目标代码生成。"
+description: "在 Rust 写的 KECC 框架上实现 SSA 中间代码、优化与目标代码生成。"
 prereqCourses: [kaist-cs220]
 prereqKnowledge: ["数据结构、计算机系统基础、Rust 编程基础"]
 ---
 
 ## 课程简介
 
-在 Rust 编写的 KECC 框架上实现 SSA 中间代码生成、优化与目标代码生成。
+CS420 提供一个用 Rust 编写的编译器框架 KECC（KAIST Educational C Compiler），
+你要在它的基础上补完几个核心部分：抽象语法树的打印、
+SSA 形式的中间代码生成、中间代码优化（控制流图简化、全局值编号等），
+以及目标代码生成。
+
+选择 SSA 作为中间表示是这门课的一个亮点——
+现代编译器（LLVM、GCC）内部都用 SSA，
+但大多数教学编译器为了简单会绕开它。
+在这里你会直接面对 SSA 的构造与优化。
+
+课程属于 KAIST 的 Rust 课程系列（CS220 → CS420 / CS431），
+共用同一套工程约定：代码框架在 GitHub 上，作业自带测试，
+本地 `cargo test` 就能自测。
 
 ## 先修要求
 
-指南列出的学前准备：数据结构、计算机系统基础、Rust 编程基础。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要数据结构与计算机系统基础。
+- 需要 Rust 编程基础，建议先完成 CS220。
 
 ## 官方资源
 
-- [课程团队资源入口](https://github.com/kaist-cp/cs420)。
+- [课程仓库](https://github.com/kaist-cp/cs420)：KECC 框架、讲义与作业说明。
+- [Rust 官方教程](https://doc.rust-lang.org/book/)：课程使用的语言参考。
 
 ## 官方作业
 
-- [官方作业入口](https://github.com/kaist-cp/cs420)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Homework](https://github.com/kaist-cp/cs420)：抽象语法树打印、SSA 生成、中间代码优化与目标代码生成。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/CS420/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+仓库自带测试，本地 `cargo test` 即可验证。

@@ -1,28 +1,41 @@
 ---
 title: "MIT 6.5840 分布式系统"
-description: "每节课精读一篇经典论文，并用 Go 实现 MapReduce、Raft 与容错键值存储。"
+description: "精读分布式系统经典论文，并用 Go 实现 MapReduce、Raft 与容错存储。"
 prereqCourses: []
 prereqKnowledge: ["计算机体系结构，并行编程"]
 ---
 
 ## 课程简介
 
-每节课精读一篇经典论文，并用 Go 实现 MapReduce、Raft 与容错键值存储。
+6.5840（原 6.824）出自 MIT 的 PDOS 实验室，授课者是 Robert Morris。
+课程形式是每节课精读一篇分布式系统领域的经典论文——
+MapReduce、GFS、Raft、Spanner、ZooKeeper 等等——
+从论文里提炼出分布式系统设计的核心原则：
+容错、一致性、性能之间怎么权衡。
+
+它真正出名的是实验：四个 Lab 用 Go 完成，难度逐级上升。
+Lab 1 实现 MapReduce；Lab 2 实现键值服务器；
+Lab 3 从零实现 Raft 共识算法——这是最难的一个，
+你要处理选举、日志复制、持久化与快照；
+Lab 4 在 Raft 之上构建容错的分片键值存储。
+
+测试非常严格，会反复模拟网络分区、节点崩溃与消息乱序。
+能把 Raft 的全部测试跑绿，是很多人学分布式系统的一个里程碑。
 
 ## 先修要求
 
-指南列出的学前准备：计算机体系结构，并行编程。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要计算机系统基础与并发编程经验。
+- 需要 Go 语言（课程提供入门指引，上手不难）。
 
 ## 官方资源
 
-- [课程团队资源入口](https://pdos.csail.mit.edu/6.5840/)。
+- [课程主页](https://pdos.csail.mit.edu/6.5840/)：当前学期的日程与全部材料。
+- [课程日程](https://pdos.csail.mit.edu/6.5840/schedule.html)：每次课的论文、讲义与视频。
+- [往年版本](http://nil.csail.mit.edu/6.5840/2025/)：历年课程材料，含论文列表与实验。
 
 ## 官方作业
 
-- [官方作业入口](https://pdos.csail.mit.edu/6.5840/schedule.html)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Lab 1：MapReduce](https://pdos.csail.mit.edu/6.5840/labs/lab-mr.html)：第一个实验，后续实验在日程页上依次列出。
+- [Lab 3：Raft](https://pdos.csail.mit.edu/6.5840/labs/lab-raft1.html)：全课难度最高的一项：选举、日志复制、持久化与快照。
 
-课程编号自 2023 年春季由 6.824 改为 6.5840，内容不变。
-
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/MIT6.824/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+课程编号自 2023 年春季由 6.824 改为 6.5840，内容不变。实验自带严格的测试脚本，本地即可运行。

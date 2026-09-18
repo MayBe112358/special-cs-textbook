@@ -1,26 +1,36 @@
 ---
 title: "中国科学技术大学 编译原理和技术"
-description: "六个实验用 LLVM 子集作中间代码，逐步构建带优化和后端的 Cminusf 编译器。"
+description: "中科大的编译原理：六个实验用 LLVM 子集做中间代码，含优化与后端。"
 prereqCourses: []
 prereqKnowledge: ["数据结构、计算机系统基础、C++ 编程基础"]
 ---
 
 ## 课程简介
 
-六个实验用 LLVM 子集作中间代码，逐步构建带优化和后端的 Cminusf 编译器。
+这门课的理论部分覆盖得很完整：词法分析、语法分析、语法制导翻译、
+中间代码翻译、运行时管理，以及机器无关优化与面向机器的代码优化。
+
+实验部分提供 C++ 编写的 Cminusf 编译器框架，分六个实验逐步构建。
+和多数编译课不同的地方在于：这门课的中间代码采用现代 LLVM 的一个子集，
+而不是自定义的三地址码；并且实验包含后端代码生成和中间代码优化，
+这两块在很多课程里会因为课时不够被砍掉。
+
+课程材料以文档站的形式组织，有配套的实验教材，
+从环境搭建到每个实验的验收标准都写得很清楚。
 
 ## 先修要求
 
-指南列出的学前准备：数据结构、计算机系统基础、C++ 编程基础。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要数据结构、计算机系统基础。
+- 需要 C++ 编程能力。
 
 ## 官方资源
 
-- [课程团队资源入口](https://ustc-compiler-principles.github.io/2023/)。
+- [课程主页（2023）](https://ustc-compiler-principles.github.io/2023/)：课程信息、讲义与实验安排。
+- [实验教材](https://ustc-compiler-principles.github.io/textbook/)：从环境配置到各实验的完整说明。
+- [LLVM 官方文档](https://llvm.org/docs/)：实验所用中间表示的参考。
 
 ## 官方作业
 
-- [官方作业入口](https://ustc-compiler-principles.github.io/textbook/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Lab 1 – Lab 6](https://ustc-compiler-principles.github.io/textbook/)：从词法语法到中间代码、优化与后端生成。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/USTC-Compilers/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+实验自带测试用例，本地构建后即可运行。

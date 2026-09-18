@@ -1,26 +1,35 @@
 ---
 title: "KAIST CS220"
-description: "通过 Rust 练习类型、所有权、泛型与程序设计基础。"
+description: "KAIST 的程序设计原理课，用 Rust 讲清语言背后的概念。"
 prereqCourses: []
 prereqKnowledge: ["其他任何一门编程语言"]
 ---
 
 ## 课程简介
 
-通过 Rust 练习类型、所有权、泛型与程序设计基础。
+CS220 是 KAIST 的程序设计原理课，用 Rust 作为教学语言。
+它关心的不是某种语法，而是语言设计里的通用概念：类型系统、所有权、
+表达式求值、模式匹配、trait 与泛型、错误处理，以及这些概念如何影响你写出来的程序。
+
+课程全部材料放在 GitHub 上：讲义、幻灯片、代码框架和自动测试。
+作业以填空式的练习为主，每道题都有配套的单元测试，本地 `cargo test` 就能判断对错，
+这对自学者非常友好。
+
+它也是同一团队的 CS420（编译器设计）和 CS431（并发编程）的前置课，
+三门课共用一套 Rust 工程约定。
 
 ## 先修要求
 
-指南列出的学前准备：其他任何一门编程语言。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 会用任意一门编程语言即可。
+- 不需要预先了解 Rust。
 
 ## 官方资源
 
-- [课程团队资源入口](https://github.com/kaist-cp/cs220)。
+- [课程仓库](https://github.com/kaist-cp/cs220)：讲义、幻灯片与代码框架的总入口。
+- [Rust 官方教程](https://doc.rust-lang.org/book/)：课程推荐的语言参考。
 
 ## 官方作业
 
-- [官方作业入口](https://github.com/kaist-cp/cs220/tree/main/src/assignments)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Assignments](https://github.com/kaist-cp/cs220/tree/main/src/assignments)：按主题分组的练习，每题配单元测试。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/Rust/cs220/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+克隆仓库后用 `cargo test` 自测，不需要提交到任何平台。

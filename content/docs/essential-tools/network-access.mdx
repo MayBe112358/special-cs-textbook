@@ -1,26 +1,33 @@
 ---
 title: "网络访问与连通性检查"
-description: "使用网络诊断工具理解域名解析、连接与网络访问。"
+description: "理解网络是怎么连通的，以及访问不到某个资源时该怎么排查。"
 prereqCourses: []
 prereqKnowledge: []
 ---
 
 ## 课程简介
 
-使用网络诊断工具理解域名解析、连接与网络访问。
+自学公开课会反复遇到一类问题：某个课程网站打不开、某个包装不上、
+某个仓库克隆到一半断了。把这些都归结为“网络不好”没有用，值得先理解中间到底有哪些环节。
+
+从浏览器地址栏到对方服务器，一次请求要经过域名解析、路由、TCP 连接、TLS 握手、
+HTTP 响应这几层。知道这条链路之后，排查就有了顺序：是解析不出来，还是连不上，
+还是连上了但返回错误。
+
+这一页给的是入门材料。真正系统的网络知识在“系统 → 计算机网络”那一支，
+CS144 会让你把整个 TCP/IP 协议栈亲手实现一遍。
 
 ## 先修要求
 
-能够使用文件和浏览器即可开始；涉及命令行的部分可配合 Missing Semester 官方课程练习。
+- 会用命令行执行基本命令。
+- 没有其他先修要求。
 
 ## 官方资源
 
-- [官方文档与教程](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work)。
+- [互联网是怎么工作的（MDN）](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work)：从最基本的概念讲起。
+- [HTTP 概述（MDN）](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)：请求与响应到底长什么样。
+- [调试与性能分析](https://missing.csail.mit.edu/2020/debugging-profiling/)：把排查当成一件有方法的事。
 
 ## 官方作业
 
-- [官方教程与实践](https://missing.csail.mit.edu/2020/debugging-profiling/)：按教程完成操作；如使用 Missing Semester 链接，练习位于官方课程页末尾。
-
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/%E7%BF%BB%E5%A2%99/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+- [排查练习](https://missing.csail.mit.edu/2020/debugging-profiling/)：讲义末尾的 Exercises；配合 `ping`、`dig`、`curl -v` 观察每一层的结果。

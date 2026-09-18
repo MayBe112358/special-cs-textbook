@@ -1,26 +1,34 @@
 ---
 title: "GNU Make"
-description: "通过目标与依赖关系表达可重复的构建过程。"
+description: "用依赖关系描述“什么东西变了就要重做什么”，而不是把步骤写成一串命令。"
 prereqCourses: []
 prereqKnowledge: []
 ---
 
 ## 课程简介
 
-通过目标与依赖关系表达可重复的构建过程。
+Make 解决的问题是：一个大程序改动了一个文件，到底哪些部分需要重新编译？
+它的答案是让你声明依赖关系——目标依赖哪些文件、怎么从依赖生成目标——
+剩下的判断交给工具。
+
+这个思路比“写一个从头跑到尾的脚本”更省事，也更可靠：Make 会比较时间戳，只做必要的工作。
+一旦你理解了它，会发现这套想法远不止用于编译，任何“输入变了就要重算输出”的流程都适用。
+
+Makefile 的语法有些历史包袱（比如那个必须是 Tab 的缩进），但核心概念只有三个：
+目标、依赖、命令。
 
 ## 先修要求
 
-能够使用文件和浏览器即可开始；涉及命令行的部分可配合 Missing Semester 官方课程练习。
+- 会用命令行。
+- 最好写过需要多步编译的程序，否则体会不到它解决的是什么麻烦。
 
 ## 官方资源
 
-- [官方文档与教程](https://www.gnu.org/software/make/manual/make.html)。
+- [GNU Make 官方手册](https://www.gnu.org/software/make/manual/make.html)：从概念到高级用法的完整参考。
+- [手册第二章：Makefile 入门](https://www.gnu.org/software/make/manual/make.html#Introduction)：最短的上手路径。
 
 ## 官方作业
 
-- [官方教程与实践](https://missing.csail.mit.edu/2020/metaprogramming/)：按教程完成操作；如使用 Missing Semester 链接，练习位于官方课程页末尾。
+- [Missing Semester 元编程一讲](https://missing.csail.mit.edu/2020/metaprogramming/)：构建系统、依赖管理与测试，讲义末尾有练习。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/GNU_Make/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+这是工具而不是课程，没有官方作业。

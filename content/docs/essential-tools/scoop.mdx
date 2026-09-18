@@ -1,26 +1,34 @@
 ---
 title: "Scoop"
-description: "用 Windows 命令行安装和管理开发工具。"
+description: "Windows 上的命令行包管理器，用一条命令装好开发工具。"
 prereqCourses: []
 prereqKnowledge: []
 ---
 
 ## 课程简介
 
-用 Windows 命令行安装和管理开发工具。
+在 Linux 上装个工具是一条命令的事，在 Windows 上往往要找官网、下安装包、
+点下一步、再手动配环境变量。Scoop 把这套流程变成 `scoop install <名字>`，
+并且默认装到用户目录下，不需要管理员权限，也不往系统里乱塞东西。
+
+对跟着公开课自学的人，它解决的是一个很具体的麻烦：课程假设你有 git、make、gcc、
+python 这些工具，而 Windows 上并不自带。
+
+它的另一个好处是可复现：装了什么、什么版本，都能导出成清单，换台机器照着装回来。
 
 ## 先修要求
 
-能够使用文件和浏览器即可开始；涉及命令行的部分可配合 Missing Semester 官方课程练习。
+- 使用 Windows。
+- 会打开 PowerShell 并执行命令。
 
 ## 官方资源
 
-- [官方文档与教程](https://scoop.sh/)。
+- [Scoop 官网](https://scoop.sh/)：安装方式与可安装软件的检索。
+- [官方 Wiki](https://github.com/ScoopInstaller/Scoop/wiki)：用法、常见问题与进阶配置。
+- [Scoop 仓库](https://github.com/ScoopInstaller/Scoop)：源码与问题反馈。
 
 ## 官方作业
 
-- [官方教程与实践](https://github.com/ScoopInstaller/Scoop/wiki)：按教程完成操作；如使用 Missing Semester 链接，练习位于官方课程页末尾。
+- [官方快速上手](https://github.com/ScoopInstaller/Scoop/wiki/Quick-Start)：装好 Scoop，再用它装一个你接下来真要用的工具。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E5%BF%85%E5%AD%A6%E5%B7%A5%E5%85%B7/Scoop/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+这是工具而不是课程，没有官方作业。

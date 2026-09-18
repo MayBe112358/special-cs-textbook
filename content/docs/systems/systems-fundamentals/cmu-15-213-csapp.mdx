@@ -1,26 +1,39 @@
 ---
 title: "CMU 15-213 深入理解计算机系统"
-description: "从汇编、体系结构到链接、并发与网络，建立程序员视角的计算机系统全景。"
+description: "从程序员视角看整台计算机：数据表示、汇编、内存层次、链接、并发与网络。"
 prereqCourses: [cs61a, cs61b]
 prereqKnowledge: ["CS61A, CS61B"]
 ---
 
 ## 课程简介
 
-从汇编、体系结构到链接、并发与网络，建立程序员视角的计算机系统全景。
+15-213 是 CMU 的系统入门课，配套教材《Computer Systems: A Programmer's Perspective》
+（简称 CSAPP）被公认为这一领域最好的一本书。
+
+这门课的角度很特别：它不从硬件设计讲起，而是从“你写的程序在机器上到底发生了什么”入手。
+课程依次讲数据的位级表示与浮点、x86-64 汇编与程序的机器级表示、
+处理器体系结构与优化、存储器层次与缓存、链接、异常控制流、虚拟内存、
+系统级 I/O、网络编程与并发编程。
+
+真正让这门课出名的是它的实验（Labs）：Data Lab 用位运算实现各种函数、
+Bomb Lab 逼你读汇编拆炸弹、Attack Lab 让你做缓冲区溢出攻击、
+Cache Lab 写缓存模拟器、Malloc Lab 实现一个内存分配器、
+Shell Lab 写一个 shell、Proxy Lab 写一个并发代理服务器。
+这套实验的代码框架全部开源，是自学者能拿到的最有价值的材料。
 
 ## 先修要求
 
-指南列出的学前准备：CS61A, CS61B。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要扎实的 C 语言能力，CS61A + CS61B 或同等课程。
+- 需要会用命令行、gdb 和 make。
 
 ## 官方资源
 
-- [课程团队资源入口](http://csapp.cs.cmu.edu/)。
+- [教材官网](http://csapp.cs.cmu.edu/)：CSAPP 第三版的官方站点。
+- [学生资源页](http://csapp.cs.cmu.edu/3e/students.html)：配套材料、Web Asides 与勘误。
+- [Web Asides](http://csapp.cs.cmu.edu/3e/waside.html)：书中未展开的补充专题。
 
 ## 官方作业
 
-- [官方作业入口](http://csapp.cs.cmu.edu/3e/labs.html)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [全部 Labs（开源）](http://csapp.cs.cmu.edu/3e/labs.html)：Data、Bomb、Attack、Cache、Malloc、Shell、Proxy 等实验的框架与说明。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/CSAPP/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+实验自带评分脚本，本地即可自测；Bomb Lab 的个人化版本需要自行生成。

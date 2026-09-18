@@ -1,26 +1,38 @@
 ---
 title: "ASU CSE466 系统安全"
-description: "pwn.college 的系统安全核心课，十余个模块聚焦二进制利用与内核安全。"
+description: "pwn.college 的系统安全核心课：二进制利用与内核安全的硬核题集。"
 prereqCourses: []
 prereqKnowledge: ["无"]
 ---
 
 ## 课程简介
 
-pwn.college 的系统安全核心课，十余个模块聚焦二进制利用与内核安全。
+CSE466 是 CSE365 的进阶版，同样托管在 pwn.college 上，
+主题集中在系统安全，尤其是二进制利用。
+
+模块包括：程序内存布局、栈溢出与返回导向编程（ROP）、
+shellcode 编写、格式化字符串漏洞、堆利用（各种 glibc 堆风水）、
+竞态条件、内核态利用、沙箱逃逸等。
+
+题目质量很高，但难度也确实大——涉及内核的那几个模块
+经常一天写不出一道题。这是正常的；
+官方同样提供 Discord 讨论区供求助。
+
+做完这门课，你对“一个程序为什么会被攻破”的理解会非常具体。
 
 ## 先修要求
 
-指南列出的学前准备：无。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 没有硬性先修要求，但强烈建议先完成 CSE365。
+- 需要 C、Python 与 x86 汇编的阅读能力。
 
 ## 官方资源
 
-- [课程团队资源入口](https://pwn.college/cse466-f2025/)。
+- [课程主页](https://pwn.college/cse466-f2025/)：全部模块与题目。
+- [pwn.college 平台](https://pwn.college/)：在线实验环境。
+- [Dojo 列表](https://pwn.college/dojos)：平台上的全部课程与练习集。
 
 ## 官方作业
 
-- [官方作业入口](https://pwn.college/cse466-f2025/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [模块化 Challenges](https://pwn.college/cse466-f2025/)：十三个模块、三百多道题，从栈溢出到内核利用。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/CSE466/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+平台自动判题；环境在浏览器中直接提供。

@@ -1,26 +1,35 @@
 ---
 title: "ETH Zurich 数字设计与计算机体系结构"
-description: "从晶体管和逻辑门一路讲到微架构、缓存与虚拟内存的硬件设计课。"
+description: "Onur Mutlu 的数字设计与体系结构：从晶体管一路搭到完整的微架构。"
 prereqCourses: []
 prereqKnowledge: ["CS50 或同阶课程，最好有 C 语言基础"]
 ---
 
 ## 课程简介
 
-从晶体管和逻辑门一路讲到微架构、缓存与虚拟内存的硬件设计课。
+DDCA 由体系结构领域的 Onur Mutlu 讲授，起点比大多数体系结构课更低、
+终点又比它们更高：从晶体管和逻辑门开始，讲组合逻辑、时序逻辑、有限状态机，
+然后是硬件描述语言 Verilog，接着构建单周期与多周期处理器、
+流水线处理器，最后进入缓存、虚拟内存以及体系结构领域最新的研究方向。
+
+这门课最难得的地方是讲授者会把前沿研究带进课堂——
+内存系统、近数据计算这些他本人的研究方向都会出现在后半程。
+
+实验用 Basys 3 FPGA 开发板配 Xilinx Vivado 完成。
+没有开发板也能学：仿真部分在软件里就能跑完。
 
 ## 先修要求
 
-指南列出的学前准备：CS50 或同阶课程，最好有 C 语言基础。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要 CS50 或同等的编程入门课程。
+- 最好有 C 语言基础。不需要预先了解数字电路。
 
 ## 官方资源
 
-- [课程团队资源入口](https://safari.ethz.ch/digitaltechnik/spring2023/)。
+- [课程主页](https://safari.ethz.ch/digitaltechnik/spring2023/)：讲座录像、幻灯片与全部课程材料。
+- [SAFARI 研究组课程页](https://safari.ethz.ch/)：该组开设的各门体系结构课程。
 
 ## 官方作业
 
-- [官方作业入口](https://safari.ethz.ch/digitaltechnik/spring2023/doku.php?id=labs)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Labs](https://safari.ethz.ch/digitaltechnik/spring2023/doku.php?id=labs)：九个实验，从逻辑门到完整处理器。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/DDCA/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+实验需要 FPGA 开发板与 Vivado；仿真部分可以纯软件完成。

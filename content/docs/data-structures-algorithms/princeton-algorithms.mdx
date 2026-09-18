@@ -1,26 +1,41 @@
 ---
 title: "Princeton Algorithms I / II"
-description: "学习排序、搜索、图与字符串算法，并通过 Java 作业实践。"
+description: "Sedgewick 的算法教材与配套课程，每个算法都有可运行的 Java 实现。"
 prereqCourses: []
 prereqKnowledge: ["CS61A"]
 ---
 
 ## 课程简介
 
-学习排序、搜索、图与字符串算法，并通过 Java 作业实践。
+这是普林斯顿 Sedgewick 与 Wayne 的《Algorithms, 4th Edition》
+及其配套的公开课。它和偏理论的算法课是两条路子：
+这里的每一个算法都有完整、可运行、写得很讲究的 Java 实现，
+配上大量实验数据来说明它在真实输入下表现如何。
+
+内容按书的结构组织：基础（数据抽象、栈与队列、复杂度分析、并查集）、
+排序（初级排序、归并、快排、优先队列）、查找（符号表、二叉搜索树、
+平衡树、哈希）、图（无向图、有向图、最小生成树、最短路），
+以及字符串处理（字符串排序、字典树、子串查找、正则、数据压缩）。
+
+配套的编程作业非常有名，每个作业都是一个完整的小项目
+（渗流模型、随机队列、点集共线检测、8 数码问题、K-d 树），
+并且有严格的自动评分。
 
 ## 先修要求
 
-指南列出的学前准备：CS61A。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要 Java 编程基础，课程按 CS61A 或同等的入门课设定。
+- 需要基本的数学分析能力（求和、对数、简单概率）。
 
 ## 官方资源
 
-- [课程团队资源入口](https://algs4.cs.princeton.edu/home/)。
+- [教材配套网站](https://algs4.cs.princeton.edu/home/)：全书章节、算法实现与实验数据。
+- [algs4 代码库](https://algs4.cs.princeton.edu/code/)：全部算法的 Java 实现，可直接下载运行。
+- [Coursera Part I](https://www.coursera.org/learn/algorithms-part1)：排序与查找部分的公开课。
+- [Coursera Part II](https://www.coursera.org/learn/algorithms-part2)：图算法与字符串部分。
 
 ## 官方作业
 
-- [官方作业入口](https://coursera.cs.princeton.edu/algs4/assignments/percolation/specification.php)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [编程作业规范](https://coursera.cs.princeton.edu/algs4/assignments/)：五个项目的完整题面与评分标准，公开可读。
+- [Percolation 作业](https://coursera.cs.princeton.edu/algs4/assignments/percolation/specification.php)：第一个作业：用并查集模拟渗流。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Algo/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+题面与测试数据公开；完整的自动评分需要在 Coursera 上选课。
