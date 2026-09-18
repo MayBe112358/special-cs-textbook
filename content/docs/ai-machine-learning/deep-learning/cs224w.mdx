@@ -1,26 +1,40 @@
 ---
 title: "Stanford CS224w 图机器学习"
-description: "系统讲授图表示学习与图神经网络，配套编程与书面作业。"
+description: "Stanford 的图机器学习：图表示学习、图神经网络与大规模图应用。"
 prereqCourses: []
 prereqKnowledge: ["深度学习基础 + Python"]
 ---
 
 ## 课程简介
 
-系统讲授图表示学习与图神经网络，配套编程与书面作业。
+CS224w 讲的是当数据本身是一张图时——社交网络、分子结构、
+知识图谱、推荐系统——机器学习该怎么做。
+
+课程从传统的图特征工程与节点相似度讲起，
+然后是图表示学习（node2vec、DeepWalk），
+接着进入图神经网络：消息传递框架、GCN、GraphSAGE、GAT，
+以及它们的表达能力与局限。后半程讨论知识图谱嵌入、
+子图与模体、社区发现、图生成模型，
+以及在推荐系统和科学计算中的应用。
+
+这门课的一个特点是理论与应用并重：
+既会讨论 GNN 的表达能力（和 WL 检验的关系），
+也会给出在真实大规模图上的工程做法。作业分编程和书面两类。
 
 ## 先修要求
 
-指南列出的学前准备：深度学习基础 + Python。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要 Python 编程能力。
+- 需要线性代数、概率与基础的机器学习概念。
 
 ## 官方资源
 
-- [课程团队资源入口](http://web.stanford.edu/class/cs224w/)。
+- [课程主页](http://web.stanford.edu/class/cs224w/)：日程、讲义与项目要求。
+- [公开课程笔记](https://snap-stanford.github.io/cs224w-notes/)：由课程团队维护的文字版讲义。
+- [PyG 教程](https://pytorch-geometric.readthedocs.io/)：作业使用的图神经网络框架。
 
 ## 官方作业
 
-- [官方作业入口](http://web.stanford.edu/class/cs224w/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Homework](http://web.stanford.edu/class/cs224w/)：六次编程作业与三次 LaTeX 书面作业。
+- [Colab 练习](http://web.stanford.edu/class/cs224w/)：课程提供的可直接运行的 Notebook 练习。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CS224w/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+作业框架与 Colab 公开，本地或云端均可运行。

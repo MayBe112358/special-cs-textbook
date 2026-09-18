@@ -1,26 +1,42 @@
 ---
 title: "UC Berkeley CS285 深度强化学习"
-description: "从策略梯度到基于模型的方法，覆盖深度强化学习的主要分支，公式密集。"
+description: "伯克利的深度强化学习：从策略梯度到基于模型的方法，公式密集。"
 prereqCourses: [cs188, cs189]
 prereqKnowledge: ["CS188, CS189"]
 ---
 
 ## 课程简介
 
-从策略梯度到基于模型的方法，覆盖深度强化学习的主要分支，公式密集。
+CS285 是伯克利的深度强化学习课，由 Sergey Levine 讲授，
+覆盖这个领域的主要分支。
+
+课程从模仿学习起步，然后是马尔可夫决策过程与策略梯度、
+Actor-Critic 方法、值函数方法（Q-learning、DQN 及其改进）、
+基于模型的强化学习与规划，接着是探索问题、
+离线强化学习、逆强化学习、元学习，
+最后讨论强化学习与控制、与大模型的结合等前沿方向。
+
+这门课的公式密度很高，上课前需要一定的心理准备——
+它默认你已经熟悉马尔可夫决策过程这类概念。
+教授每年会根据最新研究进展更新内容与作业，
+所以不同学期的版本差别不小。
+
+五次编程作业覆盖模仿学习、策略梯度、Q-learning、
+基于模型的方法与离线强化学习。
 
 ## 先修要求
 
-指南列出的学前准备：CS188, CS189。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 指南列出的学前准备是 CS188 与 CS189。
+- 需要熟悉马尔可夫决策过程、概率与深度学习基础。
 
 ## 官方资源
 
-- [课程团队资源入口](http://rail.eecs.berkeley.edu/deeprlcourse/)。
+- [课程主页](http://rail.eecs.berkeley.edu/deeprlcourse/)：当前学期的日程、幻灯片与作业。
+- [课程日程](https://rail.eecs.berkeley.edu/deeprlcourse/calendar)：每讲的主题与配套阅读。
+- [资源与往年版本](https://rail.eecs.berkeley.edu/deeprlcourse/resources)：教材推荐、相关课程与历年录像。
 
 ## 官方作业
 
-- [官方作业入口](http://rail.eecs.berkeley.edu/deeprlcourse/)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [Homework 1](https://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw1.pdf)：模仿学习；后续作业在课程主页上依次列出。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CS285/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+作业框架开源，本地可运行；部分实验需要较长的训练时间。

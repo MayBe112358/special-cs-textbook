@@ -1,26 +1,39 @@
 ---
 title: "GAMES202 高质量实时渲染"
-description: "实时软阴影、环境光照、全局光照与实时光线追踪等实时渲染关键技术。"
+description: "闫令琪的高质量实时渲染：在苛刻时间预算下逼近照片级真实感。"
 prereqCourses: [games101]
 prereqKnowledge: ["线性代数，高等数学，C++，GAMES101"]
 ---
 
 ## 课程简介
 
-实时软阴影、环境光照、全局光照与实时光线追踪等实时渲染关键技术。
+GAMES202 接在 GAMES101 之后，专讲实时渲染。
+它的核心问题是：实时渲染要求每秒三十帧以上，
+在这么苛刻的时间预算下，怎么打破速度与质量之间的权衡？
+
+课程以专题形式组织，覆盖学术界与工业界的前沿做法：
+实时软阴影的渲染、环境光照、基于预计算或无预计算的全局光照、
+基于物理的着色模型、实时光线追踪、抗锯齿与超分辨率。
+
+和 GAMES101 的全景式介绍不同，这门课每一讲都深入一个具体技术，
+会讲清楚它的数学推导、工程取舍以及在真实引擎里的用法。
+适合已经理解渲染基本原理、想知道游戏画面是怎么做出来的人。
+
+课程配五个编程作业，同样用 C++ 完成。
 
 ## 先修要求
 
-指南列出的学前准备：线性代数，高等数学，C++，GAMES101。正式先修条件与课程编号以所选学期的官方大纲为准。
+- 需要先完成 GAMES101 或同等的图形学入门课程。
+- 需要线性代数、高等数学与 C++ 能力。
 
 ## 官方资源
 
-- [课程团队资源入口](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)。
+- [课程主页](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)：讲座视频、幻灯片与作业。
+- [GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)：本课的前置课程。
+- [GAMES 在线课程平台](http://games-cn.org/)：系列课程的中文社区。
 
 ## 官方作业
 
-- [官方作业入口](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)：从课程团队发布的 Homework、Assignments、Labs、Projects 或章末习题开始。材料和提交权限以课程页面为准。
+- [五次编程作业](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)：实时阴影、环境光照、全局光照、基于物理的着色与实时光追。
 
-## 收录来源
-
-[CS 自学指南课程条目](https://csdiy.wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/GAMES202/)。课程分类与学前准备参考该条目；资源指向课程团队。官方入口核对日期：2026-09-18。
+作业框架在课程页上公开。
