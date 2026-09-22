@@ -623,3 +623,11 @@ test('Tab 唯一补全，多候选不擅自选取，保留光标后的内容',()
 test('find 名称里的正则符号按字面匹配',()=>{
  const rows=runCommand("find / -name 'cs61.'",session).blocks.flatMap(b=>b.type==='list'?b.items:[]);assert.equal(rows.length,0);
 });
+
+test('中英文搜索覆盖课程与源码全文，且可接管道',()=>{
+ const rows=(line:string)=>runCommand(line,session).blocks.flatMap(b=>b.type==='list'?b.items:[]);
+ assert.equal(rows('search CS61A')[0]?.label,'/programming-intro/cs61a');
+ assert.ok(rows('search 命令引擎').some(row=>row.label==='/internals/core/command-engine'));
+ assert.equal(rows('search 完全不存在的词').length,0);
+ assert.ok(rows('search layout | grep 文档').every(row=>row.command?.startsWith('open ')));
+});

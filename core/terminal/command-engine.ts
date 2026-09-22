@@ -79,6 +79,7 @@ import { openCommand } from "./commands/open.ts";
 import { refsCommand } from "./commands/refs.ts";
 import { markCommand } from "./commands/mark.ts";
 import { statusCommand } from "./commands/status.ts";
+import {searchCommand} from './commands/search.ts';
 import { parsePipeline } from './syntax.ts';
 import {pwdCommand,treeCommand,historyCommand,clearCommand} from './commands/navigation.ts';
 import {findCommand} from './commands/find.ts';
@@ -98,7 +99,7 @@ export const COMMANDS: readonly CommandDefinition[] = [
   openCommand,
   refsCommand,
   markCommand,
-  statusCommand,
+  statusCommand, searchCommand,
   pwdCommand, treeCommand, historyCommand, clearCommand, findCommand, grepCommand,
 ];
 
