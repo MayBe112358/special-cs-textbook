@@ -15,6 +15,7 @@
  * @unclear       localStorage 不提供跨标签页事务，校验与写入之间极短的并发窗口仍存在；长期应使用支持事务的存储。
  *
  * @letter
+ * 第 4 版加入学习路径，仍接受 1～3 版。路径和进度一起恢复，共用失败回滚的承诺。
  * 我把导入分成两段：先看懂整个文件，再开始写。否则写到一半才发现最后一条坏了，读者就会得到半本笔记。
  * 同一页在本机和文件里都有心得时，默认保留本机版本，你可以明确选择覆盖。没有冲突的页面总会合并进来。
  * 浏览器写入也可能失败，所以我先记住每个将修改的旧值。如果中途空间不足，就把已经写过的恢复回去。
@@ -36,11 +37,13 @@ import { NOTE_PREFIX, noteKey, readNote, validateNote, type Note } from './notes
 import { PROGRESS_PREFIX, progressKey, readProgress, validateProgress, type CourseProgress,
   UNDERSTANDING_PREFIX, understandingKey, readUnderstanding, validateUnderstanding, type ModuleUnderstanding } from '../progress/progress.ts';
 
+import {PATH_PREFIX, pathKey, readPath, validatePath, type LearningPath} from '../paths/paths.ts';
+
 export type NoteStorage = Pick<Storage,'length'|'key'|'getItem'|'setItem'|'removeItem'>;
-export type Backup = {format:'special-cs-textbook-notes'; version:3; notes:Note[]; progress:CourseProgress[]; understanding:ModuleUnderstanding[]};
+export type Backup = {format:'special-cs-textbook-notes'; version:4; notes:Note[]; progress:CourseProgress[]; understanding:ModuleUnderstanding[]; paths:LearningPath[]};
 
 /** 备份文件里当前使用的格式版本。旧版本仍然接受，见 parseBackup。 */
-export const BACKUP_VERSION = 3;
+export const BACKUP_VERSION = 4;
 
 export function collectNotes(storage: NoteStorage): Note[] {
   const notes: Note[] = [];
@@ -78,9 +81,15 @@ export function collectUnderstanding(storage: NoteStorage): ModuleUnderstanding[
   return records.sort((a,b)=>a.module.localeCompare(b.module));
 }
 
+export function collectPaths(storage: NoteStorage): LearningPath[] {
+  const paths:LearningPath[]=[];
+  for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key?.startsWith(PATH_PREFIX)){const path=readPath(storage.getItem(key),key.slice(PATH_PREFIX.length));if(path)paths.push(path);}}
+  return paths.sort((a,b)=>a.id.localeCompare(b.id));
+}
+
 export function exportBackup(storage: NoteStorage): string {
   const data:Backup={format:'special-cs-textbook-notes',version:BACKUP_VERSION,
-    notes:collectNotes(storage),progress:collectProgress(storage),understanding:collectUnderstanding(storage)};
+    notes:collectNotes(storage),progress:collectProgress(storage),understanding:collectUnderstanding(storage),paths:collectPaths(storage)};
   return JSON.stringify(data,null,2)+'\n';
 }
 
@@ -90,9 +99,9 @@ export function parseBackup(raw:string):Backup {
   if(!value || value.format!=='special-cs-textbook-notes' || !Array.isArray(value.notes)) throw new Error('不是支持的心得备份格式或版本。');
   // 旧版本照样接受：版本 1 那时只有心得，版本 2 多了学习状态但还没有理解度。
   // 缺的那部分当成空列表往下走，这样读者半年前导出的文件今天仍然打得开。
-  if(value.version!==1 && value.version!==2 && value.version!==3) throw new Error('不是支持的心得备份格式或版本。');
+  if(value.version!==1 && value.version!==2 && value.version!==3 && value.version!==4) throw new Error('不是支持的心得备份格式或版本。');
   const rawProgress=value.version===1?[]:value.progress;
-  const rawUnderstanding=value.version===3?value.understanding:[];
+  const rawUnderstanding=value.version>=3?value.understanding:[];
   if(!Array.isArray(rawProgress)) throw new Error('备份里的学习状态不是一份列表。');
   if(!Array.isArray(rawUnderstanding)) throw new Error('备份里的理解度不是一份列表。');
   if(value.notes.length>10_000 || rawProgress.length>10_000 || rawUnderstanding.length>10_000) throw new Error('备份条目过多。');
@@ -102,7 +111,11 @@ export function parseBackup(raw:string):Backup {
   if(new Set(progress.map(record=>record.course)).size!==progress.length) throw new Error('备份含重复的课程状态，未导入。');
   const understanding:ModuleUnderstanding[]=rawUnderstanding.map(validateUnderstanding);
   if(new Set(understanding.map(record=>record.module)).size!==understanding.length) throw new Error('备份含重复的模块理解度，未导入。');
-  return {format:'special-cs-textbook-notes',version:BACKUP_VERSION,notes,progress,understanding};
+  const rawPaths=value.version===4?value.paths:[];
+  if(!Array.isArray(rawPaths)||rawPaths.length>1000) throw new Error('学习路径列表无效。');
+  const paths=rawPaths.map(validatePath);
+  if(new Set(paths.map(path=>path.id)).size!==paths.length) throw new Error('备份含重复路径。');
+  return {format:'special-cs-textbook-notes',version:BACKUP_VERSION,notes,progress,understanding,paths};
 }
 
 export function importBackup(storage:NoteStorage, backup:Backup, overwrite:boolean):number {
@@ -114,7 +127,9 @@ export function importBackup(storage:NoteStorage, backup:Backup, overwrite:boole
   collectNotes(storage);
   collectProgress(storage);
   collectUnderstanding(storage);
+  collectPaths(storage);
   const wanted=[
+    ...checked.paths.map(path=>({key:pathKey(path.id),value:JSON.stringify(path)})),
     ...checked.notes.map(note=>({key:noteKey(note.page),value:JSON.stringify(note)})),
     ...checked.progress.map(record=>({key:progressKey(record.course),value:JSON.stringify(record)})),
     ...checked.understanding.map(record=>({key:understandingKey(record.module),value:JSON.stringify(record)})),

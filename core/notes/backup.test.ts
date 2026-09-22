@@ -33,7 +33,7 @@ const note=(page:string,text='心得')=>({page,text,updatedAt:'2026-09-18T00:00:
 const mark=(course:string,state:CourseProgress['state']='learning'):CourseProgress=>({course,state,updatedAt:'2026-09-18T00:00:00.000Z'});
 const grok=(module:string,state:ModuleUnderstanding['state']='understood'):ModuleUnderstanding=>({module,state,updatedAt:'2026-09-18T00:00:00.000Z'});
 const backup=(notes:ReturnType<typeof note>[]=[],progress:CourseProgress[]=[],understanding:ModuleUnderstanding[]=[]):Backup=>
-  ({format:'special-cs-textbook-notes',version:3,notes,progress,understanding});
+  ({format:'special-cs-textbook-notes',version:4,notes,progress,understanding,paths:[]});
 const MOD='/internals/core/progress/progress';
 
 test('备份只包含本项目数据，中文可读，清空后三样一起回来',()=>{
@@ -63,7 +63,7 @@ test('版本 1 和版本 2 的旧备份都仍然能导入，缺的那部分当�
 });
 
 test('坏版本、重复条目、无效路径和坏记录整体拒绝',()=>{
- const bad=[{...backup(),version:4},
+ const bad=[{...backup(),version:99},
   backup([note('/x'),note('/x')]),backup([note('/../x')]),backup([{...note('/x'),text:42} as never]),
   backup([],[mark('cs61a'),mark('cs61a')]),backup([],[{...mark('cs61a'),state:'放弃'} as never]),{...backup(),progress:'不是列表'},
   backup([],[],[grok(MOD),grok(MOD)]),backup([],[],[{...grok(MOD),state:'看过'} as never]),
