@@ -14,7 +14,8 @@
  */
 'use client';
 import {useState} from 'react';
-import {collectNotes,exportNotes,importNotes,parseBackup,type Backup} from '@/core/notes/backup';
+import {notifyProgressChanged} from '@/components/progress/progress-store';
+import {collectNotes,collectProgress,collectUnderstanding,exportBackup,importBackup,parseBackup,type Backup} from '@/core/notes/backup';
 export function NotesBackup({dirty,onImported}:{dirty:boolean;onImported:()=>void}) {
   const [pending,setPending]=useState<Backup|null>(null);
   const [conflicts,setConflicts]=useState(0);
@@ -22,7 +23,7 @@ export function NotesBackup({dirty,onImported}:{dirty:boolean;onImported:()=>voi
   const [message,setMessage]=useState('');
   function download() {
     try {
-      const blob=new Blob([exportNotes(localStorage)],{type:'application/json;charset=utf-8'});
+      const blob=new Blob([exportBackup(localStorage)],{type:'application/json;charset=utf-8'});
       const url=URL.createObjectURL(blob); const a=document.createElement('a');
       a.href=url;a.download=`cs-textbook-notes-${new Date().toISOString().slice(0,10)}.json`;
       a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setMessage('已生成备份，请检查浏览器下载目录。');
@@ -34,25 +35,29 @@ export function NotesBackup({dirty,onImported}:{dirty:boolean;onImported:()=>voi
     try {
       if(file.size>10_000_000) throw new Error('备份超过 10 MB，未导入。');
       const backup=parseBackup(await file.text());
-      const existing=new Set(collectNotes(localStorage).map(note=>note.page));
-      setConflicts(backup.notes.filter(note=>existing.has(note.page)).length);
+      const existingNotes=new Set(collectNotes(localStorage).map(note=>note.page));
+      const existingCourses=new Set(collectProgress(localStorage).map(record=>record.course));
+      const existingModules=new Set(collectUnderstanding(localStorage).map(record=>record.module));
+      setConflicts(backup.notes.filter(note=>existingNotes.has(note.page)).length
+        +backup.progress.filter(record=>existingCourses.has(record.course)).length
+        +backup.understanding.filter(record=>existingModules.has(record.module)).length);
       setPending(backup);setMessage('文件已读取，尚未写入。');
     } catch(error) {setMessage(`无法导入：${error instanceof Error?error.message:'文件读取失败'} 原数据未改动。`);}
   }
   return <div className="mt-5 border-t border-fd-border pt-4">
-    <h3 className="font-semibold">备份所有私人心得</h3>
-    <p className="my-2 text-sm">导出和导入都在本机完成。默认保留已有心得，导入只补上缺少的页面。</p>
+    <h3 className="font-semibold">备份私人心得与进度</h3>
+    <p className="my-2 text-sm">导出和导入都在本机完成，一份文件同时带走私人心得、每门课的学习状态和每段代码的理解度。默认保留已有数据，导入只补上缺少的部分。旧版本的备份仍然能导入，缺的那部分当成空。</p>
     {dirty?<p className="text-sm">请先保存本页草稿，再备份或导入。</p>:null}
-    <button type="button" onClick={download} disabled={dirty} className="my-2 rounded border px-3 py-1 disabled:opacity-50">导出全部心得</button>
-    <label className="block">选择心得备份文件
+    <button type="button" onClick={download} disabled={dirty} className="my-2 rounded border px-3 py-1 disabled:opacity-50">导出心得与进度</button>
+    <label className="block">选择备份文件
       <input type="file" accept=".json,application/json" disabled={dirty} className="my-2 block max-w-full"
         onChange={(event)=>{void preview(event.target.files?.[0]);event.target.value='';}} />
     </label>
     {pending?<div className="my-2 rounded border p-3">
-      <p>备份共 {pending.notes.length} 页，{conflicts} 页与本机已有心得重合。</p>
-      {conflicts>0?<label className="my-2 block"><input type="checkbox" checked={overwrite} onChange={e=>setOverwrite(e.target.checked)}/> 用备份覆盖重合页面的本机心得</label>:null}
+      <p>备份含 {pending.notes.length} 页心得、{pending.progress.length} 门课的状态、{pending.understanding.length} 段代码的理解度，其中 {conflicts} 条与本机已有数据重合。</p>
+      {conflicts>0?<label className="my-2 block"><input type="checkbox" checked={overwrite} onChange={e=>setOverwrite(e.target.checked)}/> 用备份覆盖重合的本机数据</label>:null}
       <button type="button" disabled={dirty} className="mr-3 rounded border px-3 py-1 disabled:opacity-50" onClick={()=>{
-        try {const count=importNotes(localStorage,pending,overwrite);setPending(null);setMessage(`已导入 ${count} 页心得。`);onImported();}
+        try {const count=importBackup(localStorage,pending,overwrite);setPending(null);setMessage(`已导入 ${count} 条记录。`);notifyProgressChanged();onImported();}
         catch(error){setMessage(`恢复失败：${error instanceof Error?error.message:'存储不可用'}。请保留备份文件。`);}
       }}>确认导入</button>
       <button type="button" onClick={()=>setPending(null)}>取消</button>

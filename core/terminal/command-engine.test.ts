@@ -38,6 +38,8 @@ import type { KnowledgeIndex } from "../knowledge/knowledge-index.ts";
 import { createVirtualFileSystem } from "../filesystem/virtual-file-system.ts";
 import { COMMANDS, parseCommandLine, runCommand } from "./command-engine.ts";
 import { pathnameToWorkingDirectory } from "./location.ts";
+import type { CourseProgress, ModuleUnderstanding } from "../progress/progress.ts";
+import type { CommandResult } from "./command.ts";
 
 /**
  * 造一份最小的注释块。
@@ -169,7 +171,25 @@ const fixture: KnowledgeIndex = {
 
 const fileSystem = createVirtualFileSystem(fixture);
 /** 测试里统一用的“外部世界”：当前位置来自网址，OLDPWD 是会话历史。 */
-const session = { currentPath: "/", previousPath: null, fileSystem, knowledge: fixture };
+const session = { currentPath: "/", previousPath: null, fileSystem, knowledge: fixture, progress: [], understanding: [] };
+/** 读者本机的学习状态是外面递进来的，测试里直接换一份就行，不需要浏览器。 */
+const withProgress = (...records: CourseProgress[]) => ({ ...session, progress: records });
+const withUnderstanding = (...records: ModuleUnderstanding[]) => ({ ...session, understanding: records });
+const grok = (module: string, state: ModuleUnderstanding["state"]): ModuleUnderstanding =>
+  ({ module, state, updatedAt: "2026-09-18T00:00:00.000Z" });
+const mark = (course: string, state: CourseProgress["state"]): CourseProgress =>
+  ({ course, state, updatedAt: "2026-09-18T00:00:00.000Z" });
+/**
+ * 从结果里取出导航地址。
+ *
+ * 动作现在不止一种（还有改学习状态的），所以取 href 之前必须先确认这一条确实是导航——
+ * 类型检查会逼着我们写这一步，而这正是把动作做成"带标签的几种可能"想要的效果：
+ * 多一种动作时，所有没考虑到它的地方都会当场报错，而不是在运行时悄悄拿到 undefined。
+ */
+const navigatedTo = (result: CommandResult): string | undefined => {
+  const action = result.actions[0];
+  return action?.type === "navigate" ? action.href : undefined;
+};
 
 test("拆词：第一个词是命令名，剩下的是参数", () => {
   assert.deepEqual(parseCommandLine("help"), { name: "help", args: [] });
@@ -267,11 +287,11 @@ test("cd：进入目录只申请导航，不在引擎里执行跳转", () => {
 
 test("cd：..、~ 与 - 都使用文件系统规则", () => {
   assert.equal(
-    runCommand("cd ..", { ...session, currentPath: "/systems" }).actions[0]?.href,
+    navigatedTo(runCommand("cd ..", { ...session, currentPath: "/systems" })),
     "/docs",
   );
   assert.equal(
-    runCommand("cd ~", { ...session, currentPath: "/systems" }).actions[0]?.href,
+    navigatedTo(runCommand("cd ~", { ...session, currentPath: "/systems" })),
     "/docs",
   );
   const previous = runCommand("cd -", {
@@ -279,7 +299,7 @@ test("cd：..、~ 与 - 都使用文件系统规则", () => {
     currentPath: "/systems",
     previousPath: "/programming-intro",
   });
-  assert.equal(previous.actions[0]?.href, "/docs/programming-intro");
+  assert.equal(navigatedTo(previous), "/docs/programming-intro");
   assert.equal(previous.blocks[0]?.type === "text" ? previous.blocks[0].text : "", "/programming-intro");
 });
 
@@ -401,4 +421,156 @@ test("refs 一个目录是不成立的问题，明确说它是目录", () => {
 
 test("refs 只回答问题，不申请跳转", () => {
   assert.deepEqual(runCommand("refs cs61a", session).actions, []);
+});
+
+test("mark：改状态只申请，不自己动手写存储", () => {
+  const result = runCommand("mark cs61a learning", session);
+  assert.equal(result.status, "ok");
+  assert.deepEqual(result.actions, [{ type: "set-progress", course: "cs61a", state: "learning" }]);
+  // 引擎拿到的是一份只读快照，跑完之后它还是空的——真正的写入在界面层。
+  assert.deepEqual(session.progress, []);
+});
+
+test("mark：三个状态都收，别的词照实报错，不猜你想输什么", () => {
+  for (const state of ["todo", "learning", "done"]) {
+    assert.equal(runCommand(`mark cs61a ${state}`, session).status, "ok");
+  }
+  const bad = runCommand("mark cs61a 放弃", session);
+  assert.equal(bad.status, "error");
+  assert.match(bad.blocks[0]?.type === "text" ? bad.blocks[0].text : "", /invalid state: 放弃/);
+  assert.deepEqual(bad.actions, []);
+});
+
+test("mark：少写状态时提示用法，不当成查询", () => {
+  const result = runCommand("mark cs61a", session);
+  assert.equal(result.status, "error");
+  assert.match(result.blocks[0]?.type === "text" ? result.blocks[0].text : "", /missing state/);
+});
+
+test("mark：指到源码就走理解度那条线，两套状态词各管各的", () => {
+  for (const line of ["mark command-engine understood", "mark /internals/core/command-engine understood"]) {
+    const result = runCommand(line, session);
+    assert.equal(result.status, "ok");
+    assert.deepEqual(result.actions, [
+      { type: "set-understanding", module: "/internals/core/command-engine", state: "understood" },
+    ]);
+  }
+  // 把课程的词用在源码上要报错，反过来也一样——它们是两条线，词不通用。
+  const wrongForModule = runCommand("mark command-engine done", session);
+  assert.equal(wrongForModule.status, "error");
+  assert.match(wrongForModule.blocks.map((b) => (b.type === "text" ? b.text : "")).join(" "), /是一段源码/);
+  const wrongForCourse = runCommand("mark cs61a understood", session);
+  assert.equal(wrongForCourse.status, "error");
+  assert.match(wrongForCourse.blocks.map((b) => (b.type === "text" ? b.text : "")).join(" "), /是一门课程/);
+});
+
+test("mark：模块名撞车时不猜，把候选连位置一起列出来", () => {
+  // 真实源码里有两个 layout，fixture 照抄了这一点。
+  const result = runCommand("mark layout read", session);
+  assert.equal(result.status, "error");
+  const items = result.blocks.flatMap((b) => (b.type === "list" ? b.items.map((i) => i.label) : []));
+  assert.deepEqual(items.sort(), ["/internals/app/layout", "/internals/core/layout"]);
+  assert.deepEqual(result.actions, []);
+});
+
+test("mark clear：源码那条线也一样，标过才申请清除", () => {
+  const path = "/internals/core/command-engine";
+  const marked = runCommand(`mark ${path} clear`, withUnderstanding(grok(path, "read")));
+  assert.deepEqual(marked.actions, [{ type: "set-understanding", module: path, state: null }]);
+  assert.deepEqual(runCommand(`mark ${path} clear`, session).actions, []);
+});
+
+test("mark：找不到的课程照实说", () => {
+  const result = runCommand("mark nosuchcourse todo", session);
+  assert.equal(result.status, "error");
+  assert.match(result.blocks[0]?.type === "text" ? result.blocks[0].text : "", /no such course or module: nosuchcourse/);
+});
+
+test("mark clear：标过才申请清除，没标过就直说，不发多余的动作", () => {
+  const marked = runCommand("mark cs61a clear", withProgress(mark("cs61a", "done")));
+  assert.deepEqual(marked.actions, [{ type: "set-progress", course: "cs61a", state: null }]);
+  const never = runCommand("mark cs61a clear", session);
+  assert.equal(never.status, "ok");
+  assert.deepEqual(never.actions, []);
+});
+
+test("status：什么都没标时给能照着做的提示，两条线各给一条", () => {
+  const result = runCommand("status", session);
+  assert.equal(result.status, "ok");
+  const said = result.blocks.map((b) => (b.type === "text" ? b.text : "")).join(" ");
+  assert.match(said, /还没有标记任何东西/);
+  assert.match(said, /mark cs61a todo/);
+  assert.match(said, /read/);
+});
+
+test("status：不带参数时先给统计，再按状态分组列出，每一项可点", () => {
+  const result = runCommand("status", withProgress(mark("cs61a", "learning")));
+  assert.equal(result.status, "ok");
+  const first = result.blocks[0];
+  assert.match(first?.type === "text" ? first.text : "", /课程.*想学 0 · 在学 1 · 学完 0/);
+  const items = result.blocks.flatMap((b) => (b.type === "list" ? b.items : []));
+  assert.deepEqual(items, [{
+    label: "/programming-intro/cs61a",
+    description: "UC Berkeley CS61A",
+    command: "open /programming-intro/cs61a",
+  }]);
+});
+
+test("status：课程被删掉后照实显示，不悄悄丢掉读者的记录", () => {
+  const result = runCommand("status", withProgress(mark("gone", "todo")));
+  const items = result.blocks.flatMap((b) => (b.type === "list" ? b.items : []));
+  assert.deepEqual(items, [{ label: "gone", description: "这门课已不在课程树里" }]);
+});
+
+test("status：带参数时只回答那一门", () => {
+  const marked = runCommand("status cs61a", withProgress(mark("cs61a", "done")));
+  assert.match(marked.blocks[0]?.type === "text" ? marked.blocks[0].text : "", /UC Berkeley CS61A：学完/);
+  const never = runCommand("status cs61a", session);
+  assert.match(never.blocks[0]?.type === "text" ? never.blocks[0].text : "", /还没有标记/);
+});
+
+test("status 只读：不管怎么问，都不申请任何动作", () => {
+  for (const line of ["status", "status cs61a", "status nosuchcourse"]) {
+    assert.deepEqual(runCommand(line, withProgress(mark("cs61a", "todo"))).actions, []);
+  }
+});
+
+test("help 认识新命令：注册表是唯一的命令清单", () => {
+  const names = COMMANDS.map((command) => command.name);
+  assert.ok(names.includes("mark"));
+  assert.ok(names.includes("status"));
+  const listed = runCommand("help", session).blocks.flatMap((b) => (b.type === "list" ? b.items.map((i) => i.label) : []));
+  for (const name of names) assert.ok(listed.some((label) => label.startsWith(name)), `help 少列了 ${name}`);
+});
+
+test("status：两条线一起报告，代码那条带整体理解度", () => {
+  const path = "/internals/core/command-engine";
+  const result = runCommand("status", withUnderstanding(grok(path, "understood")));
+  const said = result.blocks.map((b) => (b.type === "text" ? b.text : "")).join(" | ");
+  assert.match(said, /课程　想学 0 · 在学 0 · 学完 0/);
+  // fixture 里有三个模块，读懂一个 = 33%。分母是全部模块，不是标过的数量。
+  assert.match(said, /代码　未读 0 · 读过 0 · 读懂了 1　整体理解度 1\/3（33%）/);
+  const items = result.blocks.flatMap((b) => (b.type === "list" ? b.items : []));
+  assert.deepEqual(items, [{ label: path, description: "命令引擎", command: `open ${path}` }]);
+});
+
+test("status：带参数指到源码时回答理解度，不是学习状态", () => {
+  const path = "/internals/core/command-engine";
+  const marked = runCommand(`status ${path}`, withUnderstanding(grok(path, "read")));
+  assert.match(marked.blocks[0]?.type === "text" ? marked.blocks[0].text : "", /命令引擎：读过/);
+  const never = runCommand(`status ${path}`, session);
+  assert.match(never.blocks[0]?.type === "text" ? never.blocks[0].text : "", /还没有标记/);
+});
+
+test("status：源码被删掉后照实显示，不悄悄丢掉读者的记录", () => {
+  const result = runCommand("status", withUnderstanding(grok("/internals/gone", "read")));
+  const items = result.blocks.flatMap((b) => (b.type === "list" ? b.items : []));
+  assert.deepEqual(items, [{ label: "/internals/gone", description: "这段代码已不在项目里" }]);
+});
+
+test("两条线互不干扰：标课程不会改动代码那条，反之亦然", () => {
+  const courseOnly = runCommand("mark cs61a done", session);
+  assert.equal(courseOnly.actions[0]?.type, "set-progress");
+  const moduleOnly = runCommand("mark /internals/core/command-engine understood", session);
+  assert.equal(moduleOnly.actions[0]?.type, "set-understanding");
 });

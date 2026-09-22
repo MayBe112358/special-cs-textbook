@@ -78,6 +78,8 @@ import { cdCommand } from "./commands/cd.ts";
 import { catCommand } from "./commands/cat.ts";
 import { openCommand } from "./commands/open.ts";
 import { refsCommand } from "./commands/refs.ts";
+import { markCommand } from "./commands/mark.ts";
+import { statusCommand } from "./commands/status.ts";
 import { text } from "./output.ts";
 
 /**
@@ -92,6 +94,8 @@ export const COMMANDS: readonly CommandDefinition[] = [
   catCommand,
   openCommand,
   refsCommand,
+  markCommand,
+  statusCommand,
 ];
 
 /**

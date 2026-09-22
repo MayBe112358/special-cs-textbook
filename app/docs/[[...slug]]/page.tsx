@@ -35,6 +35,8 @@
  * 既然是正文，它就该和课程页一样有地址、能被链接、能被 cd 进去——所以它们从同一只信封里出去。
  */
 import { PageNotes } from "@/components/notes/page-notes";
+import { AuthorCourseProgress } from "@/components/progress/author-progress";
+import { CourseStatus } from "@/components/progress/course-status";
 import { CourseModules } from "@/components/internals/cross-links";
 import { ModulePage } from "@/components/internals/module-page";
 import { getMDXComponents } from "@/components/mdx";
@@ -70,6 +72,11 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
         <DocsBody>
           <Content components={getMDXComponents()} />
           {course === null ? null : <CourseModules courseId={course.id} />}
+          {/* 学习状态只属于课程：分类页和源码讲解页没有它，所以这一栏只在课程页出现。 */}
+          {/* 作者的进度写在内容文件里，人人可见；下面那栏是读者自己的，存在他的浏览器里。
+              两栏并排，来源不能混，所以标题和说明各写各的。 */}
+          {course === null ? null : <AuthorCourseProgress courseId={course.id} />}
+          {course === null ? null : <CourseStatus key={course.id} courseId={course.id} />}
           <PageNotes key={slugToKnowledgePath(slug)} pageId={slugToKnowledgePath(slug)} />
         </DocsBody>
       </DocsPage>

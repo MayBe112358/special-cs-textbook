@@ -18,9 +18,10 @@
  * 但别把“共用”误解成什么都往这里塞。ls 怎么列目录、cat 为什么拒绝目录，仍留在各自命令里；
  * 只有真的一模一样、改动时也该一起变的规则才住进来。抽象不是把代码藏起来，而是把同一个决定只做一次。
  */
-import type { CommandResult } from "../command.ts";
+import type { CommandContext, CommandResult } from "../command.ts";
 import type { LookupResult } from "../../filesystem/virtual-file-system.ts";
-import { text } from "../output.ts";
+import type { CourseEntry, ModuleEntry } from "../../knowledge/knowledge-index.ts";
+import { list, text } from "../output.ts";
 
 /** 根路径单独处理，避免生成 /docs/ 之外的重复斜杠。 */
 export function knowledgePathToUrl(path: string): string {
@@ -42,4 +43,76 @@ export function lookupError(command: string, input: string, result: LookupResult
     blocks: [text(`${command}: ${result.reason}: ${input}`, "error")],
     actions: [],
   };
+}
+
+/** 参数写成这样就是位置，否则就是名字。规则只有一条：带路径符号的当路径。 */
+export function looksLikePath(input: string): boolean {
+  return input.includes("/") || input === "." || input === ".." || input === "~";
+}
+
+/**
+ * 把一个参数解析成"一门课"或"一段代码"，由参数指到哪里决定。
+ *
+ * mark 和 status 都要管两条进度线：课程那条和代码那条。读者不该为此记两条命令，
+ * 更不该被要求先说清"我现在问的是哪条线"——他指到哪，答案就在哪。
+ * 这和 refs 一条命令管两个方向是同一个想法：方向由参数本身决定，而不是由一个选项决定。
+ *
+ * 名字撞车的处理保持一致：课程编号全站唯一，模块名却会重（源码里真有两个 layout），
+ * 所以撞上了就把候选连位置一起列出来，让人再说一遍，绝不替他猜一个。
+ */
+export type TargetLookup =
+  | { ok: true; kind: "course"; course: CourseEntry }
+  | { ok: true; kind: "module"; module: ModuleEntry }
+  | { ok: false; result: CommandResult };
+
+export function resolveTarget(command: string, input: string, context: CommandContext): TargetLookup {
+  if (looksLikePath(input)) {
+    const found = context.fileSystem.lookup(context.currentPath, input);
+    if (!found.found) return { ok: false, result: lookupError(command, input, found) };
+    if (found.node.kind !== "file") {
+      return {
+        ok: false,
+        result: { status: "error", blocks: [text(`${command}: ${input}: Is a directory`, "error")], actions: [] },
+      };
+    }
+    return found.node.source.kind === "course"
+      ? { ok: true, kind: "course", course: found.node.source.course }
+      : { ok: true, kind: "module", module: found.node.source.module };
+  }
+
+  const courses = context.knowledge.courses.filter((course) => course.id === input);
+  const modules = context.knowledge.modules.filter((module) => module.id === input);
+  const total = courses.length + modules.length;
+
+  if (total === 0) {
+    return {
+      ok: false,
+      result: {
+        status: "error",
+        blocks: [text(`${command}: no such course or module: ${input}`, "error")],
+        actions: [],
+      },
+    };
+  }
+  if (total > 1) {
+    return {
+      ok: false,
+      result: {
+        status: "error",
+        blocks: [
+          text(`${command}: ${input}: 有多个同名的东西，请写出完整位置`, "error"),
+          list([...courses, ...modules].map((entry) => ({
+            label: entry.path,
+            description: entry.title,
+            command: `${command} ${entry.path}`,
+          }))),
+        ],
+        actions: [],
+      },
+    };
+  }
+  const course = courses[0];
+  return course !== undefined
+    ? { ok: true, kind: "course", course }
+    : { ok: true, kind: "module", module: modules[0] as ModuleEntry };
 }

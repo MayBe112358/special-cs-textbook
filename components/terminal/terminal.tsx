@@ -58,6 +58,8 @@ import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json"
 import type { KnowledgeIndex } from "@/core/knowledge/knowledge-index";
 import { runCommand } from "@/core/terminal/command-engine";
 import { pathnameToWorkingDirectory } from "@/core/terminal/location";
+import type { CourseProgress, ModuleUnderstanding } from "@/core/progress/progress";
+import { readProgressSnapshot, readUnderstandingSnapshot, subscribeProgress, writeProgress, writeUnderstanding } from "@/components/progress/progress-store";
 import type { OutputBlock } from "@/core/terminal/output";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -133,15 +135,28 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyCursor, setHistoryCursor] = useState<number | null>(null);
   const [previousPath, setPreviousPath] = useState<string | null>(null);
+  // 读者本机的两条进度线。引擎不许自己读浏览器存储，所以在这里读好再递进去。
+  const [progress, setProgress] = useState<readonly CourseProgress[]>([]);
+  const [understanding, setUnderstanding] = useState<readonly ModuleUnderstanding[]>([]);
   const draftBeforeHistory = useRef("");
   const nextEntryId = useRef(1);
   const outputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // 页面挂载后才有浏览器；之后订阅变化，页面上点按钮这里也会跟着更新。
+  useEffect(() => {
+    const load = () => {
+      setProgress(readProgressSnapshot().records);
+      setUnderstanding(readUnderstandingSnapshot().records);
+    };
+    load();
+    return subscribeProgress(load);
+  }, []);
+
   const executeLine = useCallback((line: string) => {
     if (line.trim() === "") return;
 
-    const result = runCommand(line, { currentPath, previousPath, fileSystem, knowledge: knowledgeIndex });
+    const result = runCommand(line, { currentPath, previousPath, fileSystem, knowledge: knowledgeIndex, progress, understanding });
     const entryId = nextEntryId.current++;
     setEntries((oldEntries) => [...oldEntries, {
       id: entryId,
@@ -153,13 +168,28 @@ export function TerminalDock({ children }: { children: ReactNode }) {
     setHistoryCursor(null);
     draftBeforeHistory.current = "";
 
+    // 命令只递申请单，真正动手在这里：跳转交给路由器，改状态交给浏览器存储。
     for (const action of result.actions) {
       if (action.type === "navigate") {
         if (action.reason === "change-directory") setPreviousPath(currentPath);
         router.push(action.href);
+      } else if (action.type === "set-progress" || action.type === "set-understanding") {
+        try {
+          if (action.type === "set-progress") writeProgress(action.course, action.state);
+          else writeUnderstanding(action.module, action.state);
+          setProgress(readProgressSnapshot().records);
+          setUnderstanding(readUnderstandingSnapshot().records);
+        } catch {
+          setEntries((oldEntries) => [...oldEntries, {
+            id: nextEntryId.current++,
+            prompt: currentPath,
+            command: "",
+            blocks: [{ type: "text", text: "保存失败，本机数据未改动。浏览器可能禁止存储或空间不足。", tone: "error" }],
+          }]);
+        }
       }
     }
-  }, [currentPath, previousPath, router]);
+  }, [currentPath, previousPath, progress, understanding, router]);
 
   useEffect(() => {
     if (!expanded) return;

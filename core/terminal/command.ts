@@ -43,6 +43,7 @@
 import type { OutputBlock } from "./output.ts";
 import type { VirtualFileSystem } from "../filesystem/virtual-file-system.ts";
 import type { KnowledgeIndex } from "../knowledge/knowledge-index.ts";
+import type { CourseProgress, ModuleUnderstanding, ProgressState, UnderstandingState } from "../progress/progress.ts";
 
 /**
  * 外部世界在执行命令前必须告诉引擎的东西。
@@ -66,6 +67,23 @@ export type SessionContext = {
    * 那种问题在原始的平表上问最直接。两者是同一份数据的两种看法，不是两份数据。
    */
   knowledge: KnowledgeIndex;
+  /**
+   * 读者自己标下的学习状态，一份只读快照。
+   *
+   * 注意它和上面两样东西的来源完全不同：文件系统和知识索引是构建时生成的、人人相同的内容；
+   * 这一份来自读者自己的浏览器，换台设备就是另一副样子。引擎不去读浏览器存储——
+   * 那样它就再也不能脱离浏览器跑测试了——所以由外层读好再递进来。
+   *
+   * 也正因为是快照，命令改不动它：要改状态只能返回一个 set-progress 动作，由外层执行。
+   */
+  progress: readonly CourseProgress[];
+  /**
+   * 第二条进度线：读者对每段代码的理解度，同样是一份只读快照。
+   *
+   * 和上面那份分开传，而不是塞进同一个数组，理由在 progress 模块的注释里写着：
+   * 课程是这本教材的目录，代码是正文，"走到哪"和"读懂了多少"是两个问题，混在一起就算不出有意义的数字。
+   */
+  understanding: readonly ModuleUnderstanding[];
 };
 
 /** 一条命令在运行时能看到的全部东西：外部给的 + 引擎补上的。 */
@@ -92,14 +110,35 @@ export type CommandResult = {
   actions: CommandAction[];
 };
 
-/** 命令不能自己跳转页面，只能交回这样一张“导航申请”。 */
-export type CommandAction = {
-  type: "navigate";
-  /** 交给网页路由器的站内地址。 */
-  href: string;
-  /** 为什么导航：外层只在 cd 时更新 OLDPWD，open 不改变它。 */
-  reason: "change-directory" | "open";
-};
+/**
+ * 命令不能自己动手，只能交回一张“申请单”，由外层去执行。
+ *
+ * 目前有两种：一种是跳转页面，一种是改动读者本机的学习状态。
+ * 两种都遵守同一条边界——命令只说“我想让这件事发生”，浏览器相关的动作全在外层完成。
+ * 这样测试可以检查意图，而不需要先启动一个浏览器。
+ */
+export type CommandAction =
+  | {
+      type: "navigate";
+      /** 交给网页路由器的站内地址。 */
+      href: string;
+      /** 为什么导航：外层只在 cd 时更新 OLDPWD，open 不改变它。 */
+      reason: "change-directory" | "open";
+    }
+  | {
+      type: "set-progress";
+      /** 要改动的课程编号。 */
+      course: string;
+      /** 改成哪个状态；null 表示把这门课的标记清掉。 */
+      state: ProgressState | null;
+    }
+  | {
+      type: "set-understanding";
+      /** 要改动的源码模块位置。用位置而不是名字，因为模块名会撞车。 */
+      module: string;
+      /** 改成哪个理解程度；null 表示把这段代码的标记清掉。 */
+      state: UnderstandingState | null;
+    };
 
 /** 一条命令。 */
 export type CommandDefinition = {
