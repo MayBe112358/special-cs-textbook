@@ -71,6 +71,7 @@ function moduleSummary(records: readonly ModuleUnderstanding[], modulePaths: str
 
 export const statusCommand: CommandDefinition = {
   name: "status",
+  pipeline: true,
   summary: "查课程学到哪了、代码读懂了多少",
   usage: USAGE,
   run(invocation, context): CommandResult {

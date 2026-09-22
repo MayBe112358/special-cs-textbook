@@ -31,6 +31,7 @@ import { text } from "../output.ts";
 
 export const catCommand: CommandDefinition = {
   name: "cat",
+  pipeline: true,
   summary: "显示课程或源码模块的简介",
   usage: "cat <file> [...]",
   run(invocation, context): CommandResult {

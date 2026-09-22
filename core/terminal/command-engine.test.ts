@@ -36,6 +36,7 @@ import { test } from "node:test";
 import type { DocComment } from "../knowledge/doc-comment.ts";
 import type { KnowledgeIndex } from "../knowledge/knowledge-index.ts";
 import { createVirtualFileSystem } from "../filesystem/virtual-file-system.ts";
+import {completeLine} from './completion.ts';
 import { COMMANDS, parseCommandLine, runCommand } from "./command-engine.ts";
 import { pathnameToWorkingDirectory } from "./location.ts";
 import type { CourseProgress, ModuleUnderstanding } from "../progress/progress.ts";
@@ -573,4 +574,52 @@ test("两条线互不干扰：标课程不会改动代码那条，反之亦然",
   assert.equal(courseOnly.actions[0]?.type, "set-progress");
   const moduleOnly = runCommand("mark /internals/core/command-engine understood", session);
   assert.equal(moduleOnly.actions[0]?.type, "set-understanding");
+});
+
+// 阶段 10：多段组合必须保留对象，而不是靠解析界面文本恢复链接。
+test('引号和转义保留参数，坏管道不会产生写入动作',()=>{
+ assert.deepEqual(parseCommandLine("grep 'a b|c'"),{name:'grep',args:['a b|c']});
+ for(const line of ["ls |", "| ls", "ls || grep x", "mark cs61a done | grep x", "mark cs61a 'done"]){const r=runCommand(line,session);assert.equal(r.status,'error',line);assert.deepEqual(r.actions,[]);}
+});
+test('三个命令传递结构化链接，空匹配继续传空列表',()=>{
+ const r=runCommand("find / -type f -name 'cs*' | grep -i CS61A | grep -v missing",session);
+ assert.equal(r.status,'ok');const rows=r.blocks.flatMap(b=>b.type==='list'?b.items:[]);
+ assert.equal(rows.length,1);assert.equal(rows[0]?.command,'open /programming-intro/cs61a');
+ const empty=runCommand('find / -name nonexistent | grep x',session);assert.deepEqual(empty.blocks,[{type:'list',items:[]}]);
+});
+test('find 区分文件目录、相对路径、个人状态与课程先修',()=>{
+ const rows=(line:string,ctx=session)=>runCommand(line,ctx).blocks.flatMap(b=>b.type==='list'?b.items:[]);
+ assert.equal(rows('find / -type d').length,fixture.categories.length);
+ assert.equal(rows("find programming-intro -path 'programming-intro/cs*'")[0]?.label,'programming-intro/cs61a');
+ assert.equal(rows('find / -status learning',withProgress(mark('cs61a','learning')) as typeof session).length,1);
+ assert.equal(rows('find / -prereq cs61b').length,0);
+ assert.equal(runCommand('find / -invalid x',session).status,'error');
+});
+test('grep 的字面、基础与扩展正则和无效选项',()=>{
+ assert.equal(runCommand('grep -z x',session).status,'error');
+ assert.equal(runCommand("grep '['",session).status,'error');
+ const rows=(line:string)=>runCommand(line,session).blocks.flatMap(b=>b.type==='list'?b.items:[]);
+ assert.equal(rows("find / -type f | grep -E 'cs61a|command-engine'").length,2);
+ assert.equal(rows("find / -type f | grep -F 'cs61a|command-engine'").length,0);
+ assert.equal(rows("find / -type f | grep 'cs61a|command-engine'").length,0);
+ assert.equal(rows("find / -path '*core/command-engine'").length,1);
+});
+test('pwd、tree 深度、history 限制与 clear 的边界',()=>{
+ assert.deepEqual(runCommand('pwd',session).blocks,[{type:'text',text:'/',tone:'normal'}]);
+ const tree=runCommand('tree -L 1 /',session).blocks[0];assert.equal(tree?.type,'tree');if(tree?.type==='tree')assert.equal(tree.root.children?.length,3);
+ assert.equal(runCommand('tree -L 0',session).status,'error');
+ assert.deepEqual(runCommand('history 1',{...session,history:['ls','history 1']}).blocks,[{type:'text',text:'2  history 1',tone:'normal'}]);
+ assert.deepEqual(runCommand('clear',session).actions,[{type:'clear-screen'}]);
+});
+
+test('Tab 唯一补全，多候选不擅自选取，保留光标后的内容',()=>{
+ const commands=COMMANDS.map(c=>c.name);
+ assert.equal(completeLine('pw',2,session,commands).value,'pwd ');
+ assert.equal(completeLine('cd pro',6,session,commands).value,'cd programming-intro/');
+ const ambiguous=completeLine('c',1,session,commands);assert.equal(ambiguous.value,'c');assert.ok(ambiguous.candidates.length>1);
+ assert.equal(completeLine('pw| grep x',2,session,commands).value,'pwd | grep x');
+});
+
+test('find 名称里的正则符号按字面匹配',()=>{
+ const rows=runCommand("find / -name 'cs61.'",session).blocks.flatMap(b=>b.type==='list'?b.items:[]);assert.equal(rows.length,0);
 });

@@ -18,19 +18,18 @@
  *                https://missing.csail.mit.edu/2020/course-shell/    —— 先在真 shell 里体会一遍
  *                https://missing.csail.mit.edu/2020/shell-tools/     —— 参数、引号、转义到底是谁在处理
  * @prereq        知道字符串可以按空格切开；知道函数可以放进对象里，再按名字取出来调用。
- * @unclear       拆词现在只按空白切开，还不认识引号（cd "my dir"）、不认识管道（find | grep）、
- *                也不认识重定向。管道要到 ROADMAP 阶段 10.4 才做，届时“命令之间传结构化数据而不是文本”
- *                这条要求会反过来影响这里的设计——那时可能需要真正的语法分析，而不是切一刀。
- *                命令现在可以返回站内导航动作，但引擎只负责原样交出去，仍然不执行浏览器副作用。
+ * @unclear       当前不是完整 shell：不实现重定向、变量展开、后台任务或系统进程。
+ *                管道传结构化数据，写入类命令不参加管道；未支持的语法明确报错。
  *
  * @letter
+ * 阶段 10 增加引号与管道：先解析整行、检查所有命令，再把结构化输出交给下一段。写入类命令不参加管道。
  * 这是这本教材里最重要的一章，请你慢慢读这一段。
  *
  * 你在终端敲下 help 然后回车，这中间发生了什么？摊开来只有三步：
  *
  *   第一步，拆词。你敲的是一整行字符 "help"，程序拿到的也只是一串字符。
  *     它得先决定：哪一段是命令的名字，哪些是参数。我们的规则很简单——按空白切开，
- *     第一个词是命令名，剩下的是参数。真 shell 在这一步复杂得多（引号、转义、变量展开、通配符），
+ *     第一个词是命令名，剩下的是参数。现在 syntax 模块会处理引号、转义与管道，变量展开仍不执行。
  *     但骨架就是这件事。编译原理课把它叫词法分析：把没有结构的字符，切成有意义的“词”。
  *
  *   第二步，查表。拿着名字 "help" 去注册表里找。找到了就有事可做，找不到就得回话。
@@ -80,6 +79,10 @@ import { openCommand } from "./commands/open.ts";
 import { refsCommand } from "./commands/refs.ts";
 import { markCommand } from "./commands/mark.ts";
 import { statusCommand } from "./commands/status.ts";
+import { parsePipeline } from './syntax.ts';
+import {pwdCommand,treeCommand,historyCommand,clearCommand} from './commands/navigation.ts';
+import {findCommand} from './commands/find.ts';
+import {grepCommand} from './commands/grep.ts';
 import { text } from "./output.ts";
 
 /**
@@ -96,6 +99,7 @@ export const COMMANDS: readonly CommandDefinition[] = [
   refsCommand,
   markCommand,
   statusCommand,
+  pwdCommand, treeCommand, historyCommand, clearCommand, findCommand, grepCommand,
 ];
 
 /**
@@ -105,10 +109,9 @@ export const COMMANDS: readonly CommandDefinition[] = [
  * 空行（或只敲了空格）会得到 null，表示“你什么也没说”，那不是错误。
  */
 export function parseCommandLine(line: string): CommandInvocation | null {
-  const words = line.trim().split(/\s+/).filter((word) => word !== "");
-  const [name, ...args] = words;
-  if (name === undefined) return null;
-  return { name, args };
+  const commands = parsePipeline(line);
+  if(commands.length>1)throw new Error('expected one command');
+  return commands[0]??null;
 }
 
 /**
@@ -118,23 +121,20 @@ export function parseCommandLine(line: string): CommandInvocation | null {
  * 引擎把命令注册表补进去，凑成命令运行时能看到的完整上下文。
  */
 export function runCommand(line: string, session: SessionContext): CommandResult {
-  const invocation = parseCommandLine(line);
-
-  // 敲了空行：真终端只是换一行继续等你，不显示任何东西，也不算出错。
-  if (invocation === null) return { status: "ok", blocks: [], actions: [] };
-
-  // 第二步：查表。注意这里是精确匹配，大小写敏感——真 Unix 里 HELP 和 help 不是同一个命令。
-  const command = COMMANDS.find((candidate) => candidate.name === invocation.name);
-  if (command === undefined) {
-    return {
-      status: "error",
-      // 照抄 Unix 的说法。不猜、不纠正、不建议。
-      blocks: [text(`command not found: ${invocation.name}`, "error")],
-      actions: [],
-    };
+  let pipeline:CommandInvocation[];
+  try { pipeline=parsePipeline(line); } catch(error) {return {status:'error',blocks:[text(error instanceof Error?error.message:'syntax error','error')],actions:[]};}
+  if(!pipeline.length)return {status:'ok',blocks:[],actions:[]};
+  // 执行前检查整条链；后段拼错时前段不应已写入本机数据。
+  for(const invocation of pipeline){
+    const command=COMMANDS.find(candidate=>candidate.name===invocation.name);
+    if(!command)return {status:'error',blocks:[text(`command not found: ${invocation.name}`,'error')],actions:[]};
+    if(pipeline.length>1&&!command.pipeline)return {status:'error',blocks:[text(`${command.name}: not supported in a pipeline`,'error')],actions:[]};
   }
-
-  // 第三步：求值。命令只负责算出结果，不许自己动手改任何东西。
-  const context: CommandContext = { ...session, commands: COMMANDS };
-  return command.run(invocation, context);
+  let result:CommandResult={status:'ok',blocks:[],actions:[]};
+  for(let i=0;i<pipeline.length;i++){
+    const invocation=pipeline[i]!;const command=COMMANDS.find(candidate=>candidate.name===invocation.name)!;
+    result=command.run(invocation,{...session,commands:COMMANDS,...(i?{stdin:result.blocks}:{})});
+    if(result.status==='error')return result;
+  }
+  return result;
 }

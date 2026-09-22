@@ -84,12 +84,16 @@ export type SessionContext = {
    * 课程是这本教材的目录，代码是正文，"走到哪"和"读懂了多少"是两个问题，混在一起就算不出有意义的数字。
    */
   understanding: readonly ModuleUnderstanding[];
+  /** 只读的会话历史，刷新即丢。 */
+  history?: readonly string[];
 };
 
 /** 一条命令在运行时能看到的全部东西：外部给的 + 引擎补上的。 */
 export type CommandContext = SessionContext & {
   /** 引擎里注册的所有命令。help 靠它自我介绍，所以它不需要手工维护一份命令清单。 */
   commands: readonly CommandDefinition[];
+  /** 管道的前一段原样交来的结构化块，不解析渲染后的文字。 */
+  stdin?: readonly OutputBlock[];
 };
 
 /** 用户敲下的那一行被拆开之后的样子。 */
@@ -118,6 +122,7 @@ export type CommandResult = {
  * 这样测试可以检查意图，而不需要先启动一个浏览器。
  */
 export type CommandAction =
+  | { type: "clear-screen" }
   | {
       type: "navigate";
       /** 交给网页路由器的站内地址。 */
@@ -144,6 +149,8 @@ export type CommandAction =
 export type CommandDefinition = {
   /** 命令名，小写、简短、动词优先，和 Unix 的习惯一致。 */
   name: string;
+  /** 只读命令才可以参加管道。 */
+  pipeline?: boolean;
   /** 一句话说明，help 会列出来。 */
   summary: string;
   /** 用法示例，例如 "help"。 */

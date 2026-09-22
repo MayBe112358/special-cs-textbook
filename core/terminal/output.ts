@@ -66,7 +66,9 @@ export type ListItem = {
 export type ListBlock = { type: "list"; items: ListItem[] };
 
 /** 命令能产出的所有块。将来新增类型时，在这里加一种，界面层会因为少处理一种而报错——这是好事。 */
-export type OutputBlock = TextBlock | ListBlock;
+export type TreeItem = {label:string; command:string; children?:TreeItem[]};
+export type TreeBlock = {type:'tree'; root:TreeItem};
+export type OutputBlock = TextBlock | ListBlock | TreeBlock;
 
 /** 造一段文字。写成函数只是图个顺手，省得每次都写 type: "text"。 */
 export function text(content: string, tone: OutputTone = "normal"): TextBlock {

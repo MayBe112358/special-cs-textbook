@@ -106,6 +106,7 @@ function describeModule(module: ModuleEntry, courses: readonly CourseEntry[]): O
 
 export const refsCommand: CommandDefinition = {
   name: "refs",
+  pipeline: true,
   summary: "查一门课对应哪些代码，或一段代码对应哪些课",
   usage: USAGE,
   run(invocation, context): CommandResult {
