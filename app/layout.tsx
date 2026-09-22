@@ -13,7 +13,7 @@
  * 一个地方负责全站共同规则。
  */
 import type { Metadata } from "next";
-import { RootProvider } from "fumadocs-ui/provider/next";
+import { SiteProvider } from "@/components/site-provider";
 import type { ReactNode } from "react";
 import "./globals.css";
 export const metadata: Metadata = {
@@ -21,5 +21,5 @@ export const metadata: Metadata = {
   description: "以课程为目录、以项目代码和注释为正文的计算机科学教材。",
 };
 export default function RootLayout({ children }: { children: ReactNode }) {
-  return <html lang="zh-CN" suppressHydrationWarning><body className="flex min-h-screen flex-col"><RootProvider>{children}</RootProvider></body></html>;
+  return <html lang="zh-CN" suppressHydrationWarning><body className="flex min-h-screen flex-col"><SiteProvider>{children}</SiteProvider></body></html>;
 }
