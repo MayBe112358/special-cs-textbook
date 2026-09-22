@@ -39,6 +39,9 @@
  * 等于悄悄把没收录的那几门抹掉了；而它们恰恰是这棵课程树将来该长出来的枝。
  * 宁可给你一个点不动的课名，也不假装那门课不存在。
  */
+import { AuthorModuleProgress } from "@/components/progress/author-progress";
+import { ModuleUnderstandingPanel } from "@/components/progress/module-understanding";
+import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json";
 import { PageNotes } from "@/components/notes/page-notes";
 import { ModuleCourses } from "@/components/internals/cross-links";
 import type { ModuleEntry } from "@/core/knowledge/knowledge-index";
@@ -162,6 +165,15 @@ export function ModulePage({ module }: { module: ModuleEntry }) {
             {content[section.id]}
           </Section>
         ))}
+        {/* 作者的理解度是内容，构建时就写死在这一页里；下面那栏要等浏览器打开后才读得到。 */}
+        <AuthorModuleProgress modulePath={module.path} />
+        {/* 理解度只属于源码模块：课程页和分类页各有各的进度线，这一栏只在讲解页出现。
+            整本教材有多少段代码，组件自己数不出来——它只看得见当前这一页，所以由这里传进去。 */}
+        <ModuleUnderstandingPanel
+          key={module.path}
+          modulePath={module.path}
+          modulePaths={knowledgeIndexJson.modules.map(module => module.path)}
+        />
         <PageNotes key={module.path} pageId={module.path} />
       </DocsBody>
     </DocsPage>
