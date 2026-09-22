@@ -24,6 +24,7 @@ import { lookupError, usageError } from "./shared.ts";
 
 export const lsCommand: CommandDefinition = {
   name: "ls",
+  pipeline: true,
   summary: "列出当前位置下有什么",
   usage: "ls [path]",
   run(invocation, context): CommandResult {

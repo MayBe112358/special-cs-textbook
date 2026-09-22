@@ -56,15 +56,17 @@
 import { createVirtualFileSystem } from "@/core/filesystem/virtual-file-system";
 import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json";
 import type { KnowledgeIndex } from "@/core/knowledge/knowledge-index";
-import { runCommand } from "@/core/terminal/command-engine";
+import { completeLine } from "@/core/terminal/completion";
+import { COMMANDS, runCommand } from "@/core/terminal/command-engine";
 import { pathnameToWorkingDirectory } from "@/core/terminal/location";
 import type { CourseProgress, ModuleUnderstanding } from "@/core/progress/progress";
 import { readProgressSnapshot, readUnderstandingSnapshot, subscribeProgress, writeProgress, writeUnderstanding } from "@/components/progress/progress-store";
-import type { OutputBlock } from "@/core/terminal/output";
+import type { OutputBlock, TreeItem } from "@/core/terminal/output";
 import { usePathname, useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -93,7 +95,13 @@ type HistoryEntry = {
   blocks: OutputBlock[];
 };
 
+function TreeView({node,onCommand}:{node:TreeItem;onCommand:(line:string)=>void}) {
+ const link=<button type="button" className="underline" onClick={()=>onCommand(node.command)}>{node.label}</button>;
+ return node.children?<details open><summary>{link}</summary><ul className="ml-4 border-l pl-3">{node.children.map(child=><li key={child.command}><TreeView node={child} onCommand={onCommand}/></li>)}</ul></details>:link;
+}
+
 function OutputView({ block, onCommand }: { block: OutputBlock; onCommand: (line: string) => void }) {
+  if (block.type === "tree") return <TreeView node={block.root} onCommand={onCommand}/>;
   if (block.type === "text") {
     const toneClass = block.tone === "error"
       ? "text-red-600 dark:text-red-400"
@@ -142,6 +150,11 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   const nextEntryId = useRef(1);
   const outputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const completionCursor = useRef<number | null>(null);
+  // 在输入值提交的同一帧恢复光标；延后一帧会干扰紧接着发生的选择和输入。
+  useLayoutEffect(() => {
+    if(completionCursor.current !== null){inputRef.current?.setSelectionRange(completionCursor.current,completionCursor.current);completionCursor.current=null;}
+  },[input]);
 
   // 页面挂载后才有浏览器；之后订阅变化，页面上点按钮这里也会跟着更新。
   useEffect(() => {
@@ -156,7 +169,7 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   const executeLine = useCallback((line: string) => {
     if (line.trim() === "") return;
 
-    const result = runCommand(line, { currentPath, previousPath, fileSystem, knowledge: knowledgeIndex, progress, understanding });
+    const result = runCommand(line, { currentPath, previousPath, fileSystem, knowledge: knowledgeIndex, progress, understanding, history:[...commandHistory,line] });
     const entryId = nextEntryId.current++;
     setEntries((oldEntries) => [...oldEntries, {
       id: entryId,
@@ -170,7 +183,9 @@ export function TerminalDock({ children }: { children: ReactNode }) {
 
     // 命令只递申请单，真正动手在这里：跳转交给路由器，改状态交给浏览器存储。
     for (const action of result.actions) {
-      if (action.type === "navigate") {
+      if (action.type === "clear-screen") {
+        setEntries([]);
+      } else if (action.type === "navigate") {
         if (action.reason === "change-directory") setPreviousPath(currentPath);
         router.push(action.href);
       } else if (action.type === "set-progress" || action.type === "set-understanding") {
@@ -189,7 +204,7 @@ export function TerminalDock({ children }: { children: ReactNode }) {
         }
       }
     }
-  }, [currentPath, previousPath, progress, understanding, router]);
+  }, [currentPath, previousPath, progress, understanding, commandHistory, router]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -205,6 +220,12 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   }
 
   function moveThroughHistory(event: KeyboardEvent<HTMLInputElement>) {
+    if(event.key==='Tab'){
+      event.preventDefault();const result=completeLine(input,event.currentTarget.selectionStart??input.length,{currentPath,previousPath,fileSystem,knowledge:knowledgeIndex,progress,understanding},COMMANDS.map(c=>c.name));
+      if(result.value!==input){completionCursor.current=result.cursor;setInput(result.value);}
+      if(result.candidates.length>1)setEntries(old=>[...old,{id:nextEntryId.current++,prompt:currentPath,command:'',blocks:[{type:'list',items:result.candidates.map(label=>({label}))}]}]);
+      return;
+    }
     if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
     if (commandHistory.length === 0) return;
     event.preventDefault();

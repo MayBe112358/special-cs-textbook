@@ -40,6 +40,7 @@ const USAGE = "help";
 
 export const helpCommand: CommandDefinition = {
   name: "help",
+  pipeline: true,
   summary: "列出当前可用的命令",
   usage: USAGE,
   run(invocation, context): CommandResult {
