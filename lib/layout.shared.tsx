@@ -13,5 +13,5 @@
  */
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 export function baseOptions(): BaseLayoutProps {
-  return { nav: { title: "一本特殊的 CS 教材" } };
+  return { links: [{text:"学习路径",url:"/paths"}], nav: { title: "一本特殊的 CS 教材" } };
 }

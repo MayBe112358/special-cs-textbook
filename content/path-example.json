@@ -1,0 +1,5 @@
+{
+  "name": "作者的 learncs.site 路线示例",
+  "description": "按项目指导文档记录的个人选择整理：CS50x → CS61A/B/C，搭配 MIT 数学课。这里只展示已明确的课程，不代表网站推荐顺序，也不声称收录了 learncs.site 的完整路线。复制后可自由调整。",
+  "courses": ["cs50x", "cs61a", "cs61b", "cs61c", "mit-18-01-18-02", "mit-18-06", "mit-6-042j"]
+}
