@@ -17,7 +17,8 @@
  * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— 用语义标签写一页真正的网页
  *                https://cs61a.org/ —— 抽象屏障：谁该知道数据长什么样
  * @prereq        知道网页由标题、段落、列表这些块拼成；知道 React 组件就是一段可复用的页面。
- * @unclear       页面上现在没有“去仓库看真正的源码”那种链接，因为项目还没有在任何地方登记过自己的仓库地址。
+ * @unclear       注释里的例子块一律不着色：格式里还没有“这一段是什么语言”的写法，按扩展名猜会涂错。
+ *                页面上现在没有“去仓库看真正的源码”那种链接，因为项目还没有在任何地方登记过自己的仓库地址。
  *                等它有了（大概是 ROADMAP 阶段 15 写 README 的时候），这里应该补上——
  *                毕竟这一页讲的就是那个文件，读者想看原件是很自然的事。
  *
@@ -47,6 +48,7 @@ import { ModuleCourses } from "@/components/internals/cross-links";
 import type { ModuleEntry } from "@/core/knowledge/knowledge-index";
 import type { Paragraph } from "@/core/knowledge/doc-comment";
 import type { TOCItemType } from "fumadocs-core/toc";
+import { ServerCodeBlock } from "fumadocs-ui/components/codeblock.rsc";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import type { ReactNode } from "react";
 
@@ -69,7 +71,23 @@ const SECTIONS = [
 /** 页面上那几节的编号，例如 "problem"。 */
 type SectionId = (typeof SECTIONS)[number]["id"];
 
-/** 把一组段落画成正文：普通段落是一段话，缩进的例子块保持原样。 */
+
+/**
+ * 把一组段落画成正文：普通段落是一段话，缩进的例子块画成和 MDX 里同一个样子的代码块。
+ *
+ * 例子块交给 ServerCodeBlock，但语言写死成 text——也就是不上色。这是想清楚之后的选择，不是没做完。
+ *
+ * 注释里的例子块目前装的几乎都是终端里的样子（一条命令、一行报错），不是 TypeScript 代码。
+ * 如果按这个文件的扩展名当成 TS 去着色，那段文字会被涂上一堆按错误语法分出来的颜色：
+ * 看着热闹，每一种颜色都不代表任何东西。颜色在代码里是有含义的（这是关键字、那是字符串），
+ * 涂错了比不涂更糟。
+ *
+ * 真正的解法是让写注释的人自己说清楚“这一段是什么语言”，而注释格式里还没有这个写法。
+ * 等注释里第一次出现真的代码样例时，该补的是那个格式，不是在这里猜。
+ *
+ * 另外要留意：在终端里 cat 同一个模块，拿到的仍然是纯文字。这也是故意的——
+ * 命令的输出是结构化数据，怎么画是网页这一层的事，不属于数据本身。
+ */
 export function Paragraphs({ paragraphs }: { paragraphs: Paragraph[] }) {
   return (
     <>
@@ -77,9 +95,13 @@ export function Paragraphs({ paragraphs }: { paragraphs: Paragraph[] }) {
         paragraph.kind === "text" ? (
           <p key={index}>{paragraph.text}</p>
         ) : (
-          <pre key={index}>
-            <code>{paragraph.lines.join("\n")}</code>
-          </pre>
+          <ServerCodeBlock
+            key={index}
+            code={paragraph.lines.join("\n")}
+            lang="text"
+            // 和 MDX 里的代码块用同一对主题，免得同一个网站里两种代码长得不一样。
+            themes={{ light: "github-light", dark: "github-dark" }}
+          />
         ),
       )}
     </>
