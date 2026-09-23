@@ -1,7 +1,8 @@
 /**
  * @module        整个网站最外层的页面骨架
  * @problem       所有页面都需要共享语言、基础高度和 Fumadocs 的交互环境。
- * @design        在根布局只挂载 RootProvider 和官方要求的基础类名，不放具体文档内容。
+ * @design        在根布局只挂载 RootProvider 和官方要求的基础类名，不放具体文档内容；
+ *                公式的样式表也在这里引入——它属于全站排版能力，不属于某一页。
  * @courses       CS50x Week 8 HTML, CSS, JavaScript; React 组件组合
  * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/
  * @prereq        HTML 页面有 html、body 两层，以及父组件可以包住所有子页面。
@@ -15,6 +16,7 @@
 import type { Metadata } from "next";
 import { SiteProvider } from "@/components/site-provider";
 import type { ReactNode } from "react";
+import "katex/dist/katex.min.css";
 import "./globals.css";
 export const metadata: Metadata = {
   title: "一本特殊的 CS 教材",
