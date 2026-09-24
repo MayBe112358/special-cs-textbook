@@ -80,9 +80,8 @@ export function resolveTarget(command: string, input: string, context: CommandCo
       : { ok: true, kind: "module", module: found.node.source.module };
   }
 
-  const courses = context.knowledge.courses.filter((course) => course.id === input);
-  const modules = context.knowledge.modules.filter((module) => module.id === input);
-  const total = courses.length + modules.length;
+  const named = entriesNamed(input, context);
+  const total = named.courses.length + named.modules.length;
 
   if (total === 0) {
     return {
@@ -94,25 +93,40 @@ export function resolveTarget(command: string, input: string, context: CommandCo
       },
     };
   }
-  if (total > 1) {
-    return {
-      ok: false,
-      result: {
-        status: "error",
-        blocks: [
-          text(`${command}: ${input}: 有多个同名的东西，请写出完整位置`, "error"),
-          list([...courses, ...modules].map((entry) => ({
-            label: entry.path,
-            description: entry.title,
-            command: `${command} ${entry.path}`,
-          }))),
-        ],
-        actions: [],
-      },
-    };
-  }
-  const course = courses[0];
+  if (total > 1) return { ok: false, result: ambiguousNameError(command, input, named) };
+  const course = named.courses[0];
   return course !== undefined
     ? { ok: true, kind: "course", course }
-    : { ok: true, kind: "module", module: modules[0] as ModuleEntry };
+    : { ok: true, kind: "module", module: named.modules[0] as ModuleEntry };
+}
+
+/** 按名字（课程编号或模块名）在全树里找，只认完全相同的名字，不做模糊匹配。 */
+export function entriesNamed(
+  input: string,
+  context: CommandContext,
+): { courses: CourseEntry[]; modules: ModuleEntry[] } {
+  return {
+    courses: context.knowledge.courses.filter((course) => course.id === input),
+    modules: context.knowledge.modules.filter((module) => module.id === input),
+  };
+}
+
+/** 名字撞车时的统一说法：列出每个候选的完整位置，点一下就等于把位置写全再敲一遍。 */
+export function ambiguousNameError(
+  command: string,
+  input: string,
+  named: { courses: CourseEntry[]; modules: ModuleEntry[] },
+): CommandResult {
+  return {
+    status: "error",
+    blocks: [
+      text(`${command}: ${input}: 有多个同名的东西，请写出完整位置`, "error"),
+      list([...named.courses, ...named.modules].map((entry) => ({
+        label: entry.path,
+        description: entry.title,
+        command: `${command} ${entry.path}`,
+      }))),
+    ],
+    actions: [],
+  };
 }

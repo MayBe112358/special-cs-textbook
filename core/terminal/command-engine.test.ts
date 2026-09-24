@@ -333,6 +333,53 @@ test("open：课程只返回正文页导航动作", () => {
   ]);
 });
 
+test("open：课程名和模块名在任何位置都能直接打开", () => {
+  for (const currentPath of ["/", "/systems", "/internals/app"]) {
+    assert.deepEqual(runCommand("open cs61a", { ...session, currentPath }).actions, [
+      { type: "navigate", href: "/docs/programming-intro/cs61a", reason: "open" },
+    ]);
+  }
+  assert.deepEqual(runCommand("open command-engine", session).actions, [
+    { type: "navigate", href: "/docs/internals/core/command-engine", reason: "open" },
+  ]);
+});
+
+test("open：当前层有同名的东西时优先打开眼前那个", () => {
+  const result = runCommand("open layout", { ...session, currentPath: "/internals/app" });
+  assert.deepEqual(result.actions, [
+    { type: "navigate", href: "/docs/internals/app/layout", reason: "open" },
+  ]);
+});
+
+test("open：名字不完全相同就照 Unix 报错，不猜；写成路径的不去别处找", () => {
+  const partial = runCommand("open cs61", session);
+  assert.equal(partial.status, "error");
+  assert.deepEqual(partial.blocks, [{ type: "text", text: "open: no such file or directory: cs61", tone: "error" }]);
+  assert.deepEqual(partial.actions, []);
+
+  const wrongPlace = runCommand("open systems/cs61a", session);
+  assert.equal(wrongPlace.status, "error");
+  assert.deepEqual(wrongPlace.actions, []);
+});
+
+test("open：多个同名时列出候选，不替读者挑一个", () => {
+  const result = runCommand("open layout", session);
+  assert.equal(result.status, "error");
+  assert.deepEqual(result.actions, []);
+  const block = result.blocks[1];
+  assert.equal(block?.type, "list");
+  assert.deepEqual(
+    block?.type === "list" ? block.items.map((item) => item.command) : [],
+    ["open /internals/core/layout", "open /internals/app/layout"],
+  );
+});
+
+test("cd：课程名不在当前层时照旧报错，不按名字到别处找", () => {
+  const result = runCommand("cd cs61a", session);
+  assert.equal(result.status, "error");
+  assert.deepEqual(result.actions, []);
+});
+
 test("网址是当前位置的唯一真相：分类是目录，课程页落在其父目录", () => {
   assert.equal(pathnameToWorkingDirectory("/docs/systems/", fileSystem), "/systems");
   assert.equal(
