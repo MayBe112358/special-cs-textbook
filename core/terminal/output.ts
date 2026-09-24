@@ -60,6 +60,8 @@ export type ListItem = {
   description?: string;
   /** 有这个字段时，界面把条目画成按钮；点击就像亲手输入这条命令。 */
   command?: string;
+  /** 这一项是目录还是文件。ls 会填，界面据此给目录换个颜色；不填就当普通条目。 */
+  kind?: "directory" | "file";
 };
 
 /** 一组并列的条目，比如 help 列出的命令、将来 ls 列出的课程。 */

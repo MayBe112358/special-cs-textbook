@@ -44,6 +44,7 @@ export const lsCommand: CommandDefinition = {
           label: node.name || "/",
           description: node.title,
           command: `open ${node.path}`,
+          kind: node.kind,
         }))),
       ],
       actions: [],

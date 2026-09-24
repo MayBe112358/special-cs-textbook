@@ -45,6 +45,7 @@ import { ModuleUnderstandingPanel } from "@/components/progress/module-understan
 import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json";
 import { PageNotes } from "@/components/notes/page-notes";
 import { ModuleCourses } from "@/components/internals/cross-links";
+import { PathBreadcrumb } from "@/components/path-breadcrumb";
 import type { ModuleEntry } from "@/core/knowledge/knowledge-index";
 import type { Paragraph } from "@/core/knowledge/doc-comment";
 import type { TOCItemType } from "fumadocs-core/toc";
@@ -100,7 +101,7 @@ export function Paragraphs({ paragraphs }: { paragraphs: Paragraph[] }) {
             code={paragraph.lines.join("\n")}
             lang="text"
             // 和 MDX 里的代码块用同一对主题，免得同一个网站里两种代码长得不一样。
-            themes={{ light: "github-light", dark: "github-dark" }}
+            themes={{ light: "light-plus", dark: "dark-plus" }}
           />
         ),
       )}
@@ -124,11 +125,15 @@ function Section({ id, heading, children }: { id: string; heading: string; child
  * 反过来做（先画页面、再从页面里认出标题）也能work，但那是把自己知道的事情先扔掉再猜回来。
  */
 export function moduleTableOfContents(): TOCItemType[] {
-  return SECTIONS.map((section) => ({
-    title: section.heading,
-    url: `#${section.id}`,
-    depth: 2,
-  }));
+  return [
+    ...SECTIONS.map((section) => ({
+      title: section.heading,
+      url: `#${section.id}`,
+      depth: 2,
+    })),
+    // 页面最后的“心得”由 PageNotes 画出，也要在目录里有一个入口。
+    { title: "心得", url: "#notes", depth: 2 },
+  ];
 }
 
 /** @module 那一行里破折号后面那半句；没有破折号就没有副标题。 */
@@ -175,9 +180,19 @@ export function ModulePage({ module }: { module: ModuleEntry }) {
   };
 
   return (
-    <DocsPage toc={moduleTableOfContents()} full={false}>
+    <DocsPage toc={moduleTableOfContents()} full={false} slots={{ breadcrumb: PathBreadcrumb }}>
       <DocsTitle>{module.title}</DocsTitle>
       {subtitle === null ? null : <DocsDescription>{subtitle}</DocsDescription>}
+      {/* 理解度只属于源码模块：课程页和分类页各有各的进度线，这一行只在讲解页出现。
+          整本教材有多少段代码，组件自己数不出来——它只看得见当前这一页，所以由这里传进去。
+          作者的理解度是内容，构建时就写死在这一页里；按钮要等浏览器打开后才读得到。 */}
+      <ModuleUnderstandingPanel
+        key={module.path}
+        modulePath={module.path}
+        modulePaths={knowledgeIndexJson.modules.map(module => module.path)}
+      >
+        <AuthorModuleProgress modulePath={module.path} />
+      </ModuleUnderstandingPanel>
       <DocsBody>
         <p>
           源文件：<code>{module.file}</code>
@@ -187,15 +202,6 @@ export function ModulePage({ module }: { module: ModuleEntry }) {
             {content[section.id]}
           </Section>
         ))}
-        {/* 作者的理解度是内容，构建时就写死在这一页里；下面那栏要等浏览器打开后才读得到。 */}
-        <AuthorModuleProgress modulePath={module.path} />
-        {/* 理解度只属于源码模块：课程页和分类页各有各的进度线，这一栏只在讲解页出现。
-            整本教材有多少段代码，组件自己数不出来——它只看得见当前这一页，所以由这里传进去。 */}
-        <ModuleUnderstandingPanel
-          key={module.path}
-          modulePath={module.path}
-          modulePaths={knowledgeIndexJson.modules.map(module => module.path)}
-        />
         <PageNotes key={module.path} pageId={module.path} />
       </DocsBody>
     </DocsPage>

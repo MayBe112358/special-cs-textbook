@@ -2,6 +2,8 @@
  * @module        每页的作者心得与私人心得
  * @problem       作者公开的记录跟着项目走，访问者自己的笔记只在本机；两者必须在来源和界面上分清。
  * @design        构建时从 content/author-notes.json 按知识路径读取作者文字，再接上独立的私人编辑器；内容文件不读浏览器状态。
+ *                两份心得放在同一个“心得”标题下，各占一张卡片：作者的小标题是紫色，你的是蓝色——
+ *                和标题下面“作者：学完”“我的状态”那一行用的是同一套颜色约定。
  * @courses       CS50x Web 开发；CS61A 数据抽象
  * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— 页面组织与公开内容
  * @prereq        同一页可以同时显示公开内容和本机内容，但它们不是同一份数据。
@@ -18,16 +20,20 @@ import {PublicComments} from './public-comments';
 import {VisitorNotes} from './visitor-notes';
 export function PageNotes({pageId}:{pageId:string}) {
   const records=(authorNotes as Record<string,{title:string;source?:string;text:string}[]>)[pageId]??[];
-  return <>
-    <section aria-label="作者的心得" className="not-prose my-8 border-t border-fd-border pt-6">
-      <h2 className="text-xl font-semibold">作者的心得</h2>
-      <p className="my-2 text-sm text-fd-muted-foreground">公开内容，随项目保存，所有读者都能看到。</p>
-      {records.length===0?<p>作者尚未在这一页记录心得。</p>:records.map((note,index)=><div key={index} className="my-4">
-        <h3 className="font-semibold">{note.title}</h3><p className="my-2 whitespace-pre-wrap">{note.text}</p>
-        {note.source?<p className="text-sm text-fd-muted-foreground">{note.source}</p>:null}
+  return <div className="not-prose mt-12 space-y-3">
+    <h2 id="notes" className="scroll-mt-20 border-b border-fd-border pb-2 text-xl font-semibold">心得</h2>
+    <section aria-label="作者的心得" className="cs-card space-y-2.5">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <h3 className="cs-eyebrow text-cs-author">作者的心得</h3>
+        <span className="text-xs text-fd-muted-foreground">公开内容，随项目保存</span>
+      </div>
+      {records.length===0?<p className="text-sm text-fd-muted-foreground">作者还没有在这一页写心得。</p>:records.map((note,index)=><div key={index} className="space-y-1">
+        <h4 className="font-medium">{note.title}</h4>
+        <p className="whitespace-pre-wrap text-[0.9375rem] leading-relaxed">{note.text}</p>
+        {note.source?<p className="text-xs text-fd-muted-foreground">{note.source}</p>:null}
       </div>)}
     </section>
     <VisitorNotes key={pageId} pageId={pageId}/>
     <PublicComments key={`comments:${pageId}`} pageId={pageId}/>
-  </>;
+  </div>;
 }

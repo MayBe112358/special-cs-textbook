@@ -38,23 +38,46 @@
  * 三个月后没人想得到要去那儿找。
  */
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
 import { TerminalDock } from "@/components/terminal/terminal";
+import { TopBar } from "@/components/top-bar";
+import { SidebarSash } from "@/components/sidebar-sash";
 
-/** --fd-terminal-height 由 TerminalDock 挂在外层，随终端展开/折叠变化，这里只是减掉它。 */
+/**
+ * --fd-terminal-height 由 TerminalDock 挂在外层，随终端展开/折叠变化，这里只是减掉它。
+ * --fd-banner-height 是 Fumadocs 留给“页面最上方还有一条横幅”的旋钮：宽屏时顶栏（TopBar）就是那条横幅，
+ * 侧边栏和页内目录据此停在顶栏下面，而不是钻到它底下去。它的 2.75rem 必须和 TopBar 的 h-11 一样高。
+ */
 const docsContainerStyle = {
   "--fd-docs-height": "calc(100dvh - var(--fd-terminal-height, 0px))",
 } as CSSProperties;
 
+/**
+ * 手机上没有顶栏，“学习路径 / 知识图谱”就放进侧边栏抽屉的上方。
+ * 宽屏时侧边栏那一截顶部整个藏起来了（见 globals.css），所以这两个链接只会在抽屉里出现一次。
+ */
+function DrawerLinks() {
+  return (
+    <nav aria-label="网站各部分" className="flex gap-2 text-sm">
+      <Link href="/paths" className="cs-btn flex-1">学习路径</Link>
+      <Link href="/graph" className="cs-btn flex-1">知识图谱</Link>
+    </nav>
+  );
+}
+
 export default function DocumentationLayout({ children }: { children: ReactNode }) {
   return (
     <TerminalDock>
+      <TopBar hideOnMobile sidebarToggle />
+      <SidebarSash />
       <DocsLayout
         {...baseOptions()}
         tree={source.getPageTree()}
-        containerProps={{ style: docsContainerStyle }}
+        sidebar={{ collapsible: false, banner: <DrawerLinks /> }}
+        containerProps={{ style: docsContainerStyle, className: "md:[--fd-banner-height:2.75rem]" }}
       >
         {children}
       </DocsLayout>

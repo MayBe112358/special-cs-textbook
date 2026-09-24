@@ -12,9 +12,15 @@
  * 这里用课程树里的知识路径作讨论标题，并要求严格匹配，因此 /programming-intro/cs61a 始终指向同一页。
  * 每次换页都移除旧评论容器，再为新页面加载脚本，避免在课程乙下面看见课程甲的讨论。
  * GitHub 的仓库和分类编号是公开标识，不是密码；代码里不存登录凭证。登录由 Giscus 与 GitHub 的授权页面处理。
+ * 评论区的深浅色跟着网站走，而不是跟着电脑系统走：你在网站里切到深色，评论框也要是深色。
+ * 它住在别人家的 iframe 里，我们改不了它的样式，只能按 Giscus 约定的方式给它发一条消息说“换主题”。
  */
 'use client';
 import {useEffect,useRef,useState} from 'react';
+
+/** 网站当前是不是深色。Fumadocs 切主题时只改 <html> 上的 class，所以直接看它。 */
+function siteTheme(){return document.documentElement.classList.contains('dark')?'dark':'light';}
+
 export function PublicComments({pageId}:{pageId:string}) {
  const container=useRef<HTMLDivElement>(null);
  const [failed,setFailed]=useState(false);
@@ -23,16 +29,27 @@ export function PublicComments({pageId}:{pageId:string}) {
   setFailed(false);
   const script=document.createElement('script');
   script.src='https://giscus.app/client.js';script.async=true;script.crossOrigin='anonymous';
-  const attributes={repo:'MayBe112358/special-cs-textbook','repo-id':'R_kgDOT6Q3QA',category:'Announcements','category-id':'DIC_kwDOT6Q3QM4DF29s',mapping:'specific',term:pageId,strict:'1','reactions-enabled':'1','emit-metadata':'0','input-position':'top',theme:'preferred_color_scheme',lang:'zh-CN',loading:'lazy'};
+  const attributes={repo:'MayBe112358/special-cs-textbook','repo-id':'R_kgDOT6Q3QA',category:'Announcements','category-id':'DIC_kwDOT6Q3QM4DF29s',mapping:'specific',term:pageId,strict:'1','reactions-enabled':'1','emit-metadata':'0','input-position':'top',theme:siteTheme(),lang:'zh-CN',loading:'lazy'};
   for(const [name,value] of Object.entries(attributes))script.setAttribute(`data-${name}`,value);
   script.onerror=()=>setFailed(true);target.appendChild(script);
   return ()=>{script.onerror=null;target.replaceChildren();};
  },[pageId]);
- return <section aria-label="公开评论" className="not-prose my-8 border-t border-fd-border pt-6">
-  <h2 className="text-xl font-semibold">公开评论</h2>
-  <p className="my-2 text-sm">使用 GitHub 登录后发布，内容公开保存在仓库 Discussions。私人心得不会自动发布到这里。</p>
-  {failed?<p role="status">评论加载失败，可打开 GitHub 讨论区查看。</p>:null}
+ // 网站切换深浅色时，告诉评论框也换。
+ useEffect(()=>{
+  const observer=new MutationObserver(()=>{
+   const frame=container.current?.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+   frame?.contentWindow?.postMessage({giscus:{setConfig:{theme:siteTheme()}}},'https://giscus.app');
+  });
+  observer.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+  return ()=>observer.disconnect();
+ },[]);
+ return <section aria-label="公开评论" className="space-y-2 pt-6">
+  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+   <h3 className="text-base font-semibold">公开评论</h3>
+   <a className="text-xs text-fd-primary hover:underline" href="https://github.com/MayBe112358/special-cs-textbook/discussions" target="_blank" rel="noreferrer">在 GitHub 查看全部讨论</a>
+  </div>
+  <p className="text-xs text-fd-muted-foreground">用 GitHub 登录后发布，内容公开保存在仓库 Discussions。上面的私人心得不会自动发到这里。</p>
+  {failed?<p role="status" className="text-sm text-cs-error">评论加载失败，可以打开 GitHub 讨论区查看。</p>:null}
   <div ref={container} className="giscus"/>
-  <a className="text-sm underline" href="https://github.com/MayBe112358/special-cs-textbook/discussions" target="_blank" rel="noreferrer">在 GitHub 查看公开讨论</a>
  </section>;
 }

@@ -55,5 +55,7 @@ export default defineConfig({
     // 插件排在 Fumadocs 自带的那串前面：先认出公式和流程图，再交给它做标题、代码块那些事。
     remarkPlugins: (plugins) => [remarkMath, remarkMdxMermaid, ...plugins],
     rehypePlugins: (plugins) => [rehypeKatex, ...plugins],
+    // 代码颜色用 VS Code 默认主题那一套，和全站配色同源（见 app/globals.css 顶上的信）。
+    rehypeCodeOptions: { themes: { light: "light-plus", dark: "dark-plus" }, defaultColor: false },
   },
 });

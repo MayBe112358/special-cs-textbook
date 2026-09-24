@@ -40,6 +40,7 @@ import { CourseStatus } from "@/components/progress/course-status";
 import { CourseModules } from "@/components/internals/cross-links";
 import { ModulePage } from "@/components/internals/module-page";
 import { getMDXComponents } from "@/components/mdx";
+import { PathBreadcrumb } from "@/components/path-breadcrumb";
 import { createVirtualFileSystem } from "@/core/filesystem/virtual-file-system";
 import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json";
 import type { KnowledgeIndex } from "@/core/knowledge/knowledge-index";
@@ -48,12 +49,25 @@ import { source } from "@/lib/source";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { TOCItemType } from "fumadocs-core/toc";
 
 const knowledgeIndex = knowledgeIndexJson as KnowledgeIndex;
 const fileSystem = createVirtualFileSystem(knowledgeIndex);
 
 function slugToKnowledgePath(slug?: string[]): string {
   return slug && slug.length > 0 ? `/${slug.join("/")}` : "/";
+}
+
+/**
+ * 右侧目录只认得 MDX 里写的标题。页面最后那两节（本课对应的项目实现、心得）是组件画出来的，
+ * 不补上的话，目录会在“官方作业”那里戛然而止，读者不知道下面还有东西。
+ */
+function withComputedSections(toc: TOCItemType[], isCourse: boolean): TOCItemType[] {
+  return [
+    ...toc,
+    ...(isCourse ? [{ title: "本课对应的项目实现", url: "#project-modules", depth: 2 }] : []),
+    { title: "心得", url: "#notes", depth: 2 },
+  ];
 }
 
 export default async function DocumentationPage(props: { params: Promise<{ slug?: string[] }> }) {
@@ -66,17 +80,20 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
     // 课程页最后要接上“本课对应的项目实现”，那一栏不写在 MDX 里，它是从源码注释算出来的。
     const course = node?.kind === "file" && node.source.kind === "course" ? node.source.course : null;
     return (
-      <DocsPage toc={page.data.toc} full={page.data.full}>
+      <DocsPage toc={withComputedSections(page.data.toc, course !== null)} full={page.data.full} slots={{ breadcrumb: PathBreadcrumb }}>
         <DocsTitle>{page.data.title}</DocsTitle>
         <DocsDescription>{page.data.description}</DocsDescription>
+        {/* 学习状态只属于课程：分类页和源码讲解页没有它，所以这一行只在课程页出现。
+            作者的进度（紫色标签）写在内容文件里、构建时就画好；按钮是读者自己的，存在他的浏览器里。
+            两者挨着放方便对照，靠形状和颜色区分来源。 */}
+        {course === null ? null : (
+          <CourseStatus key={course.id} courseId={course.id}>
+            <AuthorCourseProgress courseId={course.id} />
+          </CourseStatus>
+        )}
         <DocsBody>
           <Content components={getMDXComponents()} />
           {course === null ? null : <CourseModules courseId={course.id} />}
-          {/* 学习状态只属于课程：分类页和源码讲解页没有它，所以这一栏只在课程页出现。 */}
-          {/* 作者的进度写在内容文件里，人人可见；下面那栏是读者自己的，存在他的浏览器里。
-              两栏并排，来源不能混，所以标题和说明各写各的。 */}
-          {course === null ? null : <AuthorCourseProgress courseId={course.id} />}
-          {course === null ? null : <CourseStatus key={course.id} courseId={course.id} />}
           <PageNotes key={slugToKnowledgePath(slug)} pageId={slugToKnowledgePath(slug)} />
         </DocsBody>
       </DocsPage>
@@ -91,15 +108,26 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
   }
   const children = fileSystem.childrenOf(node);
   return (
-    <DocsPage toc={[]} full={false}>
+    <DocsPage toc={[]} full={false} slots={{ breadcrumb: PathBreadcrumb }}>
       <DocsTitle>{node.title}</DocsTitle>
       {node.description ? <DocsDescription>{node.description}</DocsDescription> : null}
       <DocsBody>
-        <ul>
+        {/* 像 ls 的输出换了一身衣服：每行是一项，左边是标题，右边是它在终端里的名字——
+            记住这个名字，下次在终端里 cd 或 open 它就行。目录的名字带一个斜杠，和 ls 的颜色约定一致。 */}
+        <ul className="not-prose divide-y divide-fd-border overflow-hidden rounded-md border border-fd-border">
           {children.map((child) => (
             <li key={child.path}>
-              <Link href={child.kind === "file" ? child.url : knowledgePathToUrl(child.path)}>
-                {child.title}
+              <Link
+                href={child.kind === "file" ? child.url : knowledgePathToUrl(child.path)}
+                className="group grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-0.5 px-4 py-3 transition-colors hover:bg-cs-hover"
+              >
+                <span className="font-medium text-fd-foreground group-hover:text-fd-primary">{child.title}</span>
+                <span className={`font-mono text-xs ${child.kind === "directory" ? "text-cs-dir" : "text-fd-muted-foreground"}`}>
+                  {child.name}{child.kind === "directory" ? "/" : ""}
+                </span>
+                {child.description ? (
+                  <span className="col-span-2 text-sm leading-relaxed text-fd-muted-foreground">{child.description}</span>
+                ) : null}
               </Link>
             </li>
           ))}
