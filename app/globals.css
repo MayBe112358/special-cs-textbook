@@ -1,16 +1,560 @@
 /**
- * @module        全站默认样式入口
- * @problem       Fumadocs 的三栏排版与正文组件需要加载官方样式才能正常显示。
- * @design        只导入 Tailwind 和 Fumadocs 的默认样式，不写项目自定义样式。
- * @courses       CS50x Week 8 HTML, CSS, JavaScript
- * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/
- * @prereq        CSS 会影响页面布局和可读性。
- * @unclear       项目自己的视觉语言要到 ROADMAP 14 才决定。
+ * @module        全站样式入口——一套颜色、两种主题，以及几种反复出现的小部件的样子
+ * @problem       Fumadocs 默认是一套中性灰，终端、进度按钮、心得卡片这些本站自己的部件又各写各的颜色，
+ *                拼在一起像几个人做的网站。阶段 14 要给它一个统一的外观：像现代 IDE，而不是黑底绿字；
+ *                深色浅色都能看；终端风格不能压过长文阅读。
+ * @design        颜色照搬 VS Code 默认主题（Light Modern / Dark Modern）的色值，因为读这本教材的人
+ *                迟早要天天对着它，熟悉的颜色有熟悉的含义：蓝色是能点的，绿色是提示符，红色是出错。
+ *                所有颜色都写成变量，放在这一个文件里；组件只用变量名，不写具体色值。
+ *                Fumadocs 自己的变量（--color-fd-*）在这里被覆盖，本站新增的变量统一用 --color-cs-* 开头。
+ *                按钮、分段按钮、输入框、卡片这几种部件写成 cs-* 类，各组件共用，改一处全站跟着变。
+ *                考虑过换一个组件库，但那等于换技术（AGENTS.md 6.2），而这里需要的只是几条 CSS。
+ * @courses       Harvard CS50x Week 8（HTML、CSS）；UC Berkeley CS160 / Stanford CS147（用户界面设计、
+ *                一致性与可达性）；MIT 6.031（用一个名字代替重复的值）
+ * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— 用 CSS 做一个有统一风格的页面
+ * @prereq        知道 CSS 变量是什么：先给一个值起名字，别的地方只写名字。
+ * @unclear       对比度是照 WCAG 的 4.5:1 手算检查过的，没有用工具在每一个组合上跑过。
+ *                中文字体没有另外下载，用的是读者系统里自带的那一款，所以不同系统上字形不完全一样。
  *
  * @letter
- * 这三行提供侧边栏、正文和页内导航的基础排版。现在不追加任何规则，是为了保留一个可比较的起点：
- * 你验收的是 Fumadocs 的默认能力，而不是一层尚未讨论过的装饰。
+ * 这个文件最值得你留意的，是“颜色有名字”这件事。
+ *
+ * 如果在按钮里直接写 #005FB8，在链接里又写一次，在终端里再写一次，那么深色模式来了，
+ * 你就得把全站每一处都找出来改一遍——漏一处，那一处就会在黑底上显示深蓝色，几乎看不见。
+ * 这里的做法是：只在文件开头说一次“链接色叫 --color-fd-primary，浅色时是这个值，深色时是那个值”，
+ * 其他地方只说“用链接色”。换主题时，改的只是那张名字到颜色的对照表。
+ * 这和你在 CS61A 里学的“抽象屏障”是同一个想法：用的人只认名字，不关心名字背后是什么。
+ *
+ * 另一件事是颜色的含义要前后一致。蓝色在这个网站里只表示“能点 / 选中”，绿色只出现在终端提示符和“学完”上，
+ * 紫色只用来标“作者写的”。你不必记这张表，用一会儿就会自然知道——前提是它从不例外。
+ *
+ * 最后是终端那一块的高度。它是一个会动画的变量（下面的 @property），整个页面的布局都读它：
+ * 终端展开，正文区跟着变矮；终端收起，正文区跟着变高——两边在同一帧里一起动，不会出现一块空白。
+ * 普通的 CSS 变量没法做动画，因为浏览器不知道它是长度还是颜色；@property 就是告诉浏览器“它是一个长度”。
  */
 @import "tailwindcss";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
+
+/* 终端占的高度要能平滑变化，所以先告诉浏览器它是一个长度。 */
+@property --fd-terminal-height {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@theme {
+  --font-sans: "Segoe UI", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-mono: "Cascadia Code", "Cascadia Mono", "JetBrains Mono", Consolas, "SFMono-Regular", Menlo, "Microsoft YaHei", monospace;
+
+  /* 本站自己的颜色（浅色）。深色值在下面 .dark 里。 */
+  --color-cs-button: #005fb8;
+  --color-cs-button-foreground: #ffffff;
+  --color-cs-active: #e4edf8;
+  --color-cs-hover: #f0f0f0;
+  --color-cs-prompt: #2e7d32;
+  --color-cs-dir: #267f99;
+  --color-cs-author: #8250df;
+  --color-cs-ok: #2e7d32;
+  --color-cs-warn: #9a6700;
+  --color-cs-error: #c72e0f;
+  --color-cs-scrim: rgb(0 0 0 / 0.2);
+  --shadow-cs-pop: 0 8px 28px rgb(0 0 0 / 0.16);
+
+  --animate-cs-pop-in: cs-pop-in 140ms ease-out;
+  --animate-cs-fade-in: cs-fade-in 140ms ease-out;
+}
+
+/* Fumadocs 的颜色（浅色，参照 VS Code Light Modern）。 */
+:root {
+  --color-fd-background: #ffffff;
+  --color-fd-foreground: #1f1f1f;
+  --color-fd-muted: #f3f3f3;
+  --color-fd-muted-foreground: #6b6b6b;
+  --color-fd-popover: #ffffff;
+  --color-fd-popover-foreground: #1f1f1f;
+  --color-fd-card: #f8f8f8;
+  --color-fd-card-foreground: #1f1f1f;
+  --color-fd-border: #e5e5e5;
+  --color-fd-primary: #005fb8;
+  --color-fd-primary-foreground: #ffffff;
+  --color-fd-secondary: #f3f3f3;
+  --color-fd-secondary-foreground: #1f1f1f;
+  --color-fd-accent: #e8e8e8;
+  --color-fd-accent-foreground: #1f1f1f;
+  --color-fd-ring: #005fb8;
+  --color-fd-overlay: rgb(0 0 0 / 0.2);
+}
+
+/* 深色，参照 VS Code Dark Modern。#nd-sidebar 那条是为了盖过 neutral.css 里专门给侧边栏写的灰色。 */
+.dark,
+.dark #nd-sidebar {
+  --color-fd-background: #1f1f1f;
+  --color-fd-foreground: #e0e0e0;
+  --color-fd-muted: #252526;
+  --color-fd-muted-foreground: #9d9d9d;
+  --color-fd-popover: #252526;
+  --color-fd-popover-foreground: #cccccc;
+  --color-fd-card: #181818;
+  --color-fd-card-foreground: #e0e0e0;
+  --color-fd-border: #2b2b2b;
+  --color-fd-primary: #4daafc;
+  --color-fd-primary-foreground: #1f1f1f;
+  --color-fd-secondary: #252526;
+  --color-fd-secondary-foreground: #e0e0e0;
+  --color-fd-accent: #2a2d2e;
+  --color-fd-accent-foreground: #e7e7e7;
+  --color-fd-ring: #0078d4;
+  --color-fd-overlay: rgb(0 0 0 / 0.5);
+
+  --color-cs-button: #0078d4;
+  --color-cs-button-foreground: #ffffff;
+  --color-cs-active: #04395e;
+  --color-cs-hover: #2a2d2e;
+  --color-cs-prompt: #23d18b;
+  --color-cs-dir: #4ec9b0;
+  --color-cs-author: #b392f0;
+  --color-cs-ok: #3fb950;
+  --color-cs-warn: #cca700;
+  --color-cs-error: #f14c4c;
+  --color-cs-scrim: rgb(0 0 0 / 0.5);
+  --shadow-cs-pop: 0 10px 32px rgb(0 0 0 / 0.6);
+}
+
+@keyframes cs-pop-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.99); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes cs-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@layer base {
+  ::selection {
+    background: color-mix(in srgb, var(--color-cs-button) 28%, transparent);
+  }
+  :focus-visible {
+    outline: 1px solid var(--color-cs-button);
+    outline-offset: 1px;
+  }
+  /* 细滚动条，像编辑器里那样不抢眼。 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-fd-muted-foreground) 45%, transparent) transparent;
+  }
+  code, kbd, pre, samp {
+    font-family: var(--font-mono);
+  }
+}
+
+/* ---------- 长文阅读：正文用普通字体、较宽的行距，等宽字只留给代码 ----------
+   只管正文那一块（#nd-page 里、目录之外）：Fumadocs 的页内目录链接也带着 prose 类，不能被一起放大。 */
+#nd-page .prose:not(#nd-toc *, #nd-toc-placeholder *, #nd-subnav *) {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.prose :where(h2) {
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--color-fd-border);
+}
+.prose :where(:not(pre) > code) {
+  font-size: 0.86em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  border: 1px solid var(--color-fd-border);
+  background: var(--color-fd-muted);
+}
+.prose :where(a:not([data-card])) {
+  color: var(--color-fd-primary);
+  text-decoration: none;
+  font-weight: 400;
+}
+.prose :where(a:not([data-card])):hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- 侧边栏：像编辑器的资源管理器 ----------
+   宽屏时站名、搜索框和深浅色开关都搬到了顶栏，侧边栏的顶部和底部那两截整个藏起来，只留课程树。
+   手机抽屉（#nd-sidebar-mobile）不受影响，它上面仍有深浅色开关和“学习路径 / 知识图谱”。 */
+@media (min-width: 768px) {
+  #nd-sidebar > div:first-child,
+  #nd-sidebar > div:nth-child(3) {
+    display: none;
+  }
+}
+/* 宽度：由读者拖出来，存在 <html> 的 --cs-sidebar-width 上（见 components/layout-prefs.ts），
+   收起时它是 0。写两遍 id 是为了压过 Fumadocs 自己在布局上设的那个值。
+   侧边栏从顶栏一直通到窗口底部，终端只占它右边那一块——和 VS Code 的布局一样。 */
+:root {
+  --cs-sidebar-width: 248px;
+  --cs-terminal-height: 208px;
+}
+@media (min-width: 768px) {
+  /* --fd-layout-width：Fumadocs 默认把整页限制在约 1550px 宽再居中，宽屏上侧边栏会浮在屏幕中间，
+     和从左边开始的终端对不齐。这里取消这个上限：侧边栏贴左边、目录贴右边，
+     正文自己保持阅读宽度、在中间那块居中（见下面 #nd-page）。 */
+  #nd-docs-layout#nd-docs-layout {
+    --fd-sidebar-width: var(--cs-sidebar-width);
+    --fd-layout-width: 100vw;
+  }
+  #nd-docs-layout [data-sidebar-placeholder] {
+    height: calc(100dvh - var(--fd-docs-row-1));
+  }
+  html[data-sidebar="hidden"] #nd-docs-layout [data-sidebar-placeholder] {
+    display: none;
+  }
+}
+#nd-sidebar [data-radix-scroll-area-viewport] {
+  padding: 0.375rem 0.375rem 1rem;
+}
+#nd-sidebar [data-radix-scroll-area-viewport] > div,
+#nd-sidebar [data-radix-scroll-area-viewport] > div > div {
+  gap: 1px !important;
+}
+/* 条目紧凑、方角：一行 24px，像编辑器的文件树，而不是一排圆润的按钮。
+   手机抽屉里不压这么矮——手指需要更大的点击面积。 */
+#nd-sidebar :is(a, button)[data-active],
+#nd-sidebar button[aria-expanded] {
+  min-height: 1.5rem;
+  padding-block: 0.1875rem;
+  line-height: 1.125rem;
+  border-radius: 3px;
+  transition: background-color 100ms, color 100ms;
+}
+#nd-sidebar :is(a, button) {
+  font-size: 0.8125rem;
+}
+#nd-sidebar [data-radix-collapsible-content] > div {
+  gap: 1px;
+  padding-top: 1px;
+}
+#nd-sidebar-mobile :is(a, button)[data-active],
+#nd-sidebar-mobile button[aria-expanded] {
+  border-radius: 3px;
+}
+/* 文字用接近正文的深色，而不是浅灰：这是要读的目录，不是次要信息。 */
+:is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button)[data-active="false"] {
+  color: color-mix(in srgb, var(--color-fd-foreground) 82%, transparent);
+}
+/* 折叠箭头挪到名字左边，像编辑器的文件树：一眼看出哪些能展开。 */
+:is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button) > svg.lucide-chevron-down {
+  order: -1;
+  margin-inline: -0.125rem 0;
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--color-fd-muted-foreground);
+}
+/* 没有箭头的条目（课程、模块）前面留出同样宽的空位，名字才和上一层的名字对齐。 */
+:is(#nd-sidebar, #nd-sidebar-mobile) a[data-active]:not(:has(> svg.lucide-chevron-down))::before {
+  content: "";
+  display: block;
+  position: static;
+  width: 0.75rem;
+  height: 1px;
+  flex: none;
+  background: none;
+}
+/* 最上面那一项“课程目录”当作小标题，它不需要对齐用的空位。 */
+#nd-sidebar [data-radix-scroll-area-viewport] > div > a:first-child::before {
+  display: none;
+}
+#nd-sidebar [data-radix-scroll-area-viewport] > div > a:first-child[data-active="false"] {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-fd-muted-foreground);
+}
+
+/* ---------- 正文列：一行三十几个字，长文读起来不累 ---------- */
+@media (min-width: 768px) {
+  #nd-page {
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: 2.5rem;
+    padding-top: 1.75rem;
+    gap: 0.75rem;
+  }
+}
+#nd-page > h1 {
+  font-size: 1.875rem;
+  line-height: 1.25;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+/* 标题下面那句简介和状态行挨着，它们说的都是“这是一门什么课”。 */
+#nd-page > h1 + p {
+  margin-bottom: 0.25rem;
+}
+/* 正文第一个标题紧跟在状态行下面，不再额外空出一大段。 */
+#nd-page .prose > :first-child {
+  margin-top: 0.5rem;
+}
+#nd-page .prose :where(h2) {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2.25em;
+}
+#nd-page .prose :where(h3) {
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+/* ---------- 右侧目录：一条竖线和正文隔开，小标题不要图标 ---------- */
+#nd-toc {
+  border-inline-start: 1px solid var(--color-fd-border);
+  padding-inline-start: 1rem;
+  padding-top: 1.75rem;
+}
+#nd-toc #toc-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+#nd-toc #toc-title > svg {
+  display: none;
+}
+#nd-toc a {
+  font-size: 0.8125rem;
+}
+#nd-toc a[data-active="true"] {
+  color: var(--color-fd-foreground);
+}
+#nd-sidebar :is(a, button):hover {
+  background: var(--color-cs-hover);
+  color: var(--color-fd-foreground);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) a[data-active="true"] {
+  background: var(--color-cs-active);
+  color: var(--color-fd-foreground);
+  box-shadow: inset 2px 0 0 var(--color-cs-button);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) a[data-active="true"]::before {
+  display: none;
+}
+
+/* ---------- 共用小部件 ---------- */
+@layer components {
+  .cs-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    min-height: 1.75rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 3px;
+    background: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+    font-size: 0.8125rem;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 120ms, border-color 120ms, color 120ms;
+  }
+  .cs-btn:hover:not(:disabled) {
+    background: var(--color-cs-hover);
+  }
+  .cs-btn:active:not(:disabled) {
+    transform: translateY(0.5px);
+  }
+  .cs-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .cs-btn-primary {
+    border-color: transparent;
+    background: var(--color-cs-button);
+    color: var(--color-cs-button-foreground);
+  }
+  .cs-btn-primary:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-cs-button) 88%, white);
+  }
+  .cs-btn-danger {
+    color: var(--color-cs-error);
+  }
+
+  /* 分段按钮：几个互斥的选项挨在一起，按下的那个填满蓝色。 */
+  .cs-seg {
+    display: inline-flex;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--color-fd-background);
+  }
+  .cs-seg > button {
+    min-height: 1.75rem;
+    padding: 0 0.8rem;
+    font-size: 0.8125rem;
+    color: var(--color-fd-foreground);
+    cursor: pointer;
+    transition: background-color 120ms, color 120ms;
+  }
+  .cs-seg > button + button {
+    border-left: 1px solid var(--color-fd-border);
+  }
+  .cs-seg > button:hover:not(:disabled):not([aria-pressed="true"]) {
+    background: var(--color-cs-hover);
+  }
+  .cs-seg > button[aria-pressed="true"] {
+    background: var(--color-cs-button);
+    color: var(--color-cs-button-foreground);
+  }
+  .cs-seg > button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .cs-input {
+    min-height: 1.875rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 3px;
+    background: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+    font-size: 0.875rem;
+    transition: border-color 120ms;
+  }
+  .cs-input:focus {
+    outline: none;
+    border-color: var(--color-cs-button);
+  }
+
+  .cs-card {
+    border: 1px solid var(--color-fd-border);
+    border-radius: 6px;
+    background: var(--color-fd-card);
+    padding: 0.875rem 1rem;
+  }
+
+  /* 小号大写标签：“本页目录”“作者的心得”这种说明性的小标题。 */
+  .cs-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .cs-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-fd-muted-foreground);
+    white-space: nowrap;
+  }
+  .cs-chip-author {
+    color: var(--color-cs-author);
+    border-color: color-mix(in srgb, var(--color-cs-author) 40%, transparent);
+  }
+
+  .cs-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex: none;
+  }
+  .cs-dot[data-state="todo"] {
+    box-shadow: inset 0 0 0 1px var(--color-fd-muted-foreground);
+  }
+  .cs-dot[data-state="learning"] {
+    background: var(--color-cs-warn);
+  }
+  .cs-dot[data-state="done"] {
+    background: var(--color-cs-ok);
+  }
+}
+
+/* 手机上输入框至少 16px，否则 iOS 一点输入框就把整页放大。 */
+@media (max-width: 767px) {
+  input, textarea, select {
+    font-size: max(16px, 1em);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* ---------- 终端底座的高度：唯一写这几个数的地方（终端组件只标 data-terminal） ---------- */
+.cs-dock {
+  --fd-terminal-height: 2.25rem;
+  transition: --fd-terminal-height 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+.cs-dock[data-terminal="open"] {
+  --fd-terminal-height: var(--cs-terminal-height);
+}
+@media (min-width: 768px) {
+  .cs-dock[data-terminal="auto"] {
+    --fd-terminal-height: var(--cs-terminal-height);
+  }
+}
+@media (max-width: 767px) {
+  /* 手机上展开也最多占半屏，留一半给正文。 */
+  .cs-dock[data-terminal="open"] {
+    --fd-terminal-height: min(20rem, 50dvh);
+  }
+}
+
+/* ---------- 分隔线（sash）：侧边栏右边缘、终端上边缘，都能拖 ----------
+   热区 5px 宽，平时透明；鼠标停上去 0.3 秒才亮出 2px 的蓝线，免得路过时一闪一闪。 */
+.cs-sash {
+  touch-action: none;
+}
+.cs-sash::after {
+  content: "";
+  position: absolute;
+  background: transparent;
+  transition: background-color 150ms ease 0s;
+}
+.cs-sash:hover::after {
+  background: var(--color-cs-button);
+  transition-delay: 300ms;
+}
+.cs-sash-col {
+  left: calc(var(--cs-sidebar-width) - 3px);
+  width: 5px;
+  cursor: col-resize;
+}
+.cs-sash-col::after {
+  inset: 0 1.5px;
+}
+.cs-sash-row {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 5px;
+  z-index: 1;
+  cursor: row-resize;
+}
+.cs-sash-row::after {
+  inset: 1.5px 0;
+}
+/* 正在拖：线保持亮着，整页不许选中文字，光标一直是拖动的样子，动画全部关掉让尺寸紧跟着手。 */
+html[data-resizing="col"] .cs-sash-col::after,
+html[data-resizing="row"] .cs-sash-row::after {
+  background: var(--color-cs-button);
+  transition-delay: 0s;
+}
+html[data-resizing] body {
+  user-select: none;
+}
+html[data-resizing="col"] * {
+  cursor: col-resize !important;
+}
+html[data-resizing="row"] * {
+  cursor: row-resize !important;
+}
+html[data-resizing] .cs-dock,
+html[data-resizing] #nd-docs-layout {
+  transition: none !important;
+}

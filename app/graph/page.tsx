@@ -11,6 +11,11 @@
  * 课程内容仍是唯一来源，页面不另存一份关系清单；这是防止两处说法不一致的最简单办法。
  */
 import Link from 'next/link';
+import {TopBar} from '@/components/top-bar';
 import index from '@/core/knowledge/generated/knowledge-index.json';
 import {CourseGraph} from '@/components/graph/course-graph';
-export default function GraphPage(){return <main className="mx-auto w-full max-w-6xl p-6"><Link href="/docs" className="underline">返回课程目录</Link><h1 className="my-6 text-3xl font-bold">课程先修关系</h1><CourseGraph courses={index.courses}/></main>;}
+export default function GraphPage(){return <><TopBar/><main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 md:px-8 md:pt-10">
+  <h1 className="text-2xl font-semibold md:text-3xl">课程先修关系</h1>
+  <p className="mb-8 mt-2 text-fd-muted-foreground">从各课程页的先修字段自动画出来的关系图。</p>
+  <CourseGraph courses={index.courses}/>
+</main></>;}

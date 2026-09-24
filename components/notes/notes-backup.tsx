@@ -2,6 +2,7 @@
  * @module        心得备份的页面操作
  * @problem       读者需要从页面下载备份、选择文件并看清导入会影响哪些心得。
  * @design        使用浏览器文件和下载接口；选择文件只预览，确认后才写，默认不覆盖已有记录；本页有草稿时先要求保存。
+ *                整块默认折叠在“备份与恢复”下面：它很重要，但不是每读一页都要用。
  * @courses       CS50x Web 开发；CS186 数据恢复
  * @exercises     https://cs50.harvard.edu/x/psets/9/finance/ —— 用户输入、校验与反馈
  * @prereq        文件选择不等于上传，所选 JSON 只在当前浏览器读取。
@@ -45,24 +46,34 @@ export function NotesBackup({dirty,onImported}:{dirty:boolean;onImported:()=>voi
       setPending(backup);setMessage('文件已读取，尚未写入。');
     } catch(error) {setMessage(`无法导入：${error instanceof Error?error.message:'文件读取失败'} 原数据未改动。`);}
   }
-  return <div className="mt-5 border-t border-fd-border pt-4">
-    <h3 className="font-semibold">备份私人心得与进度</h3>
-    <p className="my-2 text-sm">导出和导入都在本机完成，一份文件同时带走私人心得、每门课的学习状态和每段代码的理解度和学习路径。默认保留已有数据，导入只补上缺少的部分。旧版本的备份仍然能导入，缺的那部分当成空。</p>
-    {dirty?<p className="text-sm">请先保存本页草稿，再备份或导入。</p>:null}
-    <button type="button" onClick={download} disabled={dirty} className="my-2 rounded border px-3 py-1 disabled:opacity-50">导出心得与进度</button>
-    <label className="block">选择备份文件
-      <input type="file" accept=".json,application/json" disabled={dirty} className="my-2 block max-w-full"
-        onChange={(event)=>{void preview(event.target.files?.[0]);event.target.value='';}} />
-    </label>
-    {pending?<div className="my-2 rounded border p-3">
-      <p>备份含 {pending.notes.length} 页心得、{pending.progress.length} 门课的状态、{pending.understanding.length} 段代码的理解度、{pending.paths.length} 条路径，其中 {conflicts} 条与本机已有数据重合。</p>
-      {conflicts>0?<label className="my-2 block"><input type="checkbox" checked={overwrite} onChange={e=>setOverwrite(e.target.checked)}/> 用备份覆盖重合的本机数据</label>:null}
-      <button type="button" disabled={dirty} className="mr-3 rounded border px-3 py-1 disabled:opacity-50" onClick={()=>{
-        try {const count=importBackup(localStorage,pending,overwrite);setPending(null);setMessage(`已导入 ${count} 条记录。`);notifyProgressChanged();window.dispatchEvent(new Event("special-cs-textbook:paths-changed"));onImported();}
-        catch(error){setMessage(`恢复失败：${error instanceof Error?error.message:'存储不可用'}。请保留备份文件。`);}
-      }}>确认导入</button>
-      <button type="button" onClick={()=>setPending(null)}>取消</button>
-    </div>:null}
-    <p role="status" className="my-2 text-sm">{message}</p>
-  </div>;
+  // 备份不是每次都要用的东西，默认收起来，免得每一页底下都压着一大段说明。
+  return <details className="group border-t border-fd-border pt-2.5 text-sm">
+    <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 text-fd-muted-foreground hover:text-fd-foreground [&::-webkit-details-marker]:hidden">
+      <span aria-hidden="true" className="inline-block transition-transform duration-150 group-open:rotate-90">›</span>备份与恢复
+    </summary>
+    <div className="mt-2 space-y-2.5">
+      <p className="text-fd-muted-foreground">一份文件同时带走私人心得、每门课的学习状态、每段代码的理解度和学习路径，导出和导入都在本机完成。默认保留已有数据，导入只补上缺少的部分；旧版本的备份也能导入。</p>
+      {dirty?<p className="text-cs-warn">请先保存本页草稿，再备份或导入。</p>:null}
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" onClick={download} disabled={dirty} className="cs-btn">导出备份</button>
+        {/* 原生的文件选择框在各个浏览器里长得都不一样，这里把它藏起来，让一个普通按钮代它出面。 */}
+        <label className={`cs-btn ${dirty?'pointer-events-none opacity-50':''}`}>选择备份文件…
+          <input type="file" accept=".json,application/json" disabled={dirty} className="sr-only"
+            onChange={(event)=>{void preview(event.target.files?.[0]);event.target.value='';}} />
+        </label>
+      </div>
+      {pending?<div className="space-y-2 rounded-[4px] border border-fd-border bg-fd-background p-3">
+        <p>备份含 {pending.notes.length} 页心得、{pending.progress.length} 门课的状态、{pending.understanding.length} 段代码的理解度、{pending.paths.length} 条路径，其中 {conflicts} 条与本机已有数据重合。</p>
+        {conflicts>0?<label className="flex items-center gap-2"><input type="checkbox" className="accent-cs-button" checked={overwrite} onChange={e=>setOverwrite(e.target.checked)}/> 用备份覆盖重合的本机数据</label>:null}
+        <div className="flex flex-wrap gap-2">
+          <button type="button" disabled={dirty} className="cs-btn cs-btn-primary" onClick={()=>{
+            try {const count=importBackup(localStorage,pending,overwrite);setPending(null);setMessage(`已导入 ${count} 条记录。`);notifyProgressChanged();window.dispatchEvent(new Event("special-cs-textbook:paths-changed"));onImported();}
+            catch(error){setMessage(`恢复失败：${error instanceof Error?error.message:'存储不可用'}。请保留备份文件。`);}
+          }}>确认导入</button>
+          <button type="button" className="cs-btn" onClick={()=>setPending(null)}>取消</button>
+        </div>
+      </div>:null}
+      <p role="status" className="text-fd-muted-foreground empty:hidden">{message}</p>
+    </div>
+  </details>;
 }

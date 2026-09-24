@@ -12,6 +12,8 @@
  *                考虑过的另一种做法是给每个分类手写一个 index.mdx：Fumadocs 天然支持，改动更小，
  *                但分类标题就会同时存在于 meta.json 和 index.mdx 两处，迟早对不上；
  *                而且每加一个分类都要记得多建一个文件，这正是本项目一直在避免的那种手工登记。
+ *                阶段 14 起，课程和源码模块在侧边栏里的名字后面还挂着一个学习状态小圆点（StatusDot）：
+ *                也是在这棵树生成时换上去的，Fumadocs 的侧边栏组件一行没改。
  * @courses       CS61B 树结构; CMU 15-445 与 UCB CS186 的索引概念; 软件工程类课程（单一事实来源）
  * @exercises     https://sp21.datastructur.es/materials/proj/proj2/proj2
  * @prereq        对象、函数，以及网址路径和磁盘路径不是同一种东西。
@@ -61,6 +63,8 @@ import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json"
 import type { KnowledgeIndex } from "@/core/knowledge/knowledge-index";
 import { INTERNALS_PATH, isInternalsPath } from "@/core/knowledge/knowledge-index";
 import { knowledgePathToUrl } from "@/core/terminal/commands/shared";
+import { StatusDot } from "@/components/progress/status-dot";
+import { createElement, Fragment, type ReactNode } from "react";
 
 const knowledgeIndex = knowledgeIndexJson as KnowledgeIndex;
 
@@ -76,6 +80,17 @@ const categoryUrlByFolderPath = new Map(
     .filter((category) => category.parentPath !== null && !isInternalsPath(category.path))
     .map((category) => [category.path.slice(1), knowledgePathToUrl(category.path)]),
 );
+
+/** 课程页网址 → 课程编号。侧边栏要在课程名后面挂学习状态的小圆点，得先知道这一项是哪门课。 */
+const courseIdByUrl = new Map(knowledgeIndex.courses.map((course) => [course.url, course.id]));
+
+/**
+ * 侧边栏条目的名字：原来的文字，后面跟一个状态圆点。
+ * 这里是 .ts 文件写不了 JSX，所以用 createElement 手写；它和 <>{name}<StatusDot … /></> 是同一个东西。
+ */
+function withDot(name: ReactNode, target: { course: string } | { module: string }): ReactNode {
+  return createElement(Fragment, null, name, createElement(StatusDot, target));
+}
 
 /** 按位置查目录和模块。侧边栏那一支要照着知识索引现搭出来，所以先把两张表变成能查的样子。 */
 const categoryByPath = new Map(knowledgeIndex.categories.map((category) => [category.path, category]));
@@ -101,7 +116,7 @@ function buildInternalsBranch(): Folder | null {
     if (category !== undefined) return toFolder(path);
     const module = moduleByPath.get(path);
     if (module === undefined) return null;
-    return { type: "page", $id: module.url, name: module.title, url: module.url } satisfies Item;
+    return { type: "page", $id: module.url, name: withDot(module.title, { module: module.path }), url: module.url } satisfies Item;
   }
 
   function toFolder(path: string): Folder | null {
@@ -128,6 +143,10 @@ export const source = loader({
   pageTree: {
     transformers: [
       {
+        file(node) {
+          const course = courseIdByUrl.get(node.url);
+          return course === undefined ? node : { ...node, name: withDot(node.name, { course }) };
+        },
         folder(node, folderPath) {
           const url = categoryUrlByFolderPath.get(folderPath);
           // 已经自带 index 页面的文件夹不动它——那是内容作者的决定，不该被这里覆盖。

@@ -15,6 +15,7 @@
  */
 import type { Metadata } from "next";
 import { SiteProvider } from "@/components/site-provider";
+import { BOOT_SCRIPT } from "@/components/layout-prefs";
 import type { ReactNode } from "react";
 import "katex/dist/katex.min.css";
 import "./globals.css";
@@ -23,5 +24,7 @@ export const metadata: Metadata = {
   description: "以课程为目录、以项目代码和注释为正文的计算机科学教材。",
 };
 export default function RootLayout({ children }: { children: ReactNode }) {
-  return <html lang="zh-CN" suppressHydrationWarning><body className="flex min-h-screen flex-col"><SiteProvider>{children}</SiteProvider></body></html>;
+  // head 里那段脚本最先执行：把你上次拖好的侧边栏宽度、终端高度写到 <html> 上，页面露面时就是对的尺寸，
+  // 不会先闪一下默认值（见 components/layout-prefs.ts）。它改了 <html> 的属性，所以 html 上要 suppressHydrationWarning。
+  return <html lang="zh-CN" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} /></head><body className="flex min-h-screen flex-col"><SiteProvider>{children}</SiteProvider></body></html>;
 }
