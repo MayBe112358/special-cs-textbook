@@ -14,11 +14,14 @@
  * 藏在这里提前决定。等功能链路走通后再谈外观，我们才知道是在修饰真正能用的东西。
  */
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import { MobileTabSwitcher } from "@/components/workbench/tab-bar";
 export function baseOptions(): BaseLayoutProps {
   // 和全站顶栏（components/top-bar.tsx）用同一个 ~/ 标志，手机上看到的站名和宽屏一致。
   return {
     nav: {
-      url: "/docs",
+      url: "/",
+      // 手机标题栏里的标签切换（宽屏上标签栏在内容区上方，这个按钮自己会藏起来）。
+      children: <MobileTabSwitcher />,
       title: (
         <>
           <span aria-hidden="true" className="rounded-[3px] bg-cs-button px-1.5 font-mono text-xs leading-5 text-cs-button-foreground">~/</span>

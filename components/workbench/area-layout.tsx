@@ -1,12 +1,14 @@
 /**
- * @module        文档区域的三栏布局
+ * @module        工作区三块共用的三栏布局——课程目录、学习路径、个人心得都用它
  * @problem       读者需要同时看到全站目录、当前正文和本页小标题，还需要一个跨页面常驻的终端入口。
  *                而终端贴在视口底部，会盖住正文的最后几行和侧边栏最下面几项——三栏必须知道
  *                自己实际能用的高度只到终端上沿为止，否则总有内容永远滚不出来。
- * @design        使用 Fumadocs DocsLayout 让页面树驱动左侧栏，再把它整个交给 TerminalDock 包起来：
+ * @design        使用 Fumadocs DocsLayout 让页面树驱动左侧栏，再把它整个交给 TerminalDock 包起来（在外层 app/(workbench)/layout.tsx）：
  *                终端在底部占一条，文档区自动缩短。缩短的办法不是自己写一套滚动容器去跟框架抢，
  *                而是用 Fumadocs 自己留出的 --fd-docs-height——侧边栏、页内目录的 sticky 高度
  *                和容器最小高度都从它算，改一个数就够了。
+ *                阶段 14.5 起三块都用这一个布局，只是左边那棵树不同：课程目录和学习路径用课程树，
+ *                个人心得用一棵同样形状、但每一项都指向心得空间的树。header 那一格在宽屏上换成了标签栏。
  * @courses       CS50x Week 8 HTML, CSS, JavaScript（盒模型、定位、CSS 变量）; CS61B 树结构
  * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ ; https://sp21.datastructur.es/materials/proj/proj2/proj2
  * @prereq        页面布局、树形目录，React 的 children 表示被布局包住的正文，
@@ -38,49 +40,31 @@
  * 三个月后没人想得到要去那儿找。
  */
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import Link from "next/link";
+import type { Root } from "fumadocs-core/page-tree";
 import type { CSSProperties, ReactNode } from "react";
 import { baseOptions } from "@/lib/layout.shared";
-import { source } from "@/lib/source";
-import { TerminalDock } from "@/components/terminal/terminal";
-import { TopBar } from "@/components/top-bar";
-import { SidebarSash } from "@/components/sidebar-sash";
+import { WorkbenchHeader } from "@/components/workbench/tab-bar";
+import { DrawerAreas } from "@/components/workbench/drawer-areas";
 
 /**
  * --fd-terminal-height 由 TerminalDock 挂在外层，随终端展开/折叠变化，这里只是减掉它。
- * --fd-banner-height 是 Fumadocs 留给“页面最上方还有一条横幅”的旋钮：宽屏时顶栏（TopBar）就是那条横幅，
- * 侧边栏和页内目录据此停在顶栏下面，而不是钻到它底下去。它的 2.75rem 必须和 TopBar 的 h-11 一样高。
+ * 宽屏上：--fd-banner-height 是顶栏（TopBar）的高度，侧边栏和页内目录停在它下面；
+ * --fd-header-height 是标签栏的高度（Fumadocs 原本给手机标题栏用的那一格，宽屏上换成了标签栏）。
  */
 const docsContainerStyle = {
   "--fd-docs-height": "calc(100dvh - var(--fd-terminal-height, 0px))",
 } as CSSProperties;
 
-/**
- * 手机上没有顶栏，“学习路径 / 知识图谱”就放进侧边栏抽屉的上方。
- * 宽屏时侧边栏那一截顶部整个藏起来了（见 globals.css），所以这两个链接只会在抽屉里出现一次。
- */
-function DrawerLinks() {
+export function AreaLayout({ tree, children }: { tree: Root; children: ReactNode }) {
   return (
-    <nav aria-label="网站各部分" className="flex gap-2 text-sm">
-      <Link href="/paths" className="cs-btn flex-1">学习路径</Link>
-      <Link href="/graph" className="cs-btn flex-1">知识图谱</Link>
-    </nav>
-  );
-}
-
-export default function DocumentationLayout({ children }: { children: ReactNode }) {
-  return (
-    <TerminalDock>
-      <TopBar hideOnMobile sidebarToggle />
-      <SidebarSash />
-      <DocsLayout
-        {...baseOptions()}
-        tree={source.getPageTree()}
-        sidebar={{ collapsible: false, banner: <DrawerLinks /> }}
-        containerProps={{ style: docsContainerStyle, className: "md:[--fd-banner-height:2.75rem]" }}
-      >
-        {children}
-      </DocsLayout>
-    </TerminalDock>
+    <DocsLayout
+      {...baseOptions()}
+      tree={tree}
+      slots={{ header: WorkbenchHeader }}
+      sidebar={{ collapsible: false, banner: <DrawerAreas /> }}
+      containerProps={{ style: docsContainerStyle, className: "md:[--fd-banner-height:2.75rem] md:[--fd-header-height:2.1875rem]" }}
+    >
+      {children}
+    </DocsLayout>
   );
 }

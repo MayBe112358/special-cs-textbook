@@ -60,6 +60,15 @@
   --color-cs-error: #c72e0f;
   --color-cs-scrim: rgb(0 0 0 / 0.2);
   --shadow-cs-pop: 0 8px 28px rgb(0 0 0 / 0.16);
+  --shadow-cs-window: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 40px -12px rgb(0 0 0 / 0.18);
+  /* 代码着色，照 VS Code 的 Light+ / Dark+。只用在本站自己画的代码片段上（首页），
+     MDX 里的代码块由 shiki 在构建时上色，用的是同一套主题。 */
+  --color-cs-code-comment: #008000;
+  --color-cs-code-keyword: #0000ff;
+  --color-cs-code-func: #795e26;
+  --color-cs-code-var: #001080;
+  --color-cs-code-type: #267f99;
+  --color-cs-code-string: #a31515;
 
   --animate-cs-pop-in: cs-pop-in 140ms ease-out;
   --animate-cs-fade-in: cs-fade-in 140ms ease-out;
@@ -119,6 +128,13 @@
   --color-cs-error: #f14c4c;
   --color-cs-scrim: rgb(0 0 0 / 0.5);
   --shadow-cs-pop: 0 10px 32px rgb(0 0 0 / 0.6);
+  --shadow-cs-window: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 48px -12px rgb(0 0 0 / 0.7);
+  --color-cs-code-comment: #6a9955;
+  --color-cs-code-keyword: #569cd6;
+  --color-cs-code-func: #dcdcaa;
+  --color-cs-code-var: #9cdcfe;
+  --color-cs-code-type: #4ec9b0;
+  --color-cs-code-string: #ce9178;
 }
 
 @keyframes cs-pop-in {
@@ -145,6 +161,12 @@
   }
   code, kbd, pre, samp {
     font-family: var(--font-mono);
+  }
+  /* 等宽字体（Cascadia Code）自带“连字”：会把 |--- 画成制表线、把 != 画成 ≠。
+     写 Markdown 和代码时你要看见的是自己敲的每一个字符，所以统统关掉。 */
+  code, kbd, pre, samp, textarea, .font-mono {
+    font-variant-ligatures: none;
+    font-feature-settings: "calt" 0, "liga" 0;
   }
 }
 
@@ -190,8 +212,17 @@
 :root {
   --cs-sidebar-width: 248px;
   --cs-terminal-height: 208px;
+  /* 左侧活动栏的宽度；手机上没有活动栏，是 0。 */
+  --cs-activity-width: 0px;
 }
 @media (min-width: 768px) {
+  :root {
+    --cs-activity-width: 48px;
+  }
+  /* 整个三栏布局往右让出活动栏那一条。 */
+  #nd-docs-layout {
+    margin-inline-start: var(--cs-activity-width);
+  }
   /* --fd-layout-width：Fumadocs 默认把整页限制在约 1550px 宽再居中，宽屏上侧边栏会浮在屏幕中间，
      和从左边开始的终端对不齐。这里取消这个上限：侧边栏贴左边、目录贴右边，
      正文自己保持阅读宽度、在中间那块居中（见下面 #nd-page）。 */
@@ -504,6 +535,28 @@
     --fd-terminal-height: min(20rem, 50dvh);
   }
 }
+/* 给终端让出的那段空白。手机上没有常驻侧边栏，留在整个文档区的尾部就行。 */
+.cs-dock-body {
+  padding-bottom: var(--fd-terminal-height);
+}
+/* 宽屏上侧边栏是 sticky 的，只能在 #nd-docs-layout 这个格子里粘着。空白要是留在格子外面，
+   滚到底时格子比页面短一截，侧边栏就被顶上去一截。所以改成：格子铺满顶栏以下，空白留在正文那一列的底部。
+   正文那一列在课程页是 #nd-page（它自己底下本来有 1.5rem），在心得区和学习路径区是 <main>。 */
+@media (min-width: 768px) {
+  .cs-dock-body:has(> #nd-docs-layout) {
+    padding-bottom: 0;
+  }
+  /* 顶栏在格子上面、不算在格子里，所以格子只要补满顶栏以下的那一截。 */
+  #nd-docs-layout#nd-docs-layout {
+    min-height: calc(100dvh - var(--fd-docs-row-1));
+  }
+  #nd-docs-layout > main {
+    padding-bottom: var(--fd-terminal-height);
+  }
+  #nd-docs-layout > #nd-page {
+    padding-bottom: calc(1.5rem + var(--fd-terminal-height));
+  }
+}
 
 /* ---------- 分隔线（sash）：侧边栏右边缘、终端上边缘，都能拖 ----------
    热区 5px 宽，平时透明；鼠标停上去 0.3 秒才亮出 2px 的蓝线，免得路过时一闪一闪。 */
@@ -521,7 +574,7 @@
   transition-delay: 300ms;
 }
 .cs-sash-col {
-  left: calc(var(--cs-sidebar-width) - 3px);
+  left: calc(var(--cs-activity-width) + var(--cs-sidebar-width) - 3px);
   width: 5px;
   cursor: col-resize;
 }
@@ -557,4 +610,369 @@ html[data-resizing="row"] * {
 html[data-resizing] .cs-dock,
 html[data-resizing] #nd-docs-layout {
   transition: none !important;
+}
+
+/* 标签栏：横向滚动条压得很细，只在鼠标移上去时才看得清。 */
+.cs-tabstrip {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.cs-tabstrip:hover {
+  scrollbar-color: color-mix(in srgb, var(--color-fd-muted-foreground) 40%, transparent) transparent;
+}
+
+/* ---------- 右侧 AI 助手面板：打开时正文区和终端往左让出 340px ---------- */
+:root {
+  --cs-assistant-width: 0px;
+}
+.cs-assistant {
+  width: 340px;
+  transform: translateX(100%);
+  transition: transform 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+@media (min-width: 768px) {
+  html[data-assistant="open"] {
+    --cs-assistant-width: 340px;
+  }
+  html[data-assistant="open"] .cs-assistant {
+    transform: none;
+  }
+  #nd-docs-layout {
+    margin-inline-end: var(--cs-assistant-width);
+    transition: margin 180ms cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+
+/* ---------- 首页（components/home） ----------
+   首页的排版按“首页自己分到多宽”来变（容器查询 @container），而不是按屏幕宽度：
+   左边的课程树宽度可拖、可收起，同样是 1440 宽的屏幕，首页能用的宽度可能差出三百像素。 */
+
+/* 开头那一屏背后淡淡的点阵，像编辑器画布；往下渐隐，不和下面的内容抢。 */
+.cs-home-hero {
+  position: relative;
+  isolation: isolate;
+}
+.cs-home-hero::before {
+  content: "";
+  position: absolute;
+  inset: -3rem -2.5rem -2rem;
+  z-index: -1;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-fd-muted-foreground) 32%, transparent) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 75% at 65% 40%, black 10%, transparent 75%);
+  pointer-events: none;
+}
+/* 开头几块依次浮现。系统设置了“减少动态效果”就直接出现。 */
+.cs-home-hero > * {
+  animation: cs-rise 520ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+.cs-home-hero > :nth-child(2) {
+  animation-delay: 120ms;
+}
+@keyframes cs-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* 标语里的三个关键词：不用斜体（中文斜体很难看），用加粗和一条贴着字底的淡色高亮。 */
+.cs-home-key {
+  font-style: normal;
+  font-weight: 600;
+  padding-inline: 0.1em;
+  background: linear-gradient(transparent 62%, color-mix(in srgb, currentColor 16%, transparent) 62%);
+}
+
+.cs-home-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.375rem;
+  padding: 0 1rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 6px;
+  background: var(--color-fd-background);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-fd-foreground);
+  transition: background-color 120ms, border-color 120ms, transform 120ms;
+}
+.cs-home-cta:hover {
+  border-color: color-mix(in srgb, var(--color-fd-muted-foreground) 55%, transparent);
+  background: var(--color-cs-hover);
+}
+.cs-home-cta-primary {
+  border-color: transparent;
+  background: var(--color-cs-button);
+  color: var(--color-cs-button-foreground);
+}
+.cs-home-cta-primary:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--color-cs-button) 88%, white);
+}
+.cs-home-cta-primary svg {
+  transition: transform 160ms;
+}
+.cs-home-cta-primary:hover svg {
+  transform: translateX(2px);
+}
+
+/* 演示终端打字时的光标。 */
+.cs-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.15em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--color-fd-foreground);
+  animation: cs-blink 1s steps(1) infinite;
+}
+@keyframes cs-blink {
+  50% { opacity: 0; }
+}
+
+/* 每一节的开头：一行小字标签 + 一句话。 */
+.cs-home-section {
+  margin-top: 5rem;
+}
+.cs-home-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-fd-muted-foreground);
+}
+.cs-home-eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-fd-border);
+}
+.cs-home-heading {
+  margin: 0.75rem 0 1.5rem;
+  max-width: 44rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-fd-foreground);
+}
+
+/* 卡片：平时是一块安静的面板，鼠标停上去边框变深、轻轻浮起来。 */
+.cs-home-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-card);
+  transition: border-color 160ms, box-shadow 160ms, transform 160ms;
+}
+a.cs-home-card:hover {
+  border-color: color-mix(in srgb, var(--color-cs-button) 55%, var(--color-fd-border));
+  box-shadow: var(--shadow-cs-window);
+  transform: translateY(-2px);
+}
+.cs-home-card-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  font-size: 0.8125rem;
+  color: var(--color-fd-primary);
+}
+.cs-home-card-more svg {
+  transition: transform 160ms;
+}
+.cs-home-card:hover .cs-home-card-more svg {
+  transform: translateX(2px);
+}
+
+/* “三个部分”那一排：窄的时候竖着排、箭头朝下；够宽了横着排、箭头朝右。 */
+.cs-home-chain {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.cs-home-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0;
+}
+.cs-home-connector-line {
+  width: 1px;
+  height: 1.25rem;
+  background: var(--color-fd-border);
+}
+.cs-home-connector-head {
+  position: relative;
+}
+.cs-home-connector-head::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid var(--color-fd-muted-foreground);
+  border-bottom: 1px solid var(--color-fd-muted-foreground);
+  transform: translateX(-50%) rotate(45deg);
+}
+.cs-home-connector-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px dashed var(--color-fd-border);
+  border-radius: 6px;
+  background: var(--color-fd-background);
+  white-space: nowrap;
+}
+@container (min-width: 64rem) {
+  .cs-home-chain {
+    grid-template-columns: minmax(0, 0.9fr) auto minmax(0, 1.3fr) auto minmax(0, 0.9fr);
+    align-items: stretch;
+  }
+  .cs-home-connector {
+    flex-direction: row;
+    padding: 0 0.25rem;
+  }
+  .cs-home-connector-line {
+    width: 0.75rem;
+    height: 1px;
+  }
+  .cs-home-connector-head::after {
+    left: auto;
+    right: 0;
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+  }
+  .cs-home-connector-label {
+    padding: 0.375rem 0.5rem;
+  }
+}
+
+/* 卡片里那一小块“编辑器”。每一行都不折行，放不下就用省略号——代码折行会让人看不出哪是一行。 */
+.cs-code-window {
+  overflow: hidden;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 6px;
+  background: var(--color-fd-background);
+}
+.cs-code-body {
+  padding: 0.625rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--color-fd-foreground);
+}
+.cs-code-line {
+  overflow: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+}
+
+/* 三块工作区卡片上的小插图。 */
+.cs-home-illustration {
+  height: 7.5rem;
+  overflow: hidden;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 6px;
+  background: var(--color-fd-muted);
+}
+
+/* “接着来”那三栏。 */
+.cs-home-panel {
+  min-width: 0;
+  padding: 0.875rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-card);
+}
+.cs-home-panel-title {
+  margin: 0 0 0.5rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-fd-muted-foreground);
+}
+.cs-home-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.3125rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--color-fd-foreground);
+}
+.cs-home-row:hover {
+  background: var(--color-cs-hover);
+  color: var(--color-fd-primary);
+}
+
+/* 课程地图：课多的分支占的格子大。grid-flow-dense 让小格子自己填进大格子留下的空位。 */
+.cs-home-tile-wrap {
+  display: flex;
+  min-width: 0;
+}
+.cs-home-tile {
+  flex: 1;
+  padding: 0.875rem 1rem 1rem;
+}
+.cs-home-tile-lg {
+  grid-column: span 2;
+}
+.cs-home-tile-xl {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+/* 一个小方块是一门课。 */
+.cs-home-waffle {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  gap: 3px;
+  margin-top: auto;
+  padding-top: 0.875rem;
+}
+.cs-home-waffle > span {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-cs-dir) 55%, transparent);
+  transition: background-color 160ms;
+}
+.cs-home-tile:hover .cs-home-waffle > span {
+  background: var(--color-cs-dir);
+}
+
+.cs-kbd {
+  min-width: 1.5rem;
+  padding: 0.0625rem 0.375rem;
+  border: 1px solid var(--color-fd-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--color-fd-card);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.25rem;
+  text-align: center;
+  color: var(--color-fd-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-home-hero > *,
+  .cs-caret {
+    animation: none;
+  }
+  a.cs-home-card:hover {
+    transform: none;
+  }
 }

@@ -386,6 +386,11 @@ test("网址是当前位置的唯一真相：分类是目录，课程页落在�
     pathnameToWorkingDirectory("/special-cs-textbook/docs/programming-intro/cs61a/", fileSystem),
     "/programming-intro",
   );
+  // 个人心得区和课程目录共用一套知识路径；学习路径区不在树里，回到根目录。
+  assert.equal(pathnameToWorkingDirectory("/notes/programming-intro/cs61a/", fileSystem), "/programming-intro");
+  assert.equal(pathnameToWorkingDirectory("/notes/systems", fileSystem), "/systems");
+  assert.equal(pathnameToWorkingDirectory("/paths/", fileSystem), "/");
+  assert.equal(pathnameToWorkingDirectory("/docsfoo/systems", fileSystem), "/");
 });
 
 test("源码模块和课程一样是文件：ls 列得出、cat 读得到", () => {

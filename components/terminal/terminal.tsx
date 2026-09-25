@@ -48,6 +48,11 @@
  * “可用高度”减掉这个数（那件事在 app/docs/layout.tsx 里做，Fumadocs 正好留了 --fd-docs-height 这个旋钮）。
  * 于是侧边栏和页内目录的 sticky 高度、正文的滚动尽头，全都自动停在终端上沿。
  *
+ * 那段空白留在哪儿也有讲究。sticky 的元素只能在自己的“容器”里粘着，容器到头了它就被一起推走。
+ * 宽屏上侧边栏从顶栏一直通到窗口底部，终端只在它右边；如果空白留在整个布局的外面，
+ * 滚到最底时布局的格子比页面短了一截终端高，侧边栏就被顶上去这一截——看起来像“滚到底再滚，侧边栏也跟着动”。
+ * 所以宽屏上空白改成留在正文那一列的底部（规则在 globals.css 的 .cs-dock-body），格子一直长到页面最底。
+ *
  * 值得留意的是这里没有测量 DOM、没有 ResizeObserver、也没有谁通知谁。高度是我们自己说了算的几个值，
  * 写在 app/globals.css 的 .cs-dock 那几条规则里；这个组件只在最外层标一句 data-terminal="open" 或 "closed"，
  * 其余部分靠 CSS 变量往下继承。那个变量被登记成了“长度”，所以它变化时浏览器能补出中间帧——
@@ -71,7 +76,8 @@ import { COMMANDS, runCommand } from "@/core/terminal/command-engine";
 import { pathnameToWorkingDirectory } from "@/core/terminal/location";
 import type { CourseProgress, ModuleUnderstanding } from "@/core/progress/progress";
 import { readProgressSnapshot, readUnderstandingSnapshot, subscribeProgress, writeProgress, writeUnderstanding } from "@/components/progress/progress-store";
-import type { OutputBlock, TreeItem } from "@/core/terminal/output";
+import type { OutputBlock } from "@/core/terminal/output";
+import { OutputView } from "@/components/terminal/output-view";
 import { usePathname, useRouter } from "next/navigation";
 import { TERMINAL_DEFAULT, TERMINAL_MIN, TERMINAL_SNAP, applyLayout, readLayout, updateLayout } from "@/components/layout-prefs";
 import {
@@ -116,98 +122,6 @@ function useMediaQuery(query: string): boolean {
     },
     () => window.matchMedia(query).matches,
     () => true,
-  );
-}
-
-function CommandLink({ command, onCommand, className, children }: {
-  command: string;
-  onCommand: (line: string) => void;
-  className?: string;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      title={command}
-      className={`rounded-[2px] text-left underline-offset-2 hover:underline ${className ?? "text-fd-primary"}`}
-      onClick={() => onCommand(command)}
-    >
-      {children}
-    </button>
-  );
-}
-
-function TreeView({ node, onCommand }: { node: TreeItem; onCommand: (line: string) => void }) {
-  const link = <CommandLink command={node.command} onCommand={onCommand}>{node.label}</CommandLink>;
-  if (!node.children) return link;
-  return (
-    <details open className="group">
-      <summary className="cursor-pointer list-none marker:hidden">
-        <span aria-hidden="true" className="mr-1 inline-block text-fd-muted-foreground transition-transform group-open:rotate-90">›</span>
-        {link}
-      </summary>
-      <ul className="ml-[0.3rem] border-l border-fd-border pl-3">
-        {node.children.map((child) => <li key={child.command}><TreeView node={child} onCommand={onCommand} /></li>)}
-      </ul>
-    </details>
-  );
-}
-
-function OutputView({ block, onCommand }: { block: OutputBlock; onCommand: (line: string) => void }) {
-  if (block.type === "tree") return <TreeView node={block.root} onCommand={onCommand} />;
-  if (block.type === "text") {
-    const toneClass = block.tone === "error"
-      ? "text-cs-error"
-      : block.tone === "muted"
-        ? "text-fd-muted-foreground"
-        : "text-fd-foreground";
-    return <div className={`whitespace-pre-wrap break-words ${toneClass}`}>{block.text}</div>;
-  }
-
-  // ls 的输出（每一项都知道自己是目录还是文件）照真终端的样子排成多列、只写名字；
-  // 中文标题放进悬停提示，想看全称就 cat 它。其他命令的列表仍是一行一项、后面跟说明。
-  if (block.items.length > 0 && block.items.every((item) => item.kind !== undefined)) {
-    return (
-      <ul className="grid grid-cols-[repeat(auto-fill,minmax(10.5rem,1fr))] gap-x-4">
-        {block.items.map((item) => (
-          <li key={item.label} className="min-w-0 truncate">
-            {item.command ? (
-              <CommandLink
-                command={item.command}
-                onCommand={onCommand}
-                className={item.kind === "directory" ? "font-medium text-cs-dir" : "text-fd-primary"}
-              >
-                <span title={item.description}>{item.label}{item.kind === "directory" ? "/" : ""}</span>
-              </CommandLink>
-            ) : (
-              <span title={item.description}>{item.label}</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  return (
-    <ul className="space-y-0.5">
-      {block.items.map((item) => (
-        <li key={`${item.label}:${item.description ?? ""}`} className="flex min-w-0 flex-wrap gap-x-3">
-          {item.command ? (
-            // 目录用青色、文件用蓝色，和编辑器资源管理器里一样：一眼分得清哪些还能往里走。
-            <CommandLink
-              command={item.command}
-              onCommand={onCommand}
-              className={item.kind === "directory" ? "font-medium text-cs-dir" : "text-fd-primary"}
-            >
-              {item.label}{item.kind === "directory" ? "/" : ""}
-            </CommandLink>
-          ) : (
-            <span>{item.label}</span>
-          )}
-          {item.description ? <span className="min-w-0 text-fd-muted-foreground">{item.description}</span> : null}
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -419,14 +333,15 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   return (
     // data-terminal 是这里唯一对外宣布的东西；--fd-terminal-height 由 globals.css 按它算出来，往下继承。
     <div className="cs-dock flex flex-1 flex-col" data-terminal={mode}>
-      {/* 文档区照常排版，只是尾部留出终端那么高的一段空白，滚到底也不会被压在终端下面。 */}
-      <div className="flex-1" style={{ paddingBottom: "var(--fd-terminal-height)" }}>
+      {/* 文档区照常排版，只是尾部留出终端那么高的一段空白，滚到底也不会被压在终端下面。
+          这段空白留在哪里由 globals.css 的 .cs-dock-body 决定：宽屏上要留在正文那一列里，不能留在整个布局外面。 */}
+      <div className="cs-dock-body flex-1">
         {children}
       </div>
 
       {/* 宽屏时终端从侧边栏右边开始，只占正文下方那一块，侧边栏一直通到底——和 VS Code 的面板一样。 */}
       <section
-        className="fixed bottom-0 left-0 right-0 z-30 grid grid-cols-[minmax(0,1fr)] grid-rows-[2.25rem_minmax(0,1fr)] overflow-hidden border-t border-fd-border bg-fd-card pb-[env(safe-area-inset-bottom)] md:left-(--cs-sidebar-width) md:border-l"
+        className="fixed bottom-0 left-0 right-0 z-30 grid md:right-(--cs-assistant-width) grid-cols-[minmax(0,1fr)] grid-rows-[2.25rem_minmax(0,1fr)] overflow-hidden border-t border-fd-border bg-fd-card pb-[env(safe-area-inset-bottom)] md:left-[calc(var(--cs-activity-width)+var(--cs-sidebar-width))] md:border-l"
         style={{ height: "calc(var(--fd-terminal-height) + env(safe-area-inset-bottom))" }}
         aria-label="课程终端"
       >

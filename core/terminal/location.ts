@@ -11,8 +11,10 @@
  * @exercises     https://missing.csail.mit.edu/2020/course-shell/
  *                https://pdos.csail.mit.edu/6.S081/2021/labs/fs.html
  * @prereq        知道网址由一段段路径组成，文件的上一层是它所在的目录。
- * @unclear       目前所有知识网址都在 /docs 下；如果未来出现第二套路由入口，这里需要显式接收路由映射，
- *                不能继续靠寻找 /docs 这一段来判断。
+ *                阶段 14.5 起，个人心得区的网址（/notes/programming-intro/cs61a）和课程目录用的是同一套知识路径，
+ *                所以这里认两个入口：/docs 和 /notes。在心得区里，终端的位置和你正在看的那门课一致。
+ *                学习路径区（/paths）不对应知识树里的某个位置，终端回到根目录。
+ * @unclear       入口前缀写死在一个正则里；将来再多一块区域，要记得在这里登记。
  *
  * @letter
  * 这个函数是“地址栏是唯一真相”真正落地的地方。终端不保存 currentDirectory；每次要执行命令，
@@ -29,10 +31,11 @@ export function pathnameToWorkingDirectory(
   pathname: string,
   fileSystem: VirtualFileSystem,
 ): string {
-  const docsStart = pathname.indexOf("/docs");
-  if (docsStart < 0) return fileSystem.root.path;
+  // 找到第一段完整的 docs 或 notes（前面可能还有 GitHub Pages 的部署前缀）。
+  const entry = /\/(?:docs|notes)(?=\/|$)/.exec(pathname);
+  if (entry === null) return fileSystem.root.path;
 
-  const afterDocs = pathname.slice(docsStart + "/docs".length).replace(/\/+$/, "");
+  const afterDocs = pathname.slice(entry.index + entry[0].length).replace(/\/+$/, "");
   const knowledgePath = afterDocs === "" ? "/" : afterDocs;
   const node = fileSystem.nodeAt(knowledgePath);
   if (node === null) return fileSystem.root.path;

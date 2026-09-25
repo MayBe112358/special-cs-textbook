@@ -1,13 +1,13 @@
 /**
- * @module        全站顶栏——站名、居中的搜索框、三个去处、深浅色切换
+ * @module        全站顶栏——侧边栏开关、站名、居中的搜索框、深浅色切换
  * @problem       原来站名、搜索框、“学习路径 / 知识图谱”和深浅色开关全挤在侧边栏里：
  *                侧边栏本该只是一棵课程树，结果顶上压着一截工具，底下垫着一个开关，树反而被挤到中间。
  *                学习路径页和知识图谱页又没有侧边栏，到了那里连搜索框都找不到。
  * @design        照 VS Code 的样子拆开：最上面一条细细的顶栏放“全站都要用的东西”，侧边栏只放课程树。
  *                搜索框放在顶栏正中，长得像编辑器的命令中心，点它和按 Ctrl+K 是同一件事。
- *                当前在哪一块（课程目录 / 学习路径 / 知识图谱），对应的链接就亮着，从地址推出来，不另存状态。
- *                文档区在手机上仍用 Fumadocs 自带的那条移动端顶栏（有打开课程目录的按钮），
- *                所以这条顶栏在文档区只在宽屏出现；学习路径页和知识图谱页没有那条移动端顶栏，就一直显示它。
+ *                阶段 14.5 起，“课程目录 / 学习路径 / 个人心得”三块的入口搬到了左侧活动栏（components/workbench/activity-bar.tsx），
+ *                顶栏只留全站通用的东西。
+ *                手机上用 Fumadocs 自带的那条移动端顶栏（有打开侧边栏的按钮和标签切换），这条顶栏只在宽屏出现。
  * @courses       Stanford CS147 / UC Berkeley CS160（信息架构、全局导航与局部导航的分工）；
  *                CS50x Week 8（页面布局、sticky 定位）
  * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— 多页面网站的导航栏
@@ -23,17 +23,17 @@
  * 以前这两种东西挤在同一列里，你要找“学习路径”，得先在一大堆课程名里把它认出来。
  * 现在它们分开了——这和编辑器顶上是菜单和命令中心、左边是文件树，是同一种分工。
  *
- * 顶栏里的“当前位置”没有用 useState 记，而是每次从地址栏推出来：你在 /paths，“学习路径”就亮。
- * 这和终端的提示符、侧边栏的高亮用的是同一条规矩——地址是唯一真相。
+ * 顶栏以前还放着三块的入口，后来它们搬去了左侧活动栏：入口是“换一块地方工作”，
+ * 在 VS Code 里这件事也是由左边那条竖栏负责的，顶栏只管“无论在哪一块都用得上”的东西。
  */
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useSearchContext } from 'fumadocs-ui/contexts/search';
 import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch';
 import { useSyncExternalStore } from 'react';
 import { LAYOUT_CHANGED } from './layout-prefs';
 import { toggleSidebar } from './sidebar-sash';
+import { AssistantToggle } from './workbench/assistant-panel';
 
 /** 侧边栏现在是不是收起的：直接看 <html data-sidebar>，它由 layout-prefs 负责写。 */
 function useSidebarHidden(): boolean {
@@ -54,16 +54,9 @@ function SidebarIcon({ hidden }: { hidden: boolean }) {
   );
 }
 
-const SECTIONS = [
-  { href: '/docs', label: '课程目录', match: (path: string) => path.startsWith('/docs') },
-  { href: '/paths', label: '学习路径', match: (path: string) => path.startsWith('/paths') },
-  { href: '/graph', label: '知识图谱', match: (path: string) => path.startsWith('/graph') },
-];
 
 export function TopBar({ hideOnMobile = false, sidebarToggle = false }: { hideOnMobile?: boolean; sidebarToggle?: boolean }) {
   const sidebarHidden = useSidebarHidden();
-  // usePathname 给的地址已经去掉了 GitHub Pages 的前缀，可以直接比。
-  const pathname = usePathname();
   const { setOpenSearch } = useSearchContext();
 
   return (
@@ -82,7 +75,7 @@ export function TopBar({ hideOnMobile = false, sidebarToggle = false }: { hideOn
           <SidebarIcon hidden={sidebarHidden} />
         </button>
       ) : null}
-      <Link href="/docs" className="flex shrink-0 items-center gap-2 rounded-[3px] font-semibold text-fd-foreground">
+      <Link href="/" className="flex shrink-0 items-center gap-2 rounded-[3px] font-semibold text-fd-foreground">
         <span aria-hidden="true" className="rounded-[3px] bg-cs-button px-1.5 font-mono text-xs leading-5 text-cs-button-foreground">~/</span>
         <span className="hidden text-sm sm:inline">一本特殊的 CS 教材</span>
       </Link>
@@ -99,22 +92,8 @@ export function TopBar({ hideOnMobile = false, sidebarToggle = false }: { hideOn
         <kbd className="ml-auto hidden rounded-[3px] border border-fd-border bg-fd-card px-1 font-mono text-[11px] leading-4 md:inline">Ctrl K</kbd>
       </button>
 
-      <nav aria-label="网站各部分" className="flex shrink-0 items-center gap-0.5">
-        {SECTIONS.map((section) => {
-          const active = section.match(pathname);
-          return (
-            <Link
-              key={section.href}
-              href={section.href}
-              aria-current={active ? 'page' : undefined}
-              className={`rounded-[4px] px-2 py-1 text-[13px] transition-colors hover:bg-cs-hover hover:text-fd-foreground ${active ? 'bg-cs-hover font-medium text-fd-foreground' : 'text-fd-muted-foreground'} ${section.href === '/docs' ? 'max-sm:hidden' : ''}`}
-            >
-              {section.label}
-            </Link>
-          );
-        })}
-      </nav>
-      <ThemeSwitch className="shrink-0 rounded-[4px] p-0.5 *:rounded-[3px]" />
+      <ThemeSwitch className="ml-auto shrink-0 rounded-[4px] p-0.5 *:rounded-[3px] sm:ml-0" />
+      {sidebarToggle ? <AssistantToggle /> : null}
     </header>
   );
 }
