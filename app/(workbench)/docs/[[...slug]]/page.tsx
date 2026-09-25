@@ -34,7 +34,7 @@
  * 这听起来有点奇怪，但它正是这本教材的设定：课程是目录，源码是正文。
  * 既然是正文，它就该和课程页一样有地址、能被链接、能被 cd 进去——所以它们从同一只信封里出去。
  */
-import { PageNotes } from "@/components/notes/page-notes";
+import { PublicComments } from "@/components/notes/public-comments";
 import { AuthorCourseProgress } from "@/components/progress/author-progress";
 import { CourseStatus } from "@/components/progress/course-status";
 import { CourseModules } from "@/components/internals/cross-links";
@@ -59,15 +59,14 @@ function slugToKnowledgePath(slug?: string[]): string {
 }
 
 /**
- * 右侧目录只认得 MDX 里写的标题。页面最后那两节（本课对应的项目实现、心得）是组件画出来的，
+ * 右侧目录只认得 MDX 里写的标题。课程页最后那两节（本课对应的项目实现、公开评论）是组件画出来的，
  * 不补上的话，目录会在“官方作业”那里戛然而止，读者不知道下面还有东西。
+ * 阶段 14.5 起心得搬去了个人心得区，课程页只介绍课程，所以这里不再有“心得”一节。
  */
 function withComputedSections(toc: TOCItemType[], isCourse: boolean): TOCItemType[] {
-  return [
-    ...toc,
-    ...(isCourse ? [{ title: "本课对应的项目实现", url: "#project-modules", depth: 2 }] : []),
-    { title: "心得", url: "#notes", depth: 2 },
-  ];
+  return isCourse
+    ? [...toc, { title: "本课对应的项目实现", url: "#project-modules", depth: 2 }, { title: "公开评论", url: "#comments", depth: 2 }]
+    : toc;
 }
 
 export default async function DocumentationPage(props: { params: Promise<{ slug?: string[] }> }) {
@@ -94,7 +93,8 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
         <DocsBody>
           <Content components={getMDXComponents()} />
           {course === null ? null : <CourseModules courseId={course.id} />}
-          <PageNotes key={slugToKnowledgePath(slug)} pageId={slugToKnowledgePath(slug)} />
+          {/* 课程页只介绍课程；你自己的心得在“个人心得”那一块。公开评论留在这里，因为它讨论的就是这门课。 */}
+          {course === null ? null : <PublicComments key={course.path} pageId={course.path} />}
         </DocsBody>
       </DocsPage>
     );
@@ -132,7 +132,6 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
             </li>
           ))}
         </ul>
-        <PageNotes key={node.path} pageId={node.path} />
       </DocsBody>
     </DocsPage>
   );

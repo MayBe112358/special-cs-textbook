@@ -43,7 +43,7 @@
 import { AuthorModuleProgress } from "@/components/progress/author-progress";
 import { ModuleUnderstandingPanel } from "@/components/progress/module-understanding";
 import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json";
-import { PageNotes } from "@/components/notes/page-notes";
+import { PublicComments } from "@/components/notes/public-comments";
 import { ModuleCourses } from "@/components/internals/cross-links";
 import { PathBreadcrumb } from "@/components/path-breadcrumb";
 import type { ModuleEntry } from "@/core/knowledge/knowledge-index";
@@ -131,8 +131,8 @@ export function moduleTableOfContents(): TOCItemType[] {
       url: `#${section.id}`,
       depth: 2,
     })),
-    // 页面最后的“心得”由 PageNotes 画出，也要在目录里有一个入口。
-    { title: "心得", url: "#notes", depth: 2 },
+    // 页面最后的“公开评论”由 PublicComments 画出，也要在目录里有一个入口。
+    { title: "公开评论", url: "#comments", depth: 2 },
   ];
 }
 
@@ -202,7 +202,7 @@ export function ModulePage({ module }: { module: ModuleEntry }) {
             {content[section.id]}
           </Section>
         ))}
-        <PageNotes key={module.path} pageId={module.path} />
+        <PublicComments key={module.path} pageId={module.path} />
       </DocsBody>
     </DocsPage>
   );

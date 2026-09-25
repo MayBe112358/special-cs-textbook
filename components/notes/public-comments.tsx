@@ -43,12 +43,12 @@ export function PublicComments({pageId}:{pageId:string}) {
   observer.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
   return ()=>observer.disconnect();
  },[]);
- return <section aria-label="公开评论" className="space-y-2 pt-6">
-  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-   <h3 className="text-base font-semibold">公开评论</h3>
+ return <section aria-label="公开评论" className="not-prose mt-12 space-y-2">
+  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-fd-border pb-2">
+   <h2 id="comments" className="scroll-mt-24 text-xl font-semibold">公开评论</h2>
    <a className="text-xs text-fd-primary hover:underline" href="https://github.com/MayBe112358/special-cs-textbook/discussions" target="_blank" rel="noreferrer">在 GitHub 查看全部讨论</a>
   </div>
-  <p className="text-xs text-fd-muted-foreground">用 GitHub 登录后发布，内容公开保存在仓库 Discussions。上面的私人心得不会自动发到这里。</p>
+  <p className="text-xs text-fd-muted-foreground">用 GitHub 登录后发布，内容公开保存在仓库 Discussions。你在“个人心得”里写的东西不会自动发到这里。</p>
   {failed?<p role="status" className="text-sm text-cs-error">评论加载失败，可以打开 GitHub 讨论区查看。</p>:null}
   <div ref={container} className="giscus"/>
  </section>;

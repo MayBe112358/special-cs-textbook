@@ -58,7 +58,9 @@ export function SidebarSash() {
   }
   function move(event: PointerEvent<HTMLDivElement>) {
     if (!dragging.current) return;
-    const x = event.clientX;
+    // 侧边栏左边还有一条活动栏，宽度要从活动栏右边缘算起。
+    const activity = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cs-activity-width')) || 0;
+    const x = event.clientX - activity;
     latest.current = x < SIDEBAR_SNAP
       ? { ...latest.current, sidebarHidden: true, sidebarWidth: dragging.current.startWidth }
       : { ...latest.current, sidebarHidden: false, sidebarWidth: clamp(x, SIDEBAR_MIN, SIDEBAR_MAX) };
