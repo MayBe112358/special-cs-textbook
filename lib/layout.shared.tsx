@@ -13,6 +13,7 @@
  * 这一步最重要的是看清框架原本提供了什么，所以这里只告诉它网站叫什么。颜色、字体、动画都没有
  * 藏在这里提前决定。等功能链路走通后再谈外观，我们才知道是在修饰真正能用的东西。
  */
+import { Fragment } from "react";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import { MobileTabSwitcher } from "@/components/workbench/tab-bar";
 export function baseOptions(): BaseLayoutProps {
@@ -21,12 +22,14 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       url: "/",
       // 手机标题栏里的标签切换（宽屏上标签栏在内容区上方，这个按钮自己会藏起来）。
-      children: <MobileTabSwitcher />,
+      // 这里的元素都要带 key：它们在服务器上生成，传到浏览器时先是“待加载”的占位，被 Fumadocs 放进子元素列表后才加载出来，
+      // React 那时会把它们当成“列表里没有 key 的元素”报警告（components/workbench/area-layout.tsx 的 DrawerAreas 是同一回事）。
+      children: <MobileTabSwitcher key="mobile-tabs" />,
       title: (
-        <>
+        <Fragment key="site-title">
           <span aria-hidden="true" className="rounded-[3px] bg-cs-button px-1.5 font-mono text-xs leading-5 text-cs-button-foreground">~/</span>
           <span className="text-[0.9375rem]">一本特殊的 CS 教材</span>
-        </>
+        </Fragment>
       ),
     },
   };

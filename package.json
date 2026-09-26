@@ -11,9 +11,11 @@
     "build": "next build",
     "start": "next start",
     "test": "node --test \"core/**/*.test.ts\"",
-    "postbuild": "node scripts/fix-static-prefetch.ts"
+    "check:letters": "node scripts/check-letters.ts",
+    "postbuild": "node scripts/fix-static-prefetch.ts && node scripts/prune-export.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
     "@tailwindcss/postcss": "^4.3.3",
     "fumadocs-core": "^16.14.4",
     "fumadocs-mdx": "^15.2.3",

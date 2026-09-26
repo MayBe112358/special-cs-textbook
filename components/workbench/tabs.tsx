@@ -11,13 +11,14 @@
  *                - 标签清单存在浏览器里，刷新后还在（它是读者自己的界面偏好，不是内容）。
  *                - 标签栏末尾的 + 开一个“新标签页”，里面是首页；从它点进哪一页，那一页就开在这个标签里（和浏览器一样）；
  *                - 没点 + 就来到首页（比如关掉了最后一个标签）不生成标签：那是“什么都没打开”时的样子。
+ *                - 标签能拖动换位置（move）；右键菜单里能一次关掉一批（closeMany：关闭其他 / 右侧 / 已保存的）。
+ *                  一次关一批时，有未保存修改的标签不关、原样留着——一个一个问太啰嗦，悄悄丢掉又太危险。
  *                宽屏显示成一排标签；手机上放不下，变成顶栏里一个“n 个标签”的下拉列表。
  * @courses       Stanford CS147 / UC Berkeley CS160（导航模型、减少记忆负担）；UC Berkeley CS61A（状态与派生）；
  *                CS50x Week 8（事件与 DOM）
  * @exercises     https://hci.stanford.edu/courses/cs147/ —— 交互原型与可用性评估
  * @prereq        知道 React Context 能让很远的组件共用一份状态；知道 beforeunload 能在关网页前拦一下。
  * @unclear       浏览器把 Ctrl+Tab、Ctrl+W 留给自己，网页拦不住，所以这里没有切换 / 关闭标签的快捷键。
- *                标签还不能拖动排序。
  *
  * @letter
  * 做标签页时最容易犯的错，是让标签自己“记住当前是哪一页”。那样就有了两份真相：地址栏说在 A，标签说在 B——
@@ -39,6 +40,10 @@ type TabsContextValue = {
   active: string;
   dirty: ReadonlySet<string>;
   close: (url: string, force?: boolean) => void;
+  /** 一次关掉一批（右键菜单用）。有未保存修改的跳过；返回因此留下来的个数。 */
+  closeMany: (urls: readonly string[]) => number;
+  /** 把一个标签挪到另一个标签前面；before 为 null 时挪到最后。 */
+  move: (url: string, before: string | null) => void;
   pin: (url: string) => void;
   /** 标签栏上的 +：开一个“新标签页”，里面是首页。 */
   openNewTab: () => void;
@@ -203,7 +208,35 @@ export function TabsProvider({ children }: { children: ReactNode }) {
     }
   }, [tabs, active, dirty, router, setDirty]);
 
-  const value = useMemo<TabsContextValue>(() => ({ tabs, active, dirty, close, pin, openNewTab, setDirty, lastVisit, confirming, cancelConfirm: () => setConfirming(null) }), [tabs, active, dirty, close, pin, openNewTab, setDirty, lastVisit, confirming]);
+  const closeMany = useCallback((urls: readonly string[]) => {
+    const doomed = new Set(urls.filter((url) => !dirty.has(url)));
+    if (doomed.size === 0) return urls.length;
+    const rest = tabs.filter((t) => !doomed.has(t.url));
+    setTabs(rest);
+    if (doomed.has(active)) {
+      // 当前这一页也被关了：去原来位置右边最近的那个留下来的标签，没有就去左边，一个不剩回首页。
+      const index = tabs.findIndex((t) => t.url === active);
+      const neighbour = tabs.slice(index + 1).find((t) => !doomed.has(t.url)) ?? tabs.slice(0, index).reverse().find((t) => !doomed.has(t.url));
+      router.push(neighbour ? neighbour.url : HOME);
+    }
+    return urls.length - doomed.size;
+  }, [tabs, active, dirty, router]);
+
+  const move = useCallback((url: string, before: string | null) => {
+    if (url === before) return;
+    setTabs((old) => {
+      const moving = old.find((t) => t.url === url);
+      if (!moving) return old;
+      const rest = old.filter((t) => t.url !== url);
+      const at = before === null ? -1 : rest.findIndex((t) => t.url === before);
+      if (at < 0) return [...rest, moving];
+      return [...rest.slice(0, at), moving, ...rest.slice(at)];
+    });
+    // 拖动过的标签算“要留着的”，和双击一样固定下来。
+    pin(url);
+  }, [pin]);
+
+  const value = useMemo<TabsContextValue>(() => ({ tabs, active, dirty, close, closeMany, move, pin, openNewTab, setDirty, lastVisit, confirming, cancelConfirm: () => setConfirming(null) }), [tabs, active, dirty, close, closeMany, move, pin, openNewTab, setDirty, lastVisit, confirming]);
 
   return (
     <TabsContext value={value}>

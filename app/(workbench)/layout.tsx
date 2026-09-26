@@ -8,7 +8,7 @@
  * @courses       CS50x Week 8（页面布局）；UC Berkeley CS61A（状态放在哪一层）
  * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/
  * @prereq        知道 Next.js 的 layout 包住它下面所有页面，换页时 layout 本身不重新挂载。
- * @unclear       右侧 AI 面板现在只占好了位置（components/workbench/assistant-panel.tsx），还没有接任何模型。
+ * @unclear       AI 面板（components/assistant/ai-panel.tsx）也住在这一层，所以换页时对话不丢；但刷新页面对话就没了。
  *
  * @letter
  * “状态放在哪一层”是写界面时最常要回答的问题。放得太低（比如放在某个页面里），一换页就丢；
@@ -21,7 +21,7 @@ import { TopBar } from "@/components/top-bar";
 import { SidebarSash } from "@/components/sidebar-sash";
 import { ActivityBar } from "@/components/workbench/activity-bar";
 import { TabsProvider } from "@/components/workbench/tabs";
-import { AssistantPanel } from "@/components/workbench/assistant-panel";
+import { AiPanel } from "@/components/assistant/ai-panel";
 
 export default function WorkbenchLayout({ children }: { children: ReactNode }) {
   return (
@@ -30,7 +30,7 @@ export default function WorkbenchLayout({ children }: { children: ReactNode }) {
         <TopBar hideOnMobile sidebarToggle />
         <ActivityBar />
         <SidebarSash />
-        <AssistantPanel />
+        <AiPanel />
         {children}
       </TerminalDock>
     </TabsProvider>

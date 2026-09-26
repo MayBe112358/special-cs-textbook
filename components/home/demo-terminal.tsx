@@ -106,6 +106,8 @@ export function DemoTerminal() {
     for (const action of result.actions) {
       if (action.type === 'clear-screen') setEntries([]);
       else if (action.type === 'navigate') router.push(action.href);
+      // 首页的演示终端不接 AI：它面向第一次来的人，还没配置过模型。告诉他去哪里用。
+      else if (action.type === 'agent') setEntries((old) => [...old, { id: nextId.current++, command: '', blocks: [{ type: 'text', text: 'AI 对话在工作区里用：进入课程目录后，在底部终端敲 agent，或点左边活动栏最下面的 AI 图标。', tone: 'muted' }] }]);
       else {
         try {
           if (action.type === 'set-progress') writeProgress(action.course, action.state);

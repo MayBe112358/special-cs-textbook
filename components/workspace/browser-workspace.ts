@@ -3,7 +3,8 @@
  * @problem       core/workspace/workspace.ts 只说了“能做什么”，总得有人真的把数据存下来。
  *                导入的笔记和代码文件可能有好几兆，localStorage 大约只有 5MB 且只能存字符串，装不下；
  *                IndexedDB 是浏览器自带的小数据库，容量大得多，还支持事务。
- * @design        一个数据库、两张表：items（心得条目，按所属空间建索引）和 paths（导图版学习路径）。
+ * @design        一个数据库、三张表：items（心得条目，按所属空间建索引）、paths（导图版学习路径）、
+ *                chats（AI 对话记录，第 2 版数据库加的；读写在 components/assistant/chat-store.ts）。
  *                学习状态和理解度仍用原来的 progress-store（终端要同步读它们，不能改成异步）。
  *                每次写入之后广播一个 WORKSPACE_CHANGED 事件，界面上显示这些数据的地方各自重新读——
  *                和学习状态那套“谁都不通知谁，只喊一声变了”的做法一样。
@@ -39,7 +40,8 @@ import { readCourseProgress, readModuleUnderstanding, writeProgress, writeUnders
 export const WORKSPACE_CHANGED = 'special-cs-textbook:workspace-changed';
 
 const DB_NAME = 'special-cs-textbook';
-const DB_VERSION = 1;
+/** 第 2 版加了 chats 表。升级时旧表原样保留，只补缺的。 */
+const DB_VERSION = 2;
 
 function request<T>(req: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -63,8 +65,14 @@ function openDatabase(): Promise<IDBDatabase> {
       const db = req.result;
       if (!db.objectStoreNames.contains('items')) db.createObjectStore('items', { keyPath: 'id' }).createIndex('space', 'space');
       if (!db.objectStoreNames.contains('paths')) db.createObjectStore('paths', { keyPath: 'id' });
+      if (!db.objectStoreNames.contains('chats')) db.createObjectStore('chats', { keyPath: 'id' });
     };
-    req.onsuccess = () => resolve(req.result);
+    req.onsuccess = () => {
+      const db = req.result;
+      // 另一个标签页打开了更新版本的网站、要升级数据库：这边先让出连接，否则那边会一直卡住。下次用到时重新打开。
+      db.onversionchange = () => { db.close(); opening = null; };
+      resolve(db);
+    };
     req.onerror = () => reject(req.error ?? new Error('打不开浏览器的本地数据库。'));
     req.onblocked = () => reject(new Error('另一个标签页正占着本地数据库，请关掉它再试。'));
   });
@@ -85,7 +93,7 @@ function validOnly<T>(values: unknown[], validate: (v: unknown) => T): T[] {
   return values.flatMap((v) => { try { return [validate(v)]; } catch { return []; } });
 }
 
-function createBrowserWorkspace(db: IDBDatabase): Workspace & { putMany(items: NoteItem[], paths: PathCanvas[]): Promise<void> } {
+function createBrowserWorkspace(db: IDBDatabase): Workspace & { putMany(items: NoteItem[], paths: PathCanvas[]): Promise<void>; db: IDBDatabase } {
   const store = (name: 'items' | 'paths', mode: IDBTransactionMode) => db.transaction(name, mode).objectStore(name);
   async function write(name: 'items' | 'paths', op: (s: IDBObjectStore) => void) {
     const tx = db.transaction(name, 'readwrite');
@@ -94,6 +102,8 @@ function createBrowserWorkspace(db: IDBDatabase): Workspace & { putMany(items: N
     notifyWorkspaceChanged();
   }
   return {
+    /** 同一个数据库连接。AI 对话记录（chats 表）借它读写，不另开连接。 */
+    db,
     async listItems(space) {
       const s = store('items', 'readonly');
       const raw = await request(space === undefined ? s.getAll() : s.index('space').getAll(space));

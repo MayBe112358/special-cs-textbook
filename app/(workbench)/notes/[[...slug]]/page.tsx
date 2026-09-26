@@ -22,11 +22,27 @@ import { createVirtualFileSystem } from "@/core/filesystem/virtual-file-system";
 import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json";
 import type { KnowledgeIndex } from "@/core/knowledge/knowledge-index";
 import { knowledgePathToUrl } from "@/core/terminal/commands/shared";
-import { NotesSpace, type AuthorNote } from "@/components/notes/notes-space";
+import { NotesSpace, type AuthorNote, type SpaceOption } from "@/components/notes/notes-space";
+import type { VfsNode } from "@/core/filesystem/virtual-file-system";
 
 const knowledgeIndex = knowledgeIndexJson as KnowledgeIndex;
 const fileSystem = createVirtualFileSystem(knowledgeIndex);
 const authorNotes = authorNotesJson as Record<string, AuthorNote[]>;
+
+/**
+ * 全部心得空间，按侧边栏那棵树的顺序排好（先父后子），带上层级深度。
+ * “挪到别的课”的下拉框用它，心得首页用它写出每份心得属于哪门课。
+ */
+function listSpaces(): SpaceOption[] {
+  const spaces: SpaceOption[] = [];
+  const walk = (node: VfsNode, depth: number) => {
+    if (node.path !== "/") spaces.push({ path: node.path, title: node.title, depth });
+    if (node.kind === "directory") for (const child of fileSystem.childrenOf(node)) walk(child, depth + 1);
+  };
+  walk(fileSystem.root, -1);
+  return spaces;
+}
+const spaces = listSpaces();
 
 function toPath(slug?: string[]): string {
   return slug && slug.length > 0 ? `/${slug.join("/")}` : "/";
@@ -54,17 +70,11 @@ export default async function NotesPage(props: { params: Promise<{ slug?: string
   const node = fileSystem.nodeAt(path);
   if (!node) notFound();
   const docHref = node.kind === "file" ? node.url : knowledgePathToUrl(node.path);
-  // 心得首页要列出“最近的心得各属于哪门课”，得知道每个位置叫什么。
-  const titles = path === "/" ? Object.fromEntries([
-    ...knowledgeIndex.categories.map((c) => [c.path, c.title]),
-    ...knowledgeIndex.courses.map((c) => [c.path, c.title]),
-    ...knowledgeIndex.modules.map((m) => [m.path, m.title]),
-  ]) : undefined;
   return (
     <main className="flex min-w-0 flex-col [grid-area:main]">
       {/* 读查询参数（?item=）的组件要包在 Suspense 里，静态导出才能通过。 */}
       <Suspense fallback={<p className="p-6 text-sm text-fd-muted-foreground">正在打开……</p>}>
-        <NotesSpace space={path} title={node.title} docHref={path === "/" ? null : docHref} authorNotes={authorNotes[path] ?? []} titles={titles} />
+        <NotesSpace space={path} title={node.title} docHref={path === "/" ? null : docHref} authorNotes={authorNotes[path] ?? []} spaces={spaces} />
       </Suspense>
     </main>
   );

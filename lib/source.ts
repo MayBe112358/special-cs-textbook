@@ -87,9 +87,12 @@ const courseIdByUrl = new Map(knowledgeIndex.courses.map((course) => [course.url
 /**
  * 侧边栏条目的名字：原来的文字，后面跟一个状态圆点。
  * 这里是 .ts 文件写不了 JSX，所以用 createElement 手写；它和 <>{name}<StatusDot … /></> 是同一个东西。
+ *
+ * 两个孩子都要带 key：这棵树在服务器上生成、再传到浏览器，一路上“两个孩子”会变成一个数组，
+ * 浏览器里的 React 看到没有 key 的数组就会报 “Each child in a list should have a unique key”。
  */
 function withDot(name: ReactNode, target: { course: string } | { module: string }): ReactNode {
-  return createElement(Fragment, null, name, createElement(StatusDot, target));
+  return createElement(Fragment, null, createElement(Fragment, { key: "name" }, name), createElement(StatusDot, { key: "dot", ...target }));
 }
 
 /** 按位置查目录和模块。侧边栏那一支要照着知识索引现搭出来，所以先把两张表变成能查的样子。 */
@@ -141,6 +144,9 @@ export const source = loader({
   baseUrl: "/docs",
   source: docs.toFumadocsSource(),
   pageTree: {
+    // 树上每一项默认带一个 $ref（它来自哪个源文件），只在建树排序时有用，侧边栏用不到。
+    // 可这棵树会被塞进每一页的 HTML 和预取文件里，三百来页乘下来要多出二十来 MB，所以建完就删掉。
+    noRef: true,
     transformers: [
       {
         file(node) {

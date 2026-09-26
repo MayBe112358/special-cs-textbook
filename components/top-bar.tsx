@@ -33,7 +33,6 @@ import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch';
 import { useSyncExternalStore } from 'react';
 import { LAYOUT_CHANGED } from './layout-prefs';
 import { toggleSidebar } from './sidebar-sash';
-import { AssistantToggle } from './workbench/assistant-panel';
 
 /** 侧边栏现在是不是收起的：直接看 <html data-sidebar>，它由 layout-prefs 负责写。 */
 function useSidebarHidden(): boolean {
@@ -93,7 +92,6 @@ export function TopBar({ hideOnMobile = false, sidebarToggle = false }: { hideOn
       </button>
 
       <ThemeSwitch className="ml-auto shrink-0 rounded-[4px] p-0.5 *:rounded-[3px] sm:ml-0" />
-      {sidebarToggle ? <AssistantToggle /> : null}
     </header>
   );
 }

@@ -61,7 +61,9 @@ export function AreaLayout({ tree, children }: { tree: Root; children: ReactNode
       {...baseOptions()}
       tree={tree}
       slots={{ header: WorkbenchHeader }}
-      sidebar={{ collapsible: false, banner: <DrawerAreas /> }}
+      // key 不能省：这个元素在服务器上生成，传到浏览器时先是一个“待加载”的占位，Fumadocs 把它放进子元素列表那一刻，
+      // React 还认不出它是个固定位置的元素；等它加载出来，React 看到的是“列表里一个没有 key 的元素”，就会报警告。
+      sidebar={{ collapsible: false, banner: <DrawerAreas key="drawer-areas" /> }}
       containerProps={{ style: docsContainerStyle, className: "md:[--fd-banner-height:2.75rem] md:[--fd-header-height:2.1875rem]" }}
     >
       {children}

@@ -1,0 +1,51 @@
+# @module        每次提交都自动跑的检查——测试、注释块、类型检查和静态构建
+# @problem       部署流程只在推到 main 时运行，而且只看“能不能构建”。别人提来的 PR、或者推到别的分支的改动，
+#                没有任何东西告诉你它弄坏了测试、漏写了注释。等合进 main 再发现，坏掉的版本已经上线了。
+# @design        推送到 main 以外的分支、以及每一个 PR，都跑同一串检查；任何一步失败，整次检查就是红的：
+#                1. npm test：命令引擎、文件系统、进度、心得、备份这些纯逻辑的测试；
+#                2. npm run check:letters：每个源码文件都有完整的注释块（这本教材的正文）；
+#                3. npm run build：生成知识索引 → Next.js 类型检查 → 静态导出，确认整站能生成出来。
+#                检查只读仓库，不部署——部署仍由 deploy-pages.yml 负责，它也会先跑前两步再构建。
+# @courses       MIT Missing Semester（持续集成）；UC Berkeley CS169（敏捷开发与自动化测试）
+# @exercises     https://missing.csail.mit.edu/2020/metaprogramming/ —— 持续集成练习
+# @prereq        知道 GitHub Actions 会在云端一台干净的机器上按顺序执行这里写的命令。
+# @unclear       没有跑浏览器里的端到端测试（点界面的那种）；那一层目前靠人工按 ROADMAP 的回归清单验收。
+# @letter
+# 这个文件是这本教材的“守门人”。你 fork 走之后改了什么，推上去几分钟内就会知道：
+# 测试有没有挂、注释有没有漏、网站还能不能生成出来。它不会替你判断改得好不好，
+# 但会保证“以前能用的还能用”这件最容易被忽略的事，每一次都有人查过。
+
+name: Check
+
+on:
+  # main 上的推送由 deploy-pages.yml 跑同样的检查再部署，这里不重复跑一遍。
+  push:
+    branches-ignore: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Comment blocks
+        run: npm run check:letters
+
+      - name: Type check and static build
+        run: npm run build
