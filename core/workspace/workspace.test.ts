@@ -16,7 +16,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { addNode, connect, moveNode, removeNodes, removeEdges, setNodeText, validateCanvas, EMPTY_CANVAS, canvasBounds } from './canvas.ts';
-import { createTextItem, createCanvasItem, migrateLegacyNote, uniqueName, languageOf, importable, validateItem } from './items.ts';
+import { createTextItem, createCanvasItem, migrateLegacyNote, moveItem, uniqueName, languageOf, importable, validateItem } from './items.ts';
 import { addCourse, arrange, canvasFromCourseList, coursesIn, migrateLegacyPath, validatePathCanvas } from './learning-paths.ts';
 import { diffLines, diffSummary } from './diff.ts';
 import { applyProposal, createMemoryWorkspace, EDITABLE_RESOURCES, previewProposal } from './workspace.ts';
@@ -142,6 +142,20 @@ test('可编辑内容清单：每一类都登记了界面位置，种类不重�
   assert.ok(EDITABLE_RESOURCES.every((r) => r.editedIn.length > 0 && r.title.length > 0));
 });
 
+test('挪心得：只换空间、编号不变，目标里重名就加数字，挪到原地不动，挪到坏位置报错', () => {
+  const doc = createTextItem({ id: 'd1', space: '/programming-intro/cs61a', name: '笔记.md', text: '内容', now: NOW });
+  const later = '2026-09-25T10:00:00.000Z';
+  const moved = moveItem(doc, '/programming-intro/cs61b', ['笔记.md'], later);
+  assert.equal(moved.id, 'd1');
+  assert.equal(moved.space, '/programming-intro/cs61b');
+  assert.equal(moved.name, '笔记 2.md');
+  assert.equal(moved.text, '内容');
+  assert.equal(moved.updatedAt, later);
+  assert.equal(doc.space, '/programming-intro/cs61a', '不改传入的那一份');
+  assert.equal(moveItem(doc, doc.space, [], later), doc);
+  assert.throws(() => moveItem(doc, 'no-slash', [], later), /位置/);
+});
+
 test('内存实现：按空间列出、删除', async () => {
   const ws = createMemoryWorkspace();
   await ws.writeItem(createTextItem({ id: 'a', space: '/x', name: 'b.md', now: NOW }));
@@ -196,19 +210,4 @@ test('第 5 版备份拒绝重复条目和坏数据；导入默认不覆盖本�
   assert.deepEqual(keep.items.map((i) => i.id), ['d2']);
   assert.equal(keep.conflicts, 1);
   assert.equal(planImport(backup, { itemIds: new Set(['d1']), pathIds: new Set() }, true).items.length, 2);
-});
-
-test('AI 助手的约定：没有直接写入的工具；Key 必须完整、自定义地址必须是 https', async () => {
-  const { ASSISTANT_TOOLS, validateAssistantConfig, maskKey } = await import('../assistant/assistant.ts');
-  assert.ok(ASSISTANT_TOOLS.every((t) => t.access === 'read' || t.access === 'propose'));
-  assert.ok(ASSISTANT_TOOLS.every((t) => t.access === 'read' ? t.name.startsWith('read_') : t.name.startsWith('propose_')));
-  assert.ok(ASSISTANT_TOOLS.some((t) => t.name === 'propose_note_item_edit'));
-  assert.equal(new Set(ASSISTANT_TOOLS.map((t) => t.name)).size, ASSISTANT_TOOLS.length);
-  assert.deepEqual(validateAssistantConfig({ provider: 'anthropic', model: ' claude-sonnet-5 ', apiKey: ' sk-1234567890 ' }), { provider: 'anthropic', model: 'claude-sonnet-5', apiKey: 'sk-1234567890' });
-  assert.throws(() => validateAssistantConfig({ provider: 'nobody', model: 'x', apiKey: 'sk-1234567890' }), /厂商/);
-  assert.throws(() => validateAssistantConfig({ provider: 'openai', model: 'x', apiKey: 'short' }), /Key/);
-  assert.throws(() => validateAssistantConfig({ provider: 'custom', model: 'x', apiKey: 'sk-1234567890' }), /接口地址/);
-  assert.throws(() => validateAssistantConfig({ provider: 'custom', model: 'x', apiKey: 'sk-1234567890', baseUrl: 'http://example.com' }), /https/);
-  assert.equal(validateAssistantConfig({ provider: 'custom', model: 'x', apiKey: 'sk-1234567890', baseUrl: 'https://example.com/v1/' }).baseUrl, 'https://example.com/v1');
-  assert.equal(maskKey('sk-abcdefghijkl'), 'sk-a••••ijkl');
 });

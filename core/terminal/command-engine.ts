@@ -84,6 +84,7 @@ import { parsePipeline } from './syntax.ts';
 import {pwdCommand,treeCommand,historyCommand,clearCommand} from './commands/navigation.ts';
 import {findCommand} from './commands/find.ts';
 import {grepCommand} from './commands/grep.ts';
+import { agentCommand } from './commands/agent.ts';
 import { text } from "./output.ts";
 
 /**
@@ -101,6 +102,7 @@ export const COMMANDS: readonly CommandDefinition[] = [
   markCommand,
   statusCommand, searchCommand,
   pwdCommand, treeCommand, historyCommand, clearCommand, findCommand, grepCommand,
+  agentCommand,
 ];
 
 /**

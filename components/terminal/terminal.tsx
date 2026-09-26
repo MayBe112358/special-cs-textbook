@@ -58,6 +58,12 @@
  * 其余部分靠 CSS 变量往下继承。那个变量被登记成了“长度”，所以它变化时浏览器能补出中间帧——
  * 终端、正文、侧边栏在同一个动画里一起伸缩。
  *
+ * agent 模式：敲 agent 之后，输入行不再交给命令引擎，而是交给 AI（和左侧面板同一套会话代码，
+ * components/assistant/use-agent-session.ts）。提示符变成 agent>，exit 退出，Ctrl+C 停止正在进行的回答，
+ * 改动单可以点按钮，也可以直接输入 y / n。agent -c 接着最近的一段对话（面板里的也算）；
+ * 终端里的对话同样存进历史，标注“终端”，也能在面板里点开接着聊。
+ * 命令引擎自己不碰网络——它只递一张“我想进入 AI 对话”的申请单。
+ *
  * 手机上为什么默认收起？因为手机屏幕只有电脑的三分之一高，一个默认展开的终端会先吃掉半屏正文，
  * 而第一次打开网站的人最想看的是正文。所以这里有第三种状态 "auto"：你还没碰过终端时，
  * 宽屏展开、窄屏收起，由 CSS 按屏幕宽度决定；你一旦亲手展开或收起，就听你的。
@@ -78,6 +84,10 @@ import type { CourseProgress, ModuleUnderstanding } from "@/core/progress/progre
 import { readProgressSnapshot, readUnderstandingSnapshot, subscribeProgress, writeProgress, writeUnderstanding } from "@/components/progress/progress-store";
 import type { OutputBlock } from "@/core/terminal/output";
 import { OutputView } from "@/components/terminal/output-view";
+import { useAgentSession, type TranscriptItem } from "@/components/assistant/use-agent-session";
+import { Transcript } from "@/components/assistant/transcript";
+import { APPROVAL_OPTIONS } from "@/components/assistant/pickers";
+import { requestAiSettings } from "@/components/workbench/side-view";
 import { usePathname, useRouter } from "next/navigation";
 import { TERMINAL_DEFAULT, TERMINAL_MIN, TERMINAL_SNAP, applyLayout, readLayout, updateLayout } from "@/components/layout-prefs";
 import {
@@ -105,7 +115,12 @@ type HistoryEntry = {
   prompt: string;
   command: string;
   blocks: OutputBlock[];
+  /** 这一条是一段 AI 对话：'live' 表示就是当前这段（跟着会话实时变）；数组是之前那段对话定格下来的样子。 */
+  agent?: "live" | TranscriptItem[];
 };
+
+/** agent 模式：off 普通终端；chat 进入了对话（直到 exit）；once 只问一句，答完自动回来。 */
+type AgentMode = "off" | "chat" | "once";
 
 /**
  * 终端的三种状态。"auto" 表示读者还没动过它：宽屏展开、窄屏收起，交给 CSS 决定（原因见顶上的信）。
@@ -157,6 +172,12 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   // 读者本机的两条进度线。引擎不许自己读浏览器存储，所以在这里读好再递进去。
   const [progress, setProgress] = useState<readonly CourseProgress[]>([]);
   const [understanding, setUnderstanding] = useState<readonly ModuleUnderstanding[]>([]);
+  const agent = useAgentSession("terminal");
+  const [agentMode, setAgentMode] = useState<AgentMode>("off");
+  const [agentHistory, setAgentHistory] = useState<string[]>([]);
+  // 会话里最新的对话记录。开始下一段对话前，用它把上一段“定格”下来。
+  const agentItems = useRef<TranscriptItem[]>([]);
+  agentItems.current = agent.items;
   const draftBeforeHistory = useRef("");
   const nextEntryId = useRef(1);
   const outputRef = useRef<HTMLDivElement>(null);
@@ -192,9 +213,37 @@ export function TerminalDock({ children }: { children: ReactNode }) {
     setHistoryCursor(null);
     draftBeforeHistory.current = "";
 
-    // 命令只递申请单，真正动手在这里：跳转交给路由器，改状态交给浏览器存储。
+    // 命令只递申请单，真正动手在这里：跳转交给路由器，改状态交给浏览器存储，AI 对话交给会话。
     for (const action of result.actions) {
-      if (action.type === "clear-screen") {
+      if (action.type === "agent") {
+        // 上一段对话定格下来，这一段从头开始。
+        const snapshot = agentItems.current;
+        setEntries((old) => [
+          ...old.map((entry) => (entry.agent === "live" ? { ...entry, agent: snapshot } : entry)).filter((entry) => entry.id !== entryId),
+          {
+            id: entryId,
+            prompt: currentPath,
+            command: line,
+            blocks: action.prompt === null
+              ? [{ type: "text", text: `${action.resume ? "接着上一段对话。" : "进入 AI 对话。"}直接输入问题；exit 退出，Ctrl+C 停止回答，clear 开始新对话。需要确认改动时输入 y / n。`, tone: "muted" }]
+              : [],
+            agent: "live",
+          },
+        ]);
+        void (async () => {
+          // agent -c：接着最近的一段（面板里的也算）；没有就开新的，并说一声。
+          if (action.resume && !(await agent.loadLatest())) {
+            await agent.newChat();
+            setEntries((old) => [...old, { id: nextEntryId.current++, prompt: currentPath, command: "", blocks: [{ type: "text", text: "还没有可以接着的对话，开了一段新的。", tone: "muted" }] }]);
+          } else if (!action.resume) {
+            await agent.newChat();
+          }
+          if (action.prompt === null) { setAgentMode("chat"); return; }
+          setAgentMode("once");
+          await agent.send(action.prompt);
+          setAgentMode((mode) => (mode === "once" ? "off" : mode));
+        })();
+      } else if (action.type === "clear-screen") {
         setEntries([]);
       } else if (action.type === "navigate") {
         if (action.reason === "change-directory") setPreviousPath(currentPath);
@@ -215,13 +264,31 @@ export function TerminalDock({ children }: { children: ReactNode }) {
         }
       }
     }
-  }, [currentPath, previousPath, progress, understanding, commandHistory, router]);
+  }, [currentPath, previousPath, progress, understanding, commandHistory, router, agent]);
+
+  /** agent 模式下敲的一行。 */
+  const agentLine = useCallback((line: string) => {
+    const text = line.trim();
+    if (!text) return;
+    if (agent.pending && /^(y|yes|是|同意)$/i.test(text)) { agent.decide(agent.pending.id, true); return; }
+    if (agent.pending && /^(n|no|否|拒绝)$/i.test(text)) { agent.decide(agent.pending.id, false); return; }
+    if (/^(exit|quit|:q)$/i.test(text)) {
+      agent.stop();
+      setAgentMode("off");
+      setEntries((old) => [...old, { id: nextEntryId.current++, prompt: currentPath, command: "", blocks: [{ type: "text", text: "已退出 AI 对话。", tone: "muted" }] }]);
+      return;
+    }
+    if (/^(clear|\/new)$/i.test(text)) { void agent.newChat(); return; }
+    if (agent.running) return;
+    setAgentHistory((old) => [...old, text]);
+    void agent.send(text);
+  }, [agent, currentPath]);
 
   useEffect(() => {
     if (!expanded) return;
     const output = outputRef.current;
     if (output) output.scrollTop = output.scrollHeight;
-  }, [entries, expanded]);
+  }, [entries, expanded, agent.items]);
 
   /**
    * 展开或收起。展开之后要不要把光标放进输入行？用键盘的人要，用手指的人不要——
@@ -280,7 +347,7 @@ export function TerminalDock({ children }: { children: ReactNode }) {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    executeLine(input);
+    if (agentMode !== "off") agentLine(input); else executeLine(input);
     setInput("");
     inputRef.current?.focus();
   }
@@ -293,6 +360,25 @@ export function TerminalDock({ children }: { children: ReactNode }) {
   }
 
   function moveThroughHistory(event: KeyboardEvent<HTMLInputElement>) {
+    if (agentMode !== "off") {
+      const selecting = event.currentTarget.selectionStart !== event.currentTarget.selectionEnd;
+      if (event.key === "c" && event.ctrlKey && !selecting) {
+        event.preventDefault();
+        if (agent.running) agent.stop(); else agentLine("exit");
+        return;
+      }
+      if (event.key === "Escape" && agent.running) { event.preventDefault(); agent.stop(); return; }
+      if (event.key === "Tab") { event.preventDefault(); return; }
+      if ((event.key === "ArrowUp" || event.key === "ArrowDown") && agentHistory.length) {
+        event.preventDefault();
+        const next = event.key === "ArrowUp"
+          ? (historyCursor === null ? agentHistory.length - 1 : Math.max(0, historyCursor - 1))
+          : (historyCursor === null ? null : historyCursor + 1 < agentHistory.length ? historyCursor + 1 : null);
+        setHistoryCursor(next);
+        setInput(next === null ? "" : agentHistory[next] ?? "");
+      }
+      return;
+    }
     if (event.key === "l" && event.ctrlKey) {
       // Ctrl+L 清屏，和真终端一样；已经敲了一半的命令留着。
       event.preventDefault();
@@ -341,7 +427,7 @@ export function TerminalDock({ children }: { children: ReactNode }) {
 
       {/* 宽屏时终端从侧边栏右边开始，只占正文下方那一块，侧边栏一直通到底——和 VS Code 的面板一样。 */}
       <section
-        className="fixed bottom-0 left-0 right-0 z-30 grid md:right-(--cs-assistant-width) grid-cols-[minmax(0,1fr)] grid-rows-[2.25rem_minmax(0,1fr)] overflow-hidden border-t border-fd-border bg-fd-card pb-[env(safe-area-inset-bottom)] md:left-[calc(var(--cs-activity-width)+var(--cs-sidebar-width))] md:border-l"
+        className="fixed bottom-0 left-0 right-0 z-30 grid grid-cols-[minmax(0,1fr)] grid-rows-[2.25rem_minmax(0,1fr)] overflow-hidden border-t border-fd-border bg-fd-card pb-[env(safe-area-inset-bottom)] md:left-[calc(var(--cs-activity-width)+var(--cs-sidebar-width))] md:border-l"
         style={{ height: "calc(var(--fd-terminal-height) + env(safe-area-inset-bottom))" }}
         aria-label="课程终端"
       >
@@ -413,14 +499,33 @@ export function TerminalDock({ children }: { children: ReactNode }) {
                 {entry.blocks.map((block, index) => (
                   <OutputView key={index} block={block} onCommand={executeLine} />
                 ))}
+                {entry.agent ? (
+                  <div className="space-y-1.5 pt-0.5">
+                    <Transcript
+                      items={entry.agent === "live" ? agent.items : entry.agent}
+                      onDecide={agent.decide}
+                      variant="terminal"
+                      onOpenSettings={requestAiSettings}
+                    />
+                    {entry.agent === "live" && agent.running ? <p className="text-xs text-fd-muted-foreground">AI 正在回答…（Ctrl+C 停止）</p> : null}
+                    {entry.agent === "live" && agentMode !== "off" ? (
+                      <p className="text-xs text-fd-muted-foreground">
+                        模型 {agent.choice.model || "未选"} · 权限 {APPROVAL_OPTIONS.find((o) => o.value === agent.choice.approval)?.label}（在左侧 AI 面板的输入框下面可以换）
+                      </p>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>
 
           <form className="flex items-center gap-2 border-t border-fd-border px-4 py-2" onSubmit={submit}>
             <label htmlFor="course-terminal-input" className="max-w-[45%] shrink-0 truncate">
-              <span className="text-cs-prompt">{currentPath}</span>
-              <span className="text-fd-muted-foreground"> $</span>
+              {agentMode !== "off" ? (
+                <><span className="text-cs-author">agent</span><span className="text-fd-muted-foreground">&gt;</span></>
+              ) : (
+                <><span className="text-cs-prompt">{currentPath}</span><span className="text-fd-muted-foreground"> $</span></>
+              )}
             </label>
             <input
               ref={inputRef}
@@ -432,7 +537,8 @@ export function TerminalDock({ children }: { children: ReactNode }) {
               autoCorrect="off"
               spellCheck={false}
               enterKeyHint="go"
-              aria-label="输入终端命令"
+              aria-label={agentMode !== "off" ? "问 AI（exit 退出）" : "输入终端命令"}
+              placeholder={agentMode === "off" ? undefined : agent.pending ? "输入 y 同意，n 拒绝" : agent.running ? "AI 正在回答…Ctrl+C 停止" : "问 AI，exit 退出"}
               onChange={(event) => {
                 setInput(event.target.value);
                 setHistoryCursor(null);

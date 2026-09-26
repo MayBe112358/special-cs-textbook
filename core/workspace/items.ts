@@ -97,6 +97,17 @@ export function uniqueName(wanted: string, taken: readonly string[]): string {
   }
 }
 
+/**
+ * 把一份心得挪到另一个空间（另一门课、另一个分类）。
+ * 只改“属于哪里”，编号不变——所以打开着的标签、暂存的草稿都还认得它。
+ * 目标空间里已经有同名的，就像新建时一样在名字后面加个数字，不覆盖别人。
+ * taken 是目标空间里现有的名字。挪到原地什么都不做，原样返回。
+ */
+export function moveItem(item: NoteItem, space: string, taken: readonly string[], now: string): NoteItem {
+  if (item.space === space) return item;
+  return validateItem({ ...item, space, name: uniqueName(item.name, taken), updatedAt: now });
+}
+
 /** 后缀到代码语言的对照表。只列常见的；认不出来的按纯文本显示，不瞎猜。 */
 const LANGUAGES: Record<string, string> = {
   md: 'markdown', markdown: 'markdown', txt: 'text',

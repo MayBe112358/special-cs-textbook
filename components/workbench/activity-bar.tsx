@@ -1,11 +1,13 @@
 /**
- * @module        左侧最外层的活动栏——课程目录、学习路径、个人心得，三块之间切换
+ * @module        左侧最外层的活动栏——课程目录、学习路径、个人心得三块之间切换，最下面是 AI 助手
  * @problem       网站有三块性质不同的地方：课程目录（看课）、学习路径（排路线）、个人心得（写笔记）。
  *                把它们做成顶栏里的三个文字链接，看不出“它们是平级的三个工作区”，也看不出现在在哪一块。
  * @design        照 VS Code 的活动栏：一条 48px 宽的竖栏，三个图标，当前那块左边有一条蓝线、图标变亮。
  *                点一块，回到你上次在那一块停留的页面（从标签清单里找），而不是每次都回首页；
  *                已经在这一块时再点一次，收起 / 展开侧边栏——和 VS Code 一模一样。
  *                只在宽屏出现；手机上三块的入口放在侧边栏抽屉的顶上。
+ *                第四个图标是 AI 助手，和前三个不一样：它不换页面，只把侧边栏换成对话（side-view.ts）。
+ *                AI 打开时它亮、前三个都不亮；点前三个任一个，侧边栏换回树。
  * @courses       Stanford CS147 / UC Berkeley CS160（信息架构、全局导航、状态可见）
  * @exercises     https://hci.stanford.edu/courses/cs147/
  * @prereq        知道图标按钮一定要有文字说明（title 和 aria-label），否则读屏软件和第一次来的人都不知道它是什么。
@@ -22,6 +24,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { toggleSidebar } from '@/components/sidebar-sash';
+import { setSideView, useSideView } from './side-view';
 import { areaOf, useTabs } from './tabs';
 
 const AREAS = [
@@ -70,7 +73,11 @@ function AreaButton({ area, active, href }: { area: (typeof AREAS)[number]; acti
       aria-label={area.label}
       aria-current={active ? 'page' : undefined}
       title={active ? `${area.label}（再点一次收起侧边栏 · Ctrl+B）` : area.label}
-      onClick={(event) => { if (active) { event.preventDefault(); toggleSidebar(); } }}
+      onClick={(event) => {
+        // AI 开着时点任何一块：先把侧边栏换回树。
+        if (document.documentElement.dataset.sideView === 'ai') setSideView('tree');
+        else if (active) { event.preventDefault(); toggleSidebar(); }
+      }}
       className={`relative grid h-12 w-12 place-items-center transition-colors ${active ? 'text-fd-foreground' : 'text-fd-muted-foreground hover:text-fd-foreground'}`}
     >
       {active ? <span aria-hidden="true" className="absolute inset-y-0 left-0 w-0.5 bg-cs-button" /> : null}
@@ -79,10 +86,31 @@ function AreaButton({ area, active, href }: { area: (typeof AREAS)[number]; acti
   );
 }
 
+/** AI 助手：不换页面，只把侧边栏换成对话；已经开着时再点一次收起侧边栏（和前三块一样）。 */
+function AiButton({ active }: { active: boolean }) {
+  return (
+    <button
+      type="button"
+      aria-label="AI 助手"
+      aria-pressed={active}
+      title={active ? 'AI 助手（再点一次收起侧边栏 · Ctrl+Alt+I）' : 'AI 助手（Ctrl+Alt+I）'}
+      onClick={() => { if (active) toggleSidebar(); else setSideView('ai'); }}
+      className={`relative mt-auto mb-1 grid h-12 w-12 place-items-center transition-colors ${active ? 'text-fd-foreground' : 'text-fd-muted-foreground hover:text-fd-foreground'}`}
+    >
+      {active ? <span aria-hidden="true" className="absolute inset-y-0 left-0 w-0.5 bg-cs-button" /> : null}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" className="size-6">
+        <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4 3.5V16h-.5A1.5 1.5 0 0 1 4 14.5z" strokeLinejoin="round" />
+        <path d="M12 7.2l.9 1.9 1.9.9-1.9.9-.9 1.9-.9-1.9-1.9-.9 1.9-.9z" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
+
 export function ActivityBar(): ReactNode {
   const pathname = usePathname();
   const { tabs, lastVisit } = useTabs();
-  const current = areaOf(pathname);
+  const side = useSideView();
+  const current = side === 'ai' ? null : areaOf(pathname);
   return (
     <nav aria-label="工作区" className="fixed bottom-0 left-0 top-11 z-40 hidden w-12 flex-col border-r border-fd-border bg-fd-card md:flex">
       {AREAS.map((area) => {
@@ -91,6 +119,7 @@ export function ActivityBar(): ReactNode {
         const href = last && tabs.some((t) => t.url === last) ? last : area.home;
         return <AreaButton key={area.id} area={area} active={current === area.id} href={href} />;
       })}
+      <AiButton active={side === 'ai'} />
     </nav>
   );
 }

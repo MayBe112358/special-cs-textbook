@@ -683,3 +683,12 @@ test('中英文搜索覆盖课程与源码全文，且可接管道',()=>{
  assert.equal(rows('search 完全不存在的词').length,0);
  assert.ok(rows('search layout | grep 文档').every(row=>row.command?.startsWith('open ')));
 });
+
+test('agent 只递申请单：不带参数进入对话，带参数只问一句，-c 接着上一段；不能进管道',()=>{
+ assert.deepEqual(runCommand('agent',session).actions,[{type:'agent',prompt:null,resume:false}]);
+ assert.deepEqual(runCommand('agent 递归 是什么',session).actions,[{type:'agent',prompt:'递归 是什么',resume:false}]);
+ assert.deepEqual(runCommand('agent -c',session).actions,[{type:'agent',prompt:null,resume:true}]);
+ assert.deepEqual(runCommand('agent --continue 接着说',session).actions,[{type:'agent',prompt:'接着说',resume:true}]);
+ assert.equal(runCommand('agent | grep x',session).status,'error');
+ assert.ok(runCommand('help',session).blocks.flatMap(b=>b.type==='list'?b.items:[]).some(row=>row.label==='agent'));
+});

@@ -7,11 +7,16 @@
  *                标签多了横向滚动，当前那个自动滚进视野。
  *                关一个有未保存修改的标签时，标签下方弹出一个小框：“放弃修改并关闭 / 取消”。
  *                最后一个标签后面是 +，开一个新标签页（里面是首页）。
+ *                按住标签左右拖可以换位置，松手处有一条竖线指示会落在哪；拖过的标签自动固定。
+ *                右键（或键盘上的菜单键 / Shift+F10）弹出菜单：固定、关闭、关闭其他、关闭右侧、关闭已保存的。
+ *                一次关一批时，有未保存修改的标签留着不关，标签栏下方会说一声留下了几个。
  *                手机：顶栏里一个“n 个标签 ▾”按钮，点开是一张列表，列表最上面是“新标签页”。
  * @courses       Stanford CS147 / UC Berkeley CS160（可发现性、防误操作）；CS50x Week 8（事件处理）
  * @exercises     https://hci.stanford.edu/courses/cs147/
- * @prereq        知道鼠标中键点击的事件是 auxclick，button 等于 1。
- * @unclear       标签还不能拖动排序，也没有右键菜单（关闭其他、关闭右侧）。
+ * @prereq        知道鼠标中键点击的事件是 auxclick，button 等于 1；知道浏览器自带拖放（drag and drop）：
+ *                dragstart 时放一份数据，dragover 里 preventDefault 表示“这里可以放”，drop 时取出来。
+ * @unclear       拖放用的是浏览器自带的 HTML5 拖放，触摸屏不支持——手机上标签本来就收成了下拉列表，不需要拖。
+ *                标签不能拖出窗口变成新窗口（VS Code 可以），网页做不到。
  *
  * @letter
  * 标签栏上每个小细节都是 VS Code 用了很多年磨出来的，这里照搬，是因为读者多半已经习惯了它们：
@@ -21,7 +26,7 @@
 'use client';
 import { Header } from 'fumadocs-ui/layouts/docs/slots/header';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type DragEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { HOME, areaOf, useTabs, type Tab } from './tabs';
 
 function TabIcon({ url }: { url: string }) {
@@ -41,7 +46,18 @@ function CloseGlyph() {
   return <svg viewBox="0 0 16 16" aria-hidden="true" className="size-3" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4l8 8M12 4l-8 8" strokeLinecap="round" /></svg>;
 }
 
-function TabItem({ tab, active, dirty }: { tab: Tab; active: boolean; dirty: boolean }) {
+/** 拖动标签时放在 dataTransfer 里的类型名；只认它，拖进来的文件、文字不会被当成标签。 */
+const TAB_DRAG = 'application/x-special-cs-tab';
+
+type DropMark = { url: string; side: 'before' | 'after' } | null;
+type MenuState = { url: string; x: number; y: number } | null;
+
+function TabItem({ tab, active, dirty, drop, onDragMark, onDropHere, onMenu }: {
+  tab: Tab; active: boolean; dirty: boolean; drop: DropMark;
+  onDragMark: (mark: DropMark) => void;
+  onDropHere: (event: DragEvent<HTMLDivElement>) => void;
+  onMenu: (url: string, x: number, y: number) => void;
+}) {
   const { close, pin } = useTabs();
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => { if (active) ref.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }, [active]);
@@ -51,12 +67,34 @@ function TabItem({ tab, active, dirty }: { tab: Tab; active: boolean; dirty: boo
       role="tab"
       aria-selected={active}
       data-active={active}
+      draggable
       className={`group relative flex h-full min-w-0 max-w-56 shrink-0 items-center border-r border-fd-border text-[13px] ${active ? 'bg-fd-background text-fd-foreground' : 'bg-fd-card text-fd-muted-foreground hover:bg-cs-hover'}`}
       onAuxClick={(event) => { if (event.button === 1) { event.preventDefault(); close(tab.url); } }}
       onDoubleClick={() => pin(tab.url)}
+      onContextMenu={(event) => {
+        event.preventDefault();
+        // 键盘打开的菜单（菜单键、Shift+F10）没有鼠标位置，就贴着标签的左下角出现。
+        const box = event.currentTarget.getBoundingClientRect();
+        const fromKeyboard = event.clientX === 0 && event.clientY === 0;
+        onMenu(tab.url, fromKeyboard ? box.left : event.clientX, fromKeyboard ? box.bottom : event.clientY);
+      }}
+      onDragStart={(event) => { event.dataTransfer.setData(TAB_DRAG, tab.url); event.dataTransfer.effectAllowed = 'move'; }}
+      onDragOver={(event) => {
+        if (!event.dataTransfer.types.includes(TAB_DRAG)) return;
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+        // 鼠标在标签左半边就插到它前面，右半边就插到它后面。
+        const box = event.currentTarget.getBoundingClientRect();
+        const side = event.clientX < box.left + box.width / 2 ? 'before' : 'after';
+        if (drop?.url !== tab.url || drop.side !== side) onDragMark({ url: tab.url, side });
+      }}
+      onDrop={onDropHere}
+      onDragEnd={() => onDragMark(null)}
     >
       {active ? <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-cs-button" /> : null}
-      <Link href={tab.url} className="flex h-full min-w-0 items-center gap-1.5 pl-3 pr-1" title={tab.preview ? `${tab.title}（预览，双击固定）` : tab.title}>
+      {drop?.url === tab.url ? <span aria-hidden="true" className={`absolute inset-y-1 z-10 w-0.5 rounded-full bg-cs-button ${drop.side === 'before' ? '-left-px' : '-right-px'}`} /> : null}
+      {/* 链接自己默认也能拖（拖出去是一个网址），这里关掉，让拖动交给外面这一整块标签。 */}
+      <Link href={tab.url} draggable={false} className="flex h-full min-w-0 items-center gap-1.5 pl-3 pr-1" title={tab.preview ? `${tab.title}（预览，双击固定）` : tab.title}>
         <TabIcon url={tab.url} />
         <span className={`truncate ${tab.preview ? 'italic' : ''}`}>{tab.title}</span>
       </Link>
@@ -78,6 +116,66 @@ function TabItem({ tab, active, dirty }: { tab: Tab; active: boolean; dirty: boo
   );
 }
 
+/** 标签的右键菜单。点菜单外面、按 Esc、滚动或窗口变化都会收起；↑↓ 在菜单项之间移动。 */
+function TabMenu({ menu, onClose, onKept }: { menu: NonNullable<MenuState>; onClose: () => void; onKept: (kept: number) => void }) {
+  const { tabs, dirty, close, closeMany, pin } = useTabs();
+  const ref = useRef<HTMLDivElement>(null);
+  const index = tabs.findIndex((t) => t.url === menu.url);
+  const tab = tabs[index];
+
+  useEffect(() => {
+    const onPointer = (event: PointerEvent) => { if (!ref.current?.contains(event.target as Node)) onClose(); };
+    window.addEventListener('pointerdown', onPointer, true);
+    window.addEventListener('resize', onClose);
+    window.addEventListener('blur', onClose);
+    return () => {
+      window.removeEventListener('pointerdown', onPointer, true);
+      window.removeEventListener('resize', onClose);
+      window.removeEventListener('blur', onClose);
+    };
+  }, [onClose]);
+  useEffect(() => { ref.current?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus(); }, []);
+
+  if (!tab) return null;
+  const others = tabs.filter((t) => t.url !== tab.url).map((t) => t.url);
+  const right = tabs.slice(index + 1).map((t) => t.url);
+  const saved = tabs.filter((t) => !dirty.has(t.url)).map((t) => t.url);
+  const run = (action: () => number | void) => {
+    const kept = action();
+    onClose();
+    if (typeof kept === 'number' && kept > 0) onKept(kept);
+  };
+
+  function onKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if (event.key === 'Escape' || event.key === 'Tab') { event.preventDefault(); onClose(); return; }
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    event.preventDefault();
+    const items = [...(ref.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [])];
+    const at = items.indexOf(document.activeElement as HTMLButtonElement);
+    items[(at + (event.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length]?.focus();
+  }
+
+  const item = 'flex w-full items-center px-3 py-1.5 text-left text-[13px] hover:bg-cs-hover focus:bg-cs-hover focus:outline-none disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent';
+  return (
+    <div
+      ref={ref}
+      role="menu"
+      aria-label={`标签「${tab.title}」`}
+      onKeyDown={onKeyDown}
+      // 菜单宽约 13rem；太靠右就往左挪，别伸出窗口。
+      style={{ left: Math.min(menu.x, window.innerWidth - 224), top: menu.y + 2 }}
+      className="fixed z-50 min-w-52 animate-cs-pop-in rounded-md border border-fd-border bg-fd-popover py-1 shadow-cs-pop"
+    >
+      {tab.preview ? <button type="button" role="menuitem" className={item} onClick={() => run(() => pin(tab.url))}>固定</button> : null}
+      <button type="button" role="menuitem" className={item} onClick={() => run(() => close(tab.url))}>关闭</button>
+      <button type="button" role="menuitem" className={item} disabled={others.length === 0} onClick={() => run(() => closeMany(others))}>关闭其他</button>
+      <button type="button" role="menuitem" className={item} disabled={right.length === 0} onClick={() => run(() => closeMany(right))}>关闭右侧</button>
+      <div role="separator" className="my-1 border-t border-fd-border" />
+      <button type="button" role="menuitem" className={item} disabled={saved.length === 0} onClick={() => run(() => closeMany(saved))}>关闭已保存的</button>
+    </div>
+  );
+}
+
 /** 关闭一个有未保存修改的标签前，在标签栏下方问一句。 */
 function ConfirmClose() {
   const { tabs, confirming, close, cancelConfirm } = useTabs();
@@ -94,13 +192,45 @@ function ConfirmClose() {
 
 /** 宽屏的标签栏，放在 Fumadocs 布局的 header 那一格。 */
 export function TabBar() {
-  const { tabs, active, dirty, openNewTab } = useTabs();
+  const { tabs, active, dirty, openNewTab, move } = useTabs();
+  const [drop, setDrop] = useState<DropMark>(null);
+  const [menu, setMenu] = useState<MenuState>(null);
+  const [notice, setNotice] = useState('');
+  const closeMenu = useCallback(() => setMenu(null), []);
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(''), 4000);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
+
+  /** 松手：按竖线指示的位置把拖着的标签放过去。 */
+  function onDropHere(event: DragEvent<HTMLDivElement>) {
+    const url = event.dataTransfer.getData(TAB_DRAG);
+    event.preventDefault();
+    setDrop(null);
+    if (!url || !drop) return;
+    const at = tabs.findIndex((t) => t.url === drop.url);
+    const before = drop.side === 'before' ? drop.url : tabs[at + 1]?.url ?? null;
+    // 放在“自己右边那个标签的前面”就是原地，不用动。
+    if (before !== url) move(url, before);
+  }
+
   return (
     <div className="sticky top-(--fd-docs-row-1) z-30 h-(--fd-header-height) [grid-area:header] max-md:hidden">
       {/* 标签多了只让标签那一段横向滚动，+ 始终紧跟在最后一个标签后面、不被滚走——和浏览器一样。 */}
       <div className="flex h-full border-b border-fd-border bg-fd-card">
-        <div role="tablist" aria-label="打开的页面" className="cs-tabstrip flex h-full min-w-0 overflow-x-auto overflow-y-hidden">
-          {tabs.map((tab) => <TabItem key={tab.url} tab={tab} active={tab.url === active} dirty={dirty.has(tab.url)} />)}
+        <div
+          role="tablist"
+          aria-label="打开的页面"
+          className="cs-tabstrip flex h-full min-w-0 overflow-x-auto overflow-y-hidden"
+          onScroll={closeMenu}
+          onDragLeave={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDrop(null); }}
+        >
+          {tabs.map((tab) => (
+            <TabItem key={tab.url} tab={tab} active={tab.url === active} dirty={dirty.has(tab.url)} drop={drop}
+              onDragMark={setDrop} onDropHere={onDropHere} onMenu={(url, x, y) => setMenu({ url, x, y })} />
+          ))}
         </div>
         <button
           type="button"
@@ -113,6 +243,10 @@ export function TabBar() {
         </button>
       </div>
       <ConfirmClose />
+      {menu ? <TabMenu menu={menu} onClose={closeMenu} onKept={(kept) => setNotice(`${kept} 个标签有未保存的修改，留着没关。`)} /> : null}
+      {notice ? (
+        <p role="status" className="absolute right-2 top-full z-40 mt-1 animate-cs-pop-in rounded-md border border-fd-border bg-fd-popover px-3 py-1.5 text-xs shadow-cs-pop">{notice}</p>
+      ) : null}
     </div>
   );
 }

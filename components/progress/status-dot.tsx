@@ -63,7 +63,7 @@ export function StatusDot({ course, module }: { course?: string; module?: string
 
   if (dot === null) return null;
   return (
-    <span className="ms-auto inline-flex shrink-0 items-center" title={`我：${dot.label}`}>
+    <span data-status-dot className="ms-auto inline-flex shrink-0 items-center" title={`我：${dot.label}`}>
       <span className="cs-dot animate-cs-fade-in" data-state={dot.state} aria-hidden="true" />
       <span className="sr-only">（我：{dot.label}）</span>
     </span>

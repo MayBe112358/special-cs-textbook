@@ -12,7 +12,9 @@
  * @courses       Stanford CS147（信息架构、直接操作）；UC Berkeley CS61A（数据抽象）；CS50x Week 8–9（文件与表单）
  * @exercises     https://hci.stanford.edu/courses/cs147/
  * @prereq        知道网址里 ? 后面的部分叫查询参数，可以用来说明“这一页里具体打开哪样东西”。
- * @unclear       还不能把一份心得从一门课挪到另一门课，也不能在空间里建子文件夹。
+ *                每一行还能“移动”：从下拉框里选另一门课（顺序和缩进照侧边栏那棵树），挪过去编号不变；
+ *                旧链接（比如还开着的标签）打开时发现心得已经不在这个空间，就自动换到它的新地址。
+ * @unclear       还不能在空间里建子文件夹。
  *
  * @letter
  * 为什么每一份心得要有自己的网址，而不是“点一下在页面里展开”？
@@ -24,8 +26,8 @@
 'use client';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
-import { createCanvasItem, createTextItem, importable, languageOf, MAX_TEXT_LENGTH, uniqueName, validName, type NoteItem } from '@/core/workspace/items';
+import { useCallback, useEffect, useMemo, useRef, useState, type DragEvent, type ReactNode } from 'react';
+import { createCanvasItem, createTextItem, importable, languageOf, MAX_TEXT_LENGTH, moveItem, uniqueName, validName, type NoteItem } from '@/core/workspace/items';
 import { newId } from '@/core/workspace/canvas';
 import { getWorkspace, subscribeWorkspace } from '@/components/workspace/browser-workspace';
 import { discardDraft, readDraft, writeDraft } from '@/components/workspace/drafts';
@@ -35,6 +37,13 @@ import { BackupPanel } from './backup-panel';
 import { CanvasEditor } from '@/components/canvas/canvas-editor';
 
 export type AuthorNote = { title: string; source?: string; text: string };
+/** 一个心得空间：知识路径、标题，以及它在树里的深度（0 是最外层的分类），下拉框按深度缩进。 */
+export type SpaceOption = { path: string; title: string; depth: number };
+
+/** 心得空间的网址：/notes 加上知识路径。 */
+function spaceHref(space: string): string {
+  return `/notes${space === '/' ? '' : space}`;
+}
 
 const MAX_IMPORT_BYTES = 2 * 1024 * 1024;
 
@@ -97,8 +106,10 @@ function AuthorNotes({ notes }: { notes: AuthorNote[] }) {
 }
 
 /** 列表里的一行：点名字打开，改名在原地改，删除在原地确认。 */
-function ItemRow({ item, href, subtitle }: { item: NoteItem; href: string; subtitle?: ReactNode }) {
+function ItemRow({ item, href, subtitle, spaces }: { item: NoteItem; href: string; subtitle?: ReactNode; spaces: SpaceOption[] }) {
   const [renaming, setRenaming] = useState(false);
+  const [moving, setMoving] = useState(false);
+  const [target, setTarget] = useState(item.space);
   const [confirming, setConfirming] = useState(false);
   const [name, setName] = useState(item.name);
   const [error, setError] = useState('');
@@ -111,6 +122,17 @@ function ItemRow({ item, href, subtitle }: { item: NoteItem; href: string; subti
     if (taken.includes(next)) { setError('这个空间里已经有同名的心得了。'); return; }
     await ws.writeItem({ ...item, name: next, updatedAt: new Date().toISOString() });
     setRenaming(false); setError('');
+  }
+  async function move() {
+    if (target === item.space) { setMoving(false); return; }
+    try {
+      const ws = await getWorkspace();
+      const taken = (await ws.listItems(target)).map((i) => i.name);
+      await ws.writeItem(moveItem(item, target, taken, new Date().toISOString()));
+      setMoving(false); setError('');
+    } catch (e) {
+      setError(`没挪成：${e instanceof Error ? e.message : '浏览器存储不可用'}`);
+    }
   }
   async function remove() {
     const ws = await getWorkspace();
@@ -127,15 +149,28 @@ function ItemRow({ item, href, subtitle }: { item: NoteItem; href: string; subti
             onKeyDown={(e) => { if (e.key === 'Escape') { setRenaming(false); setName(item.name); setError(''); } }} />
           <button type="submit" className="cs-btn cs-btn-primary">确定</button>
         </form>
+      ) : moving ? (
+        <form className="flex min-w-0 flex-1 flex-wrap items-center gap-2" onSubmit={(e) => { e.preventDefault(); void move(); }}>
+          <span className="truncate text-sm">把「{item.name}」挪到</span>
+          <label className="sr-only" htmlFor={`move-${item.id}`}>目标课程</label>
+          <select id={`move-${item.id}`} autoFocus className="cs-input min-w-48 max-w-full flex-1" value={target} onChange={(e) => setTarget(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Escape') { setMoving(false); setTarget(item.space); } }}>
+            {spaces.map((s) => (
+              <option key={s.path} value={s.path}>{'  '.repeat(Math.max(0, s.depth))}{s.title}{s.path === item.space ? '（现在的位置）' : ''}</option>
+            ))}
+          </select>
+          <button type="submit" className="cs-btn cs-btn-primary">确定</button>
+          <button type="button" className="cs-btn" onClick={() => { setMoving(false); setTarget(item.space); }}>取消</button>
+        </form>
       ) : (
         <Link href={href} className="min-w-0 flex-1 truncate text-fd-foreground hover:text-fd-primary hover:underline">{item.name}</Link>
       )}
-      {!renaming ? (
+      {!renaming && !moving ? (
         <span className="text-xs text-fd-muted-foreground">
           {subtitle}{kindLabel(item)} · {when(item.updatedAt)}{item.origin === 'imported' ? ' · 导入' : item.origin === 'migrated' ? ' · 旧版心得' : ''}
         </span>
       ) : null}
-      {!renaming ? (
+      {!renaming && !moving ? (
         <span className="flex items-center gap-1">
           {confirming ? (
             <>
@@ -146,6 +181,7 @@ function ItemRow({ item, href, subtitle }: { item: NoteItem; href: string; subti
           ) : (
             <>
               <button type="button" className="cs-btn opacity-0 group-hover:opacity-100 focus-visible:opacity-100 max-md:opacity-100" onClick={() => setRenaming(true)}>改名</button>
+              <button type="button" className="cs-btn opacity-0 group-hover:opacity-100 focus-visible:opacity-100 max-md:opacity-100" onClick={() => { setTarget(item.space); setMoving(true); }}>移动</button>
               <button type="button" className="cs-btn opacity-0 group-hover:opacity-100 focus-visible:opacity-100 max-md:opacity-100" onClick={() => setConfirming(true)}>删除</button>
             </>
           )}
@@ -157,7 +193,7 @@ function ItemRow({ item, href, subtitle }: { item: NoteItem; href: string; subti
 }
 
 /** 一门课的心得空间：作者的心得 + 你的心得列表 + 新建 / 导入。 */
-function SpaceOverview({ space, authorNotes, pathname }: { space: string; authorNotes: AuthorNote[]; pathname: string }) {
+function SpaceOverview({ space, authorNotes, pathname, spaces }: { space: string; authorNotes: AuthorNote[]; pathname: string; spaces: SpaceOption[] }) {
   const router = useRouter();
   const { items, error } = useItems(space);
   const [message, setMessage] = useState('');
@@ -231,7 +267,7 @@ function SpaceOverview({ space, authorNotes, pathname }: { space: string; author
           </div>
         ) : (
           <ul className="divide-y divide-fd-border overflow-hidden rounded-md border border-fd-border">
-            {items.map((item) => <ItemRow key={item.id} item={item} href={`${base}?item=${item.id}`} />)}
+            {items.map((item) => <ItemRow key={item.id} item={item} href={`${base}?item=${item.id}`} spaces={spaces} />)}
           </ul>
         )}
         <p role="status" className="text-sm text-fd-muted-foreground empty:hidden">{message}</p>
@@ -247,7 +283,8 @@ function SpaceOverview({ space, authorNotes, pathname }: { space: string; author
 }
 
 /** 心得首页：最近写过的心得、全部作者心得的入口、备份与恢复。 */
-function NotesHome({ titles, authorNotes }: { titles: Record<string, string>; authorNotes: AuthorNote[] }) {
+function NotesHome({ spaces, authorNotes }: { spaces: SpaceOption[]; authorNotes: AuthorNote[] }) {
+  const titles = useMemo(() => new Map(spaces.map((s) => [s.path, s.title])), [spaces]);
   const { items, error } = useItems(undefined);
   const recent = (items ?? []).slice().sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 30);
   return (
@@ -263,7 +300,7 @@ function NotesHome({ titles, authorNotes }: { titles: Record<string, string>; au
         ) : (
           <ul className="divide-y divide-fd-border overflow-hidden rounded-md border border-fd-border">
             {recent.map((item) => (
-              <ItemRow key={item.id} item={item} href={`/notes${item.space === '/' ? '' : item.space}?item=${item.id}`} subtitle={<>{titles[item.space] ?? item.space} · </>} />
+              <ItemRow key={item.id} item={item} href={`${spaceHref(item.space)}?item=${item.id}`} subtitle={<>{titles.get(item.space) ?? item.space} · </>} spaces={spaces} />
             ))}
           </ul>
         )}
@@ -274,7 +311,8 @@ function NotesHome({ titles, authorNotes }: { titles: Record<string, string>; au
 }
 
 /** 打开的一份心得：文档用编辑器，导图用画布。 */
-function ItemView({ id, backHref, tabUrl }: { id: string; backHref: string; tabUrl: string }) {
+function ItemView({ id, space, backHref, tabUrl }: { id: string; space: string; backHref: string; tabUrl: string }) {
+  const router = useRouter();
   const [item, setItem] = useState<NoteItem | null | undefined>(undefined);
   const [text, setText] = useState('');
   const [saving, setSaving] = useState(false);
@@ -292,6 +330,11 @@ function ItemView({ id, backHref, tabUrl }: { id: string; backHref: string; tabU
     })();
     return () => { alive = false; };
   }, [id]);
+
+  // 这份心得已经被挪到别的课了（比如从还开着的旧标签打开）：换到它现在的地址，“← 全部心得”才回得对地方。
+  useEffect(() => {
+    if (item && item.space !== space) router.replace(`${spaceHref(item.space)}?item=${item.id}`);
+  }, [item, space, router]);
 
   // 标签名用这份心得的名字。
   useEffect(() => { if (item) document.title = item.name; }, [item]);
@@ -359,14 +402,14 @@ function ItemView({ id, backHref, tabUrl }: { id: string; backHref: string; tabU
 }
 
 /** 心得区的一页：没有 ?item 时是空间概览（或首页），有 ?item 时打开那一份。 */
-export function NotesSpace({ space, title, docHref, authorNotes, titles }: {
+export function NotesSpace({ space, title, docHref, authorNotes, spaces }: {
   space: string;
   title: string;
   /** 课程介绍页的地址；心得首页没有。 */
   docHref: string | null;
   authorNotes: AuthorNote[];
-  /** 只在心得首页传：知识路径 → 标题，用来在“最近的心得”里写出每一份属于哪门课。 */
-  titles?: Record<string, string>;
+  /** 全部心得空间，按树的顺序：“移动”的下拉框和心得首页的“属于哪门课”都用它。 */
+  spaces: SpaceOption[];
 }) {
   const pathname = usePathname();
   const params = useSearchParams();
@@ -378,7 +421,7 @@ export function NotesSpace({ space, title, docHref, authorNotes, titles }: {
     if (!itemId) document.title = space === '/' ? '个人心得' : `心得 · ${title}`;
   }, [itemId, space, title]);
 
-  if (itemId) return <ItemView key={itemId} id={itemId} backHref={pathname} tabUrl={tabUrl} />;
+  if (itemId) return <ItemView key={itemId} id={itemId} space={space} backHref={pathname} tabUrl={tabUrl} />;
 
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6 px-4 py-6 md:px-8 md:py-8">
@@ -391,7 +434,7 @@ export function NotesSpace({ space, title, docHref, authorNotes, titles }: {
             : <>这门课的心得空间。{docHref ? <Link className="text-fd-primary hover:underline" href={docHref}>查看课程介绍 →</Link> : null}</>}
         </p>
       </header>
-      {space === '/' ? <NotesHome titles={titles ?? {}} authorNotes={authorNotes} /> : <SpaceOverview space={space} authorNotes={authorNotes} pathname={pathname} />}
+      {space === '/' ? <NotesHome spaces={spaces} authorNotes={authorNotes} /> : <SpaceOverview space={space} authorNotes={authorNotes} pathname={pathname} spaces={spaces} />}
     </div>
   );
 }

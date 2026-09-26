@@ -42,6 +42,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 测试或注释块检查没过，就不构建、不发布：宁可网站停在上一个好版本。
+      - name: Unit tests
+        run: npm test
+
+      - name: Comment blocks
+        run: npm run check:letters
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 

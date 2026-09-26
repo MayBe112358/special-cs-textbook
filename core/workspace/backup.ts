@@ -2,7 +2,7 @@
  * @module        第 5 版备份——把心得条目（文档、导入的文件、导图）和导图版学习路径也装进同一个文件
  * @problem       阶段 14.5 起，心得不再是“一页一段文字”，学习路径也不再是一列课程。
  *                备份如果还只认旧格式，你新写的文档和画的导图就不在备份里——而你以为它们在。
- * @design        第 5 版文件 = 学习状态 + 理解度 + 心得条目 + 导图版路径。
+ * @design        第 5 版文件 = 学习状态 + 理解度 + 心得条目 + 导图版路径，外加可选的 AI 对话记录（chats，导出时勾选才有）。
  *                读文件时先统一换成“标准形状”（NormalizedBackup）：第 1～4 版交给旧模块 core/notes/backup.ts 按原规则校验，
  *                再把旧心得、旧路径搬成新格式（items.ts、learning-paths.ts 里的迁移函数）；第 5 版直接校验。
  *                导入分两半：学习状态和理解度仍由旧模块写进 localStorage（它有写一半失败就回滚的保护）；
@@ -26,6 +26,7 @@ import { parseBackup } from '../notes/backup.ts';
 import { validateProgress, validateUnderstanding, type CourseProgress, type ModuleUnderstanding } from '../progress/progress.ts';
 import { migrateLegacyNote, validateItem, type NoteItem } from './items.ts';
 import { migrateLegacyPath, validatePathCanvas, type PathCanvas } from './learning-paths.ts';
+import { validateConversation, type Conversation } from '../assistant/conversations.ts';
 
 export const WORKSPACE_BACKUP_VERSION = 5;
 
@@ -34,6 +35,11 @@ export type NormalizedBackup = {
   understanding: ModuleUnderstanding[];
   items: NoteItem[];
   paths: PathCanvas[];
+  /**
+   * AI 对话记录，可选：导出时读者勾了“包含 AI 对话记录”才有（默认不勾——对话里可能有不想发给别人的内容）。
+   * 只是多一个可选字段，版本号不变；旧版网站读到这种备份，会忽略这个字段，照样能导入其余部分。
+   */
+  chats?: Conversation[];
 };
 
 const MAX_ENTRIES = 20_000;
@@ -71,12 +77,17 @@ export function parseAnyBackup(raw: string): NormalizedBackup {
   unique(understanding.map((r) => r.module), '模块理解度');
   unique(items.map((i) => i.id), '心得条目');
   unique(paths.map((p) => p.id), '学习路径');
-  return { progress, understanding, items, paths };
+  if (value.chats === undefined) return { progress, understanding, items, paths };
+  if (!Array.isArray(value.chats) || value.chats.length > MAX_ENTRIES) throw new Error('备份里的 AI 对话记录不是一份列表。');
+  const chats: Conversation[] = value.chats.map(validateConversation);
+  unique(chats.map((c) => c.id), 'AI 对话');
+  return { progress, understanding, items, paths, chats };
 }
 
 export type ImportPlan = {
   items: NoteItem[];
   paths: PathCanvas[];
+  chats: Conversation[];
   /** 和本机已有数据撞上、这次按设置跳过（或覆盖）的条数。给读者预览用。 */
   conflicts: number;
 };
@@ -85,12 +96,16 @@ export type ImportPlan = {
  * 算出心得条目和路径这一半要写哪些。默认不覆盖本机已有的同编号条目；overwrite 为真才覆盖。
  * 纯函数：只看两份清单，不碰存储。
  */
-export function planImport(backup: NormalizedBackup, existing: { itemIds: ReadonlySet<string>; pathIds: ReadonlySet<string> }, overwrite: boolean): ImportPlan {
+export function planImport(backup: NormalizedBackup, existing: { itemIds: ReadonlySet<string>; pathIds: ReadonlySet<string>; chatIds?: ReadonlySet<string> }, overwrite: boolean): ImportPlan {
+  const chatIds = existing.chatIds ?? new Set<string>();
+  const chats = backup.chats ?? [];
   const itemClash = backup.items.filter((i) => existing.itemIds.has(i.id)).length;
   const pathClash = backup.paths.filter((p) => existing.pathIds.has(p.id)).length;
+  const chatClash = chats.filter((c) => chatIds.has(c.id)).length;
   return {
     items: backup.items.filter((i) => overwrite || !existing.itemIds.has(i.id)),
     paths: backup.paths.filter((p) => overwrite || !existing.pathIds.has(p.id)),
-    conflicts: itemClash + pathClash,
+    chats: chats.filter((c) => overwrite || !chatIds.has(c.id)),
+    conflicts: itemClash + pathClash + chatClash,
   };
 }

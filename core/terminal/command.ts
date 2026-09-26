@@ -143,6 +143,13 @@ export type CommandAction =
       module: string;
       /** 改成哪个理解程度；null 表示把这段代码的标记清掉。 */
       state: UnderstandingState | null;
+    }
+  | {
+      type: "agent";
+      /** 只问这一句（agent <问题>）；null 表示进入对话模式，直到 exit。 */
+      prompt: string | null;
+      /** agent -c：接着最近的一段对话，而不是开新的。 */
+      resume: boolean;
     };
 
 /** 一条命令。 */

@@ -2,7 +2,8 @@
  * @module        备份与恢复（第 5 版）——心得、导入的文件、导图、学习路径、学习状态、理解度，一个文件带走
  * @problem       这些东西全都只在你的浏览器里。清一次缓存、换一台电脑，它们就不在了；
  *                备份是你唯一能把它们带走的办法，所以它必须带全，而且导入时绝不能弄坏你现有的东西。
- * @design        导出：学习状态和理解度从 localStorage 读，心得条目和路径从 IndexedDB 读，拼成一份第 5 版 JSON 下载。
+ * @design        导出：学习状态和理解度从 localStorage 读，心得条目和路径从 IndexedDB 读，拼成一份第 5 版 JSON 下载；
+ *                勾了“包含 AI 对话记录”才把对话一起带上（默认不带）。导入时备份里有对话就一并恢复，同样默认不覆盖本机已有的。
  *                导入：先读懂整份文件（任何版本都换成第 5 版的样子，见 core/workspace/backup.ts），
  *                把“有多少条、和本机撞了多少条”摆给你看，你点确认才写。默认不覆盖本机已有的同编号记录。
  *                学习状态那一半交给旧模块写（它有失败回滚），心得和路径那一半放在同一个 IndexedDB 事务里写。
@@ -21,12 +22,15 @@ import { collectProgress, collectUnderstanding, importBackup, BACKUP_VERSION } f
 import { buildBackup, parseAnyBackup, planImport, type NormalizedBackup } from '@/core/workspace/backup';
 import { notifyProgressChanged } from '@/components/progress/progress-store';
 import { getWorkspace } from '@/components/workspace/browser-workspace';
+import { listChats, writeChats } from '@/components/assistant/chat-store';
 
 export function BackupPanel() {
   const [pending, setPending] = useState<{ data: NormalizedBackup; conflicts: number } | null>(null);
   const [overwrite, setOverwrite] = useState(false);
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
+  // 默认不带 AI 对话：对话里可能有不想发给别人的内容，备份文件又常常被拷来拷去。
+  const [withChats, setWithChats] = useState(false);
 
   async function download() {
     setBusy(true);
@@ -37,6 +41,7 @@ export function BackupPanel() {
         understanding: collectUnderstanding(localStorage),
         items: await ws.listItems(),
         paths: await ws.listPaths(),
+        ...(withChats ? { chats: await listChats() } : {}),
       });
       const url = URL.createObjectURL(new Blob([text], { type: 'application/json;charset=utf-8' }));
       const a = document.createElement('a');
@@ -60,9 +65,10 @@ export function BackupPanel() {
       const ws = await getWorkspace();
       const itemIds = new Set((await ws.listItems()).map((i) => i.id));
       const pathIds = new Set((await ws.listPaths()).map((p) => p.id));
+      const chatIds = new Set((await listChats().catch(() => [])).map((c) => c.id));
       const courses = new Set(collectProgress(localStorage).map((r) => r.course));
       const modules = new Set(collectUnderstanding(localStorage).map((r) => r.module));
-      const conflicts = planImport(data, { itemIds, pathIds }, false).conflicts
+      const conflicts = planImport(data, { itemIds, pathIds, chatIds }, false).conflicts
         + data.progress.filter((r) => courses.has(r.course)).length
         + data.understanding.filter((r) => modules.has(r.module)).length;
       setPending({ data, conflicts });
@@ -84,11 +90,13 @@ export function BackupPanel() {
       const plan = planImport(data, {
         itemIds: new Set((await ws.listItems()).map((i) => i.id)),
         pathIds: new Set((await ws.listPaths()).map((p) => p.id)),
+        chatIds: new Set((await listChats().catch(() => [])).map((c) => c.id)),
       }, overwrite);
       await ws.putMany(plan.items, plan.paths);
+      await writeChats(plan.chats);
       notifyProgressChanged();
       setPending(null);
-      setMessage(`已导入 ${statusCount + plan.items.length + plan.paths.length} 条记录。`);
+      setMessage(`已导入 ${statusCount + plan.items.length + plan.paths.length + plan.chats.length} 条记录。`);
     } catch (error) {
       setMessage(`恢复失败：${error instanceof Error ? error.message : '存储不可用'}。请保留备份文件。`);
     } finally {
@@ -101,12 +109,17 @@ export function BackupPanel() {
       <div>
         <h2 className="text-base font-semibold">备份与恢复</h2>
         <p className="mt-1 text-sm text-fd-muted-foreground">
-          心得、导入的文件、导图、学习路径、学习状态和理解度都只存在这台浏览器里。导出的备份是一个能用记事本打开的 JSON 文件；
+          心得、导入的文件、导图、学习路径、学习状态和理解度都只存在这台浏览器里。导出的备份是一个能用记事本打开的 JSON 文件
+          （AI 对话记录默认不带，要带请勾选；API Key 永远不会进备份）；
           导入时默认只补上缺的，不覆盖已有的。以前版本导出的备份也能导入。
         </p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <button type="button" className="cs-btn" disabled={busy} onClick={() => void download()}>导出备份</button>
+        <label className="flex items-center gap-1.5 text-sm text-fd-muted-foreground">
+          <input type="checkbox" className="accent-cs-button" checked={withChats} onChange={(e) => setWithChats(e.target.checked)} />
+          包含 AI 对话记录
+        </label>
         <label className={`cs-btn ${busy ? 'pointer-events-none opacity-50' : ''}`}>选择备份文件…
           <input type="file" accept=".json,application/json" className="sr-only" disabled={busy}
             onChange={(event) => { void preview(event.target.files?.[0]); event.target.value = ''; }} />
@@ -116,7 +129,8 @@ export function BackupPanel() {
         <div className="space-y-2 rounded-[4px] border border-fd-border bg-fd-background p-3 text-sm">
           <p>
             备份里有 {pending.data.items.length} 份心得（文档、文件和导图）、{pending.data.paths.length} 条学习路径、
-            {pending.data.progress.length} 门课的状态、{pending.data.understanding.length} 段代码的理解度，
+            {pending.data.progress.length} 门课的状态、{pending.data.understanding.length} 段代码的理解度
+            {pending.data.chats?.length ? `、${pending.data.chats.length} 段 AI 对话` : ''}，
             其中 {pending.conflicts} 条和本机已有的记录重合。
           </p>
           {pending.conflicts > 0 ? (
