@@ -18,7 +18,7 @@
  *                你发给模型的每句话前面会悄悄附上一行“我现在在看哪一页”，屏幕上不显示——这样你说“这门课”它才知道是哪门。
  * @courses       UC Berkeley CS61A（状态与闭包）；Stanford CS147（系统状态可见、可恢复性）；
  *                UC Berkeley CS162（异步与等待：Promise 挂起直到用户做出决定）；UC Berkeley CS186（持久化）
- * @exercises     https://hci.stanford.edu/courses/cs147/ ; https://cs61a.org/
+ * @exercises     https://cs147.stanford.edu/ ; https://cs61a.org/
  * @prereq        知道 Promise 可以“先答应、以后再兑现”：new Promise(resolve => …) 里的 resolve 可以先存起来，等按钮被点时再调。
  * @unclear       面板和终端同时打开同一段对话、两边都在聊时，后存的会盖掉先存的。
  *

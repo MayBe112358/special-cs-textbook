@@ -9,7 +9,7 @@
  *                最底下写明“对话只存在这台浏览器里”，和一个“全部清除”（同样要确认）。
  *                在终端 agent 里的对话也在这里，点开就在面板里接着聊。
  * @courses       Stanford CS147（历史与可恢复性、防误操作）；UC Berkeley CS61A（数据的分组与过滤）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道“分组”：把一串东西按某个规则分成几堆，这里的规则是日期。
  * @unclear       搜索只看标题和你说的话，不搜 AI 的回答——AI 的回答通常很长，全搜的话随便一个词都会命中一大片。
  * @letter

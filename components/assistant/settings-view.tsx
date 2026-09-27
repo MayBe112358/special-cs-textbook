@@ -10,7 +10,7 @@
  *                “获取模型列表”向厂商实时要一次，拿到的列表存进设置，聊天框的模型菜单里就是最新的模型；拿不到也可以手填。
  *                “测试连接”发一个极小的请求，成功就说成功，失败就把错误说成人话。
  * @courses       Stanford CS147（表单设计、错误预防与恢复）；UC Berkeley CS161（密钥的存放与展示）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道 &lt;input type="password"&gt; 只是在屏幕上打码，值本身并没有加密。
  * @unclear       测试连接和获取模型列表会真的向厂商发请求，可能产生极少量费用（一次回复几个字）。
  *

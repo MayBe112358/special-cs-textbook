@@ -12,7 +12,7 @@
  *                一次关一批时，有未保存修改的标签留着不关，标签栏下方会说一声留下了几个。
  *                手机：顶栏里一个“n 个标签 ▾”按钮，点开是一张列表，列表最上面是“新标签页”。
  * @courses       Stanford CS147 / UC Berkeley CS160（可发现性、防误操作）；CS50x Week 8（事件处理）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道鼠标中键点击的事件是 auxclick，button 等于 1；知道浏览器自带拖放（drag and drop）：
  *                dragstart 时放一份数据，dragover 里 preventDefault 表示“这里可以放”，drop 时取出来。
  * @unclear       拖放用的是浏览器自带的 HTML5 拖放，触摸屏不支持——手机上标签本来就收成了下拉列表，不需要拖。

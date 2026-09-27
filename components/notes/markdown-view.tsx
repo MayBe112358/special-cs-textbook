@@ -4,25 +4,34 @@
  *                构建时根本不存在，只能在浏览器里当场渲染。而且渲染结果要和课程页长得一样，不然同一个网站两种排版。
  * @design        用和课程页同一套工具链（unified：remark 解析 Markdown → rehype 转成 HTML 的结构树），
  *                只是搬到浏览器里跑：remark-gfm 管表格和任务列表，remark-math + rehype-katex 管公式，
- *                最后用 hast-util-to-jsx-runtime 直接变成 React 元素——不经过 HTML 字符串，
- *                所以你在心得里写的 <script> 之类的东西只会原样显示成文字，不会被执行。
+ *                最后用 hast-util-to-jsx-runtime 直接变成 React 元素——不经过 HTML 字符串。
+ *                Markdown 里混进来的 HTML 标签在 remark-rehype 这一步就被丢掉，只留下标签中间的文字，不会被执行。
  *                代码块交给 Fumadocs 的 DynamicCodeBlock，和课程页的代码块是同一个组件、同一套 VS Code 配色；
  *                ```mermaid 代码块交给和课程页相同的流程图组件。
  * @courses       Stanford CS143 / UC Berkeley CS164（词法分析、语法树、树的变换）；
  *                CS50x Week 8–9（HTML、网页安全：为什么不能把用户输入当 HTML 执行）
- * @exercises     https://web.stanford.edu/class/cs143/ —— 编程作业里的语法分析与语法树
+ * @exercises     https://web.stanford.edu/class/cs143/ —— CS143 编程作业里的语法分析与语法树
+ *                https://cs161.org/ —— CS161 Web 安全里的 XSS
  * @prereq        知道 Markdown 会先被解析成一棵树，再从树生成页面；知道 XSS 是“把别人的文字当代码执行”。
  * @unclear       很长的文档每敲一个字都会整篇重新渲染一次；目前靠“停止输入一小会儿再渲染”缓解，没有做增量渲染。
  *
  * @letter
- * 这个组件是一条小型的编译器流水线，和你在 CS143 里写的那种一模一样：
- * 先把文字解析成一棵语法树（remark-parse），再对树做几次变换（加上表格、公式的节点），
- * 然后把 Markdown 的树翻译成 HTML 的树（remark-rehype），最后生成目标代码——这里的“目标代码”是 React 元素。
+ * 这个组件其实是一条迷你编译器流水线，跟你在 CS143 里写的那种长得一模一样：
+ * 先把文字解析成一棵语法树（remark-parse）；
+ * 再对这棵树做几次变换，加上表格、公式这些节点（remark-gfm、remark-math）；
+ * 然后把 Markdown 的树翻译成 HTML 的树（remark-rehype）；
+ * 最后生成“目标代码”，只不过这里的目标代码是 React 元素。
  *
- * 为什么最后一步不直接拼一个 HTML 字符串塞进页面？因为那样做，你心得里任何一段像 HTML 的文字都会被浏览器当真。
- * 今天是你自己写的心得，明天可能是你从网上导入的一个 .md 文件，里面藏着一段 <img onerror="...">。
- * 从树直接生成 React 元素，就只会产生我们认得的那几种标签；不认得的，统统当成普通文字。
- * 安全不是事后加一道过滤，而是一开始就选一条不会出事的路。
+ * 课程页也是这套工具，只不过是在构建网站的时候就渲染好了。你的心得是你刚刚在浏览器里写的，构建的时候还不存在，所以只能搬到浏览器里当场跑一遍。
+ * 同一套工具、同一个代码块组件、同一套配色，所以你的心得和课程页排出来是一个样子。
+ *
+ * 为什么最后一步不直接拼个 HTML 字符串塞进页面？因为那样的话，你心得里任何长得像 HTML 的东西，浏览器都会当真。
+ * 今天是你自己写的心得，明天可能是你从网上导进来的一个 .md 文件，里面藏着一段 <img onerror="...">，一加载就执行。这类漏洞叫 XSS。
+ * 现在这条路上，Markdown 里混进来的 HTML 标签在翻译成 HTML 树那一步就被扔掉了，只剩标签中间的文字。
+ * 比如你写 <script>alert(1)</script>，页面上只会出现“alert(1)”这几个字，什么都不会执行。
+ * 安全不是事后再加一道过滤，而是一开始就挑一条不会出事的路。
+ *
+ * 有个已知的毛病：很长的文档，每敲一个字都会整篇重新渲染。现在的办法是你停下来一小会儿才渲染，还没做成“只重新渲染改动的那一段”。
  */
 'use client';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';

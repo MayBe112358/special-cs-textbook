@@ -9,7 +9,7 @@
  *                第四个图标是 AI 助手，和前三个不一样：它不换页面，只把侧边栏换成对话（side-view.ts）。
  *                AI 打开时它亮、前三个都不亮；点前三个任一个，侧边栏换回树。
  * @courses       Stanford CS147 / UC Berkeley CS160（信息架构、全局导航、状态可见）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道图标按钮一定要有文字说明（title 和 aria-label），否则读屏软件和第一次来的人都不知道它是什么。
  * @unclear       图标是手画的简单线条，没有经过认真设计；三个图标是不是一眼能认出来，要等别人来用过才知道。
  *

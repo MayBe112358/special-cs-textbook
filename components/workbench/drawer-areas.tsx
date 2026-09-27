@@ -4,7 +4,7 @@
  * @design        放在抽屉最上面，三个等宽按钮，当前那块填蓝。和活动栏共用同一份清单、同一个“回到上次停留的页面”规则。
  *                宽屏上这一截被 globals.css 整个藏起来（那时有活动栏）。
  * @courses       Stanford CS147（移动端导航）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道同一份数据可以有两种显示方式。
  * @unclear       四个按钮放不下图标和文字时只留文字。第四个“AI”不换页面，而是打开全屏的 AI 面板。
  * @letter

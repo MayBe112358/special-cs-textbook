@@ -9,7 +9,7 @@
  *                平时这一行不说话；只有存储读写失败时，才在下面冒出一句红字。
  * @courses       Stanford CS147 / UC Berkeley CS160（直接操作、状态可见、减少多余控件）；
  *                UC Berkeley CS61A（把“怎么显示”和“数据在哪”分开的抽象）
- * @exercises     https://hci.stanford.edu/courses/cs147/ —— 课程设计作业里的交互评审
+ * @exercises     https://cs147.stanford.edu/ —— 课程设计作业里的交互评审
  * @prereq        知道 React 组件可以接收函数作为参数，由调用方决定“点了之后做什么”。
  * @unclear       “再点一次取消”对第一次来的人不一定显而易见，这里靠按钮的悬停提示补救；
  *                有没有人因此找不到“清除”，要等真实读者用过才知道。
