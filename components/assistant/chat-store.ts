@@ -6,13 +6,17 @@
  *                每次写入或删除后广播 CHATS_CHANGED，useConversations 订阅它重新读——和心得那套“写完喊一声”一样。
  *                列表按最后更新时间排，新的在前。
  * @courses       UC Berkeley CS186 / CMU 15-445（持久化存储）；CS50x Week 8（浏览器存储）；UC Berkeley CS61A（观察者）
- * @exercises     https://cs186berkeley.net/
+ * @exercises     https://cs186berkeley.net/ —— CS186 里持久化与模式设计的部分
  * @prereq        知道 IndexedDB 是浏览器自带的小数据库，操作都是异步的。
  * @unclear       面板和终端同时开着同一段对话时，谁后存谁的算数，另一边的最新几句可能被覆盖。一般不会这么用。
  * @letter
- * 对话记录和心得住在同一个数据库里，但不走统一编辑接口（core/workspace/workspace.ts）。
- * 那扇门是给“AI 能读能改的东西”准备的，而对话记录是 AI 自己说过的话——让 AI 去改自己的聊天记录，没有意义，也不该有这个口子。
- * 同一个数据库、不同的门：放在哪里是存储的问题，谁能碰是权限的问题，两件事分开想。
+ * 对话记录跟心得住在同一个数据库里（IndexedDB 里的 chats 表），可它不走统一编辑接口那扇门（core/workspace/workspace.ts）。
+ *
+ * 为什么？那扇门是给“AI 能读能改的东西”准备的。对话记录是 AI 自己说过的话，让 AI 去改它自己的聊天记录，没意义，也不该留这个口子。
+ * 住在同一个数据库，走不同的门。东西放在哪儿是存储的问题，谁能碰它是权限的问题，这两件事最好分开想。
+ *
+ * 加这张 chats 表的时候，数据库版本从 1 升到了 2。IndexedDB 就是靠版本号来判断“要不要改表结构”的：
+ * 你的浏览器里要是还是版本 1 的库，打开时会触发一次升级，建上新表，原来的心得和路径一条不动。
  */
 'use client';
 import { useCallback, useEffect, useState } from 'react';
