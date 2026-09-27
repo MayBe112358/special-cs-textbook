@@ -3,15 +3,23 @@
  * @problem       服务端布局不能直接把组件函数当作搜索配置传给客户端。
  * @design        在客户端边界内配置 Fumadocs，首次搜索时才加载替换弹窗。
  *                Fumadocs 界面上自带的那些英文（Search、On this page、Previous Page……）在这里换成中文。
- * @courses       CS50x Web；CS61A 抽象边界
- * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— 页面组件
+ * @courses       Harvard CS50x Week 8（网页交互）；UC Berkeley CS61A（抽象边界：什么能跨过边界传递）
+ * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— CS50x Homepage：页面组件与脚本
  * @prereq        懒加载表示需要某个功能时才下载它的代码。
  * @unclear       首次搜索仍需下载静态脚本，离线第一次访问不保证可用。
+ *                404 页面的按钮文字还是“回到课程目录”，但它其实回的是首页 /，文字该改一下。
  * @letter
- * 我把搜索配置留在客户端一侧，因为里面有组件函数，不能当作普通 JSON 越过服务端边界。
- * 页面正文仍然由外层静态生成，这个包裹只负责主题与交互，并不把整篇教材改成运行时请求。
- * 下面那张中文对照表的键长得有点怪，比如 "On this page(table of contents)"——括号里是这句话用在哪儿。
- * 同一个英文词在不同位置可能要译成不同的中文，所以 Fumadocs 用“原文 + 用途”当钥匙，而不是只用原文。
+ * 这个文件就两件事：配好 Fumadocs 的全站环境，以及把它界面上那些英文换成中文。
+ *
+ * 先说第一件。搜索弹窗是我们自己写的（components/search/search-dialog.tsx），要把它交给 Fumadocs 替换掉默认的那个。
+ * 可“交一个组件函数过去”这事，只能在浏览器这一侧做：服务端生成页面的时候，能跨过边界传给浏览器的只有 JSON 那样的普通数据，函数传不过去。
+ * 所以这个文件开头写着 'use client'，把配置留在浏览器一侧。
+ * 弹窗本身还用了 lazy：你第一次按 Ctrl+K 时才去下载它的代码，不搜索的人一个字节都不用多下。
+ *
+ * 再说那张中英对照表，它的键长得有点怪，比如 'On this page(table of contents)'，括号里写的是这句话用在哪儿。
+ * 为什么不直接拿英文原文当钥匙？因为同一个英文词在不同地方可能得翻成不同的中文，比如 Search 在按钮上和在弹窗标题里。
+ * 所以 Fumadocs 用“原文 + 用途”一起当钥匙，一个位置一个译法。
+ * 翻译的时候也顺手改了几句的意思：404 页面那句，除了“这一页可能被移走了”，还提示你可以在终端里 ls 看看这一层有什么。
  */
 'use client';
 import {lazy,type ReactNode} from 'react';

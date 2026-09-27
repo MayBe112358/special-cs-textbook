@@ -31,7 +31,7 @@
  * 所以分类的网址也按同一条规则生成，页面那边再给没有正文的分类显示一个简单的目录页。
  *
  * 后来加了个“按名字找”，这个是作者自己用了一阵子提出来的。
- * 他想敲 open cs50x 就打开 CS50x，结果每次都得先想起它在 programming-intro 底下。确实挺烦。
+ * 作者想敲 open cs50x 就打开 CS50x，结果每次都得先想起它在 programming-intro 底下。确实挺烦。
  * 其实真终端早就解决过这个问题：你敲 ls 的时候没写 /bin/ls 吧？shell 会顺着一张叫 PATH 的目录清单替你去找。
  * 这里干的是一样的事，只不过清单换成了整棵课程树。
  *
@@ -75,7 +75,7 @@ export const openCommand: CommandDefinition = {
       return { status: "ok", blocks: [], actions: [{ type: "navigate", href, reason: "open" }] };
     }
 
-    // 写成路径的，就是在说“就在这个位置”；没找到就是没有，不再去别处替他找。
+    // 写成路径的，就是在说“就在这个位置”；没找到就是没有，不再去别处替读者找。
     if (looksLikePath(input)) return lookupError("open", input, result);
 
     const named = entriesNamed(input, context);

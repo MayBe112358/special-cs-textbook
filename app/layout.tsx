@@ -1,17 +1,22 @@
 /**
  * @module        整个网站最外层的页面骨架
  * @problem       所有页面都需要共享语言、基础高度和 Fumadocs 的交互环境。
- * @design        在根布局只挂载 RootProvider 和官方要求的基础类名，不放具体文档内容；
+ * @design        在根布局只挂载 SiteProvider（里面是 Fumadocs 的 RootProvider、主题和搜索）和基础类名，不放具体文档内容；
  *                公式的样式表也在这里引入——它属于全站排版能力，不属于某一页。
- * @courses       CS50x Week 8 HTML, CSS, JavaScript; React 组件组合
- * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/
+ * @courses       Harvard CS50x Week 8（HTML、CSS、JavaScript）；UC Berkeley CS61A（抽象：通用的外壳与具体的内容分开）
+ * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— CS50x Homepage：一个网页的 head 和 body 各放什么
  * @prereq        HTML 页面有 html、body 两层，以及父组件可以包住所有子页面。
- * @unclear       深浅色偏好和站点级元数据会在后续步骤结合正式内容处理。
+ * @unclear       站点元数据只有标题和一句简介，还没有社交分享用的预览图（Open Graph 图片）。
  *
  * @letter
- * 无论你打开哪一篇文档，都会先经过这个最外层。RootProvider 提供主题与界面交互所需的共同环境，
- * 但它不知道具体课程，也不保存访问者的学习状态。把通用外壳和具体内容分开，后续页面变多时仍只有
- * 一个地方负责全站共同规则。
+ * 整个网站最外面的那一层。不管你打开哪一页，都会先经过这里。
+ *
+ * 它只放全站都要用的东西：网站的名字和一句话简介，中文的语言标记，公式的样式表，还有 SiteProvider（主题、搜索框这些全站共用的环境）。
+ * 具体哪门课、你的学习状态，它一概不知道，也不该知道。通用的外壳和具体的内容分开，页面再多，全站共同的规则也只在一个地方管。
+ *
+ * <head> 里那段最先执行的小脚本值得看一眼。它在页面露面之前，就把你上次拖好的侧边栏宽度、终端高度写到 <html> 上，
+ * 所以你不会看到页面先按默认尺寸画出来、再“跳”一下（原理在 components/layout-prefs.ts）。
+ * 因为这段脚本改了 <html> 的属性，React 接手时会发现“跟服务器生成的不一样”，所以 html 上要加 suppressHydrationWarning，告诉它这是故意的。
  */
 import type { Metadata } from "next";
 import { SiteProvider } from "@/components/site-provider";

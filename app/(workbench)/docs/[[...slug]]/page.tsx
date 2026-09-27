@@ -10,29 +10,33 @@
  *                静态参数把文档、分类、模块三种地址一起列出来，保持 GitHub Pages 可导出。
  *                课程页最后那一栏“本课对应的项目实现”不写在 MDX 里，而是在这里接上去——
  *                它是算出来的结果，写进内容文件就等于把算得出的东西又抄了一份。
- * @courses       CS50x Week 8 HTML, CSS, JavaScript; Stanford CS143 路径匹配与语法结构
- * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ ; https://web.stanford.edu/class/cs143/
+ * @courses       Harvard CS50x Week 8（HTML、CSS、JavaScript）；Stanford CS143（按规则匹配路径，好比语法分析）；MIT Missing Semester（路径与目录）
+ * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— CS50x Homepage：多页面网站
+ *                https://missing.csail.mit.edu/2020/course-shell/ —— Missing Semester：路径和目录
  * @prereq        函数参数、数组、网址路径，以及“找不到页面”应返回 404。
  * @unclear       分类页目前只显示直接子项；它是 cd 的可见落点，不承担完整课程内容展示。
  *                三种情况现在按顺序试，靠的是“同一个位置不会同时是两样东西”这个前提，
  *                而这个前提由索引脚本的唯一性检查保证。要是哪天那个检查被拿掉，这里会悄悄只显示第一种。
  *
  * @letter
- * 这个文件像一只通用信封：/docs、/docs/getting-started 或更深的地址都会先到这里，slug 是地址中
- * /docs 后面的各段名字。它把名字交给内容源寻找正文，找不到就明确返回 404；找到后则用同一套标题、
- * 简介、正文和页内目录结构显示。正文还必须拿到统一的组件映射：MDX 只说明“这里是代码块”，映射才
- * 决定它应当拥有面板、边框和复制按钮。漏掉这一步，内容虽然出现了，语义对应的界面能力却会丢失。
- * 这样新增文档只需新增内容，不必复制页面代码，也不会让每篇文档各自决定代码块怎么显示。
+ * 这个文件像一个通用的信封：/docs、/docs/programming-intro、/docs/programming-intro/cs61a，不管多深的地址，都先寄到这里来。
+ * 网址里 /docs 后面那几段叫 slug，这个文件拿着它去问“这个地址对应哪一页”，然后按对应的样子画出来。
  *
- * 现在它还会接住“只有文件夹、没有正文”的分类。终端的 cd 必须改变地址栏，否则当前位置就会出现第二份真相；
- * 但地址改变后若只得到 404，cd 又不能算完成。所以这里根据构建时索引画出最小目录，让每个合法分类路径
- * 都有一张静态页面。它没有替课程补内容，只是在网页里诚实展示“这个目录直接包含什么”。
+ * 它要接住三种完全不一样的页面。
  *
- * 第三种情况是源码讲解页，它值得单独说一句，因为它和前两种的来源完全不同。
- * 课程页的内容躺在 content 里，是一份写好的文件；而讲解页的内容躺在项目自己的源码注释里，
- * 构建时才被扫成数据。也就是说这个网站有一部分页面，是它自己的源代码变出来的。
- * 这听起来有点奇怪，但它正是这本教材的设定：课程是目录，源码是正文。
- * 既然是正文，它就该和课程页一样有地址、能被链接、能被 cd 进去——所以它们从同一只信封里出去。
+ * 第一种是课程页。内容躺在 content/docs 里，是写好的 .mdx 文件，找到了就用统一的标题、简介、正文、页内目录画出来。
+ * 正文画的时候必须带上统一的组件表（components/mdx.tsx）。MDX 只会说“这里是个代码块”，有了那张表，它才知道该有边框、有复制按钮、有配色。
+ * 所以新加一门课只需要加一个内容文件，不用复制任何页面代码，每篇课程页也不会各自决定代码块长什么样。
+ *
+ * 第二种是只有文件夹、没有正文的分类，比如 /docs/systems。
+ * 终端里 cd systems 必须改变地址栏，不然“当前位置”就有了第二份真相。可地址变了以后要是只看到一个 404，cd 也就不算真的成功。
+ * 所以这里按构建时的索引，给每个分类画一张最简单的目录页，老老实实列出“这一层直接包含什么”。它不替课程编内容，只是如实展示目录。
+ *
+ * 第三种最特别：源码讲解页。课程页的内容是写好的文件，讲解页的内容却躺在项目自己的源码注释里，构建的时候才被扫成数据。
+ * 也就是说，这个网站有一部分页面，是它自己的源代码变出来的。
+ * 这听着有点绕，但它正是这本教材的设定：课程是目录，源码是正文。既然是正文，它就该跟课程页一样有地址、能被链接、能被 cd 进去，所以它们从同一个信封里出去。
+ *
+ * 网站是静态导出的，每个地址都得在构建时生成好。generateStaticParams 就是在列“要生成哪些页”：所有课程、所有分类、所有讲解页，一个不少。
  */
 import { PublicComments } from "@/components/notes/public-comments";
 import { AuthorCourseProgress } from "@/components/progress/author-progress";
@@ -83,7 +87,7 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
         <DocsTitle>{page.data.title}</DocsTitle>
         <DocsDescription>{page.data.description}</DocsDescription>
         {/* 学习状态只属于课程：分类页和源码讲解页没有它，所以这一行只在课程页出现。
-            作者的进度（紫色标签）写在内容文件里、构建时就画好；按钮是读者自己的，存在他的浏览器里。
+            作者的进度（紫色标签）写在内容文件里、构建时就画好；按钮是读者自己的，存在读者自己的浏览器里。
             两者挨着放方便对照，靠形状和颜色区分来源。 */}
         {course === null ? null : (
           <CourseStatus key={course.id} courseId={course.id}>

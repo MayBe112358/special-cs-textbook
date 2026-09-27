@@ -146,7 +146,7 @@ export const statusCommand: CommandDefinition = {
       blocks.push(text(`　${STATE_LABELS[state]}（${inState.length}）`, "muted"));
       blocks.push(list(inState.map((record) => {
         const course = courseById.get(record.course);
-        // 课程可能已经从树上删掉了，但读者的记录还在。照实说，不悄悄丢掉他的数据。
+        // 课程可能已经从树上删掉了，但读者的记录还在。照实说，不悄悄丢掉读者的数据。
         return course === undefined
           ? { label: record.course, description: "这门课已不在课程树里" }
           : { label: course.path, description: course.title, command: `open ${course.path}` };
