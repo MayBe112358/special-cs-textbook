@@ -50,6 +50,7 @@ import type { Paragraph } from "@/core/knowledge/doc-comment";
 import type { TOCItemType } from "fumadocs-core/toc";
 import { ServerCodeBlock } from "fumadocs-ui/components/codeblock.rsc";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
+import { ReadingPositionLine, readingFooter } from "@/components/internals/chapter-guide";
 import type { ReactNode } from "react";
 
 /**
@@ -179,9 +180,11 @@ export function ModulePage({ module }: { module: ModuleEntry }) {
   };
 
   return (
-    <DocsPage toc={moduleTableOfContents()} full={false} slots={{ breadcrumb: PathBreadcrumb }}>
+    // 页脚的上一篇、下一篇按阅读顺序走（见 chapter-guide.tsx），不按侧边栏的文件夹顺序。
+    <DocsPage toc={moduleTableOfContents()} full={false} slots={{ breadcrumb: PathBreadcrumb }} footer={readingFooter(module.path)}>
       <DocsTitle>{module.title}</DocsTitle>
       {subtitle === null ? null : <DocsDescription>{subtitle}</DocsDescription>}
+      <ReadingPositionLine modulePath={module.path} />
       {/* 理解度只属于源码模块：课程页和分类页各有各的进度线，这一行只在讲解页出现。
           整本教材有多少段代码，组件自己数不出来——它只看得见当前这一页，所以由这里传进去。
           作者的理解度是内容，构建时就写死在这一页里；按钮要等浏览器打开后才读得到。 */}

@@ -16,7 +16,8 @@
  * @courses       UC Berkeley CS61A（第 4 章：把文本读成有结构的东西）；Stanford CS143 与 UCB CS164（词法分析、语法分析、错误信息）；
  *                UC Berkeley CS61B（树的遍历）；MIT 6.S081 与 UCB CS162（目录、文件与路径）；
  *                CMU 15-445 与 UCB CS186（模式校验、唯一键、外键引用）；MIT Missing Semester（构建脚本与自动化）
- * @exercises     https://inst.eecs.berkeley.edu/~cs61a/sp25/proj/scheme/ —— Scheme 解释器（2025 春季存档）：把一串文本变成有结构的数据
+ * @exercises     https://cs61a.org/ —— CS61A 当前学期主页：解释器单元的项目在学期后半发布（2026 秋季起改用 Gleam 写，不再是 Scheme）
+ *                https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html —— CS61A 官方教材 3.4 节：一个计算器语言的解释器，读入—求值的完整例子
  *                https://web.stanford.edu/class/cs143/     —— 编译器 PA1/PA2：词法与语法分析，顺带练“怎么把错误说清楚”
  *                https://sp21.datastructur.es/materials/proj/proj2/proj2 —— 文件树遍历与数据组织
  *                https://missing.csail.mit.edu/2020/course-shell/        —— 命令行与脚本自动化

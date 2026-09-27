@@ -9,7 +9,8 @@
  * @courses       UC Berkeley CS61B（测试驱动与回归）；UC Berkeley CS61A（解释器项目自带的测试）；
  *                Stanford CS143（词法分析器的测试）；MIT Missing Semester（自动化与调试）
  * @exercises     https://sp21.datastructur.es/materials/lab/lab3/lab3      —— CS61B Lab 3：用测试抓错
- *                https://inst.eecs.berkeley.edu/~cs61a/sp25/proj/scheme/  —— Scheme 解释器（2025 春季存档）：边写边跑它的测试
+ *                https://cs61a.org/ —— CS61A 当前学期主页：解释器单元的项目在学期后半发布（2026 秋季起改用 Gleam 写，不再是 Scheme）
+ *                https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html —— CS61A 官方教材 3.4 节：一个计算器语言的解释器，读入—求值的完整例子
  *                https://missing.csail.mit.edu/2020/debugging-profiling/   —— 调试与自动化
  * @prereq        知道断言是“我认为结果应该是这样，不是就报警”。
  * @unclear       这里只测解析本身。“真实仓库里的每个文件都能被解析”这件事由构建脚本负责——

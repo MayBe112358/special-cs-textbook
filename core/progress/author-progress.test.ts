@@ -6,7 +6,8 @@
  *                指向不存在的课程要抛错、没标过要如实返回空白、状态词要和访问者那套保持一致。
  * @courses       UC Berkeley CS61A（抽象与测试）；Stanford CS143（把手写文本读成结构化数据）；
  *                UC Berkeley CS186（数据完整性）
- * @exercises     https://inst.eecs.berkeley.edu/~cs61a/sp25/proj/scheme/ —— Scheme 解释器（2025 春季存档）：解析手写文本、读错了要报得出来
+ * @exercises     https://cs61a.org/ —— CS61A 当前学期主页：解释器单元的项目在学期后半发布（2026 秋季起改用 Gleam 写，不再是 Scheme）
+ *                https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html —— CS61A 官方教材 3.4 节：一个计算器语言的解释器，读入—求值的完整例子
  * @prereq        知道测试是在替将来那个改坏它的人提前问一遍"如果这里出错会怎样"。
  * @unclear       "页面上两栏分得清不清楚"这种事测不出来，只能靠人眼验收。这里只守数据边界。
  *

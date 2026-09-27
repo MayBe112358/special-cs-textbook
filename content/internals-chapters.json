@@ -1,0 +1,201 @@
+{
+  "intro": "侧边栏和终端里看到的是仓库里真实的目录结构（app、components、core……），那是给找文件用的；想从头读，就照下面这个顺序来。每一章开头有一段导读，告诉你这一章在讲什么、读之前最好学过哪些课。不用一口气读完，读懂一篇，就在那一页标一下“读懂了”。",
+  "chapters": [
+    {
+      "id": "command-engine",
+      "title": "命令引擎：一行字怎么变成一件事",
+      "intro": "从这里开始读最合适。你在终端里敲一行字、按回车，到屏幕上出现结果，中间就三步：拆开、查表、执行。这一章把这三步挨个摊开，最后看它们怎么被测试钉住。它对应的是 CS61A 的解释器项目和编译原理的第一周，但读之前不需要学完那些课，会一点编程、在真终端里敲过几条命令就够了。读完你会明白，为什么这个网站的终端能在一台没有浏览器的电脑上被检验。",
+      "modules": [
+        "/internals/core/terminal/syntax",
+        "/internals/core/terminal/command",
+        "/internals/core/terminal/output",
+        "/internals/core/terminal/command-engine",
+        "/internals/core/terminal/command-engine-test",
+        "/internals/core/terminal/commands/help"
+      ]
+    },
+    {
+      "id": "file-system",
+      "title": "虚拟文件系统：把课程树变成能 cd 的目录",
+      "intro": "上一章的引擎只会“执行”，这一章给它一个可以走来走去的地方。课程和代码被摆成一棵树，路径、..、~ 的规矩和真终端一模一样。你会在这里第一次碰到这本教材最重要的一条设计：“你在哪”只看浏览器地址栏，谁都不许另存一份。读之前最好在真终端里用熟 cd 和 ls（MIT Missing Semester 第一讲）；学过 CS61B 的树会更轻松。",
+      "modules": [
+        "/internals/core/filesystem/virtual-file-system",
+        "/internals/core/filesystem/virtual-file-system-test",
+        "/internals/core/terminal/location",
+        "/internals/core/terminal/commands/shared",
+        "/internals/core/terminal/commands/ls",
+        "/internals/core/terminal/commands/cd",
+        "/internals/core/terminal/commands/cat",
+        "/internals/core/terminal/commands/open",
+        "/internals/core/terminal/commands/navigation",
+        "/internals/core/terminal/completion"
+      ]
+    },
+    {
+      "id": "queries",
+      "title": "查询：终端能做、鼠标做不到的事",
+      "intro": "cd、ls 这种“走路”的事，说实话鼠标更快。终端真正挣到自己位置的，是这一章：跨整棵树按条件找、在结果里再筛、按关系反查、给课程排先后。你会看到通配符怎么翻成正则、两种正则方言、全表扫描、拓扑排序。这些在 CS61B、CS186 和编译原理里都会正面讲，读这一章时知道个名字就行，学完回来再读一遍会有新发现。",
+      "modules": [
+        "/internals/core/terminal/commands/find",
+        "/internals/core/terminal/commands/grep",
+        "/internals/core/knowledge/search",
+        "/internals/core/terminal/commands/search",
+        "/internals/core/terminal/commands/refs",
+        "/internals/core/knowledge/graph",
+        "/internals/core/knowledge/graph-test"
+      ]
+    },
+    {
+      "id": "reading-itself",
+      "title": "教材怎么把自己读出来：构建时发生的事",
+      "intro": "你正在读的每一页讲解，都是构建网站时从源码注释里“读”出来的。这一章讲这件事：怎么把一段注释解析成结构、怎么从“UC Berkeley CS61A（解释器）”这句话里认出课程、怎么把一堆散落的文件汇总成一份索引，以及怎么让机器守住“每个文件都得有信”这条规矩。它和第一章是一对：那边解析的是命令，这边解析的是散文。",
+      "modules": [
+        "/internals/core/knowledge/doc-comment",
+        "/internals/core/knowledge/doc-comment-test",
+        "/internals/core/knowledge/knowledge-index",
+        "/internals/core/knowledge/cross-reference",
+        "/internals/scripts/build-knowledge-index",
+        "/internals/scripts/check-letters",
+        "/internals/core/knowledge/chapters",
+        "/internals/core/knowledge/chapters-test",
+        "/internals/source-config",
+        "/internals/lib/source"
+      ]
+    },
+    {
+      "id": "progress",
+      "title": "两条进度线：课程学到哪，代码读懂多少",
+      "intro": "这一章开始碰“你自己的数据”。学习状态和理解度存在你的浏览器里，作者的进度写在仓库里，两边从存放的地方就分开。你会看到命令引擎不许碰浏览器，那 mark 命令怎么改你的数据；页面上好几个地方同时显示同一份数据时，谁也不通知谁，靠的是什么。读之前知道 JSON 是什么、localStorage 是浏览器里存东西的地方就行。",
+      "modules": [
+        "/internals/core/progress/progress",
+        "/internals/core/progress/progress-test",
+        "/internals/core/progress/author-progress",
+        "/internals/core/progress/author-progress-test",
+        "/internals/core/terminal/commands/mark",
+        "/internals/core/terminal/commands/status",
+        "/internals/components/progress/progress-store",
+        "/internals/components/progress/status-dot",
+        "/internals/components/progress/status-row",
+        "/internals/components/progress/course-status",
+        "/internals/components/progress/module-understanding",
+        "/internals/components/progress/author-progress"
+      ]
+    },
+    {
+      "id": "workspace",
+      "title": "心得与路线：你的东西怎么存、怎么带走",
+      "intro": "心得文档、导进来的文件、导图、学习路线，全都只在你的浏览器里。这一章讲它们的样子、一扇统一的门、换格式时怎么搬家不丢东西，以及备份文件为什么必须读得懂所有旧版本。数据库课（CS186、CMU 15-445）里的事务、模式迁移、乐观并发控制，在这里都有很小但很真实的版本。最后两篇是它在浏览器里真正落地的地方。",
+      "modules": [
+        "/internals/core/workspace/workspace",
+        "/internals/core/workspace/items",
+        "/internals/core/workspace/canvas",
+        "/internals/core/workspace/diff",
+        "/internals/core/workspace/learning-paths",
+        "/internals/core/workspace/backup",
+        "/internals/core/workspace/workspace-test",
+        "/internals/core/notes/notes",
+        "/internals/core/notes/backup",
+        "/internals/core/notes/backup-test",
+        "/internals/core/paths/paths",
+        "/internals/core/paths/paths-test",
+        "/internals/components/workspace/browser-workspace",
+        "/internals/components/workspace/drafts"
+      ]
+    },
+    {
+      "id": "assistant",
+      "title": "AI 助手：问模型、调工具、等你点头",
+      "intro": "AI 助手是用你自己的 Key、从你的浏览器直接连模型厂商的。这一章从厂商预设讲起，然后是两种接口格式的“翻译官”、AI 能用的工具、改动单，最后是那个主循环：问模型、执行它要的工具、把结果喂回去，直到它说完。你会看到它和第一章的命令引擎长得多像。后半章是它在网页上的样子，重点看“异步代码怎么停下来等你点按钮”。",
+      "modules": [
+        "/internals/core/assistant/providers",
+        "/internals/core/assistant/assistant",
+        "/internals/core/assistant/clients",
+        "/internals/core/assistant/anthropic-client",
+        "/internals/core/assistant/openai-client",
+        "/internals/core/assistant/tools",
+        "/internals/core/assistant/changes",
+        "/internals/core/assistant/agent",
+        "/internals/core/assistant/conversations",
+        "/internals/core/assistant/assistant-test",
+        "/internals/core/terminal/commands/agent",
+        "/internals/components/assistant/settings-store",
+        "/internals/components/assistant/settings-view",
+        "/internals/components/assistant/chat-store",
+        "/internals/components/assistant/use-agent-session",
+        "/internals/components/assistant/transcript",
+        "/internals/components/assistant/pickers",
+        "/internals/components/assistant/history-view",
+        "/internals/components/assistant/ai-panel"
+      ]
+    },
+    {
+      "id": "shell",
+      "title": "网页外壳：把这一切摆上屏幕",
+      "intro": "前面几章几乎都是不碰网页的纯逻辑，从这一章开始才是你眼睛看到的东西。最外层的骨架、顶栏、左边的活动栏、标签页、能拖的侧边栏，然后是终端本体：它是纯逻辑第一次碰到真实网页的地方。最后是首页。这一章很多设计是照着 VS Code 学的，读的时候可以开着 VS Code 对照。需要一点 HTML、CSS 和 React 的基础（CS50x Week 8）。",
+      "modules": [
+        "/internals/app/layout",
+        "/internals/app/globals",
+        "/internals/components/site-provider",
+        "/internals/app/workbench/layout",
+        "/internals/components/top-bar",
+        "/internals/components/workbench/activity-bar",
+        "/internals/components/workbench/side-view",
+        "/internals/components/workbench/area-layout",
+        "/internals/components/workbench/drawer-areas",
+        "/internals/components/workbench/tabs",
+        "/internals/components/workbench/tab-bar",
+        "/internals/components/sidebar-sash",
+        "/internals/components/layout-prefs",
+        "/internals/components/terminal/terminal",
+        "/internals/components/terminal/output-view",
+        "/internals/components/search/search-dialog",
+        "/internals/components/path-breadcrumb",
+        "/internals/app/workbench/page",
+        "/internals/components/home/home",
+        "/internals/components/home/demo-terminal",
+        "/internals/components/home/continue-panel"
+      ]
+    },
+    {
+      "id": "areas",
+      "title": "三块工作区：课程目录、个人心得、学习路径",
+      "intro": "外壳搭好了，这一章填进三块具体的地方。先是课程目录：课程页怎么从 MDX 画出来、讲解页（包括你正在看的这种）怎么从注释画出来、课程和代码之间那两块互相指的牌子。然后是个人心得：文档编辑器、Markdown 渲染（一条小型编译器流水线）、导图画布。最后是学习路径的编辑界面。",
+      "modules": [
+        "/internals/app/workbench/docs/layout",
+        "/internals/app/workbench/docs/slug/page",
+        "/internals/lib/layout-shared",
+        "/internals/components/mdx",
+        "/internals/components/diagrams/mermaid",
+        "/internals/components/internals/module-page",
+        "/internals/components/internals/cross-links",
+        "/internals/components/internals/chapter-guide",
+        "/internals/app/workbench/notes/layout",
+        "/internals/lib/notes-tree",
+        "/internals/app/workbench/notes/slug/page",
+        "/internals/components/notes/notes-space",
+        "/internals/components/notes/text-editor",
+        "/internals/components/notes/markdown-view",
+        "/internals/components/notes/note-count",
+        "/internals/components/notes/backup-panel",
+        "/internals/components/notes/public-comments",
+        "/internals/components/canvas/canvas-board",
+        "/internals/components/canvas/canvas-editor",
+        "/internals/app/workbench/paths/layout",
+        "/internals/lib/paths-tree",
+        "/internals/app/workbench/paths/page",
+        "/internals/components/paths/paths-workbench"
+      ]
+    },
+    {
+      "id": "build",
+      "title": "构建与部署：从源码到一个能打开的网址",
+      "intro": "最后一章很短，讲网站怎么从一堆源文件变成 GitHub Pages 上一个谁都能打开的网址。其中两篇是真实排错留下来的：一个 Windows 上才有的路径问题，一次把网站从 460 MB 瘦下来的排查。它们想告诉你的是同一句话：编译成功不等于部署能用，构建完一定要亲手点一遍。",
+      "modules": [
+        "/internals/next-config",
+        "/internals/postcss-config",
+        "/internals/scripts/fix-static-prefetch",
+        "/internals/scripts/prune-export"
+      ]
+    }
+  ]
+}

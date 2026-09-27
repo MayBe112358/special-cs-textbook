@@ -12,7 +12,7 @@
  * @courses       UC Berkeley CS61A（高阶函数与数据抽象：把“要做的事”当值传来传去）；
  *                Stanford CS143 与 UCB CS164（解释器的求值接口）；软件工程类课程（依赖方向与接口设计）；
  *                MIT Missing Semester（Unix 命令的统一形状：名字、参数、退出状态）
- * @exercises     https://cs61a.org/                     —— Scheme 解释器项目：eval 的签名为什么长那样
+ * @exercises     https://cs61a.org/                     —— CS61A 解释器单元的项目：eval 的签名为什么长那样
  *                https://web.stanford.edu/class/cs143/  —— 编译器各阶段的接口划分
  * @prereq        知道函数可以作为对象的一个字段；知道“接口”就是双方说好的形状。
  * @unclear       动作现在有五种：站内跳转、清屏、改学习状态、改理解度、进入 AI 对话，都是某条命令真用上了才加的。

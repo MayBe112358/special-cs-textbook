@@ -9,7 +9,8 @@
  *                断言检查的是结构（status、块的类型、文字内容），不是拼出来的字符串。
  * @courses       UC Berkeley CS61A（解释器项目自带的测试）；UC Berkeley CS61B（测试驱动与回归）；
  *                MIT Missing Semester（自动化与调试）
- * @exercises     https://inst.eecs.berkeley.edu/~cs61a/sp25/proj/scheme/  —— Scheme 解释器（2025 春季存档）：边写边跑它自带的测试
+ * @exercises     https://cs61a.org/ —— CS61A 当前学期主页：解释器单元的项目在学期后半发布（2026 秋季起改用 Gleam 写，不再是 Scheme）
+ *                https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html —— CS61A 官方教材 3.4 节：一个计算器语言的解释器，读入—求值的完整例子
  *                https://sp21.datastructur.es/materials/lab/lab3/lab3      —— CS61B Lab 3：计时测试与随机对比测试
  *                https://missing.csail.mit.edu/2020/debugging-profiling/   —— 调试与自动化
  * @prereq        知道断言是“我认为结果应该是这样，不是就报警”。
