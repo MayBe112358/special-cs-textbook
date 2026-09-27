@@ -1,36 +1,73 @@
 ---
 title: "MIT 6.050J 信息与熵"
-description: "从比特和编码讲到熵、信道与推断，一门面向文理科的信息论入门。"
+description: "给大一新生的信息论入门：从比特、编码、压缩、纠错讲到概率、信道、推断，最后一路走到热力学的熵和量子信息。"
 prereqCourses: []
-prereqKnowledge: ["无"]
+prereqKnowledge: ["高中数学", "大学物理第一学期（力学）的程度，只在最后几个单元用到"]
 ---
 
 ## 课程简介
 
-6.050J（Information and Entropy）是 MIT 面向非专业学生开的信息论入门课，
-特点是从最具体的东西讲起：什么是一个比特、怎么给符号编码、
-怎么把消息压缩得更短、噪声出现时怎么还能正确传输。
+6.050J（Information and Entropy）是 MIT 专门为大一新生开的一门课，由 Paul Penfield 和 Seth Lloyd 讲授，计算机系和机械系联合开设。
+它的问题很大：通信和计算的终极极限在哪里？它的角度很特别：强调信息的**物理**本质。
 
-课程按单元推进：比特与编码、压缩、噪声与纠错、概率、通信、过程、推断、
-最大熵原理，最后几个单元把熵的概念推广到物理系统、能量、温度乃至量子信息。
-这条线索把香农的信息论和统计物理里的熵连了起来，
-让“熵”不再只是一个公式里的符号。
+课程前半段是你熟悉的“计算机里的信息”：什么是比特、怎么编码、怎么压缩（顺带讲了 GIF、JPEG、MP3 这些真实格式）、
+怎么在有噪声的信道上检错纠错（讲到了 CD 的纠错方式）、概率、信道容量、马尔可夫过程、推断。
+后半段话锋一转，从“最大熵原理”出发，讲到物理系统、能量和温度：原来信息论里的熵和热力学里的熵是同一个东西。
+最后一个单元是量子信息。
 
-这门课的数学要求不高，适合作为进入更硬核信息论（比如 MacKay 那本书）之前的铺垫。
+这门课在这棵课程树里的位置，是一门很好的“信息论先导”：它不要求你有很深的数学，
+却能让你在进入 [MacKay 的信息论](/docs/advanced-mathematics/mackay-information-theory) 或机器学习之前，
+对熵、信息量、编码、推断这些概念有一个直观、完整的图景。
 
 ## 先修要求
 
-- 需要高中数学与基本的概率概念。
-- 没有编程要求。
+- 官方的先修是 MIT 的大一力学课（Physics I），这只在后面讲能量、温度的几个单元用得到。
+- 前面讲编码、压缩、概率、推断的单元，高中数学就够了。
+- 讲义是英文的。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/)：2008 春季完整存档。
-- [课程单元材料](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/syllabus/)：按单元组织的讲义、习题与解答入口。
-- [课程大纲](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/syllabus/)：单元划分与课程目标。
+十三个单元（第 1、2 单元合在一起），每个单元一章讲义、一组习题：
+
+| 单元 | 主题 | 讲什么 |
+|---|---|---|
+| 1–2 | Bits and Codes | 比特、布尔代数、编码 |
+| 3 | Compression | 压缩，以 GIF、JPEG、MP3 为例 |
+| 4 | Noise and Errors | 噪声与差错，检错与纠错码 |
+| 5 | Probability | 概率、Huffman 编码 |
+| 6 | Communications | 通信与信道 |
+| 7 | Processes | 过程（马尔可夫链等） |
+| 8 | Inference | 推断；期中测验考到这里 |
+| 9 | Maximum Entropy | 最大熵原理 |
+| 10–12 | Physical Systems, Energy, Temperature | 物理系统、能量、温度：信息论的熵和热力学的熵 |
+| 13 | Quantum Information | 量子信息 |
 
 ## 官方作业
 
-- [各单元习题](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/)：课程按 Unit 组织，每个单元配有习题与解答。
+每个单元的页面上都有这一章的讲义和一组习题：
 
-OCW 存档课程，没有助教批改。
+- [Units 1 & 2：Bits and Codes](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/bits-codes/)：Problem Set 1 和解答。
+- [Unit 3：Compression](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/compression/)：Problem Set 2 和解答，附 GIF 规范、JPEG FAQ、MP3 概述等真实文档可以对照读。
+- [Unit 4：Noise and Errors](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/unit-4-noise-and-errors/)：Problem Set 3 和解答，附 CD-ROM 纠错的技术说明。
+- [Unit 5：Probability](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/probability/)：Problem Set 4 和解答，附 Huffman 1952 年那篇原始论文。
+- [Unit 8：Inference](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/inference/)：Problem Set 7 和解答，附 Jaynes 那篇开启最大熵方法的经典论文。
+- 其余单元（6、7、9–12）各有一组习题和解答，第 13 单元是期末复习。一共 11 组习题。
+
+## 学习建议
+
+- **讲义就是教材。** 课程用的是 Penfield 教授多年教这门课攒下的讲义，每个单元一章，官网还把全部讲义合成了一本[开放教材](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/resources/mit6_050js08_textbook/)。
+- **前八个单元是重点。** 如果你的目标是为计算机和机器学习打基础，编码、压缩、纠错、概率、信道、推断这八个单元最有用；后面的物理部分当作开阔眼界。
+- **读读附的原始材料。** 很多单元附了真实世界的文档：GIF 规范、Huffman 的原始论文、Jaynes 的最大熵论文。看看这些想法当初是怎么被提出来的，比只读二手讲解有意思。
+- **没有视频。** 这门课的 OCW 存档只有讲义和习题，没有讲课录像，适合喜欢读书的人。
+- **官方建议的工作量是每周 9 小时左右**（包括 4 小时上课），用来估算自学节奏。
+
+## 同类课怎么选
+
+- **[信息论、推断与学习算法（MacKay）](/docs/advanced-mathematics/mackay-information-theory)**：进阶版，数学更深，把信息论、贝叶斯推断和机器学习放在一个框架里讲。学完 6.050J 前八个单元再去读它会顺很多。
+- **[MIT 6.042J](/docs/mathematics/mit-6-042j)**：离散数学和概率，是这门课概率部分的更系统版本。
+
+## 官方资源
+
+- [课程主页（OCW，2008 春）](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/)：全部单元的入口。
+- [课程大纲](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/pages/syllabus/)：先修、形式、工作量、合作规定。
+- [开放教材](https://ocw.mit.edu/courses/6-050j-information-and-entropy-spring-2008/resources/mit6_050js08_textbook/)：全部讲义合成的一本书。

@@ -1,35 +1,73 @@
 ---
 title: "MIT 6.092 Java 程序设计"
-description: "MIT 独立活动月的 Java 短课，用几次课讲完语言核心与图形界面。"
+description: "MIT 寒假独立活动月（IAP）的 Java 短课：七讲讲完语言核心，七份小作业从计算自由落体做到图形动画。"
 prereqCourses: []
-prereqKnowledge: ["无"]
+prereqKnowledge: []
 ---
 
 ## 课程简介
 
-6.092 是 MIT 在一月独立活动月开的短课，目标很实际：
-让已经会一门语言的人快速上手 Java。
+6.092（Introduction to Programming in Java）是 MIT 在一月份“独立活动月”（IAP）开的一门 Java 短课。
+IAP 是 MIT 每年一月的一段自由时间，学生可以上各种短期课，这门就是其中之一，几周就上完。
+OCW 上保存的是 2010 年那一期，由 Evan Jones、Adam Marcus、Eugene Wu 三人讲授。
 
-内容是 Java 的核心部分：类型与变量、操作符、条件与循环、数组、
-方法、类与对象、继承与接口、基本的输入输出，最后是一个简单的图形界面练习。
-课程只有十来讲，不求覆盖 Java 生态，只求把语言本身讲清楚。
+官方把它定位成软件工程的入门：用 Java 讲，目标是为 MIT 的软件工程课（当时的 6.005）打底，
+重点是写出“能解决真实问题、质量过关的程序”。七讲依次是：类型、变量和运算符；方法和条件；循环和数组；
+对象和类；访问控制、包、Java 标准库；设计、调试和接口；继承、异常和文件读写。
 
-OCW 上材料完整：讲义、示例代码和作业都公开。
-适合作为读 CS61B（Java 版数据结构）之前的语言补课，两三天就能过完。
+它的长处是短：如果你已经会一门语言（比如 Python），想在一两周内把 Java 捡起来，
+好去上 [CS61B](/docs/data-structures-algorithms/cs61b) 这种用 Java 的课，这门课刚好够用。
+它的短处也是短：没有视频，讲得很快，不适合当你的第一门编程课。
 
 ## 先修要求
 
-- 需要已经会一门编程语言。
-- 不需要预先了解 Java。
+- 官方没有先修要求。
+- 实际上更适合已经学过一门语言的人：七讲要讲完 Java 的核心，没有太多时间照顾零基础。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/)：2010 年 IAP 完整存档。
-- [课程大纲](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/syllabus/)：课程安排与目标。
-- [讲义](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/lecture-notes/)：每讲的完整文字材料。
+| 讲次 | 主题 |
+|---|---|
+| 1 | 类型、变量、运算符 |
+| 2 | 更多类型、方法、条件 |
+| 3 | 循环和数组 |
+| 4 | 对象和类 |
+| 5 | 访问控制、类作用域、包、Java 标准库 |
+| 6 | 设计、调试、接口 |
+| 7 | 继承、异常、文件读写 |
+
+每讲有一份幻灯片 PDF，放在 [Lecture Notes](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/lecture-notes/) 页面。
 
 ## 官方作业
 
-- [Assignments](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/assignments/)：配套练习，含题面与示例代码。
+七份小作业，每份对应一讲，题面都是 PDF，部分附了起始代码，全在 [Assignments](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/assignments/) 页面：
 
-OCW 存档课程，没有自动评分。
+- **GravityCalculator**：算一个物体在地球重力下落了多远。第一次改、编译、运行 Java 程序。
+- **FooCorporation**：给按小时计薪的员工算工资，要处理加班费和最低工资的规定。练方法和条件判断。
+- **Marathon**：从一张马拉松成绩表里找出最快的人（进阶题找第二快）。练数组和循环。
+- **Library**：给一个小镇的图书馆写借还书系统，补全 `Book` 和 `Library` 两个类。练设计类。
+- **Graphics!**：用 Java 自带的图形库和课程给的小框架，在窗口里画出几种图形，还有一个会弹跳的方块。
+- **Graphics strikes back!**：把“画图”和“移动”拆成两个类，用接口让任何图形都能动起来。练接口和设计。
+- **Magic squares**：从文件里读出两个方阵，判断它们是不是幻方。练文件读写和异常。
+
+最后一份作业附了参考答案的 Java 文件。
+
+## 学习建议
+
+- **开发环境按现在的来。** 课程页上教你装 Sun Java 6 和 Eclipse，那是 2010 年的做法。现在装一个新版 JDK，用 IntelliJ IDEA 或 VS Code 就行，作业代码都能照常运行。
+- **没有视频，靠讲义和作业。** 讲义很精简，遇到讲得太快的地方，去翻 Oracle 官方的 Java 教程补。
+- **当作“语言速成”来用。** 如果你的目标是 CS61B，把这七讲和七份作业做完再去，会轻松很多。
+- **没有自动评分。** 每份作业的要求都很具体，照着题面自己设计几个输入去试。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS61B](/docs/data-structures-algorithms/cs61b)**：用 Java 讲数据结构，项目量很大。6.092 常被当作它的 Java 预备课。
+- **[Stanford CS106L](/docs/programming-intro/cs106l)**：另一门“专讲一门语言”的短课，讲的是现代 C++。
+- **[Harvard CS50x](/docs/programming-intro/cs50x)**：如果你还没学过任何编程语言，先从这类完整的入门课开始，再来学 Java。
+
+## 官方资源
+
+- [课程主页（OCW，2010 IAP）](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/)：全部材料的入口。
+- [课程大纲](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/syllabus/)：开发环境安装说明（版本已旧，思路可参考）。
+- [讲义](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/lecture-notes/)：七讲的幻灯片。
+- [作业](https://ocw.mit.edu/courses/6-092-introduction-to-programming-in-java-january-iap-2010/pages/assignments/)：七份作业的题面和起始代码。

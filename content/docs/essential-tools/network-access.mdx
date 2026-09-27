@@ -1,33 +1,73 @@
 ---
 title: "网络访问与连通性检查"
-description: "理解网络是怎么连通的，以及访问不到某个资源时该怎么排查。"
+description: "弄明白一次网络请求要经过哪几层，访问不到课程网站、装不上包、克隆仓库断掉时，按顺序一层层排查。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["会用命令行执行基本命令"]
 ---
 
-## 课程简介
+## 简介
 
-自学公开课会反复遇到一类问题：某个课程网站打不开、某个包装不上、
-某个仓库克隆到一半断了。把这些都归结为“网络不好”没有用，值得先理解中间到底有哪些环节。
+跟着公开课自学，会反复碰到这一类麻烦：课程网站打不开、`pip install` 半天不动、`git clone` 到一半断了、
+视频加载不出来。把这些都归成“网不好”没有用，值得先弄明白中间到底有哪几个环节。
 
-从浏览器地址栏到对方服务器，一次请求要经过域名解析、路由、TCP 连接、TLS 握手、
-HTTP 响应这几层。知道这条链路之后，排查就有了顺序：是解析不出来，还是连不上，
-还是连上了但返回错误。
+从你在浏览器里敲下一个网址，到页面出现，一次请求大致要走过这几层：
 
-这一页给的是入门材料。真正系统的网络知识在“系统 → 计算机网络”那一支，
-CS144 会让你把整个 TCP/IP 协议栈亲手实现一遍。
+1. **域名解析（DNS）**：把 `cs61a.org` 这样的名字翻译成一个 IP 地址。
+2. **路由**：数据包从你的电脑出发，经过一个个路由器，找到对方的服务器。
+3. **TCP 连接**：和对方建立一条可靠的连接。
+4. **TLS 握手**：如果是 `https`，双方交换证书、协商加密。
+5. **HTTP 请求和响应**：真正把网页、文件要过来。
+
+知道了这条链路，排查就有了顺序：是名字解析不出来？是连不上？还是连上了，但服务器返回了错误（比如 403、404）？
+每一种原因，对应的办法完全不同。
+
+这一页只是入门。真正系统的网络知识在“系统 → 计算机网络”那一支，[Stanford CS144](/docs/systems/networking/cs144) 会让你亲手把 TCP/IP 协议栈实现一遍。
 
 ## 先修要求
 
-- 会用命令行执行基本命令。
+- 会在命令行里执行基本命令。
 - 没有其他先修要求。
+
+## 学习路线
+
+| 现象 | 先怀疑哪一层 | 用什么查 |
+|---|---|---|
+| 提示“找不到服务器”、“无法解析主机名” | DNS | `nslookup 域名` 或 `dig 域名`，看能不能解析出 IP |
+| 能解析但连不上、一直超时 | 路由、防火墙 | `ping`（有的服务器不回 ping，不代表连不上）、`traceroute`（Windows 上是 `tracert`）看卡在哪一跳 |
+| 连上了但报证书错误 | TLS | `curl -v 网址`，看握手阶段的报错；检查电脑时间对不对 |
+| 连上了但返回 403、404、500 | HTTP | `curl -v 网址` 看状态码和响应头：403 是没权限，404 是地址不对，5xx 是对方服务器的问题 |
+| 能打开网页，但 `pip`、`npm`、`git` 很慢或失败 | 这些工具各自的网络设置 | 用镜像源，或者给这个工具单独设置代理 |
+
+最后一行很常见：浏览器能用，是因为系统代理只对浏览器生效，而命令行工具不会自动跟着走。
+这种情况下要给 `git`、`pip` 这些工具分别配置（见下面的官方文档），或者换成国内的镜像源。
+
+## 官方教程与练习
+
+网络排查是一种习惯，没有作业。下面几份一手材料值得读：
+
+- [How does the Internet work?（MDN）](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work)：从最基本的概念讲起：包、路由器、IP 地址、DNS。
+- [An overview of HTTP（MDN）](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)：一次 HTTP 请求和响应到底长什么样。
+- [Missing Semester 调试一讲](https://missing.csail.mit.edu/2026/debugging-profiling/)：把排查当成一件有方法的事来做，其中专门有一节讲网络调试。
+- **镜像源**：[清华大学开源软件镜像站](https://mirrors.tuna.tsinghua.edu.cn/) 为 PyPI、Anaconda、Ubuntu 等几十种软件源提供镜像，每一种都有使用说明，比如 [PyPI 镜像的帮助页](https://mirrors.tuna.tsinghua.edu.cn/help/pypi/)。
+- **给工具单独设代理**：Git 的 [`http.proxy` 配置项](https://git-scm.com/docs/git-config)，pip 的 [`--proxy` 选项](https://pip.pypa.io/en/stable/user_guide/)（用户指南里的 Using a Proxy Server 一节）。
+
+练习：挑一个你打不开或者很慢的网站，按上面表格的顺序，用 `nslookup`、`ping`、`curl -v` 一层层查，写下每一层的结果，判断问题出在哪。
+
+## 学习建议
+
+- **先确定是哪一层出了问题，再找办法。** 盲目换 DNS、重启路由器、重装软件，碰巧好了你也不知道为什么。
+- **`curl -v` 是最好用的排查工具。** 它会把 DNS 解析、连接、TLS 握手、请求头、响应头一步步打印出来，问题出在哪一步一目了然。
+- **国内学习时，镜像源能解决大部分装包的问题。** pip、conda、apt、npm 都有国内镜像，速度快、稳定，官方镜像站都有配置说明。
+- **遵守所在地的法律法规和学校、单位的网络使用规定。**
+
+## 同类工具怎么选
+
+- **[Stanford CS144](/docs/systems/networking/cs144)**、**[UC Berkeley CS168](/docs/systems/networking/cs168)**：系统学计算机网络的课。学完再回来看这一页，每一层都会有具体的画面。
+- **[MIT Missing Semester](/docs/essential-tools/missing-semester)**：命令行、调试的基本功，排查网络问题时处处用得到。
 
 ## 官方资源
 
-- [互联网是怎么工作的（MDN）](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work)：从最基本的概念讲起。
-- [HTTP 概述（MDN）](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)：请求与响应到底长什么样。
-- [调试与性能分析](https://missing.csail.mit.edu/2020/debugging-profiling/)：把排查当成一件有方法的事。
-
-## 官方作业
-
-- [排查练习](https://missing.csail.mit.edu/2020/debugging-profiling/)：讲义末尾的 Exercises；配合 `ping`、`dig`、`curl -v` 观察每一层的结果。
+- [MDN：互联网是怎么工作的](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work)：入门概念。
+- [MDN：HTTP 概述](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)：请求和响应。
+- [清华大学开源软件镜像站](https://mirrors.tuna.tsinghua.edu.cn/)：常用软件源的国内镜像和使用说明。
+- [Git 配置参考](https://git-scm.com/docs/git-config)：包括代理相关的配置项。

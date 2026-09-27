@@ -1,35 +1,69 @@
 ---
 title: "实用工具箱"
-description: "命令行环境的日常功课：作业控制、别名、dotfiles、SSH 与数据处理。"
+description: "把终端用顺手的几样具体功夫：作业控制、tmux、别名和 dotfiles、SSH、用管道处理数据，以及几件好用的现代命令行工具。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["会用 shell 执行基本命令"]
 ---
 
-## 课程简介
+## 简介
 
-把终端用顺手，靠的不是记住更多命令，而是几项具体能力：
-知道怎么把一个跑太久的任务停下来或丢到后台；知道怎么用别名和 dotfiles
-把配置带到每一台机器上；知道怎么通过 SSH 在远程机器上干活；
-知道怎么用管道把几个小工具串成一条数据处理流水线。
+把终端用顺手，靠的不是背更多命令，而是几样具体的功夫：
 
-这些东西平时没人系统教，Missing Semester 把它们集中讲了两讲。
-学完之后你对终端的感觉会从“一个输命令的框”变成“一个可以编程的环境”。
+- **管住正在跑的程序。** 一个任务跑太久，怎么停下来、丢到后台、过会儿再拿回来（作业控制：`Ctrl-C`、`Ctrl-Z`、`bg`、`fg`、`jobs`、`kill`）。
+- **一个窗口干几件事。** 用 tmux 在一个终端里开多个窗格和会话，断开 SSH 以后程序照样在跑，重新连上还能接着看。
+- **把习惯带到每台机器上。** 常用命令起个短别名（alias），把配置写在 dotfiles（`~/.bashrc`、`~/.gitconfig` 这类点开头的文件）里，用 Git 管起来，换台电脑一拉就有。
+- **在远程机器上干活。** SSH 登录、用密钥代替密码、写 `~/.ssh/config` 给常用主机起名字、端口转发。
+- **用管道处理数据。** 把 `grep`、`sed`、`awk`、`sort`、`uniq` 这些小工具串成一条流水线，几行命令就能从一大堆日志里算出你要的数字。
 
-管道那部分和这本教材关系特别近：终端里命令之间传的是结构化数据而不是文本，
-正是从这里学来的想法的一个变体。
+这些平时没人系统地教，MIT 的 [Missing Semester](/docs/essential-tools/missing-semester) 把它们集中讲了几讲。
+学完以后，你对终端的感觉会从“一个输命令的框”变成“一个可以编程的环境”。
+
+管道那部分和这本教材关系特别近：这本教材的终端里，命令之间传的是带结构的数据而不是纯文本，正是从 Unix 管道的思路改出来的（讲解区第 3 章讲了这件事）。
 
 ## 先修要求
 
 - 会用 shell 执行基本命令。
-- 建议先过一遍 Missing Semester 的 shell 入门。
+- 建议先学完 Missing Semester 的第一讲（shell 入门）。
+
+## 学习路线
+
+| 功夫 | 讲在哪儿 |
+|---|---|
+| 输入输出流、环境变量、返回码、信号 | Missing Semester 2026 第 2 讲：Command-line Environment |
+| 作业控制、tmux、别名、dotfiles、SSH（密钥、配置、端口转发） | Missing Semester 2020：Command-line Environment |
+| 管道、正则、`sed`、`awk`、数据整理 | Missing Semester 2020：Data Wrangling |
+| 更好用的现代命令行工具 | Missing Semester 2026 第 1 讲里的推荐 |
+
+2026 版第 1 讲顺手推荐了几件比老工具更好用的替代品，值得装上试试：
+`tldr`（配合 `man`，直接给常用例子）、`zoxide`（记住你常去的目录，`z` 一下就跳过去）、`eza`（更好读的 `ls`）、
+`bat`（带语法高亮的 `cat`）、`ripgrep`（更快更顺手的 `grep`）、`fd`（更顺手的 `find`）。
+讲义也提醒了：它们更好用，但不一定每台机器上都有，老工具还是要会。
+
+## 官方教程与练习
+
+这一页是工具的合集，没有作业。练习就在 Missing Semester 每一讲的讲义末尾：
+
+- [2020：Command-line Environment](https://missing.csail.mit.edu/2020/command-line/)：作业控制、tmux、别名、dotfiles、SSH。练习包括：写一个能在后台等待进程结束的小函数、把你的 dotfiles 放进 Git 管理、配好 SSH 密钥和 `~/.ssh/config`。
+- [2026：Command-line Environment](https://missing.csail.mit.edu/2026/command-line-environment/)：输入输出流、环境变量、返回码、信号、参数，讲得比 2020 版更细。
+- [2020：Data Wrangling](https://missing.csail.mit.edu/2020/data-wrangling/)：练习从一个正则交互教程开始，然后在系统词典文件里用一条管道统计：有多少个单词至少含三个 a、又不以 's 结尾，它们最常见的结尾两个字母是什么……
+- [2026：Course Overview + Introduction to the Shell](https://missing.csail.mit.edu/2026/course-shell/)：shell 入门和现代工具的推荐。
+
+## 学习建议
+
+- **每学一招，马上用在你的日常里。** 学完 tmux 就在下一次跑长任务时用它，学完别名就把你每天敲十遍的命令缩短。不用就会忘。
+- **dotfiles 从现在开始积累。** 建一个 dotfiles 仓库，每改一次配置就提交一次。几年后这会是你最值钱的仓库之一。
+- **管道要一段一段地搭。** 先写第一段看输出，对了再接下一段。一口气写一长串，出错了都不知道错在哪。
+- **SSH 用密钥，不用密码。** 更安全，也不用每次都输入。
+
+## 同类工具怎么选
+
+- **[MIT Missing Semester](/docs/essential-tools/missing-semester)**：这一页的主要来源，完整的一门课。
+- **[日常学习工作流](/docs/essential-tools/workflow)**：把这些工具和编辑器、Git、调试、测试串成每天的流程。
+- **[Sysadmin DeCal](/docs/programming-intro/sysadmin-decal)**：往系统管理员方向再走一步：服务、网络、安全、容器。
 
 ## 官方资源
 
-- [命令行环境](https://missing.csail.mit.edu/2020/command-line/)：作业控制、别名、dotfiles、SSH。
-- [数据处理](https://missing.csail.mit.edu/2020/data-wrangling/)：用管道和正则把文本流串起来。
-- [课程主页](https://missing.csail.mit.edu/)：全部讲座的入口。
-
-## 官方作业
-
-- [命令行环境练习](https://missing.csail.mit.edu/2020/command-line/)：讲义末尾的 Exercises 一节。
-- [数据处理练习](https://missing.csail.mit.edu/2020/data-wrangling/)：同上，练习在文末。
+- [Missing Semester 主页](https://missing.csail.mit.edu/)：当前一期和往年主题。
+- [2020：Command-line Environment](https://missing.csail.mit.edu/2020/command-line/)：作业控制、tmux、dotfiles、SSH。
+- [2020：Data Wrangling](https://missing.csail.mit.edu/2020/data-wrangling/)：管道与数据整理。
+- [2026：Command-line Environment](https://missing.csail.mit.edu/2026/command-line-environment/)：流、环境变量、信号。

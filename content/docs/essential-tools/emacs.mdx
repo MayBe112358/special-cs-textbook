@@ -1,36 +1,62 @@
 ---
 title: "Emacs"
-description: "一个可以用 Lisp 改造自身的编辑器，以及围绕它长出来的整套工作环境。"
+description: "一个可以用 Lisp 改造自己的编辑器，以及围绕它长出来的一整套工作环境：写代码、记笔记、管日程都能在里面做。"
 prereqCourses: []
 prereqKnowledge: []
 ---
 
-## 课程简介
+## 简介
 
-Emacs 官方对自己的描述是“advanced, extensible, customizable, self-documenting”——
-先进、可扩展、可定制、自带文档。前三个词说的是同一件事：Emacs 的绝大部分功能是用
-Emacs Lisp 写的，你可以在运行时读它、改它、替换它。
+GNU Emacs 是一个已经发展了几十年的编辑器（写作时最新版是 2026 年 8 月发布的 31.1）。
+它的核心是一个 Emacs Lisp 语言的解释器，编辑器本身的大部分功能都是用这门语言写的。
+这意味着几乎所有东西都能改：快捷键、界面、行为，甚至可以写出一个新的“模式”，让 Emacs 学会处理一种新的文件。
 
-这让它不只是编辑器。收发邮件、管理待办、写论文、跑 shell、连数据库，都有人用 Emacs 做。
-代价是学习曲线陡：默认的快捷键体系和现代编辑器很不一样，而且你迟早要学一点 Lisp。
+所以很多人用 Emacs，用着用着就不只是在编辑文本了：Org mode 用来记笔记、写文档、管待办和日程；
+Magit 是公认最好用的 Git 界面之一；邮件、终端、文件管理、甚至计算器（Calc）都能在它里面做。
+有句老玩笑说 Emacs 是“一个缺个好编辑器的操作系统”，说的就是这种什么都能装进来的气质。
 
-“自带文档”是它最被低估的优点：任何一个按键、任何一个函数，都能用 `C-h k`、`C-h f`
-当场查到它是什么、定义在哪里。这套自省能力本身就值得一看。
+和 [Vim](/docs/essential-tools/vim) 的“模式”思路不同，Emacs 靠组合键：`C-x C-s` 保存（按住 Ctrl 再按 x，再按 s）、`C-g` 取消当前命令。
+刚开始会觉得按键很长，用熟以后手指会自己记住。
 
 ## 先修要求
 
-- 没有硬性先修要求。
-- 愿意接受一套和主流编辑器不同的快捷键约定，是能坚持下去的前提。
+- 没有先修要求。
+- 想深度定制的话，学一点 Lisp 会很有帮助；官方专门为此写了一本入门书。
+
+## 学习路线
+
+| 阶段 | 学什么 | 官方材料 |
+|---|---|---|
+| 第一天 | 打开、移动、编辑、保存、取消、求助 | 自带教程（`C-h t`） |
+| 第一周 | 缓冲区、窗口、搜索替换、按文件类型切换的模式 | 官方手册前半部分 |
+| 熟练 | 用 Emacs 写代码（语法高亮、跳转、Eglot 语言服务器）、Org mode | 官方手册、各自的专门手册 |
+| 定制 | 写自己的配置和命令 | 《An Introduction to Programming in Emacs Lisp》、Emacs Lisp 参考手册 |
+
+## 官方教程与练习
+
+Emacs 是工具，没有作业，把它用在真正的工作里就是练习。官方的入门材料：
+
+- **自带交互教程**：启动 Emacs 后按 `C-h t`（按住 Ctrl 按 h，松开再按 t），会打开一份边读边练的教程。官方手册也建议新手先做这个。
+- [官方导览](https://www.gnu.org/software/emacs/tour/)：图文介绍 Emacs 能做什么，看完再决定要不要深入。
+- [GNU Emacs 手册](https://www.gnu.org/software/emacs/manual/html_node/emacs/)：完整的使用手册，从屏幕由哪几部分组成讲到怎么定制。
+- [An Introduction to Programming in Emacs Lisp](https://www.gnu.org/software/emacs/manual/eintr.html)：官方写给“不一定会编程”的人的 Emacs Lisp 入门书，想定制 Emacs 从这本开始。
+
+## 学习建议
+
+- **先做完 `C-h t`。** 它比任何网上的入门文章都准确，而且就是 Emacs 本身，边学边练。
+- **记住求助三件套。** `C-h k` 查一个按键是干什么的，`C-h f` 查一个函数，`C-h v` 查一个变量。Emacs 的文档全在它自己身上。
+- **别一上来就装一堆配置。** 网上有很多现成的“配置全家桶”，功能很多，但你看不懂它改了什么。先用原版一段时间，需要什么再加什么。
+- **从一个杀手级功能入手。** 很多人是为了 Org mode 或 Magit 才开始用 Emacs 的。找到一个真正让你离不开的功能，比“为了学而学”坚持得久。
+
+## 同类工具怎么选
+
+- **[Vim](/docs/essential-tools/vim)**：用模式而不是组合键，启动快、到处都有，适合“进去改完就走”。Emacs 更像一个你长期住在里面的环境。
+- **VS Code 这类图形编辑器**：上手最快、插件最多，但定制的深度远不如 Emacs。
+- 编辑器是很私人的选择，没有标准答案。Emacs 适合喜欢把工具一点点打磨成自己形状的人。
 
 ## 官方资源
 
-- [GNU Emacs 手册](https://www.gnu.org/software/emacs/manual/html_node/emacs/)：官方完整手册，从屏幕组成一路讲到定制。
-- [Emacs 官网](https://www.gnu.org/software/emacs/)：下载与项目信息。
-- [全部官方手册](https://www.gnu.org/software/emacs/manual/)：包括 Emacs Lisp 参考手册在内的文档集。
-
-## 官方作业
-
-- [官方导览](https://www.gnu.org/software/emacs/tour/)：先花二十分钟看完这个，再决定要不要深入。
-- [自带教程](https://www.gnu.org/software/emacs/manual/html_node/emacs/Basic.html)：启动 Emacs 后按 `C-h t` 进入官方交互教程。
-
-这是工具而不是课程，没有官方作业。
+- [Emacs 官网](https://www.gnu.org/software/emacs/)：下载、功能介绍、版本发布。
+- [官方导览](https://www.gnu.org/software/emacs/tour/)：图文介绍。
+- [GNU Emacs 手册](https://www.gnu.org/software/emacs/manual/html_node/emacs/)：完整使用手册。
+- [全部官方手册](https://www.gnu.org/software/emacs/manual/)：Emacs Lisp 参考手册、Org mode、Calc、Eglot 等各自的手册。

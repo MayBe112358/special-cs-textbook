@@ -1,36 +1,70 @@
 ---
 title: "Amirkabir AP1400-2"
-description: "德黑兰理工的高级编程课，用一系列 C++ 作业练工程化写法。"
+description: "德黑兰 Amirkabir 理工大学的高级编程课：七份带单元测试的 C++ 作业，练工程化写法。"
 prereqCourses: []
-prereqKnowledge: ["无"]
+prereqKnowledge: ["会一门编程语言，写过函数和循环", "懂一点 C++ 基础语法更好"]
 ---
 
 ## 课程简介
 
-AP1400-2 是德黑兰理工大学（AUT）的高级编程课，
-课程本身以 C++ 作业为主线，全部作业框架公开在 GitHub 上。
+AP1400-2 是伊朗 Amirkabir 理工大学（也叫德黑兰理工大学）的高级编程课，2022 年春季那一期的作业全部公开在 GitHub 上。
+它在自学圈里出名，不是因为讲课，而是因为这七份作业：每一份都是一个独立的小仓库，
+给你头文件里的函数声明和一整套 Google Test 单元测试，你要做的就是把实现写出来，让测试一个个变绿。
 
-它和入门课的差别在于工程化：每个作业都是一个带 CMake 构建、
-Google Test 单元测试的完整项目，你要做的是在给定的骨架里把功能补完，
-并让全部测试通过。题目涉及矩阵运算、智能指针、模板、
-运算符重载、异常处理这些实际写 C++ 会碰到的东西。
+作业的题目很有工程感：线性代数库、模拟加密货币的服务器和客户端、二叉搜索树、自己实现智能指针、
+用继承和多态做咖啡、用 STL 做梯度下降和卡尔曼滤波。做完你对 C++ 的类、模板、智能指针、STL 算法都会有实打实的手感。
 
-对自学者来说，它最有用的地方是提供了一批有测试、可自测的 C++ 练习，
-填补了很多 C++ 教程只讲语法不给练习的空缺。
+需要说清楚的是，这门课能公开拿到的主要就是作业，讲课视频和讲义不在这些仓库里。
+所以更适合当成一套“C++ 练习题”来用：配合一本 C++ 教材，或者 [Stanford CS106L](/docs/programming-intro/cs106l) 的讲课一起学。
 
 ## 先修要求
 
-- 需要 C++ 基础，建议先完成 CS106B/X 或同等课程。
-- 需要会用 CMake 构建项目。
+- 会一门编程语言，能自己写函数、循环、处理数组。
+- 最好已经会一点 C++ 的基本语法；作业不会从头教语法，遇到不会的要自己查。
+- 需要会用命令行，用 CMake 构建项目（每份作业的 README 里有步骤）。
 
-## 官方资源
+## 课程结构
 
-- [作业仓库集合](https://github.com/courseworks)：课程全部作业框架所在的组织。
-- [第一次作业](https://github.com/courseworks/AP1400-2-HW1)：从这里开始，README 里有环境与构建说明。
-- [CMake 官方教程](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：作业构建方式的参考。
+从七份作业的顺序可以看出这门课大致的路线：
+
+| 顺序 | 主题 | 对应作业 |
+|---|---|---|
+| 1 | C++ 基础、`vector`、头文件与源文件分离 | HW1 |
+| 2 | 类的设计、哈希与数字签名的直观理解 | HW2 |
+| 3 | 指针、树结构、运算符重载 | HW3 |
+| 4 | 模板、智能指针与资源管理 | HW4 |
+| 5 | 继承与多态 | HW5 |
+| 6 | STL 容器与算法、lambda、函数对象 | HW6 |
+| 7 | 回到 Python：列表推导与 matplotlib 画图 | HW7 |
 
 ## 官方作业
 
-- [HW1 – HW7](https://github.com/courseworks)：七次作业，每次一个独立仓库，自带 Google Test 测试。
+七个仓库都在 [courseworks](https://github.com/courseworks) 这个 GitHub 组织下。每个仓库的 README 就是题目，测试在 `unit_test.cpp` 里：
 
-克隆仓库后按 README 构建并运行测试，测试全绿即为通过。
+- [HW1：线性代数库](https://github.com/courseworks/AP1400-2-HW1)。用二维 `vector` 表示矩阵，实现加减乘、转置、行列式、求逆、初等行变换等一整套函数。练 C++ 基本功和“声明放头文件、实现放源文件”的规矩。
+- [HW2：加密货币模拟](https://github.com/courseworks/AP1400-2-HW2)。写 `Server` 和 `Client` 两个类，模拟一个中心化的“加密货币”：注册用户、签名、转账、挖矿。哈希和签名函数已经给好，你练的是类的设计和它们之间的配合。
+- [HW3：二叉搜索树](https://github.com/courseworks/AP1400-2-HW3)。实现 `Node` 和 `BST` 两个类：插入、查找、删除、遍历，还有一堆运算符重载。练指针和树。
+- [HW4：智能指针](https://github.com/courseworks/AP1400-2-HW4)。自己实现 `UniquePtr` 和 `SharedPtr` 两个类模板，功能尽量接近标准库里的版本。练模板和资源管理。
+- [HW5：咖啡与多态](https://github.com/courseworks/AP1400-2-HW5)。用配料（`Ingredient`）和意式咖啡（`EspressoBased`）两棵继承树，调出卡布奇诺、摩卡这些咖啡。练继承、虚函数、多态。
+- [HW6：用 STL 解四道题](https://github.com/courseworks/AP1400-2-HW6)。梯度下降、按患病概率给病人排序、用 `priority_queue` 排航班、一个简化版的卡尔曼滤波，全用 STL 的容器和算法来写。
+- [HW7：Python 热身](https://github.com/courseworks/AP1400-2-HW7)。写一行式的函数（列表推导），再用 matplotlib 画几张图。
+
+## 学习建议
+
+- **测试就是评分标准。** 每份作业的 `main.cpp` 里有一个开关，关掉调试模式就会跑全部 Google Test，全绿就算做完。
+- **先读头文件和测试。** 题目给的函数签名和测试用例，往往比 README 的文字更能说明“到底要什么”。
+- **按顺序做。** HW4 的智能指针、HW5 的继承，都会用到前面几份作业练出来的写法。
+- **配一份讲解材料。** 这门课公开的只有作业，概念讲解要自己找。[CS106L](/docs/programming-intro/cs106l) 的幻灯片和读本正好覆盖同一批语言特性。
+- **HW7 可以跳过。** 它是 Python，和前面的 C++ 路线关系不大；想专心练 C++ 的话做完 HW6 就够了。
+
+## 同类课怎么选
+
+- **[Stanford CS106L](/docs/programming-intro/cs106l)**：讲现代 C++ 的语言特性，有完整的讲课幻灯片，作业更短更轻。想先把概念学清楚，选它。
+- **[Stanford CS106B](/docs/programming-intro/cs106b-cs106x)**：用 C++ 学数据结构和算法，递归、链表、树都要自己写，偏算法。
+- **AP1400-2**：三者里练习量最大、最像“真实工程”的一门，适合在学了 C++ 语法之后，用来把手练熟。
+
+## 官方资源
+
+- [courseworks 组织](https://github.com/courseworks)：全部作业仓库。
+- [HW1 仓库](https://github.com/courseworks/AP1400-2-HW1)：从这里开始，README 里有环境和构建说明。
+- [CMake 官方教程](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：作业用 CMake 构建，不熟的话先看这个。

@@ -1,37 +1,77 @@
 ---
 title: "MIT 6.100L Python 程序设计"
-description: "MIT 的 Python 编程与计算思维导论，偏重算法思路与问题建模。"
+description: "MIT 的 Python 编程与计算思维导论，节奏放慢给零基础，偏重用程序解决问题。"
 prereqCourses: []
-prereqKnowledge: ["无"]
+prereqKnowledge: []
 ---
 
 ## 课程简介
 
-6.100L 是 MIT 面向零基础学生的编程导论，用 Python 讲授。
-和很多“学语法”的入门课不同，它的重心在计算思维：怎么把一个现实问题拆成程序能处理的形式，
-怎么判断一个算法好不好，怎么用递归、字典、类这些工具组织解法。
+6.100L（全名 Introduction to CS and Programming using Python）是 MIT 给没写过程序的学生开的编程导论，用 Python 讲。
+它和 MIT 以前那门有名的 6.0001 讲的内容一样，只是把半学期的课拉长成一整个学期，节奏放慢，
+官方的说法是：给从没编过程的人留出练习的时间。
 
-课程后半程会讲到算法复杂度、搜索与排序、面向对象和简单的绘图，
-相当于把编程入门和算法入门衔接在了一起。
+它和很多“学语法”的入门课不一样，重心在计算思维：一个现实问题，怎么拆成程序能处理的形式；
+一个办法好不好，怎么判断。前半学期讲 Python 的基本功，同时穿插“猜了再验”、二分查找、牛顿法这种最朴素的算法；
+后半学期讲递归、面向对象、复杂度（大 O），最后是查找和排序。
+学完你不光会写 Python，还摸到了算法课的门口。
 
-OCW 上的这个版本材料很完整：讲座视频、讲义、课堂代码、随堂小练习（Finger Exercises）
-和习题集都公开。缺点是没有自动评分，需要自己对照答案检查。
+这里链接的是 OCW 上 2022 年秋季的完整存档，由 Ana Bell 讲授。讲课视频、讲义、课堂代码、随堂小练习和习题都公开。
 
 ## 先修要求
 
-- 没有编程先修要求。
-- 需要高中程度的数学，课程中会用到函数、对数这类概念。
+- 官方写的是没有先修要求，面向“几乎没有编程经验”的学生。
+- 会用到一点高中数学：浮点数、平方根、对数这类概念会在算法例子里出现。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/)：2022 秋季完整存档。
-- [课程大纲](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/syllabus/)：课程目标、结构与评分方式。
-- [讲座视频](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/video_galleries/lecture-videos/)：全部课堂录像。
-- [课堂代码](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/lists/lecture-code/)：讲座中演示的完整程序。
+每周两次讲课（各 1.5 小时），周五有可选的习题课。26 讲大致分成这几段：
+
+| 讲次 | 主题 | 讲什么 |
+|---|---|---|
+| 1–3 | Python 基础 | 对象、类型、变量、字符串、输入输出、分支、循环 |
+| 4–6 | 简单算法 | 猜了再验、二进制与分数、近似法、二分查找、牛顿法 |
+| 7–8 | 函数 | 分解、抽象、规格说明、作用域、函数作为对象 |
+| 9–13 | 数据与健壮性 | 元组、列表、可变性与别名、列表推导、测试与调试、异常与断言 |
+| 14–16 | 字典与递归 | 字典，递归与归纳，斐波那契加上字典做记忆化，汉诺塔 |
+| 17–20 | 面向对象 | 类、方法、特殊方法（dunder）、继承 |
+| 21–24 | 复杂度、查找与排序 | 计时与数操作步数、大 O 与大 Θ、线性和二分查找、冒泡、选择、归并排序 |
+| 25–26 | 收尾 | 可视化库，以及列表在内存里的样子、哈希、模拟 |
+
+教材是 John Guttag 的《Introduction to Computation and Programming Using Python》第三版，每讲都对应到书里的章节。
 
 ## 官方作业
 
-- [Problem Sets](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/lists/problem-sets/)：官方习题集，含题面与配套材料。
-- [配套阅读](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/readings/)：教材章节与讲座的对应顺序；随堂 Finger Exercises 附在各讲材料里。
+三类练习，全在 [Problem Sets](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/lists/problem-sets/) 和 [Finger Exercises](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/finger-exercises/) 两个页面里，每组题都附起始代码压缩包：
 
-这是 OCW 存档课程，没有助教批改，做完需自行对照官方材料检查。
+- **Problem Set 0：Introduction & Installation**。装好 Python 和编辑器，确认环境能用，不计分。
+- **Problem Set 1：Compound Interest**。算存钱买房要多久、每月存多少，最后一问用二分查找反推存款比例。练控制流和二分查找。
+- **Problem Set 2：Hangman**。写一个猜单词游戏，还要加上“提示”功能。练函数和循环。
+- **Problem Set 3：Document Distance**。比较两篇文章有多相似：先按词频算，再换成 TF-IDF（信息检索里常用的一种加权）比一比哪种更好。练字典和辅助函数。
+- **Problem Set 4：Recursion and Caesar Cipher**。A 部分在树上做递归运算；B、C 部分用类实现凯撒密码的加密和破解。两部分互不依赖。
+- **Problem Set 5：Using Libraries**。几乎不用写代码，练的是查文档、找现成的库函数：给图片做色盲滤镜、把藏在图片里的隐藏图案显出来。
+- **Finger Exercises**：每讲一组小题，几分钟到十几分钟，当堂练当堂讲的东西。
+
+## 学习建议
+
+- **Finger Exercises 别跳。** 在 MIT 校内它是必交的，占总评 10%。每讲后面这几道小题，是检验“听懂了没有”最快的办法。
+- **没有自动评分，要自己核对。** OCW 存档没有助教批改，也没有在线评分系统。习题包里给了测试文件的就先跑测试，没给的对照题目要求自己设计几个输入去试。
+- **先看视频再做题。** 讲课视频和讲义是按讲对应的；习题通常覆盖前几讲的内容，做题前把对应的几讲过一遍。
+- **教材可以当补充。** 课和书是平行的，书上对某些话题讲得更细。书不是免费的，没有也能把课学完。
+- **学完接什么。** 官方的定位是为 6.100B（计算思维与数据科学）和 6.1010（基础程序设计）打底；在本站的课程树里，接 CS61A 或 CS61B 都合适。
+
+## 同类课怎么选
+
+- **[Harvard CS50P](/docs/programming-intro/cs50p)**：同样零基础、同样用 Python，更偏语言本身和工程习惯（测试、库、正则），有自动评分，反馈更及时。
+- **[Harvard CS50x](/docs/programming-intro/cs50x)**：面更广，从 C 讲起，还有内存、SQL、Web。
+- **[UC Berkeley CS61A](/docs/programming-intro/cs61a)**：抽象程度更高，适合学完一门入门课以后再上。
+
+6.100L 的特点是“算法味”最重：从第 4 讲就开始讲近似、二分、复杂度，适合想早点把编程和算法连起来的人。缺点是没有自动评分，自学时得多一份自律。
+
+## 官方资源
+
+- [课程主页（OCW，2022 秋）](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/)：全部材料的入口，可以整门课打包下载。
+- [课程大纲](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/syllabus/)：课程目标、教材、评分构成。
+- [课程日历](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/calendar/)：每讲的主题、阅读章节、作业节奏。
+- [讲课视频](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/video_galleries/lecture-videos/)：全部课堂录像。
+- [课堂代码](https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/lists/lecture-code/)：讲课时演示的完整程序。

@@ -1,6 +1,6 @@
 ---
 title: "MIT Missing Semester"
-description: "补上课程表里没有的那一课：命令行、编辑器、版本控制、调试与自动化。"
+description: "补上课程表里没有的那一课：shell、命令行环境、编辑器、调试、Git、打包发布、AI 编程代理与代码质量。"
 prereqCourses: []
 prereqKnowledge: []
 ---
@@ -8,11 +8,11 @@ prereqKnowledge: []
 {/*
   @module        必学工具分类中的样板课程页
   @problem       课程树需要一门真实课程来证明“必学工具”分类能够展开和访问。
-  @design        课程页只保留五个固定栏目并使用课程官方链接；不复制课程正文，也不自编练习。
+  @design        课程页用固定的几个栏目，只链接课程官方的讲义和练习，不复制正文，也不自编练习。
   @courses       MIT The Missing Semester of Your CS Education
-  @exercises     https://missing.csail.mit.edu/2020/course-shell/
+  @exercises     https://missing.csail.mit.edu/2026/course-shell/
   @prereq        无。
-  @unclear       官方站点仍停留在 2020 年版本；部分工具的版本和用法可能已经变化。
+  @unclear       课程每年一月开一次，讲哪些主题每年都在变；往年讲过、今年没讲的主题，官网单独列出来了。
 
   @letter
   我先把这门课放在工具分支，是因为终端、编辑器和 Git 不属于某一种编程语言，却会陪你走过后面的
@@ -22,33 +22,76 @@ prereqKnowledge: []
 
 ## 课程简介
 
-大学课程会教你操作系统、机器学习这些高深题目，却几乎没有一门课教你怎么用手边的工具。
-Missing Semester 就是为这个空缺开的：官方的说法是，学生在整个求学期间要花几百个小时、
-在职业生涯里要花几千个小时使用这些工具，那就值得把这件事做得顺手一些。
+大学的课会教你操作系统、机器学习这些高深的题目，却几乎没有一门课教你怎么用好手边的工具。
+Missing Semester（全名 The Missing Semester of Your CS Education，“你的计算机教育里缺的那个学期”）就是为这个空缺开的。
+官方的理由很朴素：学生在整个求学期间要花几百个小时、在职业生涯里要花几千个小时用这些工具，那就值得把它们用得顺手一点。
+用熟了，不光省时间，还能解决以前觉得复杂到没法下手的问题。
 
-课程按主题分成十来讲：shell 的使用与脚本、命令行环境（作业控制、别名、dotfiles、SSH）、
-编辑器（以 Vim 为例）、数据处理、命令行工具、版本控制（Git 的内部模型）、调试与性能分析、
-元编程（构建系统、依赖管理、测试）、安全与密码学，以及大杂烩式的实用技巧。
+它是 MIT 每年一月（寒假的独立活动月）开的短课。2026 年这一版有 9 讲：
+shell 入门、命令行环境、开发环境与工具（包括 Vim 和 AI 辅助开发）、调试与性能分析、版本控制与 Git、
+打包与发布代码、用 AI 编程代理写代码（Agentic Coding）、代码之外的事（参与开源、代码评审、用 AI 的礼仪），最后是代码质量（测试、格式化、lint、持续集成）。
 
-这门课的价值不在于某一条命令，而在于它让你意识到：工具是可以被理解和改造的，
-不是只能照着教程抄。这本教材底部的终端就是照着这套 shell 语义做的——`ls`、`cd`、`cat`
-为什么是那样的行为，答案在这门课里。
+2026 版有一个明显的变化：官方说软件工程正在被 AI 工具改变，但没有单开一讲 AI，
+而是把相关的 AI 工具和用法揉进了每一讲，最后再用一整讲讲编程代理：它能做什么、要提防什么。
+
+这本教材底部的终端，`ls`、`cd`、`cat` 为什么是那样的行为，答案就在这门课的第一讲里。
 
 ## 先修要求
 
 - 没有先修要求。会用电脑、愿意打开终端就可以开始。
-- 如果你从没用过命令行，从第一讲的 shell 入门开始，不要跳。
+- 最好有一台 Linux 或 macOS 电脑；Windows 用户可以装 WSL，第一讲的练习里就提到需要 Linux 或 Linux 虚拟机。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://missing.csail.mit.edu/)：当前年份的讲座列表与讲义，每一讲都有完整的文字版。
-- [往年版本](https://missing.csail.mit.edu/2020/)：2020 年版内容完整、配套练习齐全，中文社区引用的多是这一版。
-- [开课动机](https://missing.csail.mit.edu/about/)：这门课为什么存在，作者自己的说明。
+2026 年一月这一期：
+
+| 讲 | 主题 | 讲什么 |
+|---|---|---|
+| 1 | 课程介绍 + Shell 入门 | 在 shell 里走来走去、常用命令、推荐的现代命令行工具 |
+| 2 | 命令行环境 | 输入输出流、环境变量、返回码、信号、参数 |
+| 3 | 开发环境与工具 | AI 辅助开发、IDE 与插件、用 Vim 的模式化编辑 |
+| 4 | 调试与性能分析 | 调试器、录制回放调试、系统调用追踪、网络调试、内存调试与 sanitizer |
+| 5 | 版本控制与 Git | Git 的数据模型（快照、引用）、暂存区、分支合并、远程、撤销、进阶用法 |
+| 6 | 打包与发布代码 | 发布软件包、版本号、可复现的构建、容器 |
+| 7 | Agentic Coding | 编程代理是什么、用在哪、要提防什么、推荐的工具 |
+| 8 | Beyond the Code | 参与开源、代码评审、教别人、用 AI 的礼仪 |
+| 9 | 代码质量 | 测试、pre-commit 钩子、持续集成、格式化、lint、覆盖率 |
+
+往年讲过、2026 年没讲的主题（数据处理、安全与密码学、备份、自动化等），官网首页单独列在“Special topics from previous years”下面，照样可以看。
 
 ## 官方作业
 
-- [Shell 入门与练习](https://missing.csail.mit.edu/2020/course-shell/)：每一讲文字版的末尾都有 Exercises 一节，练习就在那里。
-- [命令行环境](https://missing.csail.mit.edu/2020/command-line/)：作业控制、别名与 dotfiles 的练习。
-- [版本控制](https://missing.csail.mit.edu/2020/version-control/)：从 Git 的数据模型入手理解命令。
+每一讲的讲义末尾都有一节 Exercises，这就是这门课的全部作业。推荐顺序是按讲来：
 
-练习没有自动评分，判断标准是你能不能在自己的机器上把它跑出来。
+- [第 1 讲 Shell 练习](https://missing.csail.mit.edu/2026/course-shell/)：在真 shell 里练路径、管道、通配、条件，写第一个小脚本。
+- [第 2 讲命令行环境练习](https://missing.csail.mit.edu/2026/command-line-environment/)：练流、环境变量、信号（比如用 `Ctrl-C` 和 `kill` 控制进程）。
+- [第 3 讲开发环境练习](https://missing.csail.mit.edu/2026/development-environment/)：配置编辑器、练 Vim 的移动和修改。
+- [第 4 讲调试与性能分析练习](https://missing.csail.mit.edu/2026/debugging-profiling/)：用调试器、sanitizer、profiler 找出真实程序里的问题。
+- [第 5 讲 Git 练习](https://missing.csail.mit.edu/2026/version-control/)：先搞懂数据模型，再练分支、合并、改写历史。
+- [第 6 讲打包发布练习](https://missing.csail.mit.edu/2026/shipping-code/)：用 `pyproject.toml` 打一个 Python 包并生成锁文件，写 Dockerfile 和 docker-compose，把包发布到 TestPyPI，用 GitHub Pages 做一个网站。
+- [第 7 讲 Agentic Coding 练习](https://missing.csail.mit.edu/2026/agentic-coding/)：让编程代理完成真实任务，并学会检查和纠正它。
+- [第 8 讲 Beyond the Code 练习](https://missing.csail.mit.edu/2026/beyond-code/)：去读 Redis、curl 这种有名项目的源码，找出讲义里说的几类好注释（有用的 TODO、指向外部文档的引用、解释“为什么没那样做”的注释），体会参与开源和评审代码时该看什么。
+- [第 9 讲代码质量练习](https://missing.csail.mit.edu/2026/code-quality/)：给项目加测试、格式化、lint、持续集成。
+
+练习没有自动评分，标准只有一个：你能不能在自己的机器上把它做出来。
+
+## 学习建议
+
+- **一定要动手。** 光看讲义，第二天就忘了。每一讲的练习都在自己的终端里做一遍，比看十遍都管用。
+- **有官方认可的中文翻译。** 官网首页的 Translations 里链着[简体中文版](https://missing-semester-cn.github.io/)，英文读着吃力可以对照看。翻译通常会比英文原版晚一些。
+- **2020 版也值得看。** 很多教程引用的是 2020 年那一版，它的数据处理、安全与密码学几讲 2026 年没讲，内容照样有用。
+- **Agentic Coding 那一讲别当成“用 AI 的技巧”。** 它讲的重点是怎么给代理下清楚的任务、怎么检查它的结果、什么时候不该用它。前面几讲的 shell、Git、测试基本功，恰恰是用好 AI 的前提。
+- **学完这门课再学别的。** 后面几乎每门课的作业都要用到终端和 Git，把这门课放在很前面，会省下很多时间。
+
+## 同类课怎么选
+
+- **[Git](/docs/essential-tools/git)**、**[Vim](/docs/essential-tools/vim)**、**[GNU Make](/docs/essential-tools/gnu-make)** 这几页：这门课里各占一讲的工具，想深入学某一个，接着去看对应的页面。
+- **[UC Berkeley Sysadmin DeCal](/docs/programming-intro/sysadmin-decal)**：同样讲 Linux 和命令行，但偏系统管理员的视角：包管理、服务、网络、安全、容器、集群。
+
+## 官方资源
+
+- [课程主页](https://missing.csail.mit.edu/)：当前这一期的讲义、往年主题、翻译入口。
+- [2020 版](https://missing.csail.mit.edu/2020/)：被引用最多的一版，数据处理、安全等几讲只在往年版本里。
+- [讲课录像](https://www.youtube.com/@MissingSemester)：YouTube 频道。
+- [开课动机](https://missing.csail.mit.edu/about/)：这门课为什么存在，讲师自己的说明。
+- [简体中文翻译](https://missing-semester-cn.github.io/)：官网链接的社区翻译。

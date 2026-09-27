@@ -1,33 +1,66 @@
 ---
 title: "毕业论文工具"
-description: "用 LaTeX 组织长篇文档：章节结构、交叉引用、参考文献与模板。"
+description: "用 LaTeX 写一篇几十页的长文档：拆分文件、自动编号和交叉引用、用文献库管理上百条参考文献、套用学校模板。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["会用 LaTeX 写一份普通的文档，会写数学公式"]
 ---
 
-## 课程简介
+## 简介
 
-写一篇几十页的论文和写一页作业不是同一件事。长文档要处理的是：
-把内容拆成多个文件、让章节编号和交叉引用自动维持一致、用 BibTeX 管理上百条参考文献、
-以及套用学校或期刊规定的模板。
+写一篇几十页的论文，和写一页作业不是一回事。长文档要操心的是另外几件事：
 
-这一页关注的就是这部分能力。它不是一门独立的课，而是 LaTeX 的进阶用法，
-建议在掌握基本排版之后再来。
+- **拆分文件**：每一章一个文件，主文件只负责把它们串起来，改哪章打开哪章。
+- **自动编号和交叉引用**：章节、图、表、公式都自动编号，正文里写“见图 3.2”用的是引用，挪了顺序编号自己更新。
+- **参考文献**：上百条文献放在一个 `.bib` 数据库里，正文里引用哪条，文末就自动按规定格式列出哪条。
+- **模板**：学校或期刊对封面、页边距、字体、目录、参考文献格式都有硬性规定，用现成的模板比自己从零调省事得多。
 
-一个实际建议：先找到你所在学校或目标期刊的官方模板，再倒过来学你需要的功能。
-从零搭一套论文格式既费时间又容易踩坑。
+这一页不是一门单独的课，而是 [LaTeX](/docs/essential-tools/latex) 的进阶用法。先把基本排版和公式学会，再来这里。
+
+一个很实际的建议：**先找到你学校或目标期刊的官方模板，再倒过来学你需要的那几个功能。**
+从零搭一套论文格式，既费时间又容易在细节上踩坑，到头来还可能不符合学校的格式审查。
 
 ## 先修要求
 
-- 先掌握 LaTeX 的基本排版与数学模式。
-- 手头有一份真实的长文档需求，学起来才有靶子。
+- 会用 LaTeX 写一份普通的文档：章节、列表、公式、插图。没学过的话先学 [learnlatex.org](https://www.learnlatex.org/en/) 的前 10 课。
+- 手上最好有一份真实的长文档要写（毕业论文、课程报告、技术文档），学起来才有目标。
+
+## 学习路线
+
+| 要解决的事 | 学什么 | 材料 |
+|---|---|---|
+| 交叉引用 | `\label`、`\ref`，图表公式的自动编号 | learnlatex 第 9 课 |
+| 参考文献 | `.bib` 文献库、BibTeX 或 biblatex/Biber、引用格式 | learnlatex 第 12 课 |
+| 拆分文件 | `\input` 和 `\include`，用 `\includeonly` 只编译正在写的那章 | learnlatex 第 13 课 |
+| 中文和字体 | 用 XeLaTeX 或 LuaLaTeX 引擎处理中文 | learnlatex 第 14 课 |
+| 格式要求 | 学校或期刊的模板 | 各校的官方或学生维护的模板 |
+| 管理文献 | 用文献管理软件收集、整理、导出 `.bib` | Zotero、JabRef |
+
+## 官方教程与练习
+
+- [learnlatex 第 9 课：Cross-referencing](https://www.learnlatex.org/en/lesson-09)：交叉引用。
+- [learnlatex 第 12 课：Citations & references](https://www.learnlatex.org/en/lesson-12)：文献库长什么样、BibTeX 和 Biber 两套系统的区别、为什么要多编译几遍。
+- [learnlatex 第 13 课：Structuring sources](https://www.learnlatex.org/en/lesson-13)：`\input` 和 `\include` 怎么拆分长文档。
+- **学校模板**：大多数学校有官方或学生维护的 LaTeX 论文模板，先去研究生院、图书馆或学生社团的网站找。比如清华大学的 [ThuThesis](https://github.com/tuna/thuthesis)，托管在清华 TUNA 协会名下、由社区维护，本科、硕士、博士论文都能用，文档和示例都很完整，别的学校的模板也可以参考它的组织方式。
+
+练习：拿你学校的模板，把一篇旧的课程报告套进去：拆成几个章节文件、给图表加上引用、把参考文献改成 `.bib` 管理，编译出一份完全符合格式的 PDF。
+
+## 学习建议
+
+- **文献从第一天就用工具管。** 用 [Zotero](https://www.zotero.org/support/) 或 [JabRef](https://www.jabref.org/) 收集文献、自动生成 `.bib`，不要手敲。到写最后几章时，你会庆幸这件事。
+- **用 `\includeonly` 只编译正在写的那章。** 长文档整篇编译可能要好一会儿，写某一章时只编译它，交叉引用照样能用。
+- **引用要编译好几遍。** 交叉引用和参考文献需要多跑几次 LaTeX（中间还要跑一次 BibTeX 或 Biber），很多编辑器会自动帮你处理。编号显示成“??”多半就是没编译完。
+- **用 Git 管理论文。** 源文件都是纯文本，每写完一节提交一次，和导师来回改稿时能清楚看到改了什么。
+- **别在格式上花太多时间。** 模板已经处理好的，就别去动；你的精力应该花在内容上。
+
+## 同类工具怎么选
+
+- **[LaTeX](/docs/essential-tools/latex)**：这一页的基础，没学先学它。
+- **Word**：很多学校也接受 Word 模板。公式少、合作者都用 Word 的话，用 Word 也完全可以；公式多、文献多、要长期维护，LaTeX 的优势就很明显了。
+- **Overleaf**：一个在线的 LaTeX 编辑器，不用在本地装 TeX 系统，方便和导师、同学一起改。它的[帮助文档](https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex)写得也很好。
 
 ## 官方资源
 
-- [LaTeX 项目官方文档](https://www.latex-project.org/help/documentation/)：核心文档索引。
-- [参考文献管理](https://www.learnlatex.org/en/lesson-12)：BibTeX 与引用的官方教程章节。
-- [官方推荐书目](https://www.latex-project.org/help/books/)：长文档排版的系统参考。
-
-## 官方作业
-
-- [learnlatex.org 进阶章节](https://www.learnlatex.org/en/lesson-12)：从参考文献一课开始，继续往后做。
+- [learnlatex.org](https://www.learnlatex.org/en/)：LaTeX 入门，第 9、12、13、14 课和长文档关系最大。
+- [LaTeX 项目文档](https://www.latex-project.org/help/documentation/)：LaTeX 团队维护的核心文档。
+- [CTAN](https://ctan.org/)：所有 LaTeX 宏包和它们的文档都在这里。
+- [Zotero 文档](https://www.zotero.org/support/)：免费开源的文献管理软件。

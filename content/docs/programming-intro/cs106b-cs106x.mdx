@@ -1,37 +1,76 @@
 ---
 title: "Stanford CS106B / CS106X"
-description: "Stanford 的抽象编程课：用 C++ 学递归、指针、动态内存与核心数据结构。"
+description: "Stanford 的抽象编程课：从 Python 转到 C++，学递归、回溯、指针、动态内存与经典数据结构。"
 prereqCourses: []
-prereqKnowledge: ["计算机基础 (CS50/CS106A/CS61A or equivalent)"]
+prereqKnowledge: ["一门编程入门课（Stanford 的 CS106A，或 CS50x、CS61A 这类同等课程）"]
 ---
 
 ## 课程简介
 
-CS106B 是 Stanford 编程系列的第二门课，用 C++ 讲抽象与数据结构。
-课程顺序很有代表性：先用课程提供的容器（Vector、Grid、Stack、Queue、Set、Map）
-把注意力放在解决问题上，再讲大 O 分析，然后是递归——递归回溯、枚举、
-递归式问题求解整整占了六讲——之后才进入面向对象、指针与动态内存管理，
-最后是链表、树、哈夫曼编码、哈希与图算法。
+CS106B（Programming Abstractions）是 Stanford 编程入门序列的第二门课。第一门 CS106A 用 Python 打基础，
+到了 CS106B 就换成 C++，开始讲真正“编程之上”的东西：递归、算法分析、数据抽象，以及一整套经典数据结构。
 
-这个顺序的用意是：先让你习惯用抽象思考，再揭开抽象底下的实现。
-等你自己写链表和二叉树时，已经知道它们是用来干什么的了。
+它最出名的是递归。整门课有四讲多是递归，然后紧跟两讲回溯（backtracking），作业也连着两份都在练这个。
+很多人说自己是在 CS106B 里第一次真正“想通”递归的。后半段讲指针和动态内存，
+然后亲手用指针搭链表、二叉树、堆，最后用 Huffman 编码做一个真的能压缩文件的程序，把前面学的全用上。
 
-CS106X 是同一内容的加速加深版本，面向已有编程经验的学生。两门课的材料都公开。
+CS106X 是它的加速版，内容更深、节奏更快，面向基础更好的学生。不过 CS106X 的课程主页停在 2019 年秋季，之后没有再开过；
+现在自学请以 CS106B 为准。
 
 ## 先修要求
 
-- 需要有编程基础，官方按 CS106A 或同等水平设定；CS50、CS61A 也够用。
-- 不需要预先会 C++，课程前两讲会带你从已有语言过渡过来。
+- 官方先修是 CS106A：能用 Python 熟练地写函数、循环、字符串处理。一门同等水平的入门课（包括 AP 计算机）通常就够了。
+- 不需要事先会 C++。第二讲就是“从 Python 到 C++”，课程资源页还有一份 Python 到 C++ 的对照指南。
 
-## 官方资源
+## 课程结构
 
-- [CS106B 课程主页](https://web.stanford.edu/class/cs106b/)：讲座索引、讲义与作业。
-- [CS106X 课程主页](https://web.stanford.edu/class/cs106x/)：加速版，内容更深。
-- [课程资源页](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1268/about_resources)：C++ 参考、课程库文档与调试指南。
+以下按 2026 年春季（Stanford 的学期代号 1266）已经完整结课的那一期整理，一共 27 讲：
+
+| 讲次 | 主题 | 讲什么 |
+|---|---|---|
+| 1–3 | C++ 入门 | 从 Python 到 C++、C++ 的基本语法和字符串 |
+| 4–7 | 容器与分析 | 测试、Vector 和 Grid、栈和队列、Set 和 Map、大 O 与算法分析 |
+| 8–12 | 递归与回溯 | 递归入门、更多递归、用递归解题、回溯与枚举 |
+| 13–17 | 类与内存 | 面向对象、指针与数组、动态内存管理、优先队列与二叉堆、排序算法 |
+| 18–23 | 链式结构 | 链表、二叉树与二叉搜索树、树的遍历、Huffman 编码、哈希 |
+| 24–27 | 图与收尾 | 图、Dijkstra 与 A* 最短路径、应用伦理、总结 |
+
+每一讲在课程网站上都有详细的文字讲义（不只是幻灯片），可以当课本读；课程资源页还提供整本教材《Programming Abstractions in C++》的 PDF。
 
 ## 官方作业
 
-- [Assignments](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1268/about_assignments)：一组分量很重的编程作业，覆盖递归、指针与各种数据结构。
-- [讨论课材料](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1268/about_section)：每周讨论课的练习题，适合当作自测。
+七份编程作业（外加一份入门的 Assignment 0），全部单人完成。每份都附起始代码，用课程提供的 Stanford C++ 库和 Qt Creator 开发。
+以下链接指向 2026 年春季那一期：
 
-作业需要本地配好课程提供的 C++ 库；官方在资源页给出了各平台的安装说明。
+- [Assignment 1：Getting Your C++ Legs](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/assignments/1-cpp/)。Perfect Numbers（找完全数，顺便练测试和调试）和 Soundex Search（一种按发音给姓氏编码的算法）。练 C++ 基本功和字符串。
+- [Assignment 2：Fun with Collections](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/assignments/2-adt/)。Maze（用队列做广度优先搜索走出迷宫）和 Search Engine（用 Map 和 Set 建一个倒排索引，做个小搜索引擎），还有一段关于算法伦理的思考题。练怎么用现成的容器类。
+- [Assignment 3：Recursion Etudes](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/assignments/3-recursion/)。一组互不相关的递归小题：括号是否匹配、画谢尔宾斯基分形、选票计数（数学家 Bertrand 提出的那个“开票过程中谁一直领先”的问题）、合并有序序列。“练习曲”的意思就是把递归的基本功一个个练扎实。
+- [Assignment 4：Recursive Backtracking](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/assignments/4-backtracking/)。Text Predict（像手机九宫格那样预测单词）、Banzhaf 权力指数（算每个投票方在联盟里的实际影响力）、Computational Redistricting（划分选区）。练回溯：枚举所有可能、剪掉走不通的。
+- [Assignment 5：Tone Matrix](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/assignments/5-tonematrix/)。做一个网格状的电子乐器：点亮格子，左右代表时间、上下代表音高。声音生成、鼠标交互、画界面全要自己写。练类的设计和动态数组。
+- [Assignment 6：Linked Lists](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/assignments/6-lists/)。先用调试器热身找内存错误，然后是 Labyrinth（在一个用指针连起来的迷宫里找路）和给链表排序。练指针。
+- [Assignment 7：Huffman Coding](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/assignments/7-huffman/)。用 Huffman 编码实现真正能用的文件压缩和解压。要把二叉树、优先队列、Map 等好几种结构组合起来，是整门课的收官作业。
+
+每周的讨论课（section）也有练习题和答案，适合当作额外的自测。
+
+## 学习建议
+
+- **用结了课的那一期。** CS106B 每个季度都开，当前那一期的材料是边上课边发布的。自学时用已经结课的一期（比如上面的 2026 春季）最省心，所有作业和讲义一次就能看全。
+- **先把开发环境配好。** 作业依赖课程自己的 C++ 库，要装 Qt Creator。资源页有各个平台的安装指南，还有一个空白项目可以先试跑。环境配不起来是自学者最常卡住的地方，别急着往下学。
+- **讲课视频不一定公开。** 校内的录像一般放在内部系统里，但每讲的文字讲义写得很完整，配合教材 PDF 基本够用。
+- **递归那几周放慢。** 官方也在讲义里说：第一次见递归觉得怪很正常，要靠大量练习。作业 3 和 4 值得多花时间，讨论课的题也一起做了。
+- **作业自带测试框架。** 从作业 1 开始就要求自己写测试用例，把“边写边测”当成一种习惯。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS61B](/docs/data-structures-algorithms/cs61b)**：同样是“第二门编程课”，讲数据结构，用 Java，工程量更大、项目更长。
+- **[Stanford CS106L](/docs/programming-intro/cs106l)**：CS106B 的配套选修，专讲现代 C++ 语言本身（类型、迭代器、模板）。学 CS106B 时觉得 C++ 本身是障碍，可以同时学它。
+- **[UC Berkeley CS61A](/docs/programming-intro/cs61a)**：也讲递归和数据抽象，但用 Python，更偏语言和解释器。
+
+CS106B 的长处是递归、回溯讲得极透，而且 C++ 让你亲手碰指针和内存。想用 C++ 打数据结构基础，选它；想用 Java 做更大的工程项目，选 CS61B。
+
+## 官方资源
+
+- [CS106B 课程主页](https://web.stanford.edu/class/cs106b/)：总是指向当前这一期。
+- [2026 春季存档](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/)：一期完整结课的材料，讲义、作业、讨论课都在。
+- [课程资源页](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1266/about_resources)：Qt Creator 安装、Stanford C++ 库文档、教材 PDF、Python 到 C++ 指南。
+- [CS106X 课程主页](https://web.stanford.edu/class/cs106x/)：停在 2019 年秋季的加速版，可以当作补充题库。

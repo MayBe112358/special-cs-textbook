@@ -1,6 +1,6 @@
 ---
 title: "Harvard CS50x"
-description: "哈佛的计算机科学导论：从 C 与算法出发，一路做到 Python、SQL 与 Web。"
+description: "哈佛的计算机科学导论：从 Scratch 和 C 出发，一路做到 Python、SQL 与 Web，零基础友好。"
 prereqCourses: []
 prereqKnowledge: []
 ---
@@ -12,7 +12,7 @@ prereqKnowledge: []
   @courses       Harvard CS50x
   @exercises     https://cs50.harvard.edu/x/psets/
   @prereq        无。
-  @unclear       课程每年更新一版，作业集会随之调整；不带年份的地址会转到当前版本。
+  @unclear       课程每年换一版，题目会跟着调整；不带年份的地址总是指向当前这一版（写作时是 2026 版）。
 
   @letter
   CS50x 出现在这里，只表示它属于编程入门，不表示系统替你选好了起点。课程树保存“它是什么”，
@@ -22,32 +22,80 @@ prereqKnowledge: []
 
 ## 课程简介
 
-CS50x 是哈佛的计算机科学与编程导论，也是全世界选修人数最多的公开课之一。
-它面向的是完全没有基础的人，但它并不因此降低内容的硬度——课程从 Scratch 开始，
-第一周就切到 C 语言，然后依次是数组、算法、内存与指针、数据结构，
-之后转向 Python、SQL，再到 HTML/CSS/JavaScript 和 Flask，最后是一个自选的结课项目。
+CS50x 是哈佛的计算机科学与编程导论，也是全世界选的人最多的公开课之一。
+它是真正面向零基础的：哈佛校内选这门课的学生里，三分之二以前从没上过计算机课。
+但它并不因此放水。第 0 周用积木式的 Scratch 热身，第 1 周就切到 C 语言，
+接着是数组、算法、内存和指针、数据结构，然后转到 Python、SQL，再到 HTML、CSS、JavaScript 和 Flask，
+最后是一个你自己定题目的结课项目。
 
-先讲 C 再讲 Python 是这门课的一个关键选择。你会先在一个什么都要自己管的语言里
-体会内存、指针和手工实现数据结构的代价，再换到高级语言，
-于是“方便”这件事对你来说就有了参照系，而不是理所当然。
+先讲 C 再讲 Python，是这门课最关键的一个安排。
+你先在一个什么都得自己管的语言里，吃一遍内存、指针、手写数据结构的苦，再换到 Python，
+这时候“方便”对你来说才有了参照：你知道那一行 Python 背后替你干了多少活。
 
-课程的另一个特点是制作水准：讲座、讲义、题目和评分系统都打磨得非常完整，
-作业有自动评分工具 `check50` 和风格检查 `style50`，在家自学也能得到接近课堂的反馈。
+这门课的另一个特点是做得极其用心。讲课、笔记、题目、自动评分都打磨得非常完整，
+每道题都能用 `check50` 在自己机器上检查对错、用 `style50` 检查代码风格，一个人在家学，也能得到接近课堂的反馈。
 
 ## 先修要求
 
-- 没有任何先修要求，课程从零讲起。
-- 唯一需要的是时间：官方估计每周 10 到 20 小时。
+- 没有任何先修要求，从零讲起。
+- 需要的只是时间和一台能上网的电脑。写代码用的是 CS50 在浏览器里提供的 VS Code 环境，不用在自己电脑上装任何东西。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://cs50.harvard.edu/x/)：按周组织的讲座、讲义与题目。
-- [课程大纲](https://cs50.harvard.edu/x/syllabus/)：课程范围、评分与学术诚信规定。
-- [OpenCourseWare 存档](https://cs50.harvard.edu/x/2025/)：往年完整材料，内容基本稳定。
+2026 版共 11 周，外加一讲人工智能专题：
+
+| 周 | 主题 | 讲什么 |
+|---|---|---|
+| 0 | Scratch | 用积木理解程序的基本结构：函数、条件、循环、变量 |
+| 1 | C | 第一门真正的编程语言：类型、条件、循环、编译 |
+| 2 | Arrays | 数组、字符串，以及程序在内存里大概是什么样子 |
+| 3 | Algorithms | 查找和排序，第一次认真谈“快慢” |
+| 4 | Memory | 指针、内存分配、文件读写 |
+| 5 | Data Structures | 链表、树、哈希表，自己用 C 手写 |
+| 6 | Python | 换一门高级语言，把前面的题用 Python 重写一遍 |
+| 7 | SQL | 数据库和查询 |
+| AI | Artificial Intelligence | 一讲人工智能专题 |
+| 8 | HTML, CSS, JavaScript | 网页 |
+| 9 | Flask | 用 Python 写 Web 应用 |
+| 10 | The End | 收尾，然后是结课项目 |
 
 ## 官方作业
 
-- [Problem Sets](https://cs50.harvard.edu/x/psets/)：每周一组题目，从 Scratch 到 Flask 依次推进。
-- [结课项目](https://cs50.harvard.edu/x/project/)：自选题目，把整学期学到的东西做成一个完整作品。
+十组题（Problem Set 0–9）加一个结课项目。很多组题给了两档：觉得吃力（less comfortable）就做简单版，觉得轻松（more comfortable）就做难版，二选一交一个就行。
 
-作业自带 `check50` 自动评分与 `style50` 风格检查，本地即可自测。
+- [Problem Set 0](https://cs50.harvard.edu/x/psets/0/)：[Scratch](https://cs50.harvard.edu/x/psets/0/scratch/)，用积木做一个你自己的小作品，游戏、动画都行。
+- [Problem Set 1](https://cs50.harvard.edu/x/psets/1/)：Hello 系列热身，然后 Mario（用 `#` 打出金字塔，练循环）二选一，Cash（找零）和 Credit（信用卡号校验）二选一。
+- [Problem Set 2](https://cs50.harvard.edu/x/psets/2/)：Scrabble、Readability（估算一段文字的阅读难度），加上 Caesar 或 Substitution 两种加密二选一。练字符串和数组。
+- [Problem Set 3](https://cs50.harvard.edu/x/psets/3/)：Sort（通过计时猜出三个程序各用了哪种排序）、Plurality 和 Runoff 两种选举计票，难版是 Tideman（排序投票，要用到图里找环）。练算法。
+- [Problem Set 4](https://cs50.harvard.edu/x/psets/4/)：Volume（调音量）、Filter（给图片加滤镜，两档）、Recover（从一张“格式化过”的存储卡里把照片找回来）。练指针和文件。
+- [Problem Set 5](https://cs50.harvard.edu/x/psets/5/)：Inheritance（模拟血型遗传，练结构体和递归），Speller（用哈希表写一个拼写检查器，还要比速度）。
+- [Problem Set 6](https://cs50.harvard.edu/x/psets/6/)：把前面几道 C 的题用 Python 重写，再加一道 DNA（按 DNA 片段认人）。
+- [Problem Set 7](https://cs50.harvard.edu/x/psets/7/)：Songs、Movies 两个数据库的查询练习，Fiftyville 是用 SQL 破一桩案子。
+- [Problem Set 8](https://cs50.harvard.edu/x/psets/8/)：Trivia（一个小问答页面），[Homepage](https://cs50.harvard.edu/x/psets/8/homepage/)（做一个自己的个人主页）。
+- [Problem Set 9](https://cs50.harvard.edu/x/psets/9/)：Birthdays（小型 Flask 应用），[Finance](https://cs50.harvard.edu/x/psets/9/finance/)（一个模拟买卖股票的网站，有注册登录、数据库、查询实时报价）。
+- [结课项目](https://cs50.harvard.edu/x/project/)：题目、语言都随你，要求是做出一个比任何一组题都更费功夫的完整作品，最多三人合作。
+
+## 学习建议
+
+- **有明确的截止时间。** 2026 版要求在 2027 年 6 月 30 日之前做完。按自己的节奏学可以，但要留意这个日子；过期以后进度怎么算，官方 FAQ 里有说明。
+- **证书是自愿的。** 课程免费，提交作业也免费。想要 edX 的认证证书，得每道提交的题和结课项目都拿到至少 70%，另外付费验证身份。
+- **AI 只能用 CS50 自己的。** 官方的学术诚信规定写得很清楚：可以用 CS50 自己的 AI 助手（cs50.ai 里那只“鸭子”），但不许用 ChatGPT、Claude、Copilot 这类替你写答案、补全代码的工具。这条对自学也值得遵守，否则题做完了，本事没长。
+- **两档题怎么挑。** 第一次学编程，先做简单版；做完还有余力，回头把难版也做了，不用交也值得做。
+- **本地就能自测。** 每道题的页面最后都写着 `check50`、`style50`、`submit50` 三条命令，先用前两条查对错和风格，都过了再交。
+
+## 同类课怎么选
+
+- **[Harvard CS50P](/docs/programming-intro/cs50p)**：同一个团队做的 Python 入门课，只讲 Python，节奏更平缓。只想先学会写 Python，选它。
+- **[UC Berkeley CS61A](/docs/programming-intro/cs61a)**：抽象程度更高，重点是函数、数据抽象和解释器。有一点编程基础以后再去更合适。
+- **[MIT 6.100L](/docs/programming-intro/mit-6-100l)**：同样面向零基础，用 Python，更偏计算思维和用程序解决问题。
+
+CS50x 的长处是“广”：学完你对 C、内存、数据结构、SQL、Web 都摸过一遍，知道计算机科学大概有哪些块。
+很多人的路子是先学 CS50x，再学 CS61A，然后接数据结构和系统方向的课。
+
+## 官方资源
+
+- [课程主页](https://cs50.harvard.edu/x/)：按周组织的讲课视频、笔记、题目。
+- [课程大纲](https://cs50.harvard.edu/x/syllabus/)：课程目标、证书要求、结课项目要求。
+- [学术诚信规定](https://cs50.harvard.edu/x/honesty/)：哪些求助可以、哪些不行，包括 AI 工具的规定。
+- [FAQ](https://cs50.harvard.edu/x/faqs/)：截止日期、进度保存、证书。
+- 讲课视频也放在 YouTube、edX 等平台上，主页顶部有入口。

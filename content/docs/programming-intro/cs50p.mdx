@@ -1,36 +1,77 @@
 ---
 title: "Harvard CS50P"
-description: "哈佛的 Python 编程入门：函数、异常、单元测试、正则与面向对象。"
+description: "哈佛的 Python 编程入门：函数、异常、库、单元测试、文件、正则与面向对象，零基础友好。"
 prereqCourses: []
-prereqKnowledge: ["无"]
+prereqKnowledge: []
 ---
 
 ## 课程简介
 
-CS50P 是 CS50 系列里专讲 Python 的一门，比 CS50x 更窄也更实用。
-它假设你零基础，按周依次讲函数与变量、条件、循环、异常、库、单元测试、文件读写、
-正则表达式、面向对象，最后收在一个自选项目上。
+CS50P 是 CS50 这个系列里专讲 Python 的那一门，全名是 CS50's Introduction to Programming with Python。
+它和 [CS50x](/docs/programming-intro/cs50x) 是同一个团队做的，风格一样用心，但范围窄得多：
+不讲 C、不讲内存、不讲 Web，从头到尾就是一件事，把 Python 这门语言学扎实，能拿它做事。
 
-值得单独指出的是它把单元测试排进了入门课。大多数入门课教到“程序能跑”为止，
-这门课要求你写 `pytest` 测试来证明它跑得对——这是一个从一开始就该养成的习惯。
+它按主题一周一周往前走：函数和变量、条件、循环、异常、用别人写好的库、单元测试、文件读写、
+正则表达式、面向对象，最后一周是各种零碎但好用的东西（Et Cetera），然后是一个你自己定题的结课项目。
 
-如果你的目标是尽快能用 Python 做事，这门课比 CS50x 更直接；
-如果你想要的是对计算机整体的认识，CS50x 覆盖面更广。两门课没有先后关系。
+这门课最值得单独夸的一点，是把**单元测试**排进了入门课。
+大多数入门课教到“程序能跑”就结束了，CS50P 专门拿出一整周，让你用 `pytest` 给自己的代码写测试，
+而且作业里有一组题是“给以前写过的程序补测试”。能跑和跑得对是两回事，这个习惯越早养成越好。
 
 ## 先修要求
 
-- 没有先修要求。
-- 如果完全没接触过编程，这门课和 CS50x 都可以作为起点。
+- 没有先修要求，零基础可以直接开始。
+- 写代码用的是 CS50 在浏览器里提供的 VS Code 环境，不需要在自己电脑上装 Python。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://cs50.harvard.edu/python/)：按主题组织的讲座与讲义。
-- [课程大纲](https://cs50.harvard.edu/python/syllabus/)：课程范围与评分规则。
-- [短视频合集](https://cs50.harvard.edu/python/shorts/)：针对单个概念的补充讲解。
+| 周 | 主题 | 讲什么 |
+|---|---|---|
+| 0 | Functions, Variables | 函数、变量、输入输出、字符串和数字 |
+| 1 | Conditionals | 条件判断、布尔值、`match` |
+| 2 | Loops | `while`、`for`、列表、字典 |
+| 3 | Exceptions | 出错了怎么办：`try`、`except`，处理用户乱输 |
+| 4 | Libraries | 标准库和第三方库，`pip` 安装、调用网络 API |
+| 5 | Unit Tests | 用 `pytest` 写测试 |
+| 6 | File I/O | 读写文件、CSV，处理图片 |
+| 7 | Regular Expressions | 正则表达式：匹配、验证、提取 |
+| 8 | Object-Oriented Programming | 类、对象、属性、继承、运算符重载 |
+| 9 | Et Cetera | 集合、类型提示、文档字符串、生成器等零碎知识 |
 
 ## 官方作业
 
-- [Problem Sets](https://cs50.harvard.edu/python/psets/)：每章一组题目，后期要求配套写测试。
-- [结课项目](https://cs50.harvard.edu/python/project/)：自选题目的完整 Python 程序。
+每周一组题，每组 3 到 6 道小程序，题目都带点小幽默。下面挑每组里最能说明这组在练什么的写几句：
 
-作业同样用 `check50` 自动评分。
+- [Problem Set 0](https://cs50.harvard.edu/python/psets/0/)：Indoor Voice、Playback Speed、Making Faces、Einstein、Tip Calculator。全是几行的小程序，练输入、字符串方法和算术。
+- [Problem Set 1](https://cs50.harvard.edu/python/psets/1/)：Deep Thought、Home Federal Savings Bank、File Extensions、Math Interpreter、Meal Time。练条件判断，Math Interpreter 是个只会一种运算的迷你计算器。
+- [Problem Set 2](https://cs50.harvard.edu/python/psets/2/)：camelCase、Coke Machine、Just setting up my twttr、Vanity Plates、Nutrition Facts。练循环和字典，Vanity Plates（校验车牌号是否合规）规则比较绕，是这组最难的。
+- [Problem Set 3](https://cs50.harvard.edu/python/psets/3/)：Fuel Gauge、Felipe's Taqueria、Grocery List、Outdated。练异常处理：用户输入不合法时，程序要能接着问，而不是崩掉。
+- [Problem Set 4](https://cs50.harvard.edu/python/psets/4/)：Emojize、Frank, Ian and Glen's Letters、Adieu, Adieu、Guessing Game、Little Professor、Bitcoin Price Index。练用库，最后一题要调用网上的接口查比特币价格。
+- [Problem Set 5](https://cs50.harvard.edu/python/psets/5/)：Testing my twttr、Back to the Bank、Re-requesting a Vanity Plate、Refueling。给前面写过的程序补 `pytest` 测试，还要拿写错的版本去试，看你的测试能不能抓出来。
+- [Problem Set 6](https://cs50.harvard.edu/python/psets/6/)：Lines of Code、Pizza Py、Scourgify、CS50 P-Shirt。练文件读写，最后一题要把一张图片叠到另一张上。
+- [Problem Set 7](https://cs50.harvard.edu/python/psets/7/)：NUMB3RS、Watch on YouTube、Working 9 to 5、Regular, um, Expressions、Response Validation。全是正则：校验 IP 地址、从 HTML 里抠出视频链接、转换时间格式。
+- [Problem Set 8](https://cs50.harvard.edu/python/psets/8/)：Seasons of Love、Cookie Jar、CS50 Shirtificate。练面向对象，最后一题用 `fpdf2` 库生成一张带你名字的 PDF 证书。
+- [结课项目](https://cs50.harvard.edu/python/project/)：用 Python 写一个你自己的程序，要求带测试。
+
+## 学习建议
+
+- **本地就能自测。** 和 CS50x 一样，每道题都能用 `check50` 查对错、`style50` 查风格，过了再用 `submit50` 交。
+- **免费证书。** 每道题和结课项目都拿到 70% 以上，就能领一张 CS50 自己发的免费证书；想要 edX 的认证证书需要另外付费。
+- **AI 只能用 CS50 自己的。** 学术诚信规定里写着：可以用 cs50.ai 里的 CS50 “鸭子”，但不许用 ChatGPT、Claude、Copilot 这类替你写答案的工具。
+- **别跳过第 5 周。** 很多人觉得“写测试”是可有可无的，这门课恰恰在这件事上比别的入门课强。
+- **每周有配套短视频。** 讲课之外，[Shorts](https://cs50.harvard.edu/python/shorts/) 里有针对单个知识点的短讲解，卡住的时候去翻。
+
+## 同类课怎么选
+
+- **[Harvard CS50x](/docs/programming-intro/cs50x)**：面更广，从 C 讲起，还有算法、内存、SQL、Web。想对计算机科学有整体认识，选它。
+- **[MIT 6.100L](/docs/programming-intro/mit-6-100l)**：也用 Python，但更偏计算思维，会讲一些算法思路和问题建模。
+- **[UC Berkeley CS61A](/docs/programming-intro/cs61a)**：同样主要用 Python，但抽象程度高得多，适合学完 CS50P 以后再上。
+
+如果你只是想尽快会用 Python 做事，CS50P 是这几门里最直接的一门；它和 CS50x 没有先后，两门都能当第一门课。
+
+## 官方资源
+
+- [课程主页](https://cs50.harvard.edu/python/)：按周组织的讲课视频、笔记和题目。
+- [Problem Sets](https://cs50.harvard.edu/python/psets/)：全部题目的入口。
+- [Shorts](https://cs50.harvard.edu/python/shorts/)：单个知识点的短视频。
+- [证书说明](https://cs50.harvard.edu/python/certificate/)：免费证书和 edX 认证证书的要求。

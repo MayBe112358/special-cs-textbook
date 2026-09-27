@@ -1,36 +1,76 @@
 ---
 title: "Stanford CS110L"
-description: "Stanford 的系统编程安全课：用 Rust 理解内存安全与并发安全。"
+description: "Stanford 的系统编程安全课：借 Rust 讲清楚内存错误和并发错误是怎么来的、怎么在写代码时就挡住。"
 prereqCourses: []
-prereqKnowledge: ["最好有一定的编程背景并对计算机系统有初步的认识。"]
+prereqKnowledge: ["写过一点 C 或 C++，知道指针和手动管理内存是怎么回事", "最好正在学或学过操作系统、系统编程（Stanford 的 CS107、CS110 这一类）"]
 ---
 
 ## 课程简介
 
-CS110L 问的问题是：系统编程里那些反复出现的崩溃和漏洞——
-悬垂指针、重复释放、缓冲区溢出、数据竞争——能不能在语言层面被挡住？
-Rust 是这门课用来回答问题的工具，但它讲的不是 Rust 语法手册。
+CS110L（Safety in Systems Programming）是 Stanford 一门 2 学分的小课，问的是一个很实在的问题：
+写系统程序的时候，东西通常坏在哪儿？怎么才能不犯那些老错误？
 
-课程从内存安全讲起，接着是错误处理、Rust 的面向对象、trait 与泛型、
-智能指针与内部可变性，然后进入多进程与多线程、共享状态并发和消息传递并发。
-作业里你会写一个调试器和一个多线程的 Web 服务器。
+它用 Rust 当工具来回答这个问题。前三周对准的是 C 程序员最熟悉的那一类错误：缓冲区溢出、内存泄漏、
+释放以后又去用（use-after-free），看 Rust 的所有权和借用规则怎么让这些错误在编译时就过不去；
+后半段对准多进程、多线程里的错误：数据竞争、死锁，看 Rust 怎么用类型系统把“不安全的共享”挡在外面。
+中间还讲了这些想法是怎么反过来影响现代 C++ 的。
 
-它适合已经写过 C 或 C++、体会过手工管理内存的痛苦的人。
-如果你没有那段经历，所有权和借用规则看起来会像是凭空的限制。
+它原本是给 Stanford 的 CS110（系统编程）配的“伴读课”，所以很多例子都来自 C 和系统编程的真实坑。
+课上还专门讲了一讲 Google Chrome 的安全架构，一讲信息安全。
+学这门课的目的不只是学会 Rust，而是学会一种思考方式：哪些错误可以让工具替你挡住。
+
+这里用的是 2020 年春季那一期，讲课视频、幻灯片、讲义、作业全都公开，是材料最齐的一版。
 
 ## 先修要求
 
-- 需要一定的编程背景，最好写过 C 或 C++。
-- 对操作系统里进程、线程、内存的概念有初步认识会更顺。
+- 官方把它设计成和 [CS110](/docs/systems/systems-fundamentals/stanford-cs110)（Stanford 的系统编程课，本站也收录了）同时修；前半段会用到 CS107 的内容（C、指针、内存），官方说有点生疏也没关系。
+- 不需要事先会 Rust，课程从头教。
+- 在本站的课程树里，读过 [CS61C](/docs/systems/computer-architecture/cs61c) 或 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp) 这类讲 C 和内存的课，再来学会更有体会。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://web.stanford.edu/class/cs110l/)：当前学期的课程页。
-- [2020 春季完整材料](https://reberhardt.com/cs110l/spring-2020/)：讲座视频、幻灯片与讲义最齐全的一版。
-- [课程日程](https://reberhardt.com/cs110l/spring-2020/pages/schedule/)：按周列出的主题与配套阅读。
+2020 春季共 18 讲，每周两讲：
+
+| 讲次 | 主题 | 讲什么 |
+|---|---|---|
+| 1–3 | 内存安全 | 为什么需要这门课、Rust 的所有权与借用、错误处理 |
+| 4–6 | Rust 的抽象 | Rust 里的“面向对象”、trait 与泛型、智能指针 |
+| 7–8 | 多进程 | 多进程编程的坑，以 Chrome 的多进程安全架构为例 |
+| 9–12 | 多线程 | 多线程入门、共享内存、同步原语、channel（用通信来共享数据） |
+| 13–14 | 更大的系统 | 可扩展性与可用性、信息安全 |
+| 15–18 | 进阶 | 异步编程（Future）、宏、回顾 Rust 的设计 |
+
+前 14 讲都有视频，大部分讲有幻灯片和文字讲义。
 
 ## 官方作业
 
-- [Week 1–7 练习与项目](https://reberhardt.com/cs110l/spring-2020/pages/schedule/)：日程页上每周列出的 exercises 与两个 project：调试器与多线程服务器。
+每周一份小练习（官方估计 1 到 3 小时），外加两个项目。都在课程主页的 Assignments 一栏：
 
-作业框架公开在课程的 GitHub 仓库里，本地可以自行运行测试。
+- [Week 1：Hello world](https://reberhardt.com/cs110l/spring-2020/assignments/week-1-exercises/)。配好环境，做几道 Rust 热身题。
+- [Week 2：Ownership and structs](https://reberhardt.com/cs110l/spring-2020/assignments/week-2-exercises/)。先是几道关于所有权的简答题，主要的练习是用 Rust 写一个简化版的 `diff`，比较两个文件；想多练可以再写个 `wc`。
+- [Week 3：Error handling, I/O, and traits](https://reberhardt.com/cs110l/spring-2020/assignments/week-3-exercises/)。写一个查看进程打开了哪些文件描述符的小工具，再给自己的数据类型实现标准 trait。
+- [Project 1：The DEET Debugger](https://reberhardt.com/cs110l/spring-2020/assignments/project-1/)。实现一个简化版的 GDB：用 `ptrace` 控制另一个进程，支持运行、打断点、看调用栈。你会看到调试器背后的真实机制。（`ptrace` 的接口 Linux 和 macOS 不一样，要在 Linux 上做。）
+- [Week 4：Checking in](https://reberhardt.com/cs110l/spring-2020/assignments/week-4-exercises/)。这周不布置代码，留时间给项目 1。
+- [Week 5：Farm meets multithreading](https://reberhardt.com/cs110l/spring-2020/assignments/week-5-exercises/)。把 CS110 里那个用多进程分摊计算任务的 farm 程序，用 Rust 的多线程重写一遍。
+- [Week 6：Sharing Data by Communicating](https://reberhardt.com/cs110l/spring-2020/assignments/week-6-exercises/)。用 channel 实现一个并行版的 `map`，体会“用通信来共享数据”。
+- [Project 2：Balancebeam](https://reberhardt.com/cs110l/spring-2020/assignments/project-2/)。起始代码是一个单线程的反向代理，你要把它改成一个真正能用的负载均衡器：多线程、异步、健康检查、限流。
+
+## 学习建议
+
+- **用 2020 春季这一版。** 课程主页 web.stanford.edu/class/cs110l 现在停在 2022 年冬季，材料反而不如 2020 春季全；2020 春季有视频、有讲义，作业起始代码在讲师的 GitHub 上公开。
+- **需要一台 Linux 环境。** DEET 调试器依赖 Linux 的 `ptrace`，Windows 用 WSL、macOS 用虚拟机或 Docker 都行。
+- **别把它当 Rust 语法课。** Rust 的语法可以边学边查（官方的《The Rust Programming Language》那本书就很好），这门课真正值钱的是每一讲开头那个“C 程序里这类错误是怎么发生的”。
+- **两个项目最值得做。** 自己写一遍调试器和负载均衡器，对操作系统和网络的理解会深一层。
+
+## 同类课怎么选
+
+- **[KAIST CS220](/docs/programming-intro/kaist-cs220)**：也用 Rust，但是一门程序设计原理课，重在语言本身的概念，不是系统编程。
+- **[KAIST CS431](/docs/programming-intro/kaist-cs431)**：并发编程，同样用 Rust，深度大得多，讲锁、无锁数据结构和内存回收的正确性。学完 CS110L 的并发部分可以接着上。
+- **[Stanford CS106L](/docs/programming-intro/cs106l)**：现代 C++，讲移动语义和智能指针。CS110L 里会反复拿 C++ 做对比，两门一起看很有意思。
+
+## 官方资源
+
+- [2020 春季课程主页](https://reberhardt.com/cs110l/spring-2020/)：视频、幻灯片、讲义、作业，材料最齐。
+- [课程信息](https://reberhardt.com/cs110l/spring-2020/handouts/course-information/)：课程目标、形式、先修。
+- [作业起始代码](https://github.com/reberhardt7/cs110l-spr-2020-starter-code)：讲师公开的 2020 春季起始代码仓库。
+- [当前课程主页](https://web.stanford.edu/class/cs110l/)：停在 2022 年冬季的一期。

@@ -1,38 +1,80 @@
 ---
 title: "MIT 18.01 / 18.02 微积分"
-description: "MIT 的单变量与多变量微积分，用大量例题和考试题把概念做扎实。"
+description: "MIT 的单变量与多变量微积分，OCW Scholar 自学版：讲课切成小段、配习题课视频和带解答的题，每个单元一场考试。"
 prereqCourses: []
-prereqKnowledge: ["英语"]
+prereqKnowledge: ["高中代数和三角函数", "能读英文材料"]
 ---
 
 ## 课程简介
 
-这一页把 MIT 的两门微积分课放在一起：18.01SC 单变量微积分和 18.02SC 多变量微积分。
-它们是 OCW 的 Scholar 版本，专门为自学者重新组织过——除了讲座视频，
-还配了习题、复习材料和分段的考试，是 OCW 上完成度最高的一类课程。
+18.01（单变量微积分）和 18.02（多变量微积分）是 MIT 一年级的两门数学课，几乎所有理工科学生都要上。
+这里链接的是 OCW 的 **Scholar 版**：专门为没有老师、没有助教的自学者重新组织过的版本，这是它和普通 OCW 存档最大的不同。
 
-18.01 从导数的定义与求导规则讲起，接着是求导的应用（近似、作图、最优化、
-相关变化率、牛顿法、中值定理），然后是定积分与微积分基本定理、积分技巧
-（三角换元、部分分式、分部积分、弧长），最后是无穷级数与泰勒展开。
+每门课分成几个大单元，每个单元再分成几个部分，每部分是一连串的小节（session）。
+一个小节通常包括：一段从 2007 年课堂录像里切出来的讲课片段（18.01 是 David Jerison，18.02 是 Denis Auroux）、
+一份比讲课稍严谨的讲义、几道带详细解答的例题，有的还有一段专门为自学者录的习题课视频（recitation）。
+每部分结束有一组习题，每个单元结束有一场考试，都有解答。
 
-18.02 把这套工具搬到多维：向量与矩阵、偏导与梯度、二重与三重积分、
-向量场、格林定理与斯托克斯定理。对计算机方向的学习者，
-这部分是后面学机器学习、图形学、信号处理绕不开的基础。
+对学计算机的人来说，这两门课的用处很具体：机器学习里的梯度、优化、概率密度，图形学里的曲线曲面，
+算法分析里的级数和积分估算，背后都是这两门课的内容。
 
 ## 先修要求
 
-- 需要高中代数与三角函数。
-- 18.02 需要先完成 18.01 或同等的单变量微积分。
+- **18.01**：官方说先修是高中代数和三角函数，学过一点微积分会有帮助，但不是必须。
+- **18.02**：先修是 18.01。
+- 材料全是英文，需要能读英文讲义、听英文讲课。
 
-## 官方资源
+## 课程结构
 
-- [18.01SC 单变量微积分](https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/)：Scholar 版，含讲座、例题与分段考试。
-- [18.02SC 多变量微积分](https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/)：向量、偏导、重积分与向量场。
-- [18.01 课程大纲](https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/syllabus/)：课程结构与学习建议。
+**18.01 单变量微积分**（5 个单元）
+
+| 单元 | 讲什么 |
+|---|---|
+| 1. Differentiation | 导数的定义和基本法则、隐函数求导、反函数 |
+| 2. Applications of Differentiation | 近似与画函数图像、最优化、相关变化率、牛顿法、中值定理、原函数、微分方程入门 |
+| 3. The Definite Integral and its Applications | 定积分的定义、微积分基本定理、面积、体积、平均值、概率、数值积分 |
+| 4. Techniques of Integration | 三角函数积分、三角换元、部分分式、分部积分、弧长、参数方程、极坐标 |
+| 5. Exploring the Infinite | 洛必达法则、反常积分、泰勒级数 |
+
+**18.02 多变量微积分**（4 个单元）
+
+| 单元 | 讲什么 |
+|---|---|
+| 1. Vectors and Matrices | 向量、行列式、平面、矩阵与线性方程组、参数曲线 |
+| 2. Partial Derivatives | 二元函数、切平面近似、最优化、链式法则、梯度、方向导数、拉格朗日乘数法 |
+| 3. Double Integrals and Line Integrals in the Plane | 二重积分、向量场、线积分、格林公式 |
+| 4. Triple Integrals and Surface Integrals in 3-Space | 三重积分、通量与散度定理、斯托克斯定理 |
 
 ## 官方作业
 
-- [18.01 习题与考试](https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/)：课程按 Part 组织，每一部分末尾都有 Problem Set 与 Exam。
-- [18.02 习题与考试](https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/)：同样按单元组织，配套习题与解答。
+两门课的练习都嵌在课程页面里，按“小节 → 部分 → 单元”一层层来，全部有解答：
 
-OCW Scholar 版提供官方解答，做完可以自行核对。
+- [18.01SC 课程主页](https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/)：
+  - **例题（Worked examples）**：每个小节后面几道，很多出自 MIT 以前的作业，先自己做再看解答；
+  - **习题（Problem sets）**：每部分末尾一组，直接取自 MIT 2009 年秋季布置的作业；
+  - **考试**：每个单元末尾一场，外加期末考试。官方建议每场给自己一小时。
+- [18.02SC 课程主页](https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/)：
+  - **例题（Examples）**和**习题与解答（Problems and Solutions）**：每个小节都有，做完核对再进入下一节；
+  - **Mathlet**：有的小节配了交互式小程序，拖动参数就能看到三维图形怎么变，对理解多变量的东西特别有帮助；
+  - **考试**：每个单元一场，另有期末练习卷和期末考试。
+
+## 学习建议
+
+- **按顺序走，别跳。** 官方反复强调：每一小节都建立在前面的基础上。每开始一个部分，先扫一眼末尾的习题，带着问题去看视频。
+- **先做题再看解答。** 例题的解答就在下面，很容易“看懂了”就往下走。先盖住解答自己算一遍，才知道自己是不是真会。
+- **考试当真考。** 每个单元的考试，找一个不被打扰的一小时，合上讲义做完再对答案。它能告诉你哪几节要回去重看。
+- **不用买教材。** 18.01SC 官方说明不需要教材，讲义就够了。
+- **学到哪儿用到哪儿。** 学完 18.02 的梯度和拉格朗日乘数法，再去看机器学习课里的梯度下降和约束优化，会有很清楚的感觉。
+
+## 同类课怎么选
+
+- **[MIT 18.06 线性代数](/docs/mathematics/mit-18-06)**：18.02 的第一单元碰了一下矩阵，18.06 会把线性代数系统讲透，两门常常一起学。
+- **[MIT 6.042J](/docs/mathematics/mit-6-042j)**：计算机专业最直接要用的离散数学，和微积分是两条线，可以并行。
+- 如果你只想为机器学习补数学，18.01 的求导和积分、18.02 的偏导、梯度、多重积分是最要紧的部分；18.02 最后的曲面积分和斯托克斯定理可以放后。
+
+## 官方资源
+
+- [18.01SC 单变量微积分](https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/)：Scholar 版全部材料。
+- [18.01SC 课程大纲](https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/syllabus/)：课程的组织方式、怎么用这些材料自学。
+- [18.02SC 多变量微积分](https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/)：Scholar 版全部材料。
+- [18.02SC 课程大纲](https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/pages/syllabus/)：先修要求和学习目标。

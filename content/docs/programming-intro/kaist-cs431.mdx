@@ -1,35 +1,80 @@
 ---
 title: "KAIST CS431"
-description: "KAIST 的并发编程课：锁、无锁数据结构与内存回收的正确性。"
-prereqCourses: []
-prereqKnowledge: ["Rust 编程基础与对并发的初步了解"]
+description: "KAIST 的并发编程课：从锁到无锁数据结构、弱内存模型、安全的内存回收，用 Rust 亲手实现。"
+prereqCourses: ["kaist-cs220"]
+prereqKnowledge: ["数据结构：链表、栈、队列", "系统编程或操作系统：内存布局、缓存、锁", "会写 Rust", "命题逻辑与证明"]
 ---
 
 ## 课程简介
 
-CS431 讲并发程序为什么难写对。课程从并发的基本概念出发，
-讲锁的实现与代价、内存模型与顺序保证、无锁数据结构，
-以及并发环境下最棘手的一类问题——内存回收：一个节点被摘下来之后，
-什么时候才能安全地释放它？
+CS431（Concurrent Programming）是 KAIST 面向高年级本科生和研究生的并发编程课，和 [CS220](/docs/programming-intro/kaist-cs220) 同一位老师（Jeehoon Kang）、同一个研究组，材料同样放在公开的 GitHub 仓库里。
 
-作业要求你自己实现这些东西：各种锁、并发哈希表、无锁链表、
-以及基于 epoch 的内存回收机制。每个作业都有测试，包括专门用来暴露竞态的压力测试。
+课程开头讲的是动机：单核性能早就涨不动了，未来的计算机只会越来越“大规模并行”；
+而并行最难的地方，是很多核同时读写同一块内存（共享可变状态）。
+几千个核怎么高效地同步？线程的执行顺序不确定，怎么保证程序是对的？
+编译器和 CPU 还会偷偷重排指令，一个并发数据结构“正确”到底该怎么定义？
+这门课就是讲过去十年里，学界在这些问题上的新理论，以及它们怎么落到真实系统里。
 
-这门课难度明显高于同系列的 CS220，官方也把它排在后面。
-如果你写过多线程程序并且被难以复现的 bug 折磨过，会特别有共鸣。
+内容分三块：基于锁的并发（锁的接口、锁怎么实现、锁的应用）；无锁并发（概念、无锁数据结构、它们的正确性规格、怎么安全地回收内存）；
+以及一种比较新的范式“面向行为的并发”（Behaviour-Oriented Concurrency）。
 
 ## 先修要求
 
-- 需要 Rust 编程基础，建议先完成 CS220。
-- 对并发有初步了解（线程、竞态、锁）。
+官方强烈建议先修过这几门：
 
-## 官方资源
+- 命题逻辑和证明方法。
+- 数据结构：链表、栈、队列。
+- 系统编程或操作系统：内存布局、缓存、锁。在本站的课程树里是 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp) 或一门操作系统课。
+- 程序设计原理或编程语言：lambda 演算、解释器，也就是 [CS220](/docs/programming-intro/kaist-cs220) 这一类。
+- 另外最好懂一点计算机体系结构，会写 Rust。
 
-- [课程仓库](https://github.com/kaist-cp/cs431)：讲义、幻灯片与全部代码框架。
-- [Rust 并发文档](https://doc.rust-lang.org/book/ch16-00-concurrency.html)：官方书中的并发章节。
+## 课程结构
+
+按 2024 年春季的课表，十六周：
+
+| 周 | 主题 |
+|---|---|
+| 1 | 复习系统课里的并发编程 |
+| 2 | Rust |
+| 3–6 | 基于锁的并发：接口、两讲实现、应用 |
+| 7 | 面向行为的并发：接口 |
+| 8 | 期中考试 |
+| 9–13 | 无锁并发：概念、三讲数据结构、正确性规格 |
+| 14 | 无锁并发：垃圾回收（安全的内存回收） |
+| 15 | 面向行为的并发：实现 |
+| 16 | 期末考试 |
+
+讲课有 YouTube 录像（需要的话打开英文字幕），幻灯片是公开的 Google Slides。参考书包括《The Art of Multiprocessor Programming》和《Rust Atomics and Locks》。
 
 ## 官方作业
 
-- [Homework](https://github.com/kaist-cp/cs431/tree/main/src)：锁、并发哈希表、无锁链表与 epoch 内存回收。
+作业在仓库的 `homework` 目录里，每份的说明在 [`homework/doc`](https://github.com/kaist-cp/cs431/tree/main/homework/doc) 下。都是在骨架代码里填 `todo!()`，要写的代码量不大（几十行），难的是写对：
 
-仓库自带测试，包括用于暴露竞态的压力测试；本地 `cargo test` 即可运行。
+- [Doubly linked list](https://github.com/kaist-cp/cs431/blob/main/homework/doc/linked_list.md)。用 unsafe Rust 写双向链表，熟悉裸指针操作，是后面所有作业的热身。
+- [Parallel web server with cache](https://github.com/kaist-cp/cs431/blob/main/homework/doc/hello_server.md)。给一个多线程 Web 服务器加上缓存：同一个请求第二次来要立刻返回，还要能优雅地关机。
+- [Lock-coupling list set](https://github.com/kaist-cp/cs431/blob/main/homework/doc/list_set.md)。用“手递手”加锁（每个节点一把锁，遍历时一把把交接）实现一个并发的有序集合。
+- [Core Arc](https://github.com/kaist-cp/cs431/blob/main/homework/doc/arc.md)。自己实现一个简化版的 `Arc`，练弱内存模型下的 release-acquire 同步。大约 25 行。
+- [Lock-free hash table](https://github.com/kaist-cp/cs431/blob/main/homework/doc/hash_table.md)。基于递归的 split-ordered list 实现无锁哈希表。先全部用最强的内存序做对，学了弱内存以后再放松内存序做快。
+- [Hazard pointers](https://github.com/kaist-cp/cs431/blob/main/homework/doc/hazard_pointer.md)。实现 hazard pointer，一种让无锁数据结构能安全释放内存的机制。同样分“先做对、再做快”两步。
+- [Behaviour-Oriented Concurrency](https://github.com/kaist-cp/cs431/blob/main/homework/doc/boc.md)。先读原论文，再实现一个面向行为的并发运行时。大约 70 行。
+
+## 学习建议
+
+- **别 fork 仓库。** 和 CS220 一样，官方要求直接 clone，然后推到自己的私有仓库。
+- **测试会想办法把错误逼出来。** 并发程序的 bug 不一定每次都出现，仓库里有压力测试，还配了线程检查工具（ThreadSanitizer）的设置，多跑几遍。
+- **先做对，再做快。** 哈希表和 hazard pointer 都明确分成两步：先全用 `SeqCst` 当它是顺序一致的内存，确保功能对；学完弱内存模型再去放松内存序。别一上来就追求性能。
+- **看文档页。** 作业的 API 文档生成在 [kaist-cp.github.io/cs431](https://kaist-cp.github.io/cs431/cs431_homework/) 上，比直接读源码清楚。
+- **准备一本参考书。** 《Rust Atomics and Locks》免费在线，讲原子操作和内存序讲得非常好，做 Arc 和哈希表之前值得读。
+
+## 同类课怎么选
+
+- **[KAIST CS220](/docs/programming-intro/kaist-cs220)**：同一个组的前置课，先把 Rust 和类型、所有权学扎实。
+- **[Stanford CS110L](/docs/programming-intro/cs110l)**：也讲 Rust 里的并发安全，但停在线程、channel、锁这一层，入门友好得多。
+- **[CMU 15-418 / Stanford CS149](/docs/systems/parallel-and-distributed/cmu-15-418-cs149)**：并行计算的另一面：GPU、SIMD、并行程序的性能。CS431 讲“怎么写对”，它讲“怎么写快”。
+
+## 官方资源
+
+- [课程仓库](https://github.com/kaist-cp/cs431)：课程说明、作业、评分脚本。
+- [讲课录像](https://www.youtube.com/playlist?list=PL5aMzERQ_OZ9j40DJNlsem2qAGoFbfwb4)：YouTube 播放列表。
+- [作业文档](https://kaist-cp.github.io/cs431/cs431_homework/)：生成好的作业 API 文档。
+- [Rust Atomics and Locks](https://marabos.nl/atomics/)：官方推荐的参考书之一，免费在线。

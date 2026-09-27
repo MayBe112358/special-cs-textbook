@@ -1,33 +1,68 @@
 ---
 title: "Docker"
-description: "把程序连同它依赖的环境一起打包，让“在我机器上能跑”变成可复现的事实。"
+description: "把程序连同它依赖的整个环境一起打包，让“在我机器上能跑”变成一件可以复现的事。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["会用命令行", "大概知道一个程序运行时依赖哪些东西（语言版本、库、配置文件）"]
 ---
 
-## 课程简介
+## 简介
 
-很多课程的实验环境配置比实验本身还费时间：版本对不上、依赖装不全、
-不同操作系统行为不一致。Docker 的做法是把运行环境本身描述成一个可构建、可分发的镜像，
-任何人拉下来跑，得到的环境都一样。
+你大概遇到过这种事：一个程序在同学电脑上跑得好好的，到你这儿就报错，原因是 Python 版本不对、少装了一个库、系统不一样。
+Docker 解决的就是这个：把程序和它需要的所有东西（操作系统的基础文件、语言运行时、库、配置）一起打成一个“镜像”，
+在任何装了 Docker 的机器上，从这个镜像启动出来的“容器”都长得一模一样。
 
-这对自学者的意义很直接：越来越多的公开课（比如 SEED Labs、CMU 15-445）直接提供
-Docker 环境，省掉你在配置上卡住的那几天。
+它有几个核心概念，先分清楚：
+**镜像**（image）是打包好的模板，只读；**容器**（container）是从镜像启动的、正在运行的实例，一个镜像可以启动很多个容器；
+**Dockerfile** 是一份写明“这个镜像怎么一步步搭出来”的配方；**仓库**（registry，比如 Docker Hub）是存放和分享镜像的地方；
+**Docker Compose** 用一个文件描述好几个一起工作的容器，比如一个网站加一个数据库。
 
-概念上要分清三样东西：Dockerfile 是构建说明，镜像是构建结果，容器是镜像的运行实例。
-理清这三者，大部分命令就不用死记了。
+容器常被拿来和虚拟机比。虚拟机是模拟出一整台电脑，带着自己完整的操作系统，又大又慢；
+容器和宿主机共用同一个操作系统内核，只把程序需要的那部分隔离开，所以启动快、占用小。
+这个“隔离”是怎么做到的，学完操作系统课再回来看会很有意思。
 
 ## 先修要求
 
 - 会用命令行。
-- 了解操作系统里进程和文件系统的基本概念会更容易理解它在做什么。
+- 大概知道一个程序运行起来要依赖什么：语言版本、第三方库、环境变量、配置文件。
+- 需要在自己电脑上装 Docker Desktop（Windows、macOS）或 Docker Engine（Linux）。
+
+## 学习路线
+
+以官方文档的 Get started 部分为主线：
+
+| 阶段 | 学什么 | 官方材料 |
+|---|---|---|
+| 概念 | 容器、镜像、仓库、Compose 分别是什么 | Docker concepts：The basics |
+| 上手 | 跑起一个现成的应用 | Tutorials：Run an app |
+| 做镜像 | 写 Dockerfile、镜像分层、构建缓存、多阶段构建、打标签和发布 | Docker concepts：Building images |
+| 跑容器 | 端口映射、覆盖默认设置、数据持久化、挂载本地文件、多容器应用 | Docker concepts：Running containers |
+
+## 官方教程与练习
+
+Docker 是工具，没有作业。官方 Get started 里的这些页面，每页都带一段可以跟着敲的动手练习：
+
+- [What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)：从这里开始，四页讲完容器、镜像、仓库、Compose 四个基本概念。
+- [Run an app](https://docs.docker.com/get-started/tutorials/run-an-app/)：官方入门教程，先把一个应用跑起来。
+- [Writing a Dockerfile](https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/)：给自己的程序写 Dockerfile。同一组里还有镜像分层、构建缓存、多阶段构建、打标签发布几篇。
+- [Persisting container data](https://docs.docker.com/get-started/docker-concepts/running-containers/persisting-container-data/)：容器删掉数据就没了，怎么用卷把数据留下来。同一组里还有端口映射、挂载本地文件、多容器应用。
+- [Missing Semester 打包发布一讲](https://missing.csail.mit.edu/2026/shipping-code/)：讲义末尾的练习里，要用 Docker 在本地把课程网站跑起来，再给一个 Python 小应用写 Dockerfile 和 docker-compose.yml。
+
+## 学习建议
+
+- **先搞清镜像和容器的区别。** 这是最常见的混淆：镜像是模板，容器是运行中的实例。`docker images` 看镜像，`docker ps -a` 看容器。
+- **拿自己的项目练。** 找一个你写过的小程序（比如一个 Flask 网站），给它写 Dockerfile，让别人一条命令就能跑起来。
+- **留意镜像大小。** 选一个小的基础镜像、合并命令、用多阶段构建，镜像能从几个 GB 降到几十 MB。官方的“镜像分层”和“构建缓存”两篇讲了原理。
+- **容器里的数据是临时的。** 数据库、上传的文件，要放在卷（volume）里，不然容器一删就没了。
+- **Windows 用户先配好 WSL。** Docker Desktop 在 Windows 上通常用 WSL 2 作为后端，官方说它能满足绝大多数用户，先把 WSL 装好会少很多麻烦。
+
+## 同类工具怎么选
+
+- **Podman** 等：和 Docker 兼容的其他容器工具，命令几乎一样，学会 Docker 就能直接用。
+- **Kubernetes**：管理成百上千个容器的集群平台，是 Docker 之后的下一步。[Sysadmin DeCal](/docs/programming-intro/sysadmin-decal) 的最后两个实验正好是 Docker 和 Kubernetes。
 
 ## 官方资源
 
-- [Docker 官方文档](https://docs.docker.com/)：指南、手册与参考的总入口。
-- [Docker 基础概念](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)：容器、镜像、仓库分别是什么。
-- [Dockerfile 参考](https://docs.docker.com/reference/dockerfile/)：构建说明文件的完整语法。
-
-## 官方作业
-
-- [官方入门教程](https://docs.docker.com/get-started/tutorials/run-an-app/)：从跑起一个应用开始，逐步到自己构建镜像。
+- [Docker 官方文档](https://docs.docker.com/)：指南、手册、参考的总入口。
+- [Get started](https://docs.docker.com/get-started/)：官方入门系列。
+- [Dockerfile 参考](https://docs.docker.com/reference/dockerfile/)：Dockerfile 的完整语法。
+- [Get Docker](https://docs.docker.com/get-started/get-docker/)：各平台的安装说明。

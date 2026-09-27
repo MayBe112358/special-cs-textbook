@@ -1,33 +1,68 @@
 ---
 title: "GitHub"
-description: "围绕 Git 仓库的协作平台：Issue、Pull Request、代码评审与自动化。"
+description: "围绕 Git 仓库的协作平台：Issue、Pull Request、代码评审、Actions 自动化，以及怎么读懂一个陌生的开源仓库。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["懂 Git 的基本概念：提交、分支、远程仓库"]
 ---
 
-## 课程简介
+## 简介
 
-Git 管的是你自己机器上的版本历史，GitHub 管的是一群人怎么围着同一份历史协作。
-它加进来的东西——Issue、Pull Request、代码评审、Actions 自动化——本身不是 Git 的一部分，
-但已经成为开源世界事实上的协作约定。
+[Git](/docs/essential-tools/git) 管的是你自己机器上的版本历史，GitHub 管的是一群人怎么围着同一份历史协作。
+它加上的东西：Issue（记问题和想法）、Pull Request（提议一次改动，让别人评审）、代码评审、Actions（每次推送自动跑测试、自动部署），
+本身都不是 Git 的一部分，但已经成了开源世界事实上的协作方式。
 
-对自学者来说，GitHub 还有另一层意义：绝大多数公开课的代码框架、绝大多数你会读的开源项目，
-都在这里。学会读一个陌生仓库、看懂它的提交历史和 Issue 讨论，是一项独立于写代码的能力。
+对自学的人来说，GitHub 还有一层更重要的意义：绝大多数公开课的起始代码、你会去读的开源项目，都放在这上面。
+会读一个陌生的仓库：先看 README，再看目录结构，翻翻提交历史和 Issue 里的讨论，
+这是一项和写代码同样重要、但很少有人专门教的能力。
 
-这本教材本身就托管在 GitHub 上，页面底部的公开评论用的也是这个仓库的 Discussions。
+这本教材本身就放在 GitHub 上：每次推送由 GitHub Actions 跑测试、构建、部署到 GitHub Pages；
+页面底部的公开评论用的也是这个仓库的 Discussions。
 
 ## 先修要求
 
-- 先了解 Git 的基本概念（提交、分支、远程仓库）。
-- 需要一个 GitHub 账号。
+- 先懂 Git 的基本概念：提交、分支、远程仓库、`push` 和 `pull`。
+- 注册一个 GitHub 账号。学生可以申请 GitHub Education，有不少免费额度。
+
+## 学习路线
+
+| 阶段 | 学什么 | 官方材料 |
+|---|---|---|
+| 上手 | 建仓库、开分支、提交、开第一个 Pull Request | Hello World 教程、Introduction to GitHub 练习 |
+| 写文档 | 用 Markdown 写 README、Issue、评论 | Communicate using Markdown 练习 |
+| 协作 | 评审 Pull Request、解决合并冲突 | Review pull requests、Resolve merge conflicts 练习 |
+| 自动化 | 用 GitHub Actions 跑测试、做持续集成 | Hello GitHub Actions、Test with Actions 练习 |
+| 发布 | 用 GitHub Pages 发布网站 | GitHub Pages 练习 |
+
+## 官方教程与练习
+
+GitHub 官方有一套交互式练习叫 [GitHub Skills](https://github.com/skills)：每个练习是一个模板仓库，你复制一份到自己账号下，
+按提示一步步操作，平台会自动检查你做得对不对，然后给出下一步。挑几个最基础的：
+
+- [Hello World 教程](https://docs.github.com/en/get-started/start-your-journey/hello-world)：官方文档里的第一课：建仓库、开分支、改文件、开 Pull Request、合并。
+- [Introduction to GitHub](https://github.com/skills/introduction-to-github)：不到一小时，把上面这一套在真实仓库里走一遍。
+- [Communicate using Markdown](https://github.com/skills/communicate-using-markdown)：学会用 Markdown 写出排版整齐的 Issue 和文档。
+- [Review pull requests](https://github.com/skills/review-pull-requests)：学怎么评审别人的改动、留评论、提修改建议。
+- [Resolve merge conflicts](https://github.com/skills/resolve-merge-conflicts)：弄懂冲突为什么会发生，怎么解决。
+- [Hello GitHub Actions](https://github.com/skills/hello-github-actions)：写并运行第一个 Actions 工作流。
+- [Test with Actions](https://github.com/skills/test-with-actions)：每次推送自动跑测试，也就是持续集成。
+- [GitHub Pages](https://github.com/skills/github-pages)：从仓库直接发布一个网站或博客。
+
+## 学习建议
+
+- **找一个真项目练。** 把你自己的课程作业（别违反课程的学术诚信规定，私有仓库就好）或者小项目放上去，用 Issue 记待办、用分支和 Pull Request 管理每一个改动，哪怕只有你一个人。
+- **读别人的仓库。** 挑一个你用过的开源工具，按 README → 目录结构 → 最近的提交 → 标着 “good first issue” 的 Issue 这个顺序逛一遍。
+- **第一次给开源项目提交改动，从小事开始。** 改个错别字、补一段文档，先把“fork → 改 → 提 Pull Request → 回应评审意见”这个流程走通。
+- **作业别放公开仓库。** 很多课程（比如 CS61A、CS50）明确要求不要公开作业答案。练 GitHub 用私有仓库就够了。
+- **Actions 很值得学。** 让机器每次都替你跑测试，是从“写代码”走向“做工程”的第一步。
+
+## 同类工具怎么选
+
+- **[Git](/docs/essential-tools/git)**：GitHub 的底子。先把 Git 的数据模型学懂，GitHub 上的很多概念（分支、合并、冲突）就都顺了。
+- GitLab、Gitee 等平台提供类似的功能，概念几乎通用。学会一个，换另一个很快。
 
 ## 官方资源
 
-- [GitHub 官方入门文档](https://docs.github.com/en/get-started)：账号、仓库、协作流程的完整说明。
+- [GitHub 入门文档](https://docs.github.com/en/get-started)：账号、仓库、协作流程的完整说明。
 - [Pull Request 文档](https://docs.github.com/en/pull-requests)：协作的核心机制。
-- [GitHub Actions 文档](https://docs.github.com/en/actions)：把构建、测试、部署交给平台自动执行。
-
-## 官方作业
-
-- [Hello World 教程](https://docs.github.com/en/get-started/using-github/hello-world)：官方的第一个练习：建仓库、开分支、发 Pull Request。
-- [GitHub Skills](https://skills.github.com/)：官方的交互式练习集，每一个都在真实仓库里完成。
+- [GitHub Actions 文档](https://docs.github.com/en/actions)：自动化构建、测试、部署。
+- [GitHub Skills](https://github.com/skills)：官方的交互式练习合集。
