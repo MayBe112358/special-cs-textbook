@@ -16,7 +16,7 @@
  *                宽屏显示成一排标签；手机上放不下，变成顶栏里一个“n 个标签”的下拉列表。
  * @courses       Stanford CS147 / UC Berkeley CS160（导航模型、减少记忆负担）；UC Berkeley CS61A（状态与派生）；
  *                CS50x Week 8（事件与 DOM）
- * @exercises     https://hci.stanford.edu/courses/cs147/ —— 交互原型与可用性评估
+ * @exercises     https://cs147.stanford.edu/ —— 交互原型与可用性评估
  * @prereq        知道 React Context 能让很远的组件共用一份状态；知道 beforeunload 能在关网页前拦一下。
  * @unclear       浏览器把 Ctrl+Tab、Ctrl+W 留给自己，网页拦不住，所以这里没有切换 / 关闭标签的快捷键。
  *

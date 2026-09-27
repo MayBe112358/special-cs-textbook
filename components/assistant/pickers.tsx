@@ -10,7 +10,7 @@
  *                两个选择都只改这一段对话，同时记成下次新对话的默认（use-agent-session.ts）。
  *                菜单点外面、按 Esc 就收起；↑↓ 在选项之间移动。
  * @courses       Stanford CS147 / UC Berkeley CS160（可见性、用颜色和图标之外的文字传达风险、渐进披露）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道“弹出菜单”在键盘上也要能用：能用 Tab 进去、方向键移动、Esc 退出。
  * @unclear       模型很多时（有的厂商有上百个）列表会很长，现在只靠搜索框缩小范围，没有做分页。
  *

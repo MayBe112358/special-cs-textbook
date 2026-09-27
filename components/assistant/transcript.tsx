@@ -10,7 +10,7 @@
  *                只留改动附近两行），导图和学习状态给要点列表；等你决定时下面是“同意 / 拒绝”，决定后换成结果。
  *                读者选了“自动同意”时，卡片直接显示结果，并注明“自动同意”。
  * @courses       Stanford CS147 / UC Berkeley CS160（系统状态可见、防误操作、差异的可视化）；CS50x Week 8（HTML/CSS）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道 diff：把两个版本一行行比，标出删掉的和新加的。
  * @unclear       很长的对比（几百行）只默认显示改动附近；要看全文得点“展开”。对比是按行的，一行里只改了一个字也会整行标红标绿。
  *

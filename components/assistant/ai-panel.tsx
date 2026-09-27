@@ -14,7 +14,7 @@
  *                只有这一份面板：宽屏时贴在侧边栏的位置，手机上铺满全屏（位置全由 globals.css 的 .cs-ai-panel 按屏幕宽度决定），
  *                所以两种屏幕上是同一段对话。
  * @courses       Stanford CS147 / UC Berkeley CS160（对话式界面、系统状态可见、用户控制与自由）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道 textarea 里 Enter 默认是换行，这里改成了发送，所以 Shift+Enter 才换行（和大多数聊天软件一样）。
  * @unclear       面板和终端同时打开同一段对话时，后存的会盖掉先存的。
  *

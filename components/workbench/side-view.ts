@@ -9,7 +9,7 @@
  *                终端里 agent 需要读者去填设置时，也通过这里打开 AI 面板的设置页（requestAiSettings）。
  *                Ctrl+Alt+I 开关 AI（和 VS Code 打开聊天的键一样）。
  * @courses       Stanford CS147（信息架构、模式切换的可见性）；UC Berkeley CS61A（状态放在哪一层）
- * @exercises     https://hci.stanford.edu/courses/cs147/
+ * @exercises     https://cs147.stanford.edu/
  * @prereq        知道 useSyncExternalStore 能订阅 React 之外的一份数据。
  * @unclear       课程树和 AI 共用一个宽度；你为了看对话拉宽了侧边栏，换回课程树时它也是宽的。
  *
