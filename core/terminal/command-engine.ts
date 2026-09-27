@@ -13,7 +13,8 @@
  * @courses       UC Berkeley CS61A（第 3 章解释器：读入—求值—输出这条循环）；Stanford CS143 与 UCB CS164
  *                （词法分析：把字符流切成有意义的词；符号表：按名字找到定义）；
  *                MIT Missing Semester（shell 是怎么理解你敲的那一行的）；软件工程类课程（分层与可测试性）
- * @exercises     https://inst.eecs.berkeley.edu/~cs61a/sp25/proj/scheme/ —— Scheme 解释器项目（2025 春季存档）：本模块的完整版
+ * @exercises     https://cs61a.org/ —— CS61A 当前学期主页：解释器单元的项目在学期后半发布（2026 秋季起改用 Gleam 写，不再是 Scheme）
+ *                https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html —— CS61A 官方教材 3.4 节：一个计算器语言的解释器，读入—求值的完整例子
  *                https://web.stanford.edu/class/cs143/               —— 编译器 PA1/PA2：词法与语法分析
  *                https://missing.csail.mit.edu/2020/course-shell/    —— 先在真 shell 里体会一遍
  *                https://missing.csail.mit.edu/2020/shell-tools/     —— 参数、引号、转义到底是谁在处理

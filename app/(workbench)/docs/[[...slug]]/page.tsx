@@ -43,6 +43,7 @@ import { AuthorCourseProgress } from "@/components/progress/author-progress";
 import { CourseStatus } from "@/components/progress/course-status";
 import { CourseModules } from "@/components/internals/cross-links";
 import { ModulePage } from "@/components/internals/module-page";
+import { ChapterGuide, chapterTableOfContents } from "@/components/internals/chapter-guide";
 import { getMDXComponents } from "@/components/mdx";
 import { PathBreadcrumb } from "@/components/path-breadcrumb";
 import { createVirtualFileSystem } from "@/core/filesystem/virtual-file-system";
@@ -111,13 +112,9 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
     return <ModulePage module={node.source.module} />;
   }
   const children = fileSystem.childrenOf(node);
-  return (
-    <DocsPage toc={[]} full={false} slots={{ breadcrumb: PathBreadcrumb }}>
-      <DocsTitle>{node.title}</DocsTitle>
-      {node.description ? <DocsDescription>{node.description}</DocsDescription> : null}
-      <DocsBody>
-        {/* 像 ls 的输出换了一身衣服：每行是一项，左边是标题，右边是它在终端里的名字——
-            记住这个名字，下次在终端里 cd 或 open 它就行。目录的名字带一个斜杠，和 ls 的颜色约定一致。 */}
+  // 讲解区首页（/docs/internals）除了目录列表，还要按章节列出阅读顺序；目录列表挪到最后，给找文件的人用。
+  const isInternalsHome = node.path === "/internals";
+  const listing = (
         <ul className="not-prose divide-y divide-fd-border overflow-hidden rounded-md border border-fd-border">
           {children.map((child) => (
             <li key={child.path}>
@@ -136,6 +133,21 @@ export default async function DocumentationPage(props: { params: Promise<{ slug?
             </li>
           ))}
         </ul>
+  );
+  return (
+    <DocsPage toc={isInternalsHome ? chapterTableOfContents() : []} full={false} slots={{ breadcrumb: PathBreadcrumb }}>
+      <DocsTitle>{node.title}</DocsTitle>
+      {node.description ? <DocsDescription>{node.description}</DocsDescription> : null}
+      <DocsBody>
+        {/* 像 ls 的输出换了一身衣服：每行是一项，左边是标题，右边是它在终端里的名字——
+            记住这个名字，下次在终端里 cd 或 open 它就行。目录的名字带一个斜杠，和 ls 的颜色约定一致。 */}
+        {isInternalsHome ? (
+          <ChapterGuide>
+            <h2 id="by-folder">按仓库目录看</h2>
+            <p>和侧边栏、终端里看到的一样，是仓库里真实的目录结构。找某个文件时用这个，从头读时用上面的章节。</p>
+            {listing}
+          </ChapterGuide>
+        ) : listing}
       </DocsBody>
     </DocsPage>
   );

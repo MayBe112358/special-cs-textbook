@@ -15,13 +15,14 @@
  *                不引用 React、不碰浏览器；网络请求由 ModelClient 负责。
  * @courses       UC Berkeley CS61A（解释器的求值循环：读—求值—回写）；Stanford CS224N / UC Berkeley CS294（智能体与工具调用）；
  *                MIT 6.031（接口与实现分离）
- * @exercises     https://inst.eecs.berkeley.edu/~cs61a/sp25/proj/scheme/ —— Scheme 解释器（2025 春季存档）：自己写一遍求值循环
+ * @exercises     https://cs61a.org/ —— CS61A 当前学期主页：解释器单元的项目在学期后半发布（2026 秋季起改用 Gleam 写，不再是 Scheme）
+ *                https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html —— CS61A 官方教材 3.4 节：一个计算器语言的解释器，读入—求值的完整例子
  * @prereq        知道 async / await：等一个要花时间的操作做完再往下走。
  * @unclear       没有做上下文压缩：对话很长时，早先的内容会一直发给模型，费用会越来越高。
  *                面板上有“新对话”按钮，长对话请开新的。
  *
  * @letter
- * 做过 CS61A 的 Scheme 解释器的话，这个循环你会觉得眼熟：读一个表达式，求值，把结果交回去，再读下一个。
+ * 做过 CS61A 的解释器项目的话（以前用 Scheme，2026 秋季起换成了 Gleam），这个循环你会觉得眼熟：读一个表达式，求值，把结果交回去，再读下一个。
  * 这里只是把“求值”换成了“问模型”，把“内置函数”换成了“工具”。
  *
  * 拿一次真实的对话走一遍。你在 CS61A 的页面上说“帮我把这门课的笔记画成导图”：

@@ -10,11 +10,12 @@
  *                整行读完、确认没有语法错误之后才交出结果；只要有一处错（引号没闭合、管道一端是空的、
  *                用了不支持的 ; & < > 这些符号），就抛出一句错误，一条命令都不交出去。
  *                它只负责切，不认识任何具体命令，command-engine 拿到结果后再去查命令表。
- * @courses       UC Berkeley CS61A（Scheme 解释器项目的第一步：把输入切成 token）；
+ * @courses       UC Berkeley CS61A（解释器项目的第一步：把输入切成 token）；
  *                Stanford CS143 / UC Berkeley CS164（词法分析、有限状态自动机）；
  *                MIT 6.045J / UC Berkeley CS172（有限自动机与正则语言）；
  *                MIT Missing Semester（shell 的引号与转义）；MIT 6.S081（xv6 shell 的解析）
- * @exercises     https://inst.eecs.berkeley.edu/~cs61a/sp25/proj/scheme/ —— Scheme 解释器（2025 春季存档）：整个项目是“读入—求值”，读入那一步就是这里做的事
+ * @exercises     https://cs61a.org/ —— CS61A 当前学期主页：解释器单元的项目在学期后半发布（2026 秋季起改用 Gleam 写，不再是 Scheme）
+ *                https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html —— CS61A 官方教材 3.4 节：一个计算器语言的解释器，读入—求值的完整例子
  *                https://pdos.csail.mit.edu/6.S081/2021/labs/util.html —— xv6 工具 lab，读 sh.c 能看到真 shell 怎么切命令行
  *                https://missing.csail.mit.edu/2020/course-shell/ —— 引号、空格和转义在真 shell 里的样子
  * @prereq        知道字符串可以按下标一个字符一个字符地读；在终端里用过带空格的参数。
@@ -56,7 +57,7 @@
  * 整行先解析完、有错就一条都不跑，这样“报错”就真的等于“什么都没做”。
  * command-engine 执行前还会把每个命令名再查一遍，也是这个意思。
  *
- * 要是你做过 CS61A 的 Scheme 项目，会觉得这一步很眼熟：那边也是先把输入切成一个个 token，再交给后面去求值。
+ * 要是你做过 CS61A 的解释器项目（以前用 Scheme，2026 秋季起换成了 Gleam），会觉得这一步很眼熟：那边也是先把输入切成一个个 token，再交给后面去求值。
  * 看完这章，顺着去读 command-engine 吧，看看切好的命令接下来是怎么被跑起来的。
  */
 import type { CommandInvocation } from './command.ts';
