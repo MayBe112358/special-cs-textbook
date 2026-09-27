@@ -5,8 +5,8 @@
  *                支持依次读取多个目标，和真 cat 可以连接多个文件的基本行为一致。
  * @courses       MIT Missing Semester（cat 与标准输出）；MIT 6.S081 与 UCB CS162（文件和目录是不同节点）；
  *                UC Berkeley CS61A（遍历输入并汇总结构化结果）
- * @exercises     https://missing.csail.mit.edu/2020/course-shell/
- *                https://pdos.csail.mit.edu/6.S081/2021/labs/fs.html
+ * @exercises     https://missing.csail.mit.edu/2020/course-shell/ —— 真终端里的 cat 和标准输出
+ *                https://pdos.csail.mit.edu/6.S081/2021/labs/util.html —— xv6 工具 lab，读一读 xv6 自带的 cat.c 有多短
  * @prereq        知道 cat 在真终端里把文件内容打印到屏幕。
  * @unclear       这里的“文件内容”是索引里那句简介：课程读它 frontmatter 里的 description，
  *                源码模块读它注释块里 @module 那一行。都不是整篇正文——整篇正文在网页上，用 open 打开。
@@ -14,16 +14,29 @@
  *                将来如果要 cat 出更多（比如只读 @problem 那一段），得先想清楚参数怎么写，别急着加选项。
  *
  * @letter
- * 这条命令故意把课程当文件、分类当目录。于是 cat cs61a 能读到简介，而 cat systems 会收到 Is a directory。
- * 这不只是模仿一句报错：它在教同一个边界——目录负责组织名字，文件才承载可读内容。
+ * 在真终端里，cat 就是把一个文件的内容倒到屏幕上。这里的 cat 也是这个意思，只是“文件的内容”换成了一句简介。
  *
- * 注意 cat 没去磁盘打开 MDX。浏览器里的静态网站根本拿不到仓库文件系统；构建阶段已经把允许公开的简介
- * 放进知识索引，命令只读那份结构化数据。把“构建时收集”和“运行时查询”分开，网站才能留在纯静态部署里。
+ * 你试试：
  *
- * 从 ROADMAP 阶段 5 起，树上多了一种文件：项目自己的源码模块。cat command-engine 读到的，
- * 是那个源文件顶部注释里 @module 的那一行。这条命令一个字都没改就支持了它——
- * 因为它问文件系统要的一直是“这份文件的简介”，而不是“这门课的简介”。
- * 一个只依赖共同点的命令，遇到新种类的东西时不用跟着改，这就是抽象最实在的好处。
+ *     cat programming-intro/cs61a
+ *     cat systems
+ *
+ * 第一条出来一句话，“以函数、抽象和解释器为主线的程序设计导论”；第二条报 cat: systems: Is a directory。
+ * 这句报错不光是在学真 Unix 说话。它在告诉你这棵树的规矩：目录只负责装东西、起名字，能读的内容都在文件里。
+ * 课程是文件，所以能 cat；分类是目录，所以不能。
+ *
+ * 你可能好奇 cat 是怎么读到简介的，它难道去打开了课程页那个 .mdx 文件？没有，也打不开。
+ * 这是个纯静态网站，你的浏览器根本碰不到仓库里的文件。
+ * 简介是在构建网站的时候就被收集好、放进知识索引里的，cat 读的是那份索引。
+ * “构建的时候收集，浏览的时候查询”，这是这个网站能做成纯静态的关键，后面很多地方都是这个套路。
+ *
+ * 后来树上多了一种文件：项目自己的源码模块。比如你 cd 到 /internals/core/terminal，再 cat command-engine，
+ * 读到的是那个源文件顶部 @module 那一行。
+ * 好玩的是，为了支持这个，cat 一个字都没改。因为它问文件系统要的一直是“这个文件的简介”，从来没问过“这门课的简介”。
+ * 它只依赖课程和模块的共同点，所以来了一种新东西，它照样能读。
+ *
+ * 最后，cat 可以一次读好几个，读到一半有一个出错了，前面读好的照样显示，后面的也接着读，最后整体算失败。
+ * 真 cat 也是这样：cat a nope b 会把 a 和 b 都打出来，中间夹一句 nope 找不到。
  */
 import type { CommandDefinition, CommandResult } from "../command.ts";
 import type { OutputBlock } from "../output.ts";
