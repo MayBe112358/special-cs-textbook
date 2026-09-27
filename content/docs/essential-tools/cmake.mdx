@@ -1,33 +1,66 @@
 ---
 title: "CMake"
-description: "跨平台描述构建过程，再由它生成各平台各自的构建系统。"
+description: "跨平台地描述一个 C/C++ 项目怎么构建，再由它生成各个平台自己的构建系统。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["会写一点 C 或 C++", "知道编译、链接大概是怎么回事"]
 ---
 
-## 课程简介
+## 简介
 
-CMake 不直接编译代码，它生成构建系统：Makefile、Ninja 文件，或者 Visual Studio、
-Xcode 的工程文件。你写一份 `CMakeLists.txt`，在不同平台上得到各自能用的构建方式。
+写一个小 C 程序，敲一行 `gcc main.c` 就编译好了。可项目一大，事情就多了：几十个源文件、几个库、
+不同平台上编译器和路径都不一样、有的文件要先生成、还要跑测试、要安装。
+CMake 就是来管这件事的：你用它的语言写一份 `CMakeLists.txt`，描述“这个项目由哪些目标组成、谁依赖谁、要哪些库”，
+然后它替你生成当前平台上真正干活的构建系统：Linux 上是 Makefile 或 Ninja，Windows 上可以是 Visual Studio 工程。
 
-官方文档按人群分了几条入口：只想编译别人的源码包，看 User Interaction Guide；
-想在自己的项目里用第三方库，看 Using Dependencies Guide；从零开始建项目，
-从 CMake Tutorial 开始。这几条路要求的知识量差别很大，先认准自己属于哪一类。
+所以 CMake 严格说不是构建工具，而是“构建系统的生成器”。
+今天大多数开源 C/C++ 项目都用它，不少课程的作业也用它（比如 [AP1400-2](/docs/programming-intro/aut-ap1400) 的每一份作业）。
+学会它，你至少能把别人的项目顺利编译出来；再进一步，能给自己的项目写出干净的构建配置。
 
-CMake 主要服务 C 和 C++，但也能用于其他语言。它是许多公开课（比如 CMU 15-445、
-KAIST CS420）实验框架的构建方式，所以即使你不打算深入，也值得会读。
+写作时 CMake 的最新版本是 4.4。
 
 ## 先修要求
 
-- 了解编译、链接的基本概念。
-- 最好先用过 Make 一类的构建工具。
+- 会写一点 C 或 C++，编译过、运行过程序。
+- 知道编译和链接是两步、库是什么；不清楚的话，先看看 [GNU Make](/docs/essential-tools/gnu-make) 那一页。
+
+## 学习路线
+
+| 你想做什么 | 看什么 |
+|---|---|
+| 只想把别人的项目编译出来 | 使用者指南：怎么配置、生成、构建 |
+| 给自己的项目写 `CMakeLists.txt` | 官方 CMake Tutorial，从第 1 步做到第 5 步 |
+| 引入第三方库 | 依赖管理指南，Tutorial 第 10 步 |
+| 测试、安装、打包 | Tutorial 第 8、9 步 |
+| 查某个命令的用法 | 参考手册 |
+
+## 官方教程与练习
+
+- [官方 CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：CMake 自己的教程，从第 0 步（准备环境）到第 11 步，每一步都附了练习代码（教程页里有压缩包下载），做完一步能直接和下一步的起点对照：
+  - 第 1–3 步：第一个 CMake 项目、CMake 语言的基础、配置和缓存变量；
+  - 第 4–6 步：深入理解“目标”（target）、库的概念、探测系统环境；
+  - 第 7 步：自定义命令和生成的文件；
+  - 第 8 步：用 CTest 写测试；
+  - 第 9 步：安装；
+  - 第 10 步：查找和使用依赖；
+  - 第 11 步：其他零散功能。
+- [使用者指南](https://cmake.org/cmake/help/latest/guide/user-interaction/index.html)：只想编译别人的项目时看这个，讲清楚命令行和图形界面怎么用。
+- [依赖管理指南](https://cmake.org/cmake/help/latest/guide/using-dependencies/index.html)：在自己的项目里引入第三方库。
+
+## 学习建议
+
+- **用“面向目标”的写法。** 现代 CMake 的核心是 `target_*` 系列命令：把头文件目录、编译选项、依赖都挂在具体的目标上，而不是设全局变量。网上很多老教程还在用全局写法，看到了要警惕。
+- **源码目录和构建目录分开。** 永远在单独的 `build` 目录里构建（`cmake -S . -B build`），源码目录保持干净，出了问题整个删掉重来。
+- **碰到报错先看是哪一步。** CMake 分“配置”（读 `CMakeLists.txt`）和“构建”（真正编译）两步，搞清楚报错发生在哪一步，问题就找到一半了。
+- **拿作业练手。** 做 C/C++ 课的作业时，试着自己从零写它的 `CMakeLists.txt`，再和课程给的对比。
+
+## 同类工具怎么选
+
+- **[GNU Make](/docs/essential-tools/gnu-make)**：更底层，直接写规则和依赖。CMake 在 Linux 上通常就是生成 Makefile 给它跑。理解了 Make，CMake 在干什么会清楚很多。
+- **Meson、Bazel 等**：其他构建系统，各有拥趸。但 C/C++ 世界里 CMake 用得最广，先学它最划算。
 
 ## 官方资源
 
-- [CMake 官方文档](https://cmake.org/cmake/help/latest/)：参考手册总入口。
-- [使用者指南](https://cmake.org/cmake/help/latest/guide/user-interaction/index.html)：只想把别人的源码编译出来时看这个。
-- [依赖管理指南](https://cmake.org/cmake/help/latest/guide/using-dependencies/index.html)：在自己的项目里引入第三方库。
-
-## 官方作业
-
-- [官方 CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：分十几步从一个最小项目建到安装与打包。
+- [CMake 官方文档](https://cmake.org/cmake/help/latest/)：参考手册总入口，每个命令、变量、属性都在这里。
+- [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)：官方分步教程。
+- [使用者指南](https://cmake.org/cmake/help/latest/guide/user-interaction/index.html)：编译别人的项目。
+- [依赖管理指南](https://cmake.org/cmake/help/latest/guide/using-dependencies/index.html)：引入第三方库。

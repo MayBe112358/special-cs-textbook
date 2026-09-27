@@ -6,6 +6,8 @@
  * @design        两块牌子都不接受手写的清单，它们只认索引里那份从注释算出来的对应关系（见 [[cross-reference]]）。
  *                所以链接不会过期：你在源码注释的 @courses 里加一门课，重新构建之后，
  *                课程页上立刻多出这个模块，讲解页上也立刻多出这门课，没有第二个地方要改。
+ *                课程页那一块按讲解区的章节分组显示（groupByChapter，见 chapter-guide.tsx）：像 CS61A 这种对应了几十段代码的课，
+ *                平铺成一串没法读，分了章，读者可以先挑一章。
  *                对应不上的时候老实说“还没有”，而不是把这一栏藏起来——空着是有信息量的：
  *                它说明这门课目前还没有对应的代码，而那正是这本教材将来该补的地方。
  * @courses       MIT 6.042J（关系与图：一门课和一段代码之间是多对多）；UC Berkeley CS61B（图的邻接表与反向查找）；
@@ -39,6 +41,7 @@ import knowledgeIndexJson from "@/core/knowledge/generated/knowledge-index.json"
 import { coursesForModule, modulesForCourse } from "@/core/knowledge/cross-reference";
 import type { KnowledgeIndex, ModuleEntry } from "@/core/knowledge/knowledge-index";
 import Link from "next/link";
+import { groupByChapter } from "@/components/internals/chapter-guide";
 
 const knowledgeIndex = knowledgeIndexJson as KnowledgeIndex;
 
@@ -61,16 +64,25 @@ export function CourseModules({ courseId }: { courseId: string }) {
         </p>
       ) : (
         <>
-          <p>学完这门课，可以回头读项目里的这几段代码。它们的正文就写在源文件顶部的注释里。</p>
-          <ul>
-            {modules.map((module) => (
-              <li key={module.path}>
-                <Link href={module.url}>{module.title}</Link>
-                <span> —— </span>
-                <code>{module.file}</code>
-              </li>
-            ))}
-          </ul>
+          <p>
+            学完这门课，可以回头读项目里的这 {modules.length} 段代码，它们的正文就写在源文件顶部的注释里。
+            下面按讲解区的章节分组，章节和章内的先后就是建议的阅读顺序。
+          </p>
+          {/* 对应的模块多了会是很长一串，按章分组以后，读者能先挑一章读，而不是面对一张平铺的清单。 */}
+          {groupByChapter(modules.map((module) => module.path)).map((group) => (
+            <section key={group.id}>
+              <h3>{group.label}</h3>
+              <ul>
+                {group.modules.map((module) => (
+                  <li key={module.path}>
+                    <Link href={module.url}>{module.title}</Link>
+                    <span> —— </span>
+                    <code>{module.file}</code>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </>
       )}
     </>

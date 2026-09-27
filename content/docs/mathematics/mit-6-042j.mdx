@@ -1,52 +1,63 @@
 ---
 title: "MIT 6.042J 计算机科学数学"
-description: "面向计算机的离散数学：证明方法、数论、图论、计数与离散概率。"
-prereqCourses: []
-prereqKnowledge: ["Calculus, Linear Algebra"]
+description: "面向计算机的离散数学：证明、数论、图论、计数、离散概率，配一本九百多页的免费教材和一套交互式在线课程。"
+prereqCourses: ["mit-18-01-18-02"]
+prereqKnowledge: ["单变量微积分：数列与级数、极限、求导和积分"]
 ---
-
-{/*
-  @module        数学基础分类中的样板课程页
-  @problem       课程树需要一门真实课程来证明“数学基础”分类能够展开和访问。
-  @design        选择离散数学样板覆盖计算机科学常用数学，不在这里规定先修顺序。
-  @courses       MIT 6.042J Mathematics for Computer Science
-  @exercises     https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/resources/mit6_042js15_textbook/
-  @prereq        官方大纲列出微积分与线性代数；真正需要的是愿意读证明。
-  @unclear       OCW 2015 版没有单独的作业页，练习题随教材各章发布；MIT 现行课程的编号与内容可能已经变化。
-
-  @letter
-  数学分支不是“开始写程序之前必须全部学完”的闸门。它只是把相关课程收在同一处，方便你在需要证明、
-  计数或图论时找到它们；何时回来学习，仍由你自己的路线决定。
-*/}
 
 ## 课程简介
 
-6.042J 是 MIT 面向计算机专业的数学课，也是许多算法与理论课程的数学前提。
-它和一般的“高等数学”不同，关心的是离散对象：整数、图、集合、逻辑命题。
+6.042J（Mathematics for Computer Science）是 MIT 给计算机专业开的离散数学课，由 Albert Meyer 和 Adam Chlipala 讲授。
+它回答的问题是：学计算机，到底需要哪些数学？答案大致三块：
+**基本的数学语言**：定义、证明、集合、函数、关系；**离散结构**：图、状态机、模运算、计数；**离散概率**。
 
-课程分四大块。第一块是证明本身——命题逻辑、良序原理、数学归纳法，
-以及怎么把一个论证写成别人能检查的形式；这是全课最重要的部分。
-第二块是数论与图论：同余、RSA 的数学基础、树、连通性、着色、匹配。
-第三块是计数：排列组合、生成函数、递推式。第四块是离散概率：
-条件概率、随机变量、期望、方差以及各种偏差界。
+这门课最突出的一点，是把“证明”当成正经的能力来教。第一单元整整讲证明：什么是证明、良序原理、逻辑公式、归纳法、
+递归定义的数据类型。学完这一单元，你读算法书里“这个算法是正确的，证明如下”的时候，才真正看得懂、也写得出来。
+后面的内容都和计算机直接挂钩：模运算用在密码学和哈希里，图用来建模数据结构和调度问题，
+计数和生成函数用来分析算法的复杂度，概率用来分析随机算法。
 
-官方教材《Mathematics for Computer Science》完全公开，写得清楚且带大量练习，
-是这门课最值钱的一份材料。
+它的配套教材《Mathematics for Computer Science》是免费的，九百多页，写得非常清楚，本身就值得当一本参考书留着。
 
 ## 先修要求
 
-- 官方大纲列出微积分与线性代数作为背景。
-- 真正需要的是愿意读证明、也愿意自己写证明。
+- 官方先修是 [18.01 单变量微积分](/docs/mathematics/mit-18-01-18-02)：要熟悉数列与级数、极限、单变量函数的求导和积分。
+- 不需要任何离散数学基础，也不需要会编程。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/)：2015 春季完整存档。
-- [官方教材（免费）](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/resources/mit6_042js15_textbook/)：《Mathematics for Computer Science》全书。
-- [课程大纲](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/pages/syllabus/)：课程范围与评分方式。
-- [阅读安排](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/pages/readings/)：教材各章与讲座的对应顺序。
+2015 年春季这一期分四个单元，和教材的前四部分对应（教材还有第五部分讲递推式）：
+
+| 单元 | 教材章节 | 讲什么 |
+|---|---|---|
+| 1. Proofs | 第 1–7 章 | 什么是证明、良序原理、逻辑公式、数学里的数据类型（集合、函数、关系）、归纳法、递归数据类型、无限集 |
+| 2. Structures | 第 8–12 章 | 数论与模运算（RSA）、有向图与偏序、通信网络、简单图（着色、匹配、连通性、树）、平面图 |
+| 3. Counting | 第 13–15 章 | 求和与渐近分析、计数规则、生成函数 |
+| 4. Probability | 第 16–20 章 | 事件与概率空间、条件概率、随机变量、偏离均值（大数定律、集中不等式）、随机游走 |
+
+MIT 校内是“翻转课堂”：课前读教材、做在线小题，上课时间几乎全用来 6 到 8 人一组做题，每组有助教引导。
 
 ## 官方作业
 
-- [教材各章练习](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/resources/mit6_042js15_textbook/)：OCW 这一版没有单独的作业页，练习题随教材各章发布。
+- **教材里的习题**：[《Mathematics for Computer Science》](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/resources/mit6_042js15_textbook/)每一节后面都有成组的习题，分成 Practice Problems（练手）、Class Problems（课上小组题）、Homework Problems（作业题）、Exam Problems（考试题）几类，难度一目了然。
+- **交互式在线课程**：OCW 这一期的“在线出版物”放在 [MIT Open Learning Library](https://openlearninglibrary.mit.edu/courses/course-v1:OCW+6.042J+2T2019/about) 上，按单元组织讲课视频、阅读和在线小题。可以不注册直接看（进度不会保存），免费注册后能保存进度、用上完整的练习。
+- [阅读安排](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/pages/readings/)：每一讲对应教材的哪几节，可以按这个顺序读、按这个顺序做题。
 
-这是 OCW 存档课程，没有助教批改；教材附有部分习题解答。
+## 学习建议
+
+- **证明那一单元慢慢来。** 第一次认真写证明，会发现“我觉得是对的”和“我能证明它是对的”之间差得很远。每道题都写成完整的证明，哪怕它看起来很显然。
+- **按题的分类挑着做。** 先做 Practice Problems 确认看懂了，再挑几道 Class Problems 和 Homework Problems，考试前做 Exam Problems 自测。
+- **找人一起做。** 这门课在 MIT 就是小组讨论着上的。找一两个同学一起做题、互相检查证明，效果比一个人闷头做好得多。
+- **和算法课一起学更有感觉。** 学到渐近分析、递推式、图论时，同时在学 [MIT 6.006](/docs/data-structures-algorithms/mit-6-006) 或 [CS61B](/docs/data-structures-algorithms/cs61b)，两边会互相印证。
+- **这本书值得常备。** 以后学算法、学密码学、学机器学习理论，遇到数学卡壳，回来翻对应的章节。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS70](/docs/advanced-mathematics/cs70)**：伯克利的离散数学与概率论，内容和 6.042J 大量重叠，概率讲得更多，还有纠错码、秘密共享这些应用。两门任选一门即可。
+- **[MIT 18.01 / 18.02 微积分](/docs/mathematics/mit-18-01-18-02)**、**[MIT 18.06 线性代数](/docs/mathematics/mit-18-06)**：连续数学那一条线，和离散数学并行学。
+
+## 官方资源
+
+- [课程主页（OCW，2015 春）](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/)：课程说明和材料入口。
+- [课程大纲](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/pages/syllabus/)：先修要求、课程目标、翻转课堂怎么上。
+- [官方教材（免费）](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/resources/mit6_042js15_textbook/)：《Mathematics for Computer Science》全书。
+- [MIT Open Learning Library 版](https://openlearninglibrary.mit.edu/courses/course-v1:OCW+6.042J+2T2019/about)：交互式在线课程。

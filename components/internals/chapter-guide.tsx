@@ -7,6 +7,7 @@
  *                每篇后面挂着理解度小圆点（和侧边栏同一个 StatusDot），读过几篇一眼看得到。
  *                ReadingPositionLine：讲解页标题下面一行小字“第 1 章 · 命令引擎 · 第 3 / 6 篇”，点章节名回到目录里那一章。
  *                readingFooter：交给 Fumadocs 页脚的上一篇、下一篇，替换它默认那种“按侧边栏顺序”的翻页。
+ *                groupByChapter：把任意一组模块按章节分组，课程页的“本课对应的项目实现”用它。
  *                章节清单在模块加载时就和索引对账（buildChapters），写错了构建直接失败。
  * @courses       Harvard CS50x Week 8（HTML 的语义：有序列表、标题层级）；Stanford CS147（导航与信息架构：同一批内容的两种组织方式）
  * @exercises     https://cs50.harvard.edu/x/psets/8/homepage/ —— CS50x Homepage：用标题和列表组织一页内容
@@ -95,6 +96,18 @@ export function ChapterGuide({ children }: { children?: ReactNode }) {
       {children}
     </>
   );
+}
+
+/** 把一组模块按章节分组，章节和章内顺序都照阅读顺序。课程页“本课对应的项目实现”用它。 */
+export function groupByChapter(paths: readonly string[]) {
+  const wanted = new Set(paths);
+  return chapters
+    .map((chapter) => ({
+      id: chapter.id,
+      label: `${chapterLabel(chapter.number, chapter.appendix)}　${chapter.title}`,
+      modules: chapter.modules.filter((path) => wanted.has(path)).map((path) => moduleByPath.get(path)!),
+    }))
+    .filter((group) => group.modules.length > 0);
 }
 
 /** 讲解页标题下面那一行：第几章、第几篇。不在任何一章里（理论上不会发生）就不画。 */

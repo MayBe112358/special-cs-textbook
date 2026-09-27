@@ -1,35 +1,70 @@
 ---
 title: "Git"
-description: "理解 Git 的数据模型，再回头看那些命令，它们会突然变得讲道理。"
+description: "先理解 Git 的数据模型：一串快照连成的图、几个会移动的指针，再回头看那些命令，它们会突然变得讲道理。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["会在终端里执行基本命令"]
 ---
 
-## 课程简介
+## 简介
 
-大多数人学 Git 的方式是背命令：要提交就 `commit`，要同步就 `push`，出了问题就上网搜。
-这种学法能应付日常，但一遇到分支冲突、误删提交、历史重写就会束手无策。
+Git 是现在几乎所有软件项目都在用的版本控制系统：它记下你的代码每一次改成了什么样，让你能回到任何一个过去的版本，
+能开分支同时试好几个想法，能和别人一起改同一份代码而不互相覆盖。
+后面几乎每一门课的作业都要用它下载起始代码、保存进度、提交作业。
 
-更省力的顺序是反过来：先理解 Git 的数据模型——一个由快照组成的有向无环图，
-分支只是指向某个提交的可移动指针——再看那些命令。你会发现命令行界面确实有些别扭，
-但它背后的模型其实非常简洁。
+大多数人学 Git 的方式是背命令：要提交就 `commit`，要同步就 `push`，出了问题就上网搜一条命令粘贴进去。
+这样能应付日常，可一遇到合并冲突、误删提交、要改写历史，就只能干瞪眼。
 
-官方的 Pro Git 是这方面最完整的免费材料，中文版也由社区译好放在同一个站点上。
+更省力的顺序是反过来：先搞懂 Git 的数据模型，再看命令。
+Git 存的是一串快照，每个快照（提交）指向它的上一个，连成一张图；分支、`HEAD` 只是指向某个提交的、可以移动的指针。
+弄懂这一层，`reset`、`rebase`、`checkout` 这些看起来吓人的命令，就都只是“挪动指针”和“建新快照”的不同组合。
+Git 的命令行界面确实别扭，但它底下的模型非常简洁。
 
 ## 先修要求
 
-- 会用命令行执行基本命令。
-- 有一个自己的项目可以拿来练手，效果比看教程好得多。
+- 会在终端里执行基本命令（`cd`、`ls` 这些）。没用过终端的话，先学 [Missing Semester](/docs/essential-tools/missing-semester) 的第一讲。
+- 手边最好有一个自己的项目，哪怕是几个文本文件。拿真东西练，比看教程记得牢。
+
+## 学习路线
+
+以官方的 [Pro Git](https://git-scm.com/book/en/v2) 这本书为主线（Scott Chacon 和 Ben Straub 著，免费在线，有官方认可的中文版）：
+
+| 阶段 | 读什么 | 学会什么 |
+|---|---|---|
+| 入门 | 第 1–2 章：起步、Git 基础 | 装好 Git，建仓库、提交、看历史、撤销、连远程、打标签 |
+| 分支 | 第 3 章：Git 分支 | 分支和合并、解决冲突、远程分支、变基（rebase）。全书最重要的一章 |
+| 协作 | 第 5 章：分布式 Git，第 6 章：GitHub | 几种协作流程，怎么给别人的项目贡献代码、怎么维护自己的项目 |
+| 进阶 | 第 7 章：Git 工具 | 交互式暂存、储藏（stash）、搜索、改写历史、`reset` 到底干了什么、签名 |
+| 原理 | 第 10 章：Git 内部原理 | 对象、引用、打包文件，Git 在磁盘上到底存了些什么 |
+
+第 4 章（在服务器上搭 Git）、第 8 章（定制 Git）、第 9 章（和其他版本控制系统互操作）可以等需要时再看。
+
+## 官方教程与练习
+
+Git 是工具，不是课程，没有官方作业。下面是最值得跟着做一遍的官方材料：
+
+- [Missing Semester 的 Git 一讲](https://missing.csail.mit.edu/2026/version-control/)：先讲数据模型、再讲命令的最佳入门，讲义末尾有一组练习：把课程网站的仓库克隆下来，把历史画成图，找出最后一个改 README.md 的人，诸如此类。
+- [Pro Git 第 3 章：分支](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)：边读边在自己的仓库里开分支、合并、制造冲突再解决。
+- [Pro Git 第 7.7 节：Reset Demystified](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified)：把 `reset` 的三种模式讲透的一节，读完你就不怕它了。
+- [Pro Git 第 10 章：内部原理](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)：跟着用底层命令手工建对象、建提交，是理解 Git 最彻底的办法。
+- [gittutorial](https://git-scm.com/docs/gittutorial)：Git 自带的入门教程，终端里敲 `git help tutorial` 也能看到。
+
+## 学习建议
+
+- **先画图，再敲命令。** 碰到拿不准的操作，先在纸上画出提交图和指针位置，想清楚命令执行完图会变成什么样，再去敲。
+- **别怕搞坏。** 在一个练习用的仓库里放开折腾。几乎所有“搞坏了”的情况，都能用 `git reflog` 找回来：它记着 `HEAD` 去过的每一个地方。
+- **提交要小，说明要清楚。** 一次提交只做一件事，写清楚为什么改。这是给未来的自己看的。
+- **会查文档。** `git help 命令名` 能打开任何一条命令的完整说明，比网上搜到的答案靠谱。
+- **中文版可以对照读。** Pro Git 的[中文版](https://git-scm.com/book/zh/v2)就在官网上，英文读着吃力时切过去。
+
+## 同类工具怎么选
+
+- **[GitHub](/docs/essential-tools/github)**：Git 管你自己机器上的历史，GitHub 管一群人怎么围着同一份历史协作（Issue、Pull Request、代码评审、自动化）。先学 Git，再学 GitHub。
+- 版本控制系统还有 Mercurial、SVN 等，但今天绝大多数项目和几乎所有公开课的作业都用 Git，没必要先学别的。
 
 ## 官方资源
 
-- [Pro Git（官方书，含中文版）](https://git-scm.com/book/en/v2)：从基础到内部原理，Git 官方推荐的完整教材。
+- [Pro Git（英文）](https://git-scm.com/book/en/v2)：官方推荐的完整教材，从入门到内部原理。
+- [Pro Git（中文）](https://git-scm.com/book/zh/v2)：官网上的中文译本。
 - [命令参考手册](https://git-scm.com/docs)：每条命令的权威说明。
-- [Git 官网](https://git-scm.com/)：下载与各平台安装说明。
-
-## 官方作业
-
-- [Missing Semester 版本控制一讲](https://missing.csail.mit.edu/2020/version-control/)：先讲数据模型再讲命令，讲义末尾有练习。
-- [Pro Git 第十章：内部原理](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)：想彻底搞懂的话，这一章是关键。
-
-这是工具而不是课程，没有官方作业；练习的方式是在自己的仓库里把它用起来。
+- [Git 速查表](https://git-scm.com/cheat-sheet)：常用命令一页纸。
+- [Git 官网](https://git-scm.com/)：下载和各平台安装说明。

@@ -1,35 +1,60 @@
 ---
 title: "Duke C 程序设计专项课程"
-description: "杜克大学的 C 语言入门专项课，从零开始建立编程与调试习惯。"
+description: "杜克大学在 Coursera 上的 C 语言入门专项课：四门课，先学怎么想清楚算法，再学写、测、调 C 代码，最后做一个扑克牌概率程序。"
 prereqCourses: []
-prereqKnowledge: ["无"]
+prereqKnowledge: []
 ---
 
 ## 课程简介
 
-这是杜克大学在 Coursera 上开的 C 语言入门专项，由四门小课组成，
-面向完全没有编程经验的人。
+这是杜克大学在 Coursera 上开的一组专项课程（Introduction to Programming in C），由 Andrew D. Hilton 等几位老师讲授，一共四门，面向完全的初学者。
 
-它的特点是把“怎么想”和“怎么写”分开教：课程花了相当篇幅讲解题步骤——
-先把问题讲清楚、手工做一遍、总结成算法、再翻译成代码、最后测试——
-而不是一上来就贴语法。对第一次学编程的人，这套方法比语言本身更有价值。
+它和很多“先学语法”的入门课最大的不同，是第一门课几乎不写代码。
+它教一套叫“七步法”（Seven Steps）的解题方法：先拿一个小例子手算一遍，把你自己是怎么做的写下来，
+归纳成通用的步骤，检查对不对，最后才翻译成代码。
+后面三门课一直在用这套方法：写代码之前先想清楚算法，写完之后系统地测试和调试。
 
-内容覆盖 C 的基本语法、数组与指针、结构体与动态内存、文件读写，
-最后有一个综合项目。如果你的目标是 CS50x 之后再补一轮 C 的基础，
-或者想要一条比 CS50x 更慢更稳的路径，这门课合适。
+四门课一路讲下来，覆盖了 C 语言入门的主要内容：类型、控制流、编译与运行、测试与调试、指针、数组、递归、
+文件读写、命令行参数、动态内存管理。贯穿后三门课的是一个完整的项目：一个计算扑克牌胜率的程序，
+你会在第二门课里写基础部分，第三门课搭起一副牌、给一手牌估值，第四门课用蒙特卡洛模拟算出胜率。
 
 ## 先修要求
 
-- 没有先修要求。
-- Coursera 上旁听免费，证书需要付费。
+- 不需要任何编程基础，官方定级是入门（Beginner）。
+- 需要耐心：官方估计每门课 20 小时左右，按每周 10 小时算，四门课大约要两个月。
 
-## 官方资源
+## 课程结构
 
-- [专项课程主页](https://www.coursera.org/specializations/c-programming)：四门课的总入口与大纲。
-- [杜克大学课程页](https://www.coursera.org/learn/writing-running-fixing-code)：第一门课：编写、运行与修复代码。
+| 顺序 | 课程 | 讲什么 |
+|---|---|---|
+| 1 | [Programming Fundamentals](https://www.coursera.org/learn/programming-fundamentals) | 七步法：怎么从例子出发设计算法；基本数据类型、读懂代码的执行过程 |
+| 2 | [Writing, Running, and Fixing Code in C](https://www.coursera.org/learn/writing-running-fixing-code) | 先规划再写代码，编译运行，系统地测试和调试 |
+| 3 | [Pointers, Arrays, and Recursion](https://www.coursera.org/learn/pointers-arrays-recursion) | 指针、数组、递归 |
+| 4 | [Interacting with the System and Managing Memory](https://www.coursera.org/learn/interacting-system-managing-memory) | 文件读写、和操作系统打交道、动态内存分配与释放 |
 
 ## 官方作业
 
-- [每周编程作业](https://www.coursera.org/specializations/c-programming)：课程内嵌的自动评分作业与结课项目。
+作业都嵌在 Coursera 的课程里，每周有编程练习，由平台自动评分：
 
-作业在 Coursera 平台上完成，旁听模式下部分评分功能受限。
+- **第 1 门课**：大多是纸笔练习和“读代码、推结果”的题，练七步法和对程序执行过程的理解。
+- **第 2 门课**：开始写 C 程序，重点是测试用例的设计和调试；扑克牌项目的前几步也从这里开始。
+- **第 3 门课**：用指针和数组搭出一副扑克牌，写出给一手牌估值、比大小的代码。
+- **第 4 门课**：读文件、处理命令行参数、管理动态内存，最后用蒙特卡洛模拟把扑克牌胜率程序做完整。
+
+## 学习建议
+
+- **别跳过第一门课。** 它看起来不写代码、有点慢，但七步法是这组课的精髓：后面每遇到一道题，它都会让你先手算、先写步骤。这个习惯比任何一门语言的语法都值钱。
+- **可以免费旁听，但评分受限。** Coursera 上可以免费学课程内容；想让作业被自动评分、拿证书，通常要付费订阅或申请助学金。
+- **扑克牌项目要连着做。** 它跨了三门课，前面写的代码后面还要接着用，每一步都写干净、测充分，后面会轻松很多。
+- **学完的去向。** 这组课把 C 的基本功打得很扎实，接下来可以学 [CS50x](/docs/programming-intro/cs50x) 的后半段（Python、SQL、Web），或者直接去学 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp) 这类讲计算机系统的课。
+
+## 同类课怎么选
+
+- **[Harvard CS50x](/docs/programming-intro/cs50x)**：前半段也是 C，但只讲几周就换到 Python、SQL、Web，面更广、节奏更快。
+- **[MIT 6.100L](/docs/programming-intro/mit-6-100l)**：同样重视“先想清楚再写”，但用 Python。
+- **Duke C**：三者里 C 讲得最细，而且把“怎么设计算法、怎么测试、怎么调试”当成正式的课来教，适合想把基础打得很牢、或者以后要学系统方向的人。
+
+## 官方资源
+
+- [专项课程主页](https://www.coursera.org/specializations/c-programming)：四门课的总入口、课时估计和项目介绍。
+- [第 1 门：Programming Fundamentals](https://www.coursera.org/learn/programming-fundamentals)：从这里开始。

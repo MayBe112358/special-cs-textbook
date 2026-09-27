@@ -1,33 +1,70 @@
 ---
 title: "日常学习工作流"
-description: "把工具串成自己的工作流：从 shell 脚本到调试、测试与自动化。"
+description: "单个工具会用不等于流程顺：把编辑器、Git、调试器、测试、格式化和持续集成串成一条你每天都在走的路。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["已经在用 shell 和 Git 管自己的项目"]
 ---
 
-## 课程简介
+## 简介
 
-单个工具用得熟，和整套流程跑得顺，是两回事。这一页关注的是后者：
-怎么把编辑器、版本控制、构建系统、调试器和自动化脚本组织成一条你每天都在走的路。
+每个工具单独用熟，和整套流程跑得顺，是两回事。这一页讲的是后者：
+写一个作业、做一个小项目的时候，从打开编辑器到交出去，中间每一步用什么工具、怎么让它们接得上。
 
-Missing Semester 的后半程基本都在谈这件事——调试与性能分析教你在出问题时
-有系统地定位而不是乱改；元编程一讲把构建系统、依赖管理和持续集成放在一起看；
-最后的杂项讲座收录了一批实用但零散的技巧。
+一条比较顺的日常流程大概是这样：
 
-建议不要一次学完。挑当下最卡你的那一环先解决，用顺了再回来看下一环。
+1. **写**：编辑器配好语言服务器，跳转定义、自动补全、实时报错都能用。
+2. **存**：小步提交到 Git，每一次提交只做一件事。
+3. **查**：出了 bug，不靠到处加 `print` 碰运气，而是用调试器一步步看，或者用二分的办法缩小范围。
+4. **验**：写测试，改完代码跑一遍，确认没把别的地方改坏。
+5. **整**：格式化工具统一代码风格，lint 工具提前揪出可疑的写法，提交前由 pre-commit 钩子自动跑。
+6. **自动**：推到 GitHub 以后，持续集成（CI）替你再跑一遍测试和检查。
+
+MIT 的 [Missing Semester](/docs/essential-tools/missing-semester) 2026 版有好几讲正好对应这几步：开发环境、调试与性能分析、版本控制、代码质量，
+还有一讲讲怎么和 AI 编程代理配合。这本教材自己也是按这个流程在做：每次推送，GitHub Actions 会跑测试、检查注释、构建网站。
+
+建议不要一口气全学。挑现在最卡你的那一环先解决，用顺了再回来看下一环。
 
 ## 先修要求
 
-- 已经在用 shell 和版本控制处理自己的项目。
-- 建议先完成 Missing Semester 的前几讲。
+- 已经在用 shell 和 Git 管自己的项目。
+- 建议先学完 Missing Semester 的前两讲。
+
+## 学习路线
+
+| 环节 | 学什么 | Missing Semester 2026 |
+|---|---|---|
+| 写 | IDE、插件、语言服务器，AI 辅助开发，Vim 式的编辑 | 第 3 讲：Development Environment and Tools |
+| 查 | 调试器、录制回放调试、系统调用追踪、sanitizer、性能分析 | 第 4 讲：Debugging and Profiling |
+| 存 | Git 的数据模型和日常用法 | 第 5 讲：Version Control and Git |
+| 发 | 打包、版本号、可复现的构建、容器 | 第 6 讲：Packaging and Shipping Code |
+| 协作 | 用编程代理完成任务，并检查它的结果 | 第 7 讲：Agentic Coding |
+| 验、整、自动 | 测试、覆盖率、格式化、lint、pre-commit 钩子、持续集成 | 第 9 讲：Code Quality |
+
+## 官方教程与练习
+
+每一讲讲义末尾的 Exercises 就是练习，挑三讲最能改变你日常工作的：
+
+- [Debugging and Profiling](https://missing.csail.mit.edu/2026/debugging-profiling/)：第一道练习给了一段有 bug 的归并排序伪代码，要你自己实现出来，再用调试器（gdb、lldb、pdb 或 IDE 自带的）把 bug 找出来。
+- [Code Quality](https://missing.csail.mit.edu/2026/code-quality/)：给你正在做的项目配上格式化、lint 和 pre-commit 钩子；学一个测试库，写单元测试，生成覆盖率报告；配好每次推送都跑的 CI，然后故意把代码改坏，看 CI 能不能拦住。
+- [Development Environment and Tools](https://missing.csail.mit.edu/2026/development-environment/)：给一个项目配好 IDE 插件和语言服务器，确认跳转定义这些功能真的能用。
+
+## 学习建议
+
+- **用你手上的真项目练。** 下一份课程作业就是最好的练习场：配好调试器、写几个测试、加上格式化和 CI。
+- **调试先想再动。** 先用一句话说清“我以为它会怎样、它实际怎样”，再去找两者在哪儿分开。这比随手加 `print` 快得多。
+- **测试先从最小的开始。** 不用一上来追求覆盖率，先给最容易出错的那个函数写三个测试。
+- **把重复的步骤交给机器。** 同样的命令手敲了三遍，就该写成脚本、Makefile 目标或者 CI 步骤。
+- **定期回头看流程。** 每隔一段时间想想：哪一步最费时间、最容易出错？下一个要改进的就是它。
+
+## 同类工具怎么选
+
+- **[MIT Missing Semester](/docs/essential-tools/missing-semester)**：这一页的主要来源。
+- **[实用工具箱](/docs/essential-tools/toolbox)**：命令行本身的功夫：tmux、dotfiles、SSH、管道。
+- **[Git](/docs/essential-tools/git)**、**[GitHub](/docs/essential-tools/github)**、**[GNU Make](/docs/essential-tools/gnu-make)**：流程里各个环节的专门页面。
 
 ## 官方资源
 
-- [课程主页](https://missing.csail.mit.edu/)：按讲次组织的全部内容。
-- [调试与性能分析](https://missing.csail.mit.edu/2020/debugging-profiling/)：有系统地找问题，而不是碰运气。
-- [元编程](https://missing.csail.mit.edu/2020/metaprogramming/)：构建系统、依赖管理、测试与持续集成。
-
-## 官方作业
-
-- [Shell 脚本练习](https://missing.csail.mit.edu/2020/shell-tools/)：把重复操作写成脚本，练习在文末。
-- [调试与性能分析练习](https://missing.csail.mit.edu/2020/debugging-profiling/)：同上。
+- [Missing Semester 主页](https://missing.csail.mit.edu/)：全部讲义。
+- [Debugging and Profiling](https://missing.csail.mit.edu/2026/debugging-profiling/)：调试与性能分析。
+- [Code Quality](https://missing.csail.mit.edu/2026/code-quality/)：测试、格式化、lint、持续集成。
+- [GitHub Actions 文档](https://docs.github.com/en/actions)：最常用的持续集成服务之一。

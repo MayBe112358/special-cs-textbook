@@ -1,33 +1,75 @@
 ---
 title: "Stanford CS106L"
-description: "Stanford 的现代 C++ 专题课：类型、引用、容器、迭代器与模板。"
-prereqCourses: []
-prereqKnowledge: ["最好掌握至少一门编程语言"]
+description: "Stanford 的现代 C++ 专题课：类型、引用、容器、迭代器、模板、移动语义与智能指针，每周一份小作业。"
+prereqCourses: ["cs106b-cs106x"]
+prereqKnowledge: ["学过或正在学 CS106B 这类课：会写函数、用过类和对象"]
 ---
 
 ## 课程简介
 
-CS106L 是一门一学分的小课，专讲现代 C++ 语言本身。
-官方的定位很明确：它不教编程基础，而是补上 CS106B 里为了教数据结构而绕开的那部分语言细节。
+CS106L（Standard C++ Programming）是 Stanford 一门只有 1 学分的小课，专讲 C++ 这门语言本身。
+它是 [CS106B](/docs/programming-intro/cs106b-cs106x) 的配套：CS106B 用 C++ 讲数据结构和算法，但没空细讲语言；
+CS106L 就把这些“语言层面”的东西摊开讲：类型和结构体、初始化和引用、流、STL 容器和迭代器、类、模板、
+lambda、运算符重载、特殊成员函数、移动语义、`std::optional`，最后是 RAII 和智能指针。
 
-内容按语言特性组织：类型与结构体、初始化与引用、流、容器、迭代器与指针、
-类与面向对象、模板与模板元编程、函数对象与 lambda、移动语义与右值引用。
-课程会讲到较新的标准，官方页面写的是覆盖到 C++26 的一些现代写法。
+它讲的是现代 C++，一直讲到最新的 C++26 标准里的写法。
+你会发现 C++ 和很多人印象里那个“到处 `new`、`delete`，一不小心就内存泄漏”的语言很不一样：
+用对了容器、迭代器和智能指针，大部分内存管理的活都可以交给语言去干。
 
-每周一份很短的作业，官方明确说不以难度取胜，只是让你把上周讲的特性实际写一遍。
-对想把 C++ 写得像样一点的人，这门课性价比很高。
+课程很轻量：没有考试、没有论文，成绩只分通过和不通过，作业刻意做得很短，
+是“把上周讲的东西动手试一试”，而不是给你出难题。
 
 ## 先修要求
 
-- 需要已经学过或正在学 CS106B/X，或同等的编程基础（函数、对象、类）。
-- 不需要预先熟悉 C++ 的高级特性，这正是课程要讲的内容。
+- 官方说法：正在上或者上过 CS106B / CS106X（或同等课程），会函数、会用类和对象，就可以来。
+- 需要一点 C++ 基础语法。完全没写过 C++ 的话，课程提供了一份 Python 到 C++ 的对照指南。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://web.stanford.edu/class/cs106l/)：按周排列的讲座与幻灯片。
-- [课程讲义](https://cs106l.github.io/textbook/)：课程自编的完整读本。
-- [课程政策与安排](https://web.stanford.edu/class/cs106l/policies/)：作业形式、评分与每周节奏。
+每周两讲，第 8 周就结课。以 2026 秋季的日程为例：
+
+| 讲次 | 主题 |
+|---|---|
+| 1–2 | 课程介绍，类型与结构体 |
+| 3–4 | 初始化与引用，流（输入输出） |
+| 5–6 | 容器，迭代器与指针 |
+| 7–9 | 类，类模板与 `const` 正确性，函数模板 |
+| 10–11 | 函数与 lambda，运算符重载 |
+| 12–13 | 特殊成员函数（构造、拷贝、赋值、析构），移动语义 |
+| 14–15 | `std::optional` 与类型安全，RAII、智能指针和搭建 C++ 项目 |
+
+每讲的幻灯片都挂在课程主页上。
 
 ## 官方作业
 
-- [Assignments](https://github.com/cs106l/cs106l-assignments)：七次短作业，每次对应前一周的语言特性，仓库里有框架与说明。
+2026 春季那一期是七份每周小作业，起始代码和说明都在课程的公开仓库 [cs106l-assignments](https://github.com/cs106l/cs106l-assignments) 里，每份自带一个自动评分脚本：
+
+- [Assignment 1：SimpleEnroll](https://github.com/cs106l/cs106l-assignments/tree/main/assignment1)。从一份课程表 CSV 里读出今年开哪些课、不开哪些课。练结构体、流、初始化和引用。
+- [Assignment 2：Marriage Pact](https://github.com/cs106l/cs106l-assignments/tree/main/assignment2)。从几千个名字里找出首字母和你一样的人。练 STL 容器（`set`、队列）和指针。
+- [Assignment 3：Make a Class](https://github.com/cs106l/cs106l-assignments/tree/main/assignment3)。自己设计一个类，表示什么都行，只要满足头文件和实现分开、构造函数、私有成员这些要求。
+- [Assignment 4：Ispell](https://github.com/cs106l/cs106l-assignments/tree/main/assignment4)。实现一个老式 Unix 拼写检查器的核心逻辑。练 `<algorithm>`、迭代器，以及 C++20 的 ranges 库。
+- [Assignment 5：Treebook](https://github.com/cs106l/cs106l-assignments/tree/main/assignment5)。给一个虚构社交应用的用户类加上运算符重载，改写它的特殊成员函数。
+- [Assignment 6：Explore Courses](https://github.com/cs106l/cs106l-assignments/tree/main/assignment6)。用 `std::optional` 写一个“可能找不到”的查询函数。
+- [Assignment 7：Unique Pointer](https://github.com/cs106l/cs106l-assignments/tree/main/assignment7)。自己实现一个 `unique_ptr`，把 RAII、模板、运算符重载、移动语义串起来用一遍。
+
+2026 秋季这一期改了形式：14 个课上小练习加 2 份较长的作业，小练习放在课程的活动网站上。
+
+## 学习建议
+
+- **先跑通环境。** 仓库里的 `assignment-setup` 会带你装好编译器和 VS Code，自动评分脚本用 Python（3.8 以上）。这一步做完，后面每份作业都是下载、写、跑评分。
+- **和 CS106B 一起学。** 它本来就是配套课。学 CS106B 时觉得 C++ 的语法和规矩在拖后腿，可以同时开 CS106L。
+- **配套读本。** 课程团队写了一本在线读本 [CS106L Textbook](https://cs106l.github.io/textbook/)，适合对着幻灯片补细节。
+- **查文档养成习惯。** 课程主页直接链到 [cppreference](https://en.cppreference.com/w/)。C++ 的细节多到没人背得住，会查比会背有用得多。
+
+## 同类课怎么选
+
+- **[Stanford CS106B](/docs/programming-intro/cs106b-cs106x)**：用 C++ 学数据结构和算法，是 CS106L 的“主课”。
+- **[Amirkabir AP1400-2](/docs/programming-intro/aut-ap1400)**：也是 C++，但作业量大得多，偏工程化的写法训练。
+- **[Stanford CS110L](/docs/programming-intro/cs110l)**：讲 Rust，从“C++ 为什么容易出内存错误”出发，看另一种语言怎么在编译期就把这些错误挡住。学完 CS106L 的移动语义和智能指针，再看 Rust 的所有权会很有感觉。
+
+## 官方资源
+
+- [课程主页](https://web.stanford.edu/class/cs106l/)：当前这一期的日程和每讲幻灯片。
+- [2026 春季存档](https://web.stanford.edu/class/archive/cs/cs106l/cs106l.1266/)：七份每周作业那一期的完整页面。
+- [作业仓库](https://github.com/cs106l/cs106l-assignments)：起始代码、说明、自动评分。
+- [CS106L Textbook](https://cs106l.github.io/textbook/)：课程团队写的在线读本。

@@ -1,35 +1,66 @@
 ---
 title: "信息检索"
-description: "把“怎么查到答案”当成一项能力：检索代码、文档与错误信息。"
+description: "把“怎么查到答案”当成一项能力来练：读懂报错、搜代码、查一手文档、判断结果是不是过期了、问出一个好问题。"
 prereqCourses: []
 prereqKnowledge: []
 ---
 
-## 课程简介
+## 简介
 
-自学过程中卡住是常态，区别在于卡住之后多久能自己出来。
-这一页关注的就是这项能力：怎么把一个模糊的困惑变成一个可检索的问题，
-怎么在代码里而不是在搜索引擎里找答案。
+自学的路上卡住是常态，差别在于卡住以后多久能自己走出来。这一页讲的就是这项能力。
 
-具体包括几件事：读懂报错信息里真正有用的那一行；用 GitHub 的代码搜索
-在真实项目里找某个 API 的实际用法；直接读官方文档和源码，而不是先看二手教程；
-以及判断一份搜索结果是不是过期了。
+它不是一门课，而是几个具体的习惯：
 
-这项能力没有课程会教，但它决定了你能不能独立学下去。
+- **读懂报错。** 一大段报错里，通常只有一两行是真正有用的：最后那行说错的是什么，调用栈里第一行属于你自己代码的位置说错在哪。
+- **把困惑变成能搜的问题。** “程序跑不起来”搜不到任何东西；“Python ModuleNotFoundError no module named numpy venv”就能搜到。
+- **先看一手资料。** 官方文档、源码、课程自己的讲义，比二手教程和博客更准，也不会过期。
+- **在代码里找答案。** 想知道一个函数实际怎么用，去 GitHub 上搜别人的真实代码，比看教程里的玩具例子有用得多。
+- **判断结果是不是过期了。** 一个十年前的回答可能对应的是早就改过的旧版本，先看日期和版本号。
+- **问一个好问题。** 实在查不到时，一个写清楚“我想干什么、我试了什么、看到了什么”的问题，才会有人愿意回答。
+
+没有课会专门教这些，但它们决定了你能不能一个人学下去。
 
 ## 先修要求
 
 - 没有先修要求。
-- 有一个自己正在卡住的真实问题，练习效果最好。
+- 手上有一个真正卡住你的问题，练起来效果最好。
+
+## 学习路线
+
+| 场景 | 该去哪儿查 | 官方材料 |
+|---|---|---|
+| 普通搜索 | 搜索引擎，用好搜索运算符（引号精确匹配、`site:` 限定网站、`-` 排除） | Google 搜索运算符说明 |
+| 某个 API 怎么用 | 官方文档；再去 GitHub 搜真实项目里的用法 | GitHub 代码搜索语法 |
+| Web 相关问题 | MDN，Mozilla 维护、社区共同编写的 Web 技术文档 | MDN Web Docs |
+| 命令行工具 | `man 命令`、`命令 --help`；Missing Semester 第一讲讲了怎么查 | Missing Semester |
+| 课程作业 | 先看课程自己的讲义、FAQ、讨论区 | 各课程官网 |
+| 都查不到 | 写一个好问题，去论坛或社区问 | Stack Overflow 的提问指南 |
+
+## 官方教程与练习
+
+这是一项习惯，没有作业。下面几份材料值得认真读一遍，然后在下一次卡住时照着做：
+
+- [GitHub 代码搜索语法](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax)：用 `language:`、`path:`、`repo:` 这些限定词，加上正则和布尔运算，在全 GitHub 的代码里精确地找东西。练习：挑一个你正在用的库函数，找出它在三个不同真实项目里是怎么被调用的。
+- [Google 搜索运算符](https://support.google.com/websearch/answer/2466433)：引号、`site:`、减号这几个运算符，能让搜索结果准确很多。
+- [Stack Overflow：How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)：先搜、写一个说清具体问题的标题、说明背景、给出能复现的最少代码。配套的[最小可复现示例](https://stackoverflow.com/help/minimal-reproducible-example)那一篇尤其值得读：很多时候，把问题缩到最小的过程中，你自己就找到答案了。
+- [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html)：Eric S. Raymond 写的经典长文（中文圈常叫“提问的智慧”），讲怎么向开源社区提问。
+
+## 学习建议
+
+- **报错信息先完整读一遍。** 别只看第一行就去搜，也别整段复制。找到最具体的那一行，去掉你自己的文件名和路径，再搜。
+- **给搜索加上版本号。** 同一个问题在不同版本里答案可能完全不同，搜索时带上语言或库的版本。
+- **看日期。** 回答越老，越要去官方文档核对一遍现在是不是还这样。
+- **用 AI 也要核对。** 大模型给的答案经常看起来很对，但可能是编的：不存在的函数、过时的参数。把它当成“帮你想到该搜什么”的助手，最后以官方文档和实际运行结果为准。
+- **把查到的答案记下来。** 下次再遇到就不用再查一遍。这本教材的“个人心得”区就是干这个用的。
+
+## 同类工具怎么选
+
+- **[MIT Missing Semester](/docs/essential-tools/missing-semester)**：第一讲教怎么在命令行里查帮助（`man`、`--help`），第四讲教怎么有系统地调试，都是“自己找到答案”的一部分。
+- **[GitHub](/docs/essential-tools/github)**：会读陌生的仓库、会翻 Issue 里的讨论，也是一种检索能力。
 
 ## 官方资源
 
-- [GitHub 搜索文档](https://docs.github.com/en/search-github)：在代码、Issue 和讨论里检索。
-- [代码搜索语法](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax)：按语言、路径、仓库精确限定。
-- [MDN Web 文档](https://developer.mozilla.org/)：Web 相关问题的权威一手资料。
-
-## 官方作业
-
-- [代码搜索练习](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax)：挑一个你正在用的库，用代码搜索找出它在真实项目里怎么被调用。
-
-这是一项习惯而不是课程，没有官方作业。
+- [GitHub 搜索文档](https://docs.github.com/en/search-github)：在代码、Issue、讨论里检索。
+- [GitHub 代码搜索语法](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax)：限定词、正则、布尔运算。
+- [MDN Web Docs](https://developer.mozilla.org/)：Web 技术的一手文档。
+- [Stack Overflow 提问指南](https://stackoverflow.com/help/how-to-ask)：怎么问出一个好问题。

@@ -1,34 +1,67 @@
 ---
 title: "Scoop"
-description: "Windows 上的命令行包管理器，用一条命令装好开发工具。"
+description: "Windows 上的命令行包管理器：一条命令装好 git、python、gcc 这些开发工具，不要管理员权限，也不弄乱系统。"
 prereqCourses: []
-prereqKnowledge: []
+prereqKnowledge: ["用的是 Windows", "会打开 PowerShell 敲命令"]
 ---
 
-## 课程简介
+## 简介
 
-在 Linux 上装个工具是一条命令的事，在 Windows 上往往要找官网、下安装包、
-点下一步、再手动配环境变量。Scoop 把这套流程变成 `scoop install <名字>`，
-并且默认装到用户目录下，不需要管理员权限，也不往系统里乱塞东西。
+在 Linux 上装一个工具，通常就是一条命令的事。在 Windows 上却往往要找官网、下安装包、一路点“下一步”、
+再手动改环境变量，装多了 `PATH` 乱成一团，还时不时弹出要管理员权限的确认框。
 
-对跟着公开课自学的人，它解决的是一个很具体的麻烦：课程假设你有 git、make、gcc、
-python 这些工具，而 Windows 上并不自带。
+Scoop 把这套流程变成了 `scoop install 名字`。它默认把软件装在你自己的用户目录下，
+官方列出的好处是：不弹 UAC（管理员权限）确认框，不把 `PATH` 环境变量弄乱。
+它最适合装的是“便携版”软件：解压就能用、不需要安装程序的那种，恰好大部分命令行开发工具都是这样。
 
-它的另一个好处是可复现：装了什么、什么版本，都能导出成清单，换台机器照着装回来。
+对跟着公开课自学的 Windows 用户来说，它解决的是一个很具体的麻烦：课程默认你手边有 `git`、`make`、`gcc`、`python`，
+而 Windows 并不自带。另一个好处是可复现：装了哪些软件，可以一条命令导出成清单，换台电脑一条命令装回来。
 
 ## 先修要求
 
-- 使用 Windows。
+- 用的是 Windows。
 - 会打开 PowerShell 并执行命令。
+
+## 学习路线
+
+| 阶段 | 学什么 | 命令 |
+|---|---|---|
+| 安装 | 允许运行脚本，装上 Scoop（用普通权限的 PowerShell） | `Set-ExecutionPolicy`、`Invoke-RestMethod ... \| Invoke-Expression`，完整命令见官方 README |
+| 日常 | 搜索、安装、更新、卸载 | `scoop search`、`scoop install`、`scoop update`、`scoop uninstall` |
+| 扩充 | 添加更多软件源（bucket） | `scoop bucket add extras` |
+| 维护 | 看状态、清理旧版本、自检 | `scoop status`、`scoop cleanup`、`scoop checkup` |
+| 迁移 | 导出和导入已装软件的清单 | `scoop export`、`scoop import` |
+
+软件源叫 bucket：默认的 `main` 装的是常用的命令行工具，`extras` 装的是不符合 main 收录标准的软件（很多图形界面软件在这里）。
+
+## 官方教程与练习
+
+Scoop 是工具，没有作业。跟着官方文档做一遍就会了：
+
+- [官方 README 的安装一节](https://github.com/ScoopInstaller/Scoop#installation)：两条命令装好 Scoop。第一条是允许当前用户运行 PowerShell 脚本，官方解释了为什么需要它。
+- [Quick Start](https://github.com/ScoopInstaller/Scoop/wiki/Quick-Start)：安装、搜索、更新、卸载的基本用法。
+- [官方 Wiki](https://github.com/ScoopInstaller/Scoop/wiki)：bucket、配置、常见问题。
+
+练习：用 Scoop 装好你接下来学课要用的工具，比如 `git`、`python`、`make`、`gcc`，然后 `scoop export` 导出一份清单存起来。
+
+## 学习建议
+
+- **别用管理员权限运行。** 官方明确要求在普通权限的 PowerShell 里安装，这也正是它“不弄乱系统”的前提。
+- **先用 main，缺了再加 extras。** 大部分开发工具在 main 里就有，找不到再 `scoop bucket add extras`。
+- **定期 `scoop update *` 和 `scoop cleanup *`。** 前者更新全部软件，后者清掉旧版本占的空间。
+- **导出清单放进 Git。** 你的开发环境从此有了“配置文件”，重装系统、换电脑时一条命令恢复。
+- **也可以考虑 WSL。** 如果你要学的课大量依赖 Linux（比如操作系统课），直接装 WSL 用一个真正的 Linux 环境往往更省事。Scoop 更适合“在 Windows 本身上把工具配齐”。
+
+## 同类工具怎么选
+
+- **winget**：微软官方的 Windows 包管理器，系统自带，更偏向安装普通的桌面软件。
+- **Chocolatey**：老牌的 Windows 包管理器，软件多，默认装到系统目录，一般需要管理员权限。
+- **Homebrew**（macOS、Linux）：Scoop 的设计参考过它，思路很像。
+- 在 Windows 上配开发环境，Scoop 的“免管理员、不乱改系统、清单可导出”这几点最省心。
 
 ## 官方资源
 
-- [Scoop 官网](https://scoop.sh/)：安装方式与可安装软件的检索。
-- [官方 Wiki](https://github.com/ScoopInstaller/Scoop/wiki)：用法、常见问题与进阶配置。
-- [Scoop 仓库](https://github.com/ScoopInstaller/Scoop)：源码与问题反馈。
-
-## 官方作业
-
-- [官方快速上手](https://github.com/ScoopInstaller/Scoop/wiki/Quick-Start)：装好 Scoop，再用它装一个你接下来真要用的工具。
-
-这是工具而不是课程，没有官方作业。
+- [Scoop 官网](https://scoop.sh/)：安装说明和可安装软件的搜索。
+- [Scoop 仓库](https://github.com/ScoopInstaller/Scoop)：源码、README、问题反馈。
+- [官方 Wiki](https://github.com/ScoopInstaller/Scoop/wiki)：完整用法。
+- [main bucket](https://github.com/ScoopInstaller/Main)、[extras bucket](https://github.com/ScoopInstaller/Extras)：两个最常用的软件源。
