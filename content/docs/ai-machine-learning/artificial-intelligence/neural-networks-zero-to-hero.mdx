@@ -1,40 +1,68 @@
 ---
 title: "Karpathy 神经网络：从零到英雄"
-description: "Karpathy 带你从反向传播一行行写到 GPT，全程手写、不调框架。"
+description: "Andrej Karpathy 的视频课：从一百多行的自动微分引擎 micrograd 写起，经过字符级语言模型 makemore 的五个版本，最后从零写出 GPT 和它的分词器。全程手写，每讲两小时左右。"
 prereqCourses: []
-prereqKnowledge: ["Python 基础与基本的微积分"]
+prereqKnowledge: ["扎实的 Python 编程", "入门级数学：导数、高斯分布"]
 ---
 
 ## 课程简介
 
-这是 Andrej Karpathy 的公开课程，主张是：理解神经网络的最好方式是从零把它写出来。
+Neural Networks: Zero to Hero 是 Andrej Karpathy 的公开视频课，官方一句话介绍是：“用代码、从零开始搭神经网络。”
 
-课程从最基础的地方开始——micrograd，一个只有一百多行的自动微分引擎，
-用它把反向传播讲得极其透彻。然后逐步往上：
-makemore 系列从二元语法模型讲到多层感知机、批归一化、
-再到 WaveNet 风格的卷积结构；最后是 nanoGPT，
-从零实现一个 Transformer 并训练出能生成文本的 GPT。
+它的主张是：理解神经网络最好的方式，是亲手把它写出来。课程从反向传播的基础讲起，一步步搭到 GPT 这样的现代深度网络。
+Karpathy 的说法是：**语言模型是学深度学习的绝佳入口**，即使你最终想做计算机视觉，这里学到的大部分东西也能直接迁移，
+所以课程专注在语言模型上。
 
-作者本人的说法是：语言模型是学深度学习的绝佳入口，
-即使你最终想做的是计算机视觉，这里学到的大部分东西都能直接迁移。
-
-每一讲都是两三个小时的完整编码过程，代码全部开源。
-它不是一门有作业和考试的课，而是一套可以跟着敲的实录。
+每一讲都是一段一两个小时的完整编码实录，边写边讲。视频里写的 Jupyter Notebook 都整理在 [GitHub 仓库](https://github.com/karpathy/nn-zero-to-hero) 里。
+它不是一门有作业、有考试的课，而是一套可以跟着一行行敲的课。课程页上写着“ongoing”，还在继续更新。
 
 ## 先修要求
 
-- 需要扎实的 Python 编程能力。
-- 需要入门级数学：导数与高斯分布的概念即可。
+- 官方写的是：扎实的 Python 编程能力；入门级数学，比如导数和高斯分布。
+- 第一讲只要求基本的 Python 和“对高中微积分还有模糊的印象”。
+- 从第二讲开始用 PyTorch，但会从 `torch.Tensor` 讲起，不需要事先会。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://karpathy.ai/zero-to-hero.html)：全部讲次的顺序与说明。
-- [代码仓库](https://github.com/karpathy/nn-zero-to-hero)：每一讲对应的 Jupyter Notebook。
-- [micrograd](https://github.com/karpathy/micrograd)：第一讲构建的自动微分引擎。
-- [nanoGPT](https://github.com/karpathy/nanoGPT)：课程末尾实现的最小 GPT。
+课程页上目前有八讲：
+
+| 讲 | 时长 | 内容 |
+|---|---|---|
+| 1 | 2h25m | **micrograd**：一步步讲清反向传播和神经网络训练，写一个标量级的自动微分引擎 |
+| 2 | 1h57m | **makemore 第 1 部分**：字符级二元语法（bigram）语言模型；`torch.Tensor` 的细节；训练、采样、负对数似然损失 |
+| 3 | 1h15m | **makemore 第 2 部分**：多层感知机语言模型；学习率调节、超参数、训练/验证/测试集划分、欠拟合与过拟合 |
+| 4 | 1h55m | **makemore 第 3 部分**：激活值和梯度的统计、深层网络为什么难训练、批归一化（BatchNorm） |
+| 5 | 1h55m | **makemore 第 4 部分：成为反向传播忍者**：不用 `loss.backward()`，手动把梯度一路反传过交叉熵、线性层、tanh、BatchNorm 和嵌入表 |
+| 6 | 56m | **makemore 第 5 部分**：把 MLP 加深成树状结构，得到类似 DeepMind WaveNet 的卷积结构；顺便理解 `torch.nn` |
+| 7 | 1h56m | **从零写 GPT**：按《Attention is All You Need》和 GPT-2/3 的思路实现一个 Transformer 语言模型 |
+| 8 | 2h13m | **GPT 分词器**：从零实现 GPT 系列用的字节对编码（BPE）分词器，看清大模型的很多怪行为其实来自分词 |
 
 ## 官方作业
 
-- [跟着视频重写一遍](https://github.com/karpathy/nn-zero-to-hero)：每个 Notebook 末尾都有作者留的练习与扩展建议。
+- **每一讲的练习写在 YouTube 视频的简介里**（仓库 README 的原话）。
+- 第 5 讲比较特别：它本身就是一道大练习，作者给了一个 [Google Colab 练习本](https://colab.research.google.com/drive/1WV2oi2fh9XXyldh02wupFQX0wh5ZC-z-?usp=sharing)，
+  建议你自己先做，卡住了再放视频看答案，他说这一讲“不太适合光看”。
+- 没有自动评分。最好的检验方式是：关掉视频，自己把那一讲的代码重新写出来，训练出差不多的损失值。
 
-没有自动评分；检验方式是不看视频能不能自己把那一讲的代码复现出来。
+## 学习建议
+
+- **跟着敲，不要只看。** 每讲都暂停下来自己写，写完再对照。这门课的价值全在动手。
+- **第 1 讲和第 5 讲最重要。** 第 1 讲让你在标量层面彻底弄懂反向传播；第 5 讲让你在张量层面再弄懂一次。这两讲吃透了，后面的框架都不再是黑盒。
+- **按顺序看。** 作者在 GPT 那讲里特别建议先看前面的 makemore 系列，因为自回归语言模型的框架和张量基础在 GPT 那讲里是默认已知的。
+- **做完视频简介里的练习。** 比如改变模型结构、调超参数把损失再压低一点。这些小实验比多看一遍视频收获大。
+- **加入 Discord 一起学。** 课程页上有作者的 Discord 群，官方说“和别人一起学会更容易”。
+
+## 同类课怎么选
+
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)**：斯坦福的视觉深度学习课，更系统，有完整的作业和讲义。
+- **[Stanford CS224n](/docs/ai-machine-learning/deep-learning/cs224n)**：自然语言处理，理论更完整。
+- **[CMU 11-667 大语言模型](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-667)**：学完 GPT 那讲想深入大模型，可以接这门。
+- **[Harvard CS50 AI](/docs/ai-machine-learning/artificial-intelligence/cs50-ai)**：更广的 AI 入门，不只讲神经网络。
+
+## 官方资源
+
+- [课程主页](https://karpathy.ai/zero-to-hero.html)：全部讲次、时长与简介。
+- [nn-zero-to-hero 仓库](https://github.com/karpathy/nn-zero-to-hero)：每讲的 Jupyter Notebook。
+- [micrograd](https://github.com/karpathy/micrograd)：第 1 讲写的自动微分引擎。
+- [makemore](https://github.com/karpathy/makemore)：第 2～6 讲的字符级语言模型。
+- [nanoGPT](https://github.com/karpathy/nanoGPT)：一个最小的 GPT 训练代码库。

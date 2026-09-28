@@ -1,39 +1,74 @@
 ---
 title: "吴恩达 机器学习专项课程"
-description: "吴恩达的机器学习入门，把概念讲得极其直白的三门课专项。"
+description: "吴恩达和斯坦福、DeepLearning.AI 合作的机器学习入门：三门课讲监督学习、神经网络与决策树、无监督学习与推荐系统、强化学习，用 Python、NumPy、scikit-learn 和 TensorFlow，面向零基础。"
 prereqCourses: []
-prereqKnowledge: ["AI 入门 + 熟练使用 Python"]
+prereqKnowledge: ["基本编程（循环、函数、if/else）", "高中数学"]
 ---
 
 ## 课程简介
 
-这是吴恩达在 Coursera 上的机器学习专项课程，由三门课组成，
-是很多人进入这个领域的第一站。
+Machine Learning Specialization 是吴恩达（Andrew Ng）和斯坦福在线、DeepLearning.AI 合作在 Coursera 上开的机器学习入门专项课程，
+官方说它是吴恩达 2012 年上线的那门经典机器学习公开课的更新扩充版，新版全部改用 Python。
 
-第一门讲监督学习：线性回归、逻辑回归、梯度下降、正则化。
-第二门讲进阶的监督学习方法：神经网络、决策树与集成方法，
-以及模型评估和调优的实践建议。第三门讲无监督学习、
-推荐系统与强化学习入门。
+专项由三门课组成，Coursera 标注为**初级**，总共约 95 小时，按每周 10 小时算大约两个月：
 
-这套课的长处是讲解方式：吴恩达有一种把复杂概念讲成算术题的能力，
-对新手极其友好。作业用 Python 和 NumPy 在 Jupyter Notebook 里完成，
-有自动评分。
+1. **监督学习：回归与分类**（约 33 小时）
+2. **高级学习算法**（约 34 小时）
+3. **无监督学习、推荐系统与强化学习**（约 28 小时）
 
-它的定位是入门，数学推导点到为止。想深入理论的话，
-CS229 是同一位老师面向研究生的版本。
+吴恩达的讲法以直白著称：先讲直觉，再给公式，最后在 Jupyter Notebook 里一步步实现。
+课程里除了算法，还有一整周专门讲“应用机器学习的建议”——怎么诊断偏差和方差、怎么做误差分析、什么时候该加数据，这是很多课没有的。
 
 ## 先修要求
 
-- 需要基础的 Python 编程能力。
-- 需要高中数学；线性代数基础会更顺。
+- Coursera 上写的是：基本编程（for 循环、函数、if/else）和高中水平的数学。
+- 不需要事先学过微积分或线性代数，课上用到的导数、矩阵运算会用直观的方式讲，公式推导都是可选的。
+- 用到的工具：Python、NumPy、scikit-learn、TensorFlow、Jupyter，都在 Coursera 的在线环境里装好了。
 
-## 官方资源
+## 课程结构
 
-- [专项课程主页](https://www.coursera.org/specializations/machine-learning-introduction)：三门课的总入口与大纲。
-- [第一门：监督学习](https://www.coursera.org/learn/machine-learning)：回归与分类的基础。
+| 课程 | 周 | 讲什么 |
+|---|---|---|
+| 1 监督学习 | 1 | 机器学习导论、监督与无监督学习、线性回归、代价函数、梯度下降 |
+| | 2 | 多元线性回归、向量化、特征缩放、学习率选择、特征工程、多项式回归 |
+| | 3 | 分类：逻辑回归、决策边界、分类的代价函数、正则化与过拟合 |
+| 2 高级学习算法 | 1 | 神经网络：神经元、网络层、用 TensorFlow 实现前向传播 |
+| | 2 | 神经网络训练：激活函数、多分类与 Softmax、Adam 优化器 |
+| | 3 | 应用机器学习的建议：模型评估、偏差与方差、学习曲线、误差分析、迁移学习、公平性、不平衡数据的评价指标 |
+| | 4 | 决策树：熵与信息增益、回归树、随机森林、XGBoost，以及怎么选算法 |
+| 3 无监督学习等 | 1 | 聚类（K-means）与异常检测 |
+| | 2 | 推荐系统：协同过滤、基于内容的深度学习推荐、PCA 降维 |
+| | 3 | 强化学习：基本概念、深度 Q 学习 |
 
 ## 官方作业
 
-- [课内编程作业](https://www.coursera.org/specializations/machine-learning-introduction)：每周的 Notebook 作业，平台自动评分。
+以第一门课为例，每周有：
 
-旁听模式可以看全部课程内容；作业评分与证书需要付费。
+- **练习测验**（计分）：每周两到四个小测验。
+- **可选实验（optional labs）**：不计分的 Notebook，把讲课里的公式一步步写成代码，每周四到九个。
+- **编程作业**（计分）：从第二周起每周一个，在 Notebook 里补全关键函数，平台自动评分。
+
+第三门课的最后一个编程作业最有名：用深度 Q 学习训练一个神经网络，让虚拟的登月器平稳着陆。
+
+**关于免费**：可以免费旁听全部课程视频（不拿证书）；计分的编程作业和证书需要付费订阅（每月 49 美元），
+Coursera 也提供助学金申请。
+
+## 学习建议
+
+- **可选实验一个都别跳。** 它们不计分，但把每个公式都写成了代码，是理解算法最直接的途径，也是后面计分作业的基础。
+- **重视第二门课第三周。** “应用机器学习的建议”这一周讲的是实际项目里最常用的判断：模型不好时，该加数据、加特征、还是换模型。
+- **学完自己推一遍公式。** 这门课为了照顾零基础把数学淡化了。学完可以回头补一点微积分和线性代数，把梯度下降和反向传播的公式自己推一遍。
+
+## 同类课怎么选
+
+- **[Stanford CS229](/docs/ai-machine-learning/machine-learning/cs229)**：吴恩达本人在斯坦福开的研究生课，同样的主题，但数学推导完整得多。学完这门入门课再学 CS229 会顺很多。
+- **[UC Berkeley CS189](/docs/ai-machine-learning/machine-learning/cs189)**：伯克利的机器学习导论，数学要求介于两者之间。
+- **[Stanford CS230](/docs/ai-machine-learning/deep-learning/cs230)**：吴恩达的深度学习课，是这门课的自然延续。
+- 更偏数据处理的入门，看 [Data100](/docs/data-science/ucb-data100)。
+
+## 官方资源
+
+- [专项课程主页](https://www.coursera.org/specializations/machine-learning-introduction)：三门课的总入口、时长、先修与收费说明。
+- [第一门：监督学习：回归与分类](https://www.coursera.org/learn/machine-learning)
+- [第二门：高级学习算法](https://www.coursera.org/learn/advanced-learning-algorithms)
+- [第三门：无监督学习、推荐系统与强化学习](https://www.coursera.org/learn/unsupervised-learning-recommenders-reinforcement-learning)
