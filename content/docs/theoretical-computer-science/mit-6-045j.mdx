@@ -1,51 +1,100 @@
 ---
 title: MIT 6.045J Automata, Computability, and Complexity
-description: 从有限自动机到 P 与 NP、随机性与量子计算，讨论计算本身的能力边界。
+description: 从有限自动机、图灵机和停机问题，到 P 与 NP、密码学、PAC 学习和量子计算，讨论计算本身的能力边界。
 prereqCourses: [mit-6-042j]
-prereqKnowledge: ["能读懂也能自己写数学证明", "离散数学基础"]
+prereqKnowledge: ["能读懂也能自己写数学证明", "离散数学基础（MIT 6.042J 的水平）"]
 ---
 
 {/*
   @module        理论计算机科学分类中的样板课程页
   @problem       课程树需要一门真实课程来证明“理论计算机科学”分类能够展开和访问。
-  @design        用 MIT 6.045J 作为分类样板，不在目录阶段展开课程讲解。
+  @design        用 MIT 6.045J 作为分类样板；OCW 2011 存档配上 2025 年新版 6.1400 的公开讲义，一旧一新互相补。
   @courses       MIT 6.045J Automata, Computability, and Complexity
   @exercises     https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/assignments/
   @prereq        官方要求 6.042 计算机科学数学或同等数学准备，重点是能读能写证明。
-  @unclear       这是 OCW 上 2011 年春季的存档版本，没有助教答疑和批改；MIT 现行同名课程的编号与内容可能已经变化。
+  @unclear       OCW 2011 版只有题目，没有公开解答；课程已改名为 6.1400，2025 年版的习题只发给选课学生。
 
   @letter
-  理论课程有时看起来离“做出一个网站”很远，但这本教材的目录不能只收眼前用得到的技术。先把它放在
-  树上，是为了保留整个计算机科学体系的边界；你可以按自己的问题和兴趣决定何时进入。
-  这一页和其他课程页还有一个不同：它指向的是 OCW 存档，材料齐全但课程已经结束。习题集有官方题目
-  也有官方解答，却没有人给你反馈。把这件事写在页面上，比事后才发现要好——你在决定要不要进入之前，
-  就该知道这门课能给你什么、不能给你什么。
+  先说个坏消息：这门课的习题，网上找不到官方答案。OCW 上六套题都在，解答一份没放。
+  2025 年的新版 6.1400 倒是把幻灯片全放出来了，可习题只发给选课的人，而且课程政策明说不许上网搜答案、不许问 AI。
+  那自学怎么办？说实话，理论课的题本来就不太靠“对答案”——你证出来了，自己是知道的；
+  证不出来，写下卡在哪一步，隔两天再看，往往就通了。不信你试试第三套题的第一问：
+  “一个语言可判定，当且仅当它和它的补都可识别。”这题不需要任何答案，想通的那一刻你会知道。
 */}
 
 ## 课程简介
 
-6.045J 讨论的是“计算这件事本身能做到什么”。课程从有限自动机出发，经图灵机与可计算性、判定树等
-具体计算模型，进入高效算法与归约、NP 完全性和 P 对 NP 问题，再讨论随机性的威力、密码学与单向函数、
-计算学习理论、交互式证明，最后谈到量子计算与计算的物理极限。
+6.045J 讨论的是“计算这件事本身能做到什么”。OCW 上是 **2011 年春季**版，授课教师是 Scott Aaronson。
+官方对这门课的概括是“计算机之外的计算机科学”：把计算机科学当成一套理解复杂系统（比如宇宙和心智）的数学工具。
 
-官方对这门课的概括是“计算机科学在计算机之外”：把计算机科学当成一套理解复杂系统的数学工具。
+课程从古代的计算思维（欧几里得算法）讲起，很快经过有限自动机、图灵机与可计算性、判定树和电路，
+进入高效算法与归约、NP 完全性和 P 对 NP 问题，再讨论随机性的威力、密码学与单向函数、
+计算学习理论（PAC 学习）、交互式证明，最后是量子计算和计算的物理极限。
+课堂上会有不少讨论和辩论（比如 Penrose 关于“强人工智能”的论证），官方把课堂参与算进了成绩。
+
+这门课现在改名为 **6.1400 / 18.400**。2025 年春季由 Ryan Williams 讲授，
+[课程网站](https://people.csail.mit.edu/rrw/6.1400-2025/index.html) 上有每一讲的幻灯片和 Sipser 教材的阅读安排，
+内容更贴近 Sipser 的教材：自动机、DFA 最小化、流算法、通信复杂度、可计算性、Kolmogorov 复杂度、P 与 NP、空间复杂度、随机复杂度。
 
 ## 先修要求
 
-- 数学：官方要求修过 6.042 计算机科学数学，或具备同等的数学准备。
-- 证明能力：官方特别强调“数学成熟度”——你要能读懂别人的证明，也能自己写出证明。
-- 教材：课程没有必读教材；官方推荐 Sipser《Introduction to the Theory of Computation》（覆盖前半）
-  与 Arora & Barak《Computational Complexity》（覆盖后半）作为参考。
+- 官方要求修过 [6.042J](/docs/mathematics/mit-6-042j)（计算机科学中的数学），或具备同等的数学准备。
+- 官方特别强调“数学成熟度”：你要能读懂别人的证明，也能自己写出证明。这门课的作业几乎全是证明题。
+- 教材：没有必读教材，官方推荐三本：
+  Moore 和 Mertens 的《The Nature of Computation》；
+  Sipser 的《Introduction to the Theory of Computation》（覆盖前半学期）；
+  Arora 和 Barak 的《Computational Complexity: A Modern Approach》（覆盖后半学期，还有更深的内容，[草稿 PDF](https://theory.cs.princeton.edu/complexity/book.pdf) 免费）。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（MIT OpenCourseWare）](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/)：2011 年春季存档版，材料完整公开。
-- [课程大纲](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/syllabus/)：课程范围、先修要求、推荐教材与评分方式。
-- [课程日程](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/calendar/)：讲座顺序与习题集发布节奏。
-- [讲义](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/lecture-notes/)：各讲的完整讲义。
+2011 年春季 23 讲，按日程表：
+
+| 部分 | 讲什么 |
+|---|---|
+| 逻辑与自动机 | 导论、逻辑电路与门、DFA 与 NFA、NFA 与正则表达式、非正则语言与泵引理 |
+| 可计算性 | 图灵机、可判定性、不可判定问题与 Post 对应问题、映射归约与 Rice 定理、自指与递归定理 |
+| 密码学与复杂度 | 密码学导论、复杂度理论、伪随机生成器与单向函数、公钥密码、NP 完全性 |
+| 随机性与学习 | 概率图灵机与复杂度类、陷门单向函数与零知识证明、PAC 学习（两讲） |
+| 量子计算 | 量子导论、量子力学与 BQP、量子算法 |
+
+评分：习题 40%、期中 20%、期末 30%、课堂参与 10%。
 
 ## 官方作业
 
-- [习题集与解答](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/assignments/)：6～7 套官方习题集，OCW 同时公开了官方解答。
+[OCW 上的六套习题](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/assignments/)，每套一个 PDF，**没有公开解答**：
 
-这是存档课程，没有助教批改；做完后对照官方解答自行检查。这里不链接非官方题解，也不自编替代题目。
+1. **数论与正则语言**
+2. **上下文无关语言**
+3. **“哥德尔-图灵脑洞题”**（The Gödel-Turing Mindblower）：可判定与可识别、枚举器、非确定图灵机等。
+   比如第一题要你证明“一个语言可判定，当且仅当它和它的补都可识别”，再证明停机问题可识别、但它的补不可识别。
+4. **可计算性与复杂度**
+5. **NP 完全性及其他**
+6. **随机性与密码学**
+
+官方对作业的态度：题目常常要你证明定理，但要的是“理解清楚”，不是“为了严格而严格”。
+简短的文字描述算法，比一团乱麻的代码好；清楚说明自己试了什么、为什么失败，也能拿部分分。
+
+## 学习建议
+
+- **配着 Sipser 读。** 前半学期（自动机、可计算性、NP 完全性）Sipser 讲得最清楚，每章的例题和习题都很好，
+  而且 Sipser 书里有部分习题的解答，可以弥补 OCW 没有解答的缺憾。
+- **看 2025 年的幻灯片补新内容。** 6.1400 的幻灯片每讲都标了 Sipser 的对应章节，
+  流算法、通信复杂度、Kolmogorov 复杂度这些 2011 版没有的内容，从那里补。
+- **证不出来就写下卡在哪。** 这是官方鼓励的做法，也是理论课最好的学习方式：隔两天回头看，往往就通了。
+- **注意讲义的来源。** OCW 的讲义有两部分：Nancy Lynch 的幻灯片，以及 MIT 6.080（理论计算机科学中的伟大思想）学生记的笔记，
+  笔记风格随记录者不同而变化，看不懂时换 Sipser 对应章节。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS170](/docs/data-structures-algorithms/cs170)** 和 **[MIT 6.046J](/docs/data-structures-algorithms/mit-6-046j)**：算法课的最后几讲也讲 P、NP 和归约，但只是入门。这门课讲得深得多。
+- 这门课讲的正则语言和上下文无关语言，是编译器前端的理论基础，可以和 [Stanford CS143](/docs/systems/compilers/cs143) 对照着学。
+- 对密码学部分感兴趣，可以接 [MIT 6.1600](/docs/systems/security/mit-6-1600)（计算机安全基础）。
+
+## 官方资源
+
+- [OCW 2011 春季主页](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/)：可以整门课打包下载。
+- [课程大纲](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/syllabus/)：课程范围、先修、推荐教材、评分方式、完整的主题清单。
+- [日程](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/calendar/)：23 讲的主题和习题截止时间。
+- [讲义](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/lecture-notes/)：每讲一个 PDF。
+- [习题](https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/pages/assignments/)：六套，无解答。
+- [6.1400 2025 春季](https://people.csail.mit.edu/rrw/6.1400-2025/index.html)：新版课程的幻灯片和阅读安排。
