@@ -1,40 +1,84 @@
 ---
-title: "UC Berkeley CS169"
-description: "伯克利的软件工程课：敏捷流程、测试驱动开发与云端部署的完整实践。"
-prereqCourses: []
-prereqKnowledge: ["无"]
+title: "UC Berkeley CS169A"
+description: "伯克利的软件工程：用 Ruby on Rails 做 SaaS 应用，按敏捷流程走一遍需求、行为驱动开发、测试驱动开发、重构遗留代码、团队协作和部署。"
+prereqCourses: [cs61a, cs61b]
+prereqKnowledge: ["熟练掌握至少一门面向对象语言", "数据结构和函数式编程基础（CS61A、CS61B 的水平）"]
 ---
 
 ## 课程简介
 
-CS169 讲的是怎么以团队方式开发和维护一个真实的软件产品，
-而不是怎么写一个算法。
+CS169A（Introduction to Software Engineering，以前叫 CS169）是伯克利的软件工程课。
+官方说明：用敏捷方法和工具来设计、开发和修改大型软件系统——模块化设计、设计模式、行为驱动设计（BDD）、
+测试驱动开发（TDD）、用户故事、验证与确认、团队组织与管理、分析和重构遗留代码，
+**全部放在“构建和部署一个 SaaS 应用”这个场景里**。
 
-课程按软件工程的实践组织：敏捷开发方法（Scrum、用户故事、迭代）、
-版本控制与协作流程、行为驱动开发（BDD）与测试驱动开发（TDD）、
-重构与遗留代码的处理、设计模式、
-Web 应用的架构（课程用 Ruby on Rails）、
-持续集成与云端部署，以及项目管理与团队协作。
+教材是 Armando Fox 和 David Patterson 写的《Engineering Software as a Service》第二版（2020），
+**作者提供免费、合法的分章 PDF**。整门课按教材分成 12 个模块，一个模块对应一章：
+每个模块有录像、教材阅读、一份自测，以及动手做的编程作业（CHIPS）。
 
-它的特点是把"过程"本身当成教学内容：
-大多数课程只关心代码写得对不对，这门课还关心
-需求怎么来、改动怎么验证、团队怎么不互相踩脚。
-
-配套教材《Engineering Software as a Service》由课程团队编写。
+技术栈是 Ruby 和 Rails。课程专门有一个模块叫“Ruby：学会学语言”，
+它的意思是：你以后会不断遇到新语言，这门课顺便练的就是快速上手一门新语言的能力。
 
 ## 先修要求
 
-- 需要编程基础与数据结构知识。
-- 不要求预先了解 Ruby 或 Web 开发。
+- 官方要求：[CS61A](/docs/programming-intro/cs61a) 和 [CS61B](/docs/data-structures-algorithms/cs61b)，或同等水平——
+  熟练掌握至少一门面向对象语言，熟悉数据结构和函数式编程。
+- 不需要事先会 Ruby 或 Rails，第一个编程作业就是 Ruby 入门。
+- 要会用命令行和 Git。课程有一份[本地开发环境配置说明](https://cs169.org/fa26/resources/local-development/)。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://cs169.org/fa26/)：当前学期的日程、讲义与作业。
-- [课程大纲](https://cs169.org/fa26/syllabus/)：课程范围、评分与团队项目要求。
-- [配套教材](https://www.saasbook.info/)：《Engineering Software as a Service》。
+2026 年秋季的 12 个模块：
+
+| 模块 | 讲什么 |
+|---|---|
+| 1 | SaaS 与敏捷开发导论 |
+| 2 | Ruby：学会学语言 |
+| 3 | SaaS 架构：HTTP、REST 和 API |
+| 4 | Rails 与 MVC |
+| 5 | Rails 进阶：DRY、关联、身份验证 |
+| 6 | JavaScript 与客户端 |
+| 7 | 需求：行为驱动开发与用户故事 |
+| 8 | 测试：用 RSpec 做测试驱动开发 |
+| 9 | 遗留代码与重构 |
+| 10 | 敏捷团队与项目管理 |
+| 11 | 设计模式与 SOLID 原则 |
+| 12 | 运维：性能、部署与安全 |
+
+评分：编程作业（CHIPS）25%、模块小测 24%、期末项目 20%、期末考试 25%、自测 6%。
 
 ## 官方作业
 
-- [Homework 与团队项目](https://cs169.org/fa26/)：日程页上按周发布，后半学期以团队项目为主。
+- **CHIPS（Coding/Hands-on Integrated Projects）**：一共 11 个，编号对应教材的小节。已经发布的有：
+  CHIPS 2.5 Ruby 入门、3.3 HTTP 与 URI、3.7 Wordguesser（用 Sinatra 做一个猜词游戏）、4.3 ActiveRecord 基础、
+  4.6 把 Wordguesser 改写成 Rails 应用、4.8 Hello Rails（小组作业）、5.3 Rails 入门、7.7 用 Cucumber 做行为驱动开发、
+  7.9 用 BDD 加一个新功能（加分题）、8.5 RSpec 入门。
+  **每个作业的起始代码都在公开的 GitHub 组织 [saasbook](https://github.com/saasbook) 下**，
+  比如 Wordguesser 就在 [saasbook/hw-sinatra-saas-wordguesser](https://github.com/saasbook/hw-sinatra-saas-wordguesser)，
+  完整的分步说明写在仓库的 README 里。在校生把它克隆到自己的私有仓库，做完交到 Gradescope 自动评分。
+- **期末项目（CHIP 10.5）**：四人一组，做两轮敏捷迭代。
+- **模块自测**：每个模块一份，在 Gradescope 上。
+- **CHIPS 是小组完成的**：在校生四人一队，代码只能在队内共享。
 
-作业与项目说明公开；自动评分与团队协作依赖校内平台。
+## 学习建议
+
+- **每个模块按“录像 → 读教材 → 自测 → CHIPS”的顺序走。** 这就是官方设计的流程，教材是免费的，录像要校内账号，但教材本身已经够用。
+- **CHIPS 从 saasbook 仓库的 README 开始。** 每个仓库的 README 就是完整的作业说明，带测试用例，本地就能跑。
+- **一定要体验一次 BDD + TDD 的完整循环。** 先用 Cucumber 写一个“用户故事”（它读起来像英文句子），看它失败；
+  再用 RSpec 写单元测试，看它失败；然后写代码让两者都通过。这个“红—绿—重构”的节奏是这门课最想让你带走的东西。
+- **找人一起做期末项目。** 软件工程有一半是协作：写需求、分任务、做代码评审、处理合并冲突。一个人做练不到这一半。
+
+## 同类课怎么选
+
+- **[MIT 6.031](/docs/software-engineering/mit-6-031)**：MIT 的软件构造，重点在“单人把代码写对”：规约、不变量、测试、并发。
+  CS169A 的重点在“团队把产品做出来”：需求、敏捷、部署。两门互补。
+- **[CMU 17-803](/docs/software-engineering/cmu-17-803)**：研究生课，讲怎么用实证方法研究软件工程本身，适合想做研究的人。
+- 想把 Web 开发这部分学得更系统，看 [Full Stack Open](/docs/web-development/full-stack-open)（JavaScript 技术栈）。
+
+## 官方资源
+
+- [2026 秋季课程主页](https://cs169.org/fa26/)：日程、模块、作业说明。
+- [模块总览](https://cs169.org/fa26/modules/)：12 个模块各自的录像、阅读、自测和作业。
+- [课程大纲](https://cs169.org/fa26/syllabus/)：先修、评分、小组政策。
+- [教材](https://www.saasbook.info/)：《Engineering Software as a Service》第二版，免费分章 PDF。
+- [saasbook GitHub 组织](https://github.com/saasbook)：全部作业的起始代码。
