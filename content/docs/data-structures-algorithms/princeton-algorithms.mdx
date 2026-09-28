@@ -1,41 +1,85 @@
 ---
 title: "Princeton Algorithms I / II"
-description: "Sedgewick 的算法教材与配套课程，每个算法都有可运行的 Java 实现。"
+description: "Sedgewick 和 Wayne 的算法课与教材：排序、查找、图、字符串，每个算法都有可运行的 Java 实现；十个编程作业在 Coursera 上免费自动评分。"
 prereqCourses: []
-prereqKnowledge: ["CS61A"]
+prereqKnowledge: ["会用 Java 或能很快学会（循环、数组、类、接口）", "高中数学：求和、对数、简单概率"]
 ---
 
 ## 课程简介
 
-这是普林斯顿 Sedgewick 与 Wayne 的《Algorithms, 4th Edition》
-及其配套的公开课。它和偏理论的算法课是两条路子：
-这里的每一个算法都有完整、可运行、写得很讲究的 Java 实现，
-配上大量实验数据来说明它在真实输入下表现如何。
+这是普林斯顿 Robert Sedgewick 和 Kevin Wayne 的算法课，配套教材是他们的《Algorithms, 4th Edition》。
+课程在 Coursera 上分两部分，**所有功能免费**（按普林斯顿的规定不发证书）。
 
-内容按书的结构组织：基础（数据抽象、栈与队列、复杂度分析、并查集）、
-排序（初级排序、归并、快排、优先队列）、查找（符号表、二叉搜索树、
-平衡树、哈希）、图（无向图、有向图、最小生成树、最短路），
-以及字符串处理（字符串排序、字典树、子串查找、正则、数据压缩）。
+它和偏理论的算法课是两条路子：书里每个算法都有一份完整、可运行、写得很讲究的 Java 实现，
+配上真实数据的实验，告诉你它在实际输入上跑得多快。教材的第 1 章就专门讲怎么用科学实验的方法预测程序的运行时间。
 
-配套的编程作业非常有名，每个作业都是一个完整的小项目
-（渗流模型、随机队列、点集共线检测、8 数码问题、K-d 树），
-并且有严格的自动评分。
+- **Part I**：并查集、算法分析、栈与队列、初级排序、归并排序、快速排序、优先队列、符号表、平衡搜索树、
+  二叉搜索树的几何应用、哈希表。
+- **Part II**：无向图、有向图、最小生成树、最短路、最大流与最小割、基数排序、字典树、子串查找、正则表达式、
+  数据压缩、归约、难解性。
+
+每部分约 5～6 周，官方估计每周 10 小时。
 
 ## 先修要求
 
-- 需要 Java 编程基础，课程按 CS61A 或同等的入门课设定。
-- 需要基本的数学分析能力（求和、对数、简单概率）。
+- 需要会一点 Java。编程作业只能用 Java 提交；讲师说书里的代码主要是为了讲清楚思路，换成别的语言也能读懂。
+  如果你学过 Python 但没学过 Java，先花一周熟悉 Java 的类和接口就够了。
+- 数学上只需要高中水平：求和、对数、一点概率。
 
-## 官方资源
+## 课程结构
 
-- [教材配套网站](https://algs4.cs.princeton.edu/home/)：全书章节、算法实现与实验数据。
-- [algs4 代码库](https://algs4.cs.princeton.edu/code/)：全部算法的 Java 实现，可直接下载运行。
-- [Coursera Part I](https://www.coursera.org/learn/algorithms-part1)：排序与查找部分的公开课。
-- [Coursera Part II](https://www.coursera.org/learn/algorithms-part2)：图算法与字符串部分。
+教材的六章和课程的对应关系：
+
+| 教材 | 内容 | 课程 |
+|---|---|---|
+| 第 1 章 基础 | 编程模型、数据抽象、栈与队列、算法分析、案例：并查集 | Part I |
+| 第 2 章 排序 | 初级排序、归并、快排、优先队列、排序的应用 | Part I |
+| 第 3 章 查找 | 符号表、二叉搜索树、平衡搜索树（红黑树）、哈希表 | Part I |
+| 第 4 章 图 | 无向图、有向图、最小生成树、最短路 | Part II |
+| 第 5 章 字符串 | 字符串排序、字典树、子串查找、正则表达式、数据压缩 | Part II |
+| 第 6 章 背景 | 事件驱动模拟、B 树、后缀数组、最大流、归约、难解性 | Part II（部分） |
 
 ## 官方作业
 
-- [编程作业规范](https://coursera.cs.princeton.edu/algs4/assignments/)：五个项目的完整题面与评分标准，公开可读。
-- [Percolation 作业](https://coursera.cs.princeton.edu/algs4/assignments/percolation/specification.php)：第一个作业：用并查集模拟渗流。
+十个编程作业，题面、常见问题（FAQ）和项目骨架都在 [作业页](https://coursera.cs.princeton.edu/algs4/assignments/) 公开，
+提交和自动评分在 Coursera 上（免费）。自动评分不只看结果对不对，还会用 Checkstyle 等工具检查代码风格和常见 bug（评分环境是 OpenJDK 11）。
 
-题面与测试数据公开；完整的自动评分需要在 Coursera 上选课。
+**Part I：**
+
+1. [Percolation](https://coursera.cs.princeton.edu/algs4/assignments/percolation/specification.php)：用并查集和蒙特卡洛模拟估计“渗流阈值”。
+2. [Deques and Randomized Queues](https://coursera.cs.princeton.edu/algs4/assignments/queues/specification.php)：自己实现双端队列和随机队列，要求每个操作的时间和内存都达标。
+3. [Collinear Points](https://coursera.cs.princeton.edu/algs4/assignments/collinear/specification.php)：在平面点集里找出所有四点及以上共线的线段，用排序把暴力解法加速。
+4. [8 Puzzle](https://coursera.cs.princeton.edu/algs4/assignments/8puzzle/specification.php)：用 A* 搜索和优先队列解八数码问题。
+5. [Kd-Trees](https://coursera.cs.princeton.edu/algs4/assignments/kdtree/specification.php)：用二维树做范围查询和最近邻查询。
+
+**Part II：**
+
+1. [WordNet](https://coursera.cs.princeton.edu/algs4/assignments/wordnet/specification.php)：在 WordNet 词库构成的有向图里算两个词的“最近公共祖先”。
+2. [Seam Carving](https://coursera.cs.princeton.edu/algs4/assignments/seam/specification.php)：按内容缩放图片，每次删掉“最不重要”的一条像素路径，本质是有向无环图上的最短路。
+3. [Baseball Elimination](https://coursera.cs.princeton.edu/algs4/assignments/baseball/specification.php)：用最大流判断一支球队是否已经在数学上被淘汰。
+4. [Boggle](https://coursera.cs.princeton.edu/algs4/assignments/boggle/specification.php)：用字典树在字母方阵里找出所有单词。
+5. [Burrows–Wheeler](https://coursera.cs.princeton.edu/algs4/assignments/burrows/specification.php)：实现 Burrows–Wheeler 压缩算法，官方说它压得比 gzip 和 PKZIP 还小。
+
+此外 Coursera 上每周还有不计分的面试题和练习。
+
+## 学习建议
+
+- **每个作业先读 FAQ。** 作业页每个作业都有一份 FAQ，常见的坑（比如 Percolation 里的“回流”问题）都写在里面。
+- **看自动评分的完整报告。** 它会列出每个没通过的测试和风格问题。按报告一点点改到满分，是这门课最有价值的训练。
+- **把书上的实现当范本读。** 教材网站的 [代码库](https://algs4.cs.princeton.edu/code/) 里有全部算法的 Java 实现，
+  写法都经过反复打磨，读它们能学到怎么写干净的代码。
+- **先做出能过的版本，再优化。** 很多作业（比如 Percolation 的“回流”问题）FAQ 里明说第一版可以不处理，先把主体写对。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS61B](/docs/data-structures-algorithms/cs61b)**：同样用 Java，内容高度重合（它也有渗流作业）。
+  CS61B 的工程训练（Git、测试、设计文档、大项目）更多；这门课的算法覆盖更全（字符串、最大流），自动评分对校外完全开放。
+- **[MIT 6.006](/docs/data-structures-algorithms/mit-6-006)**：偏分析和证明，代码写得少。两门搭配学效果最好：一门练实现，一门练分析。
+- 学完之后想深入算法设计与证明，接 [CS170](/docs/data-structures-algorithms/cs170) 或 [MIT 6.046J](/docs/data-structures-algorithms/mit-6-046j)。
+
+## 官方资源
+
+- [教材网站](https://algs4.cs.princeton.edu/home/)：各章要点、讲座视频、Java 代码、练习与部分解答、数据文件。
+- [algs4 代码库](https://algs4.cs.princeton.edu/code/)：全部算法和标准库的 Java 实现。
+- [编程作业](https://coursera.cs.princeton.edu/algs4/assignments/)：十个作业的题面、FAQ 和项目骨架。
+- [Coursera Part I](https://www.coursera.org/learn/algorithms-part1)、[Coursera Part II](https://www.coursera.org/learn/algorithms-part2)：免费选课、看视频、交作业。

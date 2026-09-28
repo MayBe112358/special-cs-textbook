@@ -1,40 +1,81 @@
 ---
 title: "MIT 6.006 算法导论"
-description: "MIT 的算法导论：从复杂度和数据结构出发，建立一套解题框架。"
-prereqCourses: []
-prereqKnowledge: ["计算机导论(CS50/CS61A or equivalent)"]
+description: "MIT 的算法入门：动态数组、哈希、平衡树、堆、图搜索、最短路和动态规划，每份习题都有证明题和 Python 编程题。"
+prereqCourses: [mit-6-042j]
+prereqKnowledge: ["会写 Python 3（MIT 6.0001 / 6.100L 的水平）", "离散数学：集合、逻辑、组合、证明、递归、图论、概率（MIT 6.042J 的水平）"]
 ---
 
 ## 课程简介
 
-6.006 是 MIT 的算法入门课，用 Python 授课。
-它的组织方式是先立框架再填内容：一开始就讲清楚计算模型和渐近复杂度怎么算，
-之后每引入一种技术，都回到“它把什么问题从多慢变成了多快”这个问题上。
+6.006（Introduction to Algorithms）是 MIT 的算法入门课。OCW 上最新、最完整的是 **2020 年春季**版，
+由 Erik Demaine、Jason Ku 和 Justin Solomon 讲授，讲课录像、讲义、习题课笔记、习题和考试全部公开，而且都附解答。
 
-内容覆盖排序与查找、二叉搜索树与平衡树、哈希、堆、
-图的遍历与最短路（BFS、DFS、Dijkstra、Bellman-Ford）、
-动态规划，最后是数值算法与复杂度类的简介。
+官方的课程说明：讲基本的数据结构（动态数组、堆、平衡二叉搜索树、哈希表）和解决经典问题的算法思路
+（排序、图搜索、动态规划），强调算法和编程之间的关系，教你怎么衡量和分析性能。
 
-Erik Demaine 的讲课风格很有辨识度，讲座视频、讲义、
-recitation 笔记和习题在 OCW 上都有。
-课程还提供了一份 Python Cost Model，说明各种 Python 操作的实际代价——
-这是很多算法课会忽略但实际写代码时很要紧的细节。
+这一版的组织很清楚：前半学期讲“数据结构”——同一组操作（按位置存取的序列、按键查找的集合）
+能用数组、链表、哈希表、平衡树、堆分别实现，每种实现各有什么代价；
+中间讲图（BFS、DFS、Bellman-Ford、Dijkstra、Johnson）；
+最后四讲动态规划，用一套叫 SRT BOT 的六步框架（子问题、关系、拓扑序、基础情况、原问题、时间分析）来设计递归算法和动态规划——
+讲义里连归并排序都用这六步重新写了一遍。
+
+课程没有指定教材，材料都在讲义和习题课笔记里。常说的 CLRS（《算法导论》）是可选参考书。
 
 ## 先修要求
 
-- 需要编程入门基础（官方按 CS50/CS61A 一类课程设定）。
-- 需要离散数学基础，尤其是证明与求和的处理。
+- 官方列的先修是两门课：6.0001（Python 编程入门，现在改名为 [6.100L](/docs/programming-intro/mit-6-100l)）
+  和 [6.042J](/docs/mathematics/mit-6-042j)（计算机科学中的数学：集合、逻辑、组合、证明、递归、数论、图论、概率）。
+- 官方**强烈不建议**在没学完先修课的情况下上这门课，并用 **Problem Set 0** 来检验：
+  在校生必须交，得 C 或更低要先和助教面谈。自学时先做 PS0，对着解答自评，能判断自己准备好了没有。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/)：2011 秋季完整存档。
-- [讲义](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/lecture-notes/)：每讲的完整文字材料。
-- [讲座视频](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/video_galleries/lecture-videos/)：Erik Demaine 与 Srini Devadas 的课堂录像。
-- [配套阅读](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/readings/)：教材章节与讲座的对应关系。
+每周两讲、两次习题课（recitation），外加可选的解题课（problem session）：
+
+| 周 | 讲什么 |
+|---|---|
+| 1 | 导论（计算模型、渐近记号）、数据结构（序列与集合接口、动态数组） |
+| 2–3 | 排序、哈希、线性时间排序（计数排序、基数排序） |
+| 4–5 | 二叉树、AVL 树、二叉堆 |
+| 5–8 | 广度优先搜索、深度优先搜索、带权最短路、Bellman-Ford、Dijkstra、Johnson |
+| 9–11 | 动态规划四讲（递归算法、子问题、全源最短路与括号化与钢琴指法、伪多项式时间） |
+| 11–13 | 复杂度（P、NP、判定问题）、总复习、后续课程介绍 |
+
+考核是三次小测（Quiz）和一次期末，占 80%；习题占 18%。
 
 ## 官方作业
 
-- [Assignments](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/assignments/)：官方习题集，含题面与配套代码。
-- [Exams](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/pages/exams/)：往年试题，适合当作综合自测。
+全部在 OCW 上，**每一份都附官方解答**：
 
-OCW 存档课程，官方提供解答，做完可自行核对。
+- **Problem Set 0～8**：每份一个 PDF 题目，加一个模板压缩包（LaTeX 模板和 Python 模板）。
+  题目分两种：一种要写算法描述和分析，比如把五个函数按渐近增长排序、设计一个常数时间的双向链表拼接操作；
+  另一种要在 Python 模板里实现，比如 PS1 实现双向链表的几个操作，PS3 写一个统计“字母异位子串”的函数。模板里带了测试用例。
+- **Problem Session 1～8**：可选的解题课，每份习题对应一次，讲师带着做例题，附解答。
+  做习题卡住时先看这里，思路往往是相通的。
+- **Recitation 笔记**：每次习题课一份，比讲义讲得细，很多具体的数据结构实现和例题在这里。
+- **Quiz 1～3 和期末**：每次小测都附一份复习题和解答，考卷本身也附解答。
+
+## 学习建议
+
+- **先做 PS0。** 它检验的正是先修课的内容，做不下来就先回去补 6.042J，不要硬上。
+- **讲义和 Recitation 笔记一起读。** 讲课只讲主线，Recitation 笔记里有代码实现和更多例题。
+- **编程题认真做。** 自己写一遍链表、哈希表和 AVL 树的旋转，比只看图示理解得深得多。模板里的测试用例先跑通，再自己加几个边界情况。
+- **动态规划用 SRTBOT 走一遍。** 这门课最有价值的就是这套方法：每道动态规划题都按六步写出来，
+  写到第三步“拓扑序”时，你就知道该怎么填表了。
+
+## 同类课怎么选
+
+- **[MIT 6.046J](/docs/data-structures-algorithms/mit-6-046j)** 是它的后续课，从“会用算法”推进到“会设计和证明算法”。
+- **[UC Berkeley CS61B](/docs/data-structures-algorithms/cs61b)** 和 **[Princeton Algorithms](/docs/data-structures-algorithms/princeton-algorithms)**：
+  用 Java，写代码多、分析少。6.006 反过来，分析和证明多、代码写得少。想要扎实的工程训练选前两门，想要扎实的分析能力选 6.006。
+- **2011 年秋季版**：OCW 上还有 Srini Devadas 和 Erik Demaine 讲的旧版，录像也很有名，但作业组织不如 2020 版清楚。
+
+## 官方资源
+
+- [2020 春季 OCW 主页](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/)：可以整门课打包下载。
+- [讲课录像](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/video_galleries/lecture-videos/)
+- [讲义与习题课笔记](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/lecture-notes/)：两种笔记都在这一页。
+- [习题与解答](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/assignments/)
+- [解题课](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/practice-problems/)
+- [小测与期末](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/quizzes/)
+- [课程大纲](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/syllabus/)：先修要求、评分方式。

@@ -1,38 +1,80 @@
 ---
 title: "MIT 6.046J 算法设计与分析"
-description: "MIT 的算法设计与分析：分治、随机化、摊还、网络流与难解性。"
-prereqCourses: []
-prereqKnowledge: ["算法入门(6.006/CS61B/CS106B/CS106X or equivalent)"]
+description: "MIT 的算法进阶课：分治、摊还、随机化、动态规划、贪心、网络流、线性规划、NP 完全与近似，还有分布式算法、密码学和缓存无关算法。"
+prereqCourses: [mit-6-006, mit-6-042j]
+prereqKnowledge: ["会分析简单算法和数据结构（6.006 的水平）", "会写归纳证明，懂基本概率（6.042J 的水平）"]
 ---
 
 ## 课程简介
 
-6.046J 是 6.006 的后继课，从“会用算法”推进到“会设计和证明算法”。
+6.046J（Design and Analysis of Algorithms）是 [6.006](/docs/data-structures-algorithms/mit-6-006) 的后续课，
+也是 MIT 计算理论方向的第一门课。OCW 上是 **2015 年春季**版，由 Erik Demaine、Srini Devadas 和 Nancy Lynch 讲授，
+讲课录像、讲义、习题课笔记、习题和考试都公开，而且附解答。
 
-课程分几大块：分治与主定理的进阶用法、随机化算法（含快速选择与哈希的分析）、
-摊还分析与高级数据结构、动态规划的进阶技巧、贪心与拟阵、
-图算法与网络流、线性规划，最后是 NP 完全性、近似算法与分布式算法的简介。
+官方说明很简短：默认你已经会分析简单的算法和数据结构，这门课教你**设计**算法，以及分析复杂的算法。
+大纲里列的学习目标很具体：用归纳法和不变式证明算法正确；用示性随机变量和期望的线性性分析随机算法；
+会用聚合、记账、势能三种方法做摊还分析；会做竞争分析；知道什么是近似算法、PTAS 和 FPTAS。
 
-和入门课最大的区别是证明比重：这门课要求你能说明一个算法为什么正确、
-复杂度为什么是那个数量级，而不只是把它实现出来。
-三位讲授者 Erik Demaine、Srini Devadas 和 Nancy Lynch 各有专长，
-最后几讲的分布式算法部分由 Nancy Lynch 讲，很有分量。
+和 6.006 最大的区别是证明比重：不只是把算法写出来，还要说清楚它为什么对、为什么是这个复杂度。
+课程最后几讲会进入一般算法课不讲的领域：Nancy Lynch 讲同步和异步的分布式算法，
+Srini Devadas 讲密码学里的哈希函数和加密，Erik Demaine 讲缓存无关算法。
 
 ## 先修要求
 
-- 需要算法入门基础（6.006、CS61B、CS106B 一类课程）。
-- 需要离散数学与概率基础，课程中的分析大量用到它们。
+- 官方“期望并强烈建议”先修 [6.006](/docs/data-structures-algorithms/mit-6-006) 和 [6.042J](/docs/mathematics/mit-6-042j)，
+  并说明先修课的内容你要自己负责。
+- 教材是 CLRS 第三版（《算法导论》），官方特别说明：习题编号用的是第三版，更早的版本不能替代。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/)：2015 春季完整存档。
-- [讲义](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/lecture-notes/)：每讲的完整文字材料。
-- [讲座视频](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/video_galleries/lecture-videos/)：全部课堂录像。
-- [Recitation 笔记](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/recitation-notes/)：习题课材料，补充讲座之外的例题。
+每周两讲（每讲 1.5 小时）、一次习题课，按日程表：
+
+| 单元 | 讲什么 |
+|---|---|
+| 分治 | 区间调度、凸包、中位数查找、FFT、van Emde Boas 树 |
+| 摊还 | 摊还分析；习题课讲并查集 |
+| 随机化 | 矩阵乘法验证、快速排序、跳表、全域哈希与完美哈希 |
+| 增强数据结构 | 范围树（Range Trees） |
+| 动态规划 | 进阶动态规划、全源最短路 |
+| 贪心 | 最小生成树 |
+| 逐步改进 | 最大流与最小割、匹配 |
+| 线性规划 | 线性规划、归约、单纯形法 |
+| 复杂度 | P 与 NP、NP 完全与归约、近似算法、固定参数算法 |
+| 分布式算法 | 同步分布式算法（破除对称、最短路生成树）、异步分布式算法 |
+| 密码学 | 哈希函数、加密 |
+| 缓存无关算法 | 中位数与矩阵、查找与排序 |
+
+考核是习题 30%、两次晚间小测各 20%、期末 30%。
 
 ## 官方作业
 
-- [Assignments](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/assignments/)：官方习题集，偏重证明与分析。
-- [Exams](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/exams/)：往年试题与解答。
+- **Problem Set 1～6**（[题目与解答](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/assignments/)）：
+  学期里布置了十份，OCW 公开了前六份，每份都附解答。每份习题里还有一部分“只做不交”的练习（exercises），
+  官方说它们会出现在考试里。题目既有自编题，也有 CLRS 第三版的习题。
+- **写作要求**：官方对“给出一个算法”这类题有明确的格式要求，写成一篇短文：
+  先一段概括问题和结论，然后依次是：用文字（必要时加伪代码）描述算法、至少一个例子或图示、正确性证明、运行时间分析。
+  官方说“表达清楚和答案正确同样重要”，绕来绕去的描述会被扣分。
+- **Quiz 1、Quiz 2 和期末**（[考试与解答](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/exams/)）：都附解答，适合整体自测。
 
-OCW 存档课程，官方提供解答。
+## 学习建议
+
+- **按官方格式写解答。** 描述、例子、证明、时间分析四样都写，写完再看解答。这门课练的就是把算法“讲清楚”的能力。
+- **后四份习题没有公开。** 学到网络流之后，可以用 CLRS 对应章节的习题和两次小测来练；
+  分布式算法、密码学、缓存无关算法这几讲只有讲义和录像，就当开眼界。
+- **不要跳过习题课。** 官方说“习题课出勤率和考试成绩一直高度相关”。并查集、B 树、网络流的应用这些内容只在习题课笔记里有。
+- **每讲配合 CLRS 对应章节读。** 讲课节奏很快，CLRS 的证明写得更完整。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS170](/docs/data-structures-algorithms/cs170)**：伯克利的对应课，范围略窄，但作业和解答是当前学期的。两门任选一门即可。
+- 6.046J 学完，想继续理论方向可以接 [MIT 6.045J](/docs/theoretical-computer-science/mit-6-045j)（自动机、可计算性与复杂度）。
+- 对分布式算法感兴趣，可以接 [MIT 6.5840](/docs/systems/parallel-and-distributed/mit-6-5840)（分布式系统），从算法走向工程实现。
+
+## 官方资源
+
+- [2015 春季 OCW 主页](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/)
+- [课程大纲](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/syllabus/)：先修、学习目标、教材、评分。
+- [日程](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/calendar/)：每讲和习题课的主题。
+- [讲课录像](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/video_galleries/lecture-videos/)
+- [讲义](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/lecture-notes/)
+- [习题课笔记](https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/pages/recitation-notes/)
