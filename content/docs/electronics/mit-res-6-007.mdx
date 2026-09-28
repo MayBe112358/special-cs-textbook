@@ -1,41 +1,80 @@
 ---
 title: "MIT RES.6-007 信号与系统"
-description: "Oppenheim 的信号与系统经典讲座，配完整的讲义、作业与解答。"
+description: "Oppenheim 1987 年录制的 26 讲信号与系统，连续时间和离散时间对照着讲；每讲配讲义、教材阅读、推荐题和选做题，全部附解答。"
 prereqCourses: []
-prereqKnowledge: ["Calculus, Linear Algebra"]
+prereqKnowledge: ["微积分", "熟练的复数运算", "接触过微分方程", "学过电路或力学基础更好，但不是必需"]
 ---
 
 ## 课程简介
 
-RES.6-007 是 MIT 的信号与系统课程资源，
-讲授者 Alan Oppenheim 是这个领域最经典教材的作者之一。
+RES.6-007（Signals and Systems）是 MIT 在 1987 年为在职工程师录制的一套远程课程，
+主讲 Alan Oppenheim 正是经典教材《Signals and Systems》（和 Willsky 合著）的作者。OCW 在 2011 年把它整理公开。
 
-课程内容是信号与系统的标准体系：信号与系统的表示、
-线性时不变系统与卷积、傅里叶级数与傅里叶变换、
-调制、采样与离散时间处理、拉普拉斯变换与 Z 变换、
-反馈系统的稳定性与根轨迹分析。
+官方介绍：这是模拟和数字信号处理的入门，而信号处理是地震数据处理、通信、语音、图像、消费电子等领域的基础。
+课程把**连续时间和离散时间的信号与系统放在一起、对照着讲**，同时强调两者的相同与不同。
+时域和频域的表示通过傅里叶变换及其推广联系起来；之后讲滤波与滤波器设计、调制、采样，
+以及模拟和数字系统里的反馈。
 
-它作为 OCW 资源的价值在于材料完整：
-二十多讲的视频、配套讲义、作业与全部解答都公开。
+录像虽然是 1987 年的，但讲得非常清楚，有不少现场演示（比如调幅的演示、倒立摆的反馈控制）。
 讲课节奏偏慢、推导详细，适合自学时反复看。
-
-如果你觉得 EE120 这类课程节奏太快，
-可以用这套材料作为主线或补充。
 
 ## 先修要求
 
-- 需要微积分与线性代数。
-- 复数运算与微分方程的基础会用得很多。
+- 官方写的背景要求：微积分、熟练处理复数、接触过微分方程。
+- 学过电路（电子工程）或动力学（机械工程）的基础会有帮助，但不是必需。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/)：视频、讲义与作业的总入口。
-- [讲座视频](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/video_galleries/video-lectures/)：Oppenheim 本人讲授的二十多讲。
-- [讲义](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/lecture-notes/)：每讲的完整文字材料。
-- [配套阅读](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/readings/)：教材章节与讲座的对应关系。
+一共 26 讲，每讲都配阅读（Oppenheim 和 Willsky 教材 1982 年第一版的具体页码）和一份习题：
+
+| 讲次 | 讲什么 |
+|---|---|
+| 1–3 | 导论、信号与系统（两讲：复指数、单位阶跃与冲激、系统的性质） |
+| 4–6 | 卷积、LTI 系统的性质、用微分方程和差分方程描述的系统 |
+| 7–9 | 连续时间傅里叶级数、傅里叶变换、傅里叶变换的性质 |
+| 10–12 | 离散时间傅里叶级数、离散时间傅里叶变换、滤波 |
+| 13–15 | 连续时间调制、调幅的现场演示、离散时间调制 |
+| 16–19 | 采样、插值、用离散时间系统处理连续时间信号、离散时间采样 |
+| 20–21 | 拉普拉斯变换、连续时间二阶系统 |
+| 22–24 | Z 变换、把连续时间滤波器映射成离散时间滤波器、巴特沃斯滤波器 |
+| 25–26 | 反馈、反馈的例子：倒立摆 |
 
 ## 官方作业
 
-- [Assignments](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/assignments/)：官方作业，附完整解答。
+[Assignments](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/assignments/) 页每讲一份习题 PDF，**全部附解答**。
+每份分**推荐题**和**选做题**两部分。
 
-OCW 资源，没有助教批改；作业附官方解答，可自行核对。
+Oppenheim 在课程介绍里对这两部分说得很直接：
+
+- 推荐题“应该当成必做题”，**没把某一讲的推荐题都弄懂，就不要往下一讲走**。
+- 选做题一般更难，有时讲的是更深、或者不那么必要的内容。
+- 解答要谨慎使用：卡住时，找同学讨论比看解答好得多；解答的思路也可能和你完全不同。
+  最好只用它来核对答案，或者在真的要放弃时当最后的办法。
+
+## 学习建议
+
+官方给了一个很具体的学习顺序，照着做就行：
+
+1. **先看录像。** 官方建议三到五人一起看，看不懂就暂停讨论。录像负责讲清楚框架和例子，细节留给教材。
+2. **再读教材对应章节。** 每讲的讲义末尾和 [Readings](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/readings/) 页都列了页码。
+   这些页码是 1982 年第一版的；现在常见的是 1997 年第二版，章节结构有调整，要按标题去找对应的内容。
+3. **最后做题。** 官方原话：“很难过分强调这一点：做题才是真正学到东西的地方，也是整门课最重要的部分。”
+
+另外，[讲义](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/lecture-notes/) 是录像里所有幻灯片和插图的副本，
+看录像时对照着用，之后也适合当复习提纲。
+
+## 同类课怎么选
+
+- **[UC Berkeley EE120](/docs/electronics/ee120)**：同样用 Oppenheim 的教材，但是当前学期的课，先讲离散时间、强调向量空间视角。
+  可以把 RES.6-007 当主线，用 EE120 的习题和解答来补充练习；或者反过来，EE120 跟不上时回来看 Oppenheim 本人怎么讲。
+- **[EE16A / EE16B](/docs/electronics/ee16a-ee16b)**：更入门，从线性代数出发讲信号和系统，适合先打底。
+- 学完之后想用在通信、估计和随机信号上，看 [EECS126](/docs/advanced-mathematics/eecs126)。
+
+## 官方资源
+
+- [OCW 主页](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/)：可以整门课打包下载。
+- [课程介绍](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/introduction/)：Oppenheim 写的课程说明和学习方法，开始前值得读一遍。
+- [讲课录像](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/video_galleries/video-lectures/)：26 讲。
+- [讲义](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/lecture-notes/)：录像中全部幻灯片与插图。
+- [阅读](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/readings/)：每讲对应的教材章节和页码。
+- [习题与解答](https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/pages/assignments/)
