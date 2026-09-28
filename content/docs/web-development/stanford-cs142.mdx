@@ -1,37 +1,85 @@
 ---
 title: "Stanford CS142 Web 应用开发"
-description: "Stanford 的 Web 应用开发：HTML/CSS/JS、React、Node 与 Web 安全。"
+description: "斯坦福 Mendel Rosenblum 的 Web 应用课：从 HTML、CSS、DOM 讲到 React、Node、Express、MongoDB，再讲会话、输入校验和 Web 安全，八个项目最后做成一个照片分享网站。"
 prereqCourses: []
-prereqKnowledge: ["有一定的编程经验"]
+prereqKnowledge: ["工程上的成熟度：会用命令行、能快速上手新语言和框架、会读技术文档、会调试", "斯坦福的正式先修是 CS107 和 CS108"]
 ---
 
 ## 课程简介
 
-CS142 是 Stanford 的 Web 应用开发课，覆盖前后端的主要技术栈。
+CS142（Web Applications）是斯坦福的 Web 应用开发课，由 Mendel Rosenblum 讲授。
+课程网站目前公开的是 **2023 年春季**的版本，讲义、项目说明、往年考试都能直接下载。
 
-课程从 Web 的基础开始：HTTP、HTML、CSS、
-浏览器的渲染模型与文档对象模型，然后是 JavaScript 语言本身，
-接着进入 React 的组件模型与状态管理，
-再到服务端——Node.js、Express、MongoDB 与 REST API 的设计，
-最后是 Web 安全（同源策略、XSS、CSRF、认证与会话管理）。
+官方的课程说明：Web 最初是用来传递文档的，现在却成了复杂交互应用的平台，取代了传统的安装包。
+Web 应用有很多好处（打开就能用、自动升级、大规模协作），但做起来需要和传统应用不同的方法，还要把一大堆技术整合在一起。
+这门课会带你学标记语言、脚本语言、网络协议、交互图形、事件驱动编程和数据库，看它们怎么配合起来。
 
-课程的八个项目串成一条线：从写静态页面开始，
-逐步做出一个完整的照片分享应用，前后端都是自己写的。
-这种渐进式的项目安排比孤立的练习更能建立整体感。
+课程用的是 **MERN 技术栈**（MongoDB、Express、React、Node.js），前后端都用 JavaScript。
+和其他 Web 课相比，它更重**原理**：浏览器和服务器怎么通信、会话和 Cookie 怎么工作、Web 应用会遭受哪些攻击，
+最后还讲了大规模应用和数据中心。
 
 ## 先修要求
 
-- 需要一定的编程经验。
-- 不要求预先了解 Web 技术。
+- 斯坦福官方列的先修是 CS107（计算机系统）和 CS108（面向对象系统设计）。
+- 官方解释说，这是因为课程需要一定的“工程成熟度”：习惯用命令行、能很快学会新语言和框架、会读技术文档、会调试自己的代码。
+  刚学完 CS106B 就来上的学生会比别人辛苦得多，但不是不可能。
+- 课上会介绍 JavaScript，官方还推荐了几本参考书，其中《Eloquent JavaScript》是免费的电子书。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://web.stanford.edu/class/cs142/index.html)：课程信息与全部材料。
-- [讲座列表](https://web.stanford.edu/class/cs142/lectures.html)：按主题排列的幻灯片。
-- [课程信息](https://web.stanford.edu/class/cs142/info.html)：先修要求、评分与项目安排。
+2023 年春季，每周三讲，十周：
+
+| 周 | 讲什么 |
+|---|---|
+| 1 | 课程介绍、HTML、CSS |
+| 2 | URL 与链接、JavaScript 基础、JavaScript 编程与新特性 |
+| 3 | DOM、DOM 事件、前端编程入门 |
+| 4 | React 入门、单页应用、响应式设计 |
+| 5 | 构建 Web 应用、浏览器与服务器的通信、Web 服务器 |
+| 6 | Node.js、Express、存储层 |
+| 7 | Cookie 与会话、输入与校验、全栈的状态管理 |
+| 8 | Web 应用安全：浏览器隔离、网络攻击、其他攻击 |
+| 9–10 | 大规模应用、数据中心、未来方向 |
+
+评分：项目 55%、期中 15%、期末 30%。
 
 ## 官方作业
 
-- [Projects](https://web.stanford.edu/class/cs142/projects.html)：八个项目，逐步做出一个完整的照片分享应用。
+[八个项目](https://web.stanford.edu/class/cs142/projects.html)，除第一周和期中那周外每周一个，都要自己独立写代码（可以讨论思路，不能共享代码）：
 
-项目说明公开；自动评分依赖校内系统。
+1. **HTML and CSS**：写一个 HTML 文档，换一份 CSS 就呈现出完全不同的样子。
+2. **JavaScript Calisthenics**：JavaScript 基本功练习，要用 Node.js 跑代码质量检查。
+3. **JavaScript and the DOM**：用 JavaScript 操作页面。
+4. **Page Generation with ReactJS**：用 React 生成页面。
+5. **Single Page Applications**：开始做照片分享应用的单页前端，后半部分从服务器取数据。
+6. **Appserver and Database**：写后端和数据库。
+7. **Sessions and Input**：登录会话和用户输入。
+8. **Photo App Sprint**：在前面的基础上冲刺完成整个照片分享网站。
+
+最后三个项目层层递进，后一个依赖前一个。起始代码可以从项目页直接下载（比如 `downloads/project2.zip`），
+课程还有一份[安装说明](https://web.stanford.edu/class/cs142/install.html)教你装 Node.js 和 MongoDB。
+**官方不提供项目的参考答案。**
+
+另外，主页上有从 2016 年到 2023 年**十几份往年期中、期末试题，全部附解答**。
+
+## 学习建议
+
+- **项目按顺序做，不要跳。** 后三个项目是同一个应用逐步长大，前面没做完，后面没法开始。
+- **安全那几讲一定要看。** 讲义里有同源策略与浏览器隔离、会话攻击（跨站请求伪造）、代码注入（跨站脚本、SQL 注入）、钓鱼、拒绝服务攻击等专题，这些是很多 Web 课一笔带过、但工作中最容易出事的地方。
+- **用往年试题检验理解。** 这门课的考试不考死记硬背，而是考“为什么这样设计”，很适合用来检查自己是否真懂了原理。
+- **Node 和 MongoDB 用新版本。** 2023 年的安装说明写的是 Node.js 18，现在装最新的长期支持版就好，遇到不兼容再查。
+
+## 同类课怎么选
+
+- **[Full Stack Open](/docs/web-development/full-stack-open)**：同样是 React + Node + 数据库，但工程实践（测试、CI/CD、容器、TypeScript）讲得更多，内容是最新的。
+  CS142 的原理和安全讲得更透。两门可以互补：用 CS142 理解原理，用 Full Stack Open 练工程。
+- **[UW-Madison CS571](/docs/web-development/cs571)**：侧重界面设计和手机开发。
+- **[MIT web.lab](/docs/web-development/mit-web-dev)**：四周速成，适合先快速做出东西。
+
+## 官方资源
+
+- [课程主页](https://web.stanford.edu/class/cs142/index.html)：课程说明、往年考试与解答。
+- [讲义](https://web.stanford.edu/class/cs142/lectures.html)：每讲的幻灯片 PDF。
+- [项目](https://web.stanford.edu/class/cs142/projects.html)：八个项目的说明和起始代码。
+- [课程信息](https://web.stanford.edu/class/cs142/info.html)：先修、项目规则、评分。
+- [安装说明](https://web.stanford.edu/class/cs142/install.html)：Node.js 和 MongoDB。
