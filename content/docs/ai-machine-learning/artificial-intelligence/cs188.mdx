@@ -1,6 +1,6 @@
 ---
 title: UC Berkeley CS188
-description: 以搜索、概率推理、马尔可夫决策过程和机器学习为主线的人工智能导论。
+description: 伯克利的人工智能导论：搜索、约束满足、博弈、马尔可夫决策过程与强化学习、贝叶斯网络与隐马尔可夫模型、机器学习，五个 Pac-Man 项目让你给吃豆人写 AI。
 prereqCourses: [cs61a, cs61b, cs70]
 prereqKnowledge: ["数据结构", "算法", "概率基础", "Python"]
 ---
@@ -24,30 +24,83 @@ prereqKnowledge: ["数据结构", "算法", "概率基础", "Python"]
 
 ## 课程简介
 
-CS188 是 UC Berkeley 的人工智能导论。课程从状态空间搜索出发，依次讨论对抗搜索、约束满足、
-马尔可夫决策过程与强化学习、贝叶斯网络与概率推理，最后进入机器学习的基础部分。
-它关心的是“如何让程序在信息不完整的情况下做决定”，而不是某一个具体模型的调参技巧。
+CS188（Introduction to Artificial Intelligence）是伯克利的人工智能导论，2026 年秋季由 Emma Pierson 和 Peyrin Kao 讲授。
+讲课录像放在 YouTube 上公开。
+
+课程的主线是：**怎么让程序在信息不完整、结果不确定的情况下做出好的决定**。
+它从状态空间搜索出发，依次讲约束满足、博弈树（对抗搜索）、马尔可夫决策过程与强化学习、
+概率与贝叶斯网络、隐马尔可夫模型，最后进入机器学习（朴素贝叶斯、感知机、神经网络、决策树，一直讲到 Transformer）。
+关心的是这些方法背后的原理，而不是某个具体模型的调参技巧。
+
+课程有自己的[在线教材](https://inst.eecs.berkeley.edu/~cs188/textbook/)（按搜索、约束满足、博弈等章节组织），
+日程上也标了经典教材 AIMA（Russell 和 Norvig 的《人工智能：一种现代方法》）的对应章节。
+
+这门课最有名的是它的 **Pac-Man 项目**：同一个吃豆人游戏，你先给它写搜索算法找豆子，再写对抗算法躲鬼，
+再用强化学习让它自己学会玩，再用概率推理在看不见鬼的情况下追踪鬼的位置。写完直接在地图上看效果。
 
 ## 先修要求
 
 官方在课程政策页写明两条硬要求，并另外给出一个推荐组合：
 
-- 编程：CS61A **或** CS61B，需要有实际写程序的经验。
-- 数学：CS70 **或** Math 55，需要熟悉命题逻辑与概率的基本概念。
-- 推荐背景：CS61A、CS61B、CS70 三门都学过。官方提醒课程后半段的数学要求明显高于前半段。
-- 语言：作业用 Python。官方不假设你学过 Python，但要求你能自己把它学会。
+- 编程：[CS61A](/docs/programming-intro/cs61a) **或** [CS61B](/docs/data-structures-algorithms/cs61b)，需要有实际写程序的经验。
+- 数学：[CS70](/docs/advanced-mathematics/cs70) **或** Math 55，需要熟悉命题逻辑与概率的基本概念。
+- 推荐背景：三门都学过。官方提醒**课程后半段的数学要求明显高于前半段**。
+- 语言：作业用 Python。官方不假设你学过 Python，但要求你能自己把它学会；Project 0 就是 Python 和评分工具的入门。
 
 官方提供了自测作业 Homework 0，用来检查自己的准备程度。
+
+## 课程结构
+
+2026 年秋季共 25 讲：
+
+| 部分 | 讲什么 |
+|---|---|
+| 搜索 | 导论、智能体与环境；无信息搜索；A* 搜索与启发式 |
+| 约束与博弈 | 约束满足问题（两讲）；博弈树（两讲） |
+| 决策 | 马尔可夫决策过程（两讲）；强化学习（两讲） |
+| 概率推理 | 概率；贝叶斯网络：表示、独立性、推理、采样；决策网络与信息价值；隐马尔可夫模型 |
+| 机器学习 | 朴素贝叶斯；感知机；神经网络；应用与决策树；Transformer |
+| 其他 | 客座讲座、课程总结 |
+
+评分：项目 25%、作业 20%、期中 20%、期末 35%。
+
+## 官方作业
+
+- **Pac-Man 项目**（[项目页](https://inst.eecs.berkeley.edu/~cs188/fa26/projects/)，纯 Python，除了机器学习项目都不需要装额外的包）：
+  - **Project 0**：Python、环境配置与自动评分教程（可选）。
+  - **Project 1 搜索**：深度优先、广度优先、一致代价、A* 搜索，用来走迷宫和解“吃完所有豆子”这类问题。
+  - **Project 2 多智能体搜索**：Minimax、Expectimax，设计评估函数。
+  - **Project 3 强化学习**：值迭代、Q 学习、近似 Q 学习。
+  - **Project 4 贝叶斯网络与 HMM**：用概率推理和粒子滤波，根据带噪声的距离读数定位看不见的鬼。
+  - **Project 5 机器学习**：感知机、神经网络、循环神经网络，做数字识别和语言任务。
+
+  （秋季学期的项目按日程陆续发布，上面的清单按 2026 年春季的项目页写。）
+  每个项目都带一个 `autograder.py`，**本地运行 `python autograder.py` 就能给自己打分**，还能用图形界面看吃豆人怎么跑。
+- **Homework**：每周一份，在 Gradescope 上自动评分，可以反复提交。校外看不到 Gradescope，可以用往年考试和讨论课题目代替。
+- **DUE（2026 年秋季新增）**：部分同学要在项目完成后和助教做 15 分钟的面谈，分“演示、理解、实验”三部分，
+  讲清楚自己的代码并回答假设性问题，结果会影响项目成绩。
+
+**AI 政策**：官方原话是“生成式 AI 是顾问，不是作者”。每份作业都要写一段 AI 使用反思，不管用没用；
+官方还提醒，项目的理解程度和考试成绩高度相关，不要拿 AI 走捷径。
+
+## 学习建议
+
+- **先做 Project 0。** 它教你用自动评分工具，后面每个项目都靠它自测。
+- **写完就用图形界面看一遍。** `-t` 参数跑单个测试时会显示图形，看吃豆人怎么搜索、怎么躲鬼，比看分数更能发现算法的问题。
+- **后半段提前补概率。** 贝叶斯网络和 HMM 那几讲对概率要求明显变高，[CS70](/docs/advanced-mathematics/cs70) 的概率部分没学好的话，到那里会很吃力。
+- **用在线教材复习。** 课程教材按讲组织，比幻灯片完整，每讲的阅读都在日程上标好了。
+
+## 同类课怎么选
+
+- **[Harvard CS50 AI](/docs/ai-machine-learning/artificial-intelligence/cs50-ai)**：更入门，不要求概率和离散数学基础，每讲配两个小项目。CS188 的数学和理论更深。
+- **[Karpathy 从零到英雄](/docs/ai-machine-learning/artificial-intelligence/neural-networks-zero-to-hero)**：只讲神经网络，但讲到能自己写 GPT。
+- 学完想系统学机器学习，接 [CS189](/docs/ai-machine-learning/machine-learning/cs189) 或 [CS229](/docs/ai-machine-learning/machine-learning/cs229)；
+  想深入强化学习，接 [CS285](/docs/ai-machine-learning/deep-learning/cs285)。
 
 ## 官方资源
 
 - [课程主页](https://inst.eecs.berkeley.edu/~cs188/)：这个地址会自动转到当前学期，学期更替后依然有效。
-- [2026 秋季课程日程](https://inst.eecs.berkeley.edu/~cs188/fa26/calendar/)：讲座顺序、讲义与配套阅读。
-- [2026 秋季课程政策](https://inst.eecs.berkeley.edu/~cs188/fa26/policies/)：课程范围、先修要求与评分规则。
+- [2026 秋季课程政策](https://inst.eecs.berkeley.edu/~cs188/fa26/policies/)：先修、评分、项目与 AI 政策。
 - [2026 秋季学习资源](https://inst.eecs.berkeley.edu/~cs188/fa26/resources/)：往年试题、复习材料与答疑安排。
-
-## 官方作业
-
-- [Pac-Man 项目入口](https://inst.eecs.berkeley.edu/~cs188/fa26/projects/)：从 Project 0 开始，按顺序完成搜索、多智能体、强化学习、推理与机器学习各个项目。
-
-课程自带评分脚本，本地即可自测；这里不链接非官方副本，也不自编替代题目。
+- [在线教材](https://inst.eecs.berkeley.edu/~cs188/textbook/)：课程自编的讲义式教材。
+- [Pac-Man 项目](https://inst.eecs.berkeley.edu/~cs188/fa26/projects/)

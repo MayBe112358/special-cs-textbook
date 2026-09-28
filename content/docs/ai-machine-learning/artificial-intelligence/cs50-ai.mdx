@@ -1,39 +1,83 @@
 ---
 title: "Harvard CS50 AI with Python"
-description: "十二个 Pac-Man 之外的小项目：用搜索、约束、概率与学习各写一个 AI。"
+description: "哈佛 CS50 系列的人工智能入门：七周讲搜索、知识、不确定性、优化、学习、神经网络、语言，12 个小项目每个都是一个能跑的 AI，全部免费自动评分。"
 prereqCourses: [cs50p]
-prereqKnowledge: ["基本概率论 + Python 基础"]
+prereqKnowledge: ["CS50x 或至少一年的 Python 经验", "高中数学，概率有一点基础更好"]
 ---
 
 ## 课程简介
 
-CS50 AI 是 CS50 系列里讲人工智能的一门，用 Python 授课，
-面向已经会一点编程的人。
+CS50's Introduction to Artificial Intelligence with Python 是哈佛 CS50 系列的一门课，由 Brian Yu 和 David J. Malan 讲授，
+作为开放课程**免费**向所有人开放，材料在 CS50 自己的网站上。
 
-课程按 AI 的经典分支组织：搜索（深度优先、广度优先、A*、
-对抗搜索与 alpha-beta 剪枝）、知识表示与逻辑推理、
-不确定性（概率、贝叶斯网络、马尔可夫模型）、
-优化（约束满足、局部搜索）、学习（监督学习、强化学习）、
-神经网络，最后是自然语言处理。
+官方介绍：这门课探讨现代人工智能背后的概念和算法，也就是下棋程序、手写识别、机器翻译这些技术背后的想法。
+通过动手项目，你会接触图搜索、分类、优化、机器学习、大语言模型等主题，并把它们写进自己的 Python 程序里。
+学完之后，你会有使用机器学习库的经验，也懂得足以设计自己的智能系统的 AI 原理。
 
-真正让这门课好玩的是它的十二个编程作业：每个都用刚学的方法实现一个小 AI——
-用 alpha-beta 剪枝写一个永远不输的井字棋、用逻辑推理写一个扫雷求解器、
-用马尔可夫模型做 PageRank、用强化学习训练一个 Nim 游戏的 AI。
-课程不要求高深的数学，适合入门或者当作换换脑子的消遣。
+它的风格和 CS50x 一脉相承：讲课非常清楚，每讲配一两个“写一个 AI 来做某件事”的项目，项目说明写得很细，门槛低、成就感强。
 
 ## 先修要求
 
-- 需要 Python 基础（CS50P 或同等课程）。
-- 需要基本的概率概念。
+- 官方写的是：[CS50x](/docs/programming-intro/cs50x) 或至少一年的 Python 经验。
+- 不需要事先学过概率或线性代数，课上用到的概率（条件概率、贝叶斯公式、贝叶斯网络）会从头讲。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://cs50.harvard.edu/ai/)：按主题组织的讲座与讲义。
-- [2024 版课程](https://cs50.harvard.edu/ai/2024/)：材料最完整的一版。
-- [常见问题](https://cs50.harvard.edu/ai/faqs/)：选课方式、证书与评分说明。
+一共七周（编号 0～6），每周一讲：
+
+| 周 | 主题 | 讲什么 |
+|---|---|---|
+| 0 | 搜索 | 深度优先、广度优先、贪心最佳优先、A*、Minimax、Alpha-Beta 剪枝 |
+| 1 | 知识 | 命题逻辑、蕴涵、推理、模型检验、归结、一阶逻辑 |
+| 2 | 不确定性 | 概率、条件概率、贝叶斯公式、贝叶斯网络、采样、马尔可夫模型、隐马尔可夫模型 |
+| 3 | 优化 | 局部搜索、爬山、模拟退火、线性规划、约束满足、回溯搜索 |
+| 4 | 学习 | 最近邻、感知机、支持向量机、回归、损失函数、过拟合与正则化、强化学习与 Q 学习、k-means 聚类 |
+| 5 | 神经网络 | 激活函数、梯度下降、反向传播、TensorFlow、卷积神经网络、循环神经网络 |
+| 6 | 语言 | 句法与语义、上下文无关文法、n-gram、词袋模型、朴素贝叶斯、word2vec、注意力、Transformer |
+
+官方建议的流程很简单：每周先看讲座，再交项目。
 
 ## 官方作业
 
-- [Projects](https://cs50.harvard.edu/ai/2024/)：每一讲配两个项目，共十二个，都是可运行的小 AI。
+12 个项目（编号 Project 0～6，大多数周有两个），每个都是“写一个 AI 来做某件事”：
 
-作业用 `check50` 自动评分，本地即可自测。
+| 周 | 项目 | 做什么 |
+|---|---|---|
+| 0 | Degrees | 算出两个演员之间隔着几度（通过合作过的电影连起来），用广度优先搜索 |
+| 0 | Tic-Tac-Toe | 用 Minimax 写一个下井字棋永远不输的 AI |
+| 1 | Knights | 用命题逻辑解“骑士与无赖”逻辑谜题 |
+| 1 | Minesweeper | 写一个会推理的扫雷 AI |
+| 2 | PageRank | 用采样（随机冲浪）和迭代两种方法算网页的 PageRank |
+| 2 | Heredity | 用贝叶斯网络估计一个人带某种基因、表现出某种性状的概率 |
+| 3 | Crossword | 把填字游戏生成建模成约束满足问题 |
+| 4 | Nim | 用强化学习让 AI 自己学会玩 Nim 游戏 |
+| 4 | Shopping | 用 k 近邻分类预测网店顾客会不会下单 |
+| 5 | Traffic | 用 TensorFlow 训练卷积神经网络识别交通标志 |
+| 6 | Parser | 写上下文无关文法解析句子、提取名词短语 |
+| 6 | Attention | 用预训练的 BERT 预测被遮住的词，并把注意力可视化 |
+
+- **自动评分**：每个项目都可以在本地用 `check50` 检查正确性、用 `style50` 检查代码风格；提交后服务器会跑同样的测试。
+  提交需要一个 edX 账号（免费）。
+- **证书**：每个项目都拿到 70% 以上，就能免费拿 CS50 证书；想要 edX 的认证证书则要在 edX 上付费注册。
+
+## 学习建议
+
+- **每个项目先读完整说明再动手。** CS50 的项目说明会一步步告诉你要实现哪几个函数、每个函数该返回什么，漏看一句常常就卡住。
+- **先用 check50 再提交。** 本地就能看到哪些测试没过，省去反复提交的时间。
+- **第 2 周的概率要慢慢啃。** PageRank 和 Heredity 是整门课里数学最多的两个项目，写之前先把讲座里的贝叶斯网络例子手算一遍。
+- **学完接一门更深的课。** 这门课是“广而浅”的入门，每个主题只讲到能写出一个小项目的程度。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS188](/docs/ai-machine-learning/artificial-intelligence/cs188)**：内容相近但深得多，要求离散数学和概率基础，Pac-Man 项目也更有挑战。
+  CS50 AI 适合先入门，CS188 适合系统学。
+- **[Karpathy 从零到英雄](/docs/ai-machine-learning/artificial-intelligence/neural-networks-zero-to-hero)**：只讲神经网络和语言模型，但从零手写到 GPT。
+- 想学机器学习，接 [Coursera 吴恩达机器学习](/docs/ai-machine-learning/machine-learning/coursera-machine-learning)。
+
+## 官方资源
+
+- [课程主页](https://cs50.harvard.edu/ai/)：七周的讲座、讲义、项目，以及怎么免费学、怎么拿证书。
+- [项目列表](https://cs50.harvard.edu/ai/projects/)
+- [CS50 证书说明](https://cs50.harvard.edu/ai/certificate/)
+- [常见问题](https://cs50.harvard.edu/ai/faqs/)
+- [YouTube 播放列表](https://www.youtube.com/playlist?list=PLhQjrBD2T381PopUTYtMSstgk-hsTGkVm)
