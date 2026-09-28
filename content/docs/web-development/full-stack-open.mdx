@@ -1,40 +1,81 @@
 ---
 title: "赫尔辛基大学 Full Stack Open"
-description: "赫尔辛基大学的现代全栈课：React 单页应用加 Node REST API，含中文版。"
+description: "赫尔辛基大学完全免费的全栈开发课：React 单页应用 + Node.js/Express 后端，再到测试、状态管理、GraphQL、TypeScript、React Native、CI/CD、容器、关系数据库和 Next.js。"
 prereqCourses: [git]
-prereqKnowledge: ["良好的编程技能、基本的网络与数据库知识、Git 基础"]
+prereqKnowledge: ["良好的编程能力", "Web 编程和数据库的基础知识", "会用 Git"]
 ---
 
 ## 课程简介
 
-Full Stack Open 是赫尔辛基大学开放的现代 Web 开发课程，
-可以按自己的节奏学，全部内容和练习免费公开，并且有完整的中文版。
+Full Stack Open 是赫尔辛基大学计算机系的全栈开发课，**完全免费**，完成后可以免费拿证书，
+甚至可以免费拿赫尔辛基大学的 ECTS 学分。课程内容和赫尔辛基大学校内开的全栈课一样。
 
-课程主线是用 JavaScript 开发现代 Web 应用：
-重点是用 React 构建单页面应用（SPA），
-并用 Node.js 构建 REST API。除此之外还包括
-GraphQL（REST 的现代替代方案）、测试、
-配置与环境管理，以及用 MongoDB 存储数据。
-后续的可选部分还涉及 TypeScript、React Native、
-持续集成与容器化。
+官方介绍：这是一门用 JavaScript 做现代 Web 开发的入门课，重点是用 React 搭建单页应用，
+配上用 Node.js 实现的 REST 和 GraphQL 后端；另外还有 TypeScript、React Native、持续集成的部分，
+以及调试、容器、配置、运行环境管理和数据库。
 
-它的练习量很大——每一章都有一系列递进的练习，
-最终你会做出若干个完整可部署的应用。
-对想系统学 Web 开发而不是拼凑教程的人，这是很扎实的一条路。
+它的教学方式很特别：**教材就是一个不断长大的示例应用**，每一部分都在上一部分的代码上加功能，
+每一步的代码都放在 GitHub 上。练习也一样，很多练习是一小块一小块地搭出一个更大的应用，有的应用跨好几个部分。
 
 ## 先修要求
 
-- 需要良好的编程技能。
-- 需要基本的网络编程与数据库知识，以及 Git 的基础用法。
+- 官方要求：良好的编程能力、Web 编程和数据库的基础知识、会用 Git 版本控制。
+- 官方还特意写了一条：要有**毅力**，以及独立解决问题、自己查资料的能力。
+- 没学过 Git 的话，先看本站的 [Git](/docs/essential-tools/git)。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（中文）](https://fullstackopen.com/zh/)：全部章节的入口。
-- [课程介绍](https://fullstackopen.com/zh/about)：课程结构、学分与完成方式。
-- [英文版](https://fullstackopen.com/en/)：更新最快的原始版本。
+一共 15 个部分（从 0 开始编号），官方说每部分大约相当于一周、15～20 小时的学习量：
+
+| 部分 | 内容 |
+|---|---|
+| 0 | Web 应用基础 |
+| 1 | React 入门 |
+| 2 | 与服务器通信 |
+| 3 | 用 Node.js 和 Express 写服务器 |
+| 4 | 测试 Express 服务器、用户管理 |
+| 5 | 测试 React 应用、React Router |
+| 6 | 进阶状态管理 |
+| 7 | 自定义 Hook、esbuild |
+| 8 | GraphQL |
+| 9 | TypeScript |
+| 10 | React Native |
+| 11 | CI/CD |
+| 12 | 容器 |
+| 13 | 关系数据库 |
+| 14 | Next.js |
+
+第 0～5 部分是核心课程；第 6～13 部分是可以单独拿学分的扩展，**它们的教材已经搬到了 [courses.mooc.fi](https://courses.mooc.fi/org/uh-cs/courses/full-stack-open-state-management)**，
+每部分一个独立的课程页（链接在第 0 部分的说明里都列出来了）。
 
 ## 官方作业
 
-- [各章练习](https://fullstackopen.com/zh/)：每一章配一组递进练习，最终产出可部署的完整应用。
+- **练习**：嵌在教材正文里，放在“前面的内容刚好够你做这道题”的位置。代码推到自己的 GitHub 仓库，
+  然后在[提交系统](https://studies.cs.helsinki.fi/stats/courses/fullstackopen)里登记完成了哪些题。提交系统里还能看到每道题大家平均花了多久。
+- **必做与选做**：第 1～4 部分里，没打星号的题都要做完再往下走；打星号的题计入成绩，但跳过不影响后面的部分。
+  第 5～13 部分没有星号题。
+- **证书和学分**：核心课程（第 0～5 部分）的学分和等级按提交的练习总数算，交够 72 题及格，116 题拿最高等级。
+  交够之后就能在提交系统里下载证书。想要大学学分，还要再通过一次在线考试（不计入等级，只要求通过）。
 
-练习通过课程平台提交；材料与题目完全公开，不提交也能完整学完。
+## 学习建议
+
+- **做完一部分的练习再往下走。** 官方明确说这门课用的是“掌握学习法”：前一部分没掌握就进入下一部分，是不明智的。
+- **跟着示例代码敲，而不是复制。** 教材的示例应用每一步都有 GitHub 代码，官方建议边读边跟着写、自己做一些小改动。
+- **遇到问题先读第 0 部分。** 官方说大部分关于课程本身的问题，第 0 部分都有答案；课程还有一个 Discord 群可以讨论。
+- **用英文版。** 中文版的首页还停留在 2022 年的公告，内容更新明显落后于英文版；
+  而且第 6～13 部分已经搬到 courses.mooc.fi。英文读起来吃力的话，可以中英对照着看。
+
+## 同类课怎么选
+
+- **[UW-Madison CS571](/docs/web-development/cs571)**：同样用 React 和 React Native，但一半在讲界面设计，后端很少；Full Stack Open 的后端、测试、部署讲得多得多。
+- **[Stanford CS142](/docs/web-development/stanford-cs142)**：斯坦福的 Web 应用开发，偏原理（浏览器怎么工作、HTTP、Web 安全）。
+- **[MIT Web Lab](/docs/web-development/mit-web-dev)**：四周速成，适合想快速做出一个完整网站的人。
+- 学完想接着学软件工程的团队协作，看 [UC Berkeley CS169A](/docs/software-engineering/cs169)。
+
+## 官方资源
+
+- [课程主页（英文）](https://fullstackopen.com/en/)：全部部分的入口，更新最及时。
+- [课程介绍](https://fullstackopen.com/en/about)
+- [第 0 部分：课程说明](https://fullstackopen.com/en/part0/general_info)：练习规则、学分、考试、扩展部分的新地址。
+- [提交系统](https://studies.cs.helsinki.fi/stats/courses/fullstackopen)：登记练习、看统计、下载证书。
+- [中文版](https://fullstackopen.com/zh/)：更新落后于英文版。

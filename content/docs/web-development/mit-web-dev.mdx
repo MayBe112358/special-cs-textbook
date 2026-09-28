@@ -1,38 +1,75 @@
 ---
-title: "MIT Web 开发速成课"
-description: "MIT 独立活动月的四周速成课，从零走完一个网站的设计与前后端实现。"
+title: "MIT web.lab Web 开发速成课"
+description: "MIT 一月独立活动期的四周课程兼比赛：前两周每天讲课加工作坊，从 HTML、CSS、JavaScript 讲到 React、Node、MongoDB、登录与 WebSocket；后两周组队做一个完整网站参赛。"
 prereqCourses: []
-prereqKnowledge: ["掌握至少一门编程语言"]
+prereqKnowledge: ["不需要 Web 开发经验，官方说课程就是为零基础设计的", "完全没编程过的话，先练一点基础 JavaScript"]
 ---
 
 ## 课程简介
 
-MIT 每年一月有一个为期四周的独立活动月（IAP），
-师生可以自由开设各种课程，这门 Web 开发速成课就是其中之一。
+web.lab（MIT 课号 6.9620）是 MIT 在每年一月独立活动期（IAP）开的一门 6 学分课，同时是一场网站开发比赛。
+官方的口号是：“学 Web 开发，赢奖金，四周搞定。”
 
-四周时间里，课程会带你从零掌握一个网站的设计、搭建、
-美化与交互：HTML 与 CSS、JavaScript、React、
-Node 与 Express、数据库、用户认证与部署。
-覆盖的是 Web 开发前后端的大部分主流技术栈。
+它分三个阶段：
 
-它的定位很清楚：如果你不需要系统地学网络开发，
-只是出于兴趣想把它加进自己的工具箱，这门课的节奏刚好——
-时间短、密度高、直接做项目。
+- **组队**：最多三人一组。
+- **学习（前两周）**：每天讲课加工作坊。第一周讲基础，第二周讲进阶内容，还有赞助商讲座。
+- **比赛（后两周）**：每组做一个自己的 Web 应用参赛，由业内评委评审。2026 年总奖金超过 2 万美元，
+  第一名 4000 美元，还有“最有创意”“最佳界面”“最具社会影响”等单项奖。
 
-课程日程与材料公开在课程网站上。
+官方说课程**专门为没有 Web 开发经验的学生设计**，很多往届冠军都是从零开始的。
 
 ## 先修要求
 
-- 需要掌握至少一门编程语言。
-- 不要求预先了解 Web 技术。
+- 不需要 Web 开发经验。完全没写过程序的话，官方建议先在 [JS Challenger](https://www.jschallenger.com/javascript-practice) 上练一点基础 JavaScript。
+- 开课前要装好 Git、终端、VS Code、Node.js 和 MongoDB（官方的 HW0 就是配环境）。
+- **只有 MIT 学生（含 Wellesley、Harvard 交叉注册）能选课和参赛**。但官方说几乎所有内容都有录像，幻灯片也全部公开，校外完全可以跟着自学。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://weblab.mit.edu/)：课程介绍与材料入口。
-- [课程日程](https://weblab.mit.edu/schedule/)：四周的主题安排与配套讲义。
+2026 年一月的日程，前两周共 38 讲（W 开头的是跟着敲代码的工作坊）：
+
+| 阶段 | 讲什么 |
+|---|---|
+| 第一周：前端基础 | Git 基础、HTML/CSS、JavaScript 入门与进阶（数组、回调）、React 入门、React 生命周期与 Hook、路由 |
+| 第一周：后端基础 | API 与 Promise、服务器与 Node、给 Catbook 加后端、UI 设计与 Figma、调试、数据库入门 |
+| 第二周：进阶 | async/await、团队协作用 Git、React Context、账号与登录认证、WebSocket 实时聊天、做网页游戏 |
+| 第二周：拓展 | TypeScript、进阶 CSS 与 Tailwind、关系数据库、Docker 容器化、怎么写好代码、怎么部署、怎么赢 web.lab |
+
+工作坊贯穿一个叫 **Catbook** 的示例社交网站：
+W0 写静态 HTML/CSS → W1 用 React 重写 → W2 加动态流和路由 → W3 加后端 → W4 接数据库 → W5 加登录 →
+W6、W7 做聊天功能并用 WebSocket 实时推送 → W8 做游戏。
 
 ## 官方作业
 
-- [课程项目](https://weblab.mit.edu/schedule/)：随日程推进的练习，最终产出一个完整的 Web 应用。
+- **HW0**：配好 Git、VS Code、Node.js、MongoDB。
+- **HW1：React 检查清单**：完全可选，什么时候做都行。
+- **里程碑 0**：组队，交 10 个网站点子。
+- **里程碑 1**：项目路演，20 分钟，要到现场。
+- **里程碑 2**：交一个能用的最小版本（MVP）。
+- **期末**：参赛组在第四周周三中午前交最终网站；不参赛、只要学分的组晚一天交。
+  不参赛也要交一个小项目才能拿学分，项目规模可以灵活，但有最低要求。
 
-材料公开；课程本身面向 MIT 学生，校外可跟着日程自学。
+官方说成功的队伍通常在期末项目上花 40 小时以上。完整的里程碑、规则和评分标准见[比赛说明](https://site.weblab.is/info)。
+
+## 学习建议
+
+- **跟着 Catbook 工作坊一步步敲。** 这是这门课最有价值的部分：同一个项目从静态页面一路长成带登录、数据库、实时聊天的完整应用，
+  每一步都能看到“新加的这一层解决了什么问题”。
+- **从官方骨架开始你自己的项目。** 课程提供了一个项目骨架（skeleton），前后端、数据库、登录都搭好了，克隆下来就能开始写自己的点子。
+- **给自己定一个四周的期限。** 这门课的精髓是“短时间内从零做出一个能上线的东西”。自学时也照着两周学、两周做的节奏来，别无限拖长。
+- **找一两个人组队。** 官方比赛就是三人一组，一个人做练不到用 Git 协作、分工、合并冲突这些。
+
+## 同类课怎么选
+
+- **[Full Stack Open](/docs/web-development/full-stack-open)**：内容更系统、更深（测试、GraphQL、TypeScript、CI/CD、容器），但要几个月。web.lab 适合先快速做出一个完整网站、建立全局感，再去学 Full Stack Open。
+- **[UW-Madison CS571](/docs/web-development/cs571)**：一整个学期，设计讲得多，还有手机开发和 AI 智能体。
+- **[Stanford CS142](/docs/web-development/stanford-cs142)**：更偏原理和 Web 安全。
+
+## 官方资源
+
+- [课程网站](https://site.weblab.is/)：课程介绍、奖项、报名。
+- [日程](https://site.weblab.is/schedule)：每一讲的时间、讲者和幻灯片链接。
+- [课程信息与常见问题](https://site.weblab.is/info)：参赛资格、时间投入、全部作业和里程碑、资料汇总。
+- [YouTube 频道](https://www.youtube.com/@mitweblab)：讲课录像。
+- [GitHub 组织 weblab-class](https://github.com/weblab-class)：课程的代码仓库。当年的 Catbook 仓库和项目骨架，从[课程信息页](https://site.weblab.is/info)的“Github”一栏进入。
