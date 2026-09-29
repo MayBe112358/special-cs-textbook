@@ -1,38 +1,85 @@
 ---
 title: "UC Berkeley CS162"
-description: "伯克利的操作系统课：理论完整，配 Pintos 实验从零实现内核功能。"
+description: "伯克利的操作系统课（2026 秋季，John Kubiatowicz）：进程与线程、文件与 I/O、套接字与进程间通信、同步、调度、地址转换与虚拟内存、I/O 与存储设备、文件系统与事务、分布式系统；三个 Pintos 项目（用户程序、线程、文件系统）四人一组做，外加 shell、HTTP 服务器、MapReduce、Raft 等个人作业，起始代码和 Docker 环境公开。"
 prereqCourses: [cs61a, cs61b, cs61c]
-prereqKnowledge: ["CS61A, CS61B, CS61C，扎实的 C 语言与 GDB 调试能力"]
+prereqKnowledge: ["CS61A、CS61B、CS61C 与 CS70（或同等课程）", "扎实的 C 语言与 gdb 调试能力", "基础概率（排队论那几讲会用到）"]
 ---
 
 ## 课程简介
 
-CS162 是伯克利的操作系统课，和偏动手的 MIT 6.S081 相比，它的理论比重更高，
-覆盖面也更广：进程与线程、调度、同步与死锁、地址转换与虚拟内存、
-文件系统、I/O、网络与分布式系统、事务与一致性都在其中。
+CS162 Operating Systems and System Programming 是伯克利的操作系统课，2026 年秋季由 **John Kubiatowicz** 讲授。
 
-课程实验用 Pintos——一个教学用的小型操作系统。
-你要依次实现用户程序支持（系统调用、参数传递）、线程调度器、
-以及文件系统的扩展。和 xv6 的实验风格不同，Pintos 更强调设计文档：
-每个项目都要求你先写清楚打算怎么改、为什么这么改。
+和偏动手的 [MIT 6.S081](/docs/systems/operating-systems/mit-6-s081) 相比，它的理论比重更高、覆盖面更广：
+进程与线程、文件与 I/O、进程间通信、同步、调度、地址转换与虚拟内存、存储设备与性能、文件系统与事务、分布式系统都在其中。
 
-这门课的教材《Operating Systems: Principles and Practice》写得深入浅出，
-可以很好地补上纯实验型课程在理论上的空缺。
+项目用 **Pintos**——斯坦福开发的一个教学用 x86 操作系统。你要依次让它能运行用户程序、支持更好的线程调度、有一个更完整的文件系统。
+和 xv6 的实验风格不同，Pintos 项目**特别强调设计**：每个项目开工前先交设计文档、和助教开设计评审会，做完再交最终报告。
 
 ## 先修要求
 
-- 指南列出的学前准备是 CS61A、CS61B、CS61C。
-- 需要扎实的 C 语言能力与 GDB 调试能力。
+官方先修：**CS61A、CS61B、CS61C 和 CS70（或同等课程）**。具体来说你要懂：
 
-## 官方资源
+- 数据结构：数组、链表、二叉树、哈希；
+- C 语言和计算机组成（CS61C 的内容）；
+- 基础概率（官方建议复习 CS70 的讲义，排队论那几讲会用到）。
 
-- [课程主页](https://cs162.org/)：当前学期日程、讲义与实验。
-- [课程政策](https://cs162.org/policies/)：课程范围、先修要求与评分。
-- [Pintos 文档](https://cs162.org/static/proj/pintos-docs/)：实验用操作系统的完整说明。
+对应到本站：[CS61A](/docs/programming-intro/cs61a)、[CS61B](/docs/data-structures-algorithms/cs61b)、[CS61C](/docs/systems/computer-architecture/cs61c)、[CS70](/docs/advanced-mathematics/cs70)。
+
+## 课程结构
+
+2026 年秋季共 25 讲左右（括号里是教材章节）：
+
+| 部分 | 讲什么 |
+|---|---|
+| 抽象 | 什么是操作系统；四个基本概念；线程与进程；进程管理、文件与 I/O；套接字与进程间通信 |
+| 同步 | 并发与互斥；锁的实现、原子指令、futex；信号量与管程；读者—写者问题（第 5 章） |
+| 调度 | 基本概念与经典策略；案例、饥饿与优先级反转；比例份额调度；死锁（第 6～7 章） |
+| 内存 | 地址转换与虚拟内存；分段、页表与多级页表；缓存与 TLB；按需调页与置换策略（第 8～10 章） |
+| I/O 与存储 | 一般 I/O；设备驱动、存储设备与性能；排队论（第 12、14 章） |
+| 文件系统 | 文件系统设计与案例；缓冲区缓存、可靠性与事务（第 11、13 章） |
+| 分布式 | 可靠性与分布式系统；端到端原则、分布式决策、两阶段提交、RPC |
+
+教材是 Anderson 和 Dahlin 的《Operating Systems: Principles and Practice》（A&D）。
+
+评分：考试 36%（三次期中）、项目 36%、作业 18%、参与 10%（讨论课和设计评审都要求出席）。
 
 ## 官方作业
 
-- [Homework](https://cs162.org/)：日程页上按周发布，多为系统编程练习。
-- [Pintos Projects](https://cs162.org/static/proj/pintos-docs/)：用户程序、线程调度与文件系统三个大项目。
+**Pintos 项目**（四人一组，每个项目都要交设计文档、参加设计评审、最后交代码和报告）：
 
-Pintos 自带测试套件，本地运行 `make check` 即可自测。
+| 项目 | 内容 |
+|---|---|
+| Project 0：Pregame | 个人完成的热身，熟悉 Pintos 和调试工具 |
+| Project 1：User Programs | 参数传递、进程控制类系统调用、文件操作类系统调用，让 Pintos 能运行用户程序 |
+| Project 2：Threads | 高效的闹钟（不忙等的 sleep）、严格优先级调度、用户态线程与 pthread 库 |
+| Project 3：File Systems | 缓冲区缓存、可扩展的文件、子目录，以及文件系统的同步 |
+
+**个人作业**：HW0 入门；HW1 链表；HW2 shell；HW3 HTTP 服务器；HW4 内存；HW5 MapReduce；HW6 Raft。
+2026 年秋季的 HW3、HW5、HW6 同时提供 C 版和 Rust 版，自己选一个做。
+
+**自学怎么做**：起始代码公开在 GitHub 的 Berkeley-CS162 组织下（个人作业在 student0，Pintos 在 group0），
+课程还提供了现成的 Docker 开发环境（支持 x86 和 ARM）和详细的 Pintos 文档。Pintos 自带测试套件，`make check` 就能本地自测；
+官方的自动评分器只对选课学生开放。讨论课的题目和答案 PDF 也都在课程网站上。
+
+## 学习建议
+
+- **先读 Pintos 文档。** Pintos 的代码量不小，官方文档讲了它的结构、调试方法和每个项目的要求，动手前通读一遍能省很多时间。
+- **认真写设计文档。** 这门课的项目流程是“先设计、再评审、后实现”，自学也照着做：先写清楚要改哪些数据结构、怎么同步，再开始写代码。
+- **同步那几讲要吃透。** 锁、信号量、管程、读者—写者问题是整门课最核心、也最容易出错的部分，Project 2 会反复用到。
+- **讲课录像在校内平台上**，校外看不到；可以配合教材 A&D 和讨论课的题目自学。
+
+## 同类课怎么选
+
+- **[MIT 6.S081](/docs/systems/operating-systems/mit-6-s081)**：更偏动手，实验在 RISC-V 上的 xv6 里做，讲课录像公开，自学门槛更低。
+- **[南京大学 操作系统](/docs/systems/operating-systems/nju-os)**：中文课，大量现场代码演示。
+- **[Stanford CS110](/docs/systems/systems-fundamentals/stanford-cs110)**：从使用者的角度讲系统编程（多进程、多线程、网络），可以当 CS162 的前置。
+- 分布式那部分想深入，接 [MIT 6.5840](/docs/systems/parallel-and-distributed/mit-6-5840)。
+
+## 官方资源
+
+- [课程主页（2026 秋季）](https://cs162.org/)：日程、讲义、讨论课题目与答案、作业和项目说明。
+- [课程政策](https://cs162.org/policies/)：先修、评分、分组与出勤要求。
+- [课程资源](https://cs162.org/resources/)：教材与参考资料。
+- [Pintos 文档](https://cs162.org/static/proj/pintos-docs/)
+- [HW0 与环境搭建](https://cs162.org/static/hw/hw-intro/)：Docker 开发环境的配置步骤。
+- [起始代码（GitHub Berkeley-CS162）](https://github.com/Berkeley-CS162)
