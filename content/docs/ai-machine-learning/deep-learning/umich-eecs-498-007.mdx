@@ -1,38 +1,86 @@
 ---
 title: "UMich EECS 498-007 计算机视觉中的深度学习"
-description: "UMich 的视觉深度学习：不预设框架经验，作业从零搭起每个模型。"
+description: "Justin Johnson 在密歇根大学开的视觉深度学习课：从 kNN、线性分类器、反向传播讲到 CNN 架构、RNN 与注意力、检测与分割、3D 视觉、视频、生成模型；2019 年的 22 讲录像公开，六个作业用 PyTorch 张量从零实现。课程网站已下线，要看存档。"
 prereqCourses: []
-prereqKnowledge: ["Python 基础，矩阵求导，微积分"]
+prereqKnowledge: ["熟练的 Python，数据结构与算法基础", "概率：分布、随机变量、期望", "向量微积分：会对向量值函数求梯度", "机器学习基础（有帮助但不强制）"]
 ---
 
 ## 课程简介
 
-这门课由 Justin Johnson 讲授——他是 CS231n 早期的助教之一，
-所以课程结构和 CS231n 很像，但内容更新、覆盖面更全。
+EECS 498-007 / 598-005 Deep Learning for Computer Vision 是密歇根大学的视觉深度学习课，由 **Justin Johnson** 讲授。
+他读博时是斯坦福 [CS231n](/docs/ai-machine-learning/deep-learning/cs231n) 的讲师之一，所以这门课的结构和 CS231n 很像，
+部分讲次的阅读材料直接用 CS231n 的讲义笔记。
 
-课程从图像分类、线性分类器与优化讲起，
-接着是神经网络与反向传播、卷积网络、训练技巧、
-经典网络架构，然后是目标检测与分割、循环网络与注意力、
-Transformer、三维视觉、视频理解、生成模型（GAN、
-自回归模型、扩散模型），最后是可视化与模型理解。
+课程 2019 年秋季第一次开，2020 年秋季、2022 年冬季（课号改为 498.008 / 598.008）又各开了一次。
+**2019 年秋季的 22 讲录像公开在 YouTube 上**，这也是这门课在校外流传最广的原因；后两次的录像只对密歇根的学生开放。
 
-对自学者友好的一点是：课程不假设你有任何深度学习框架的使用经验，
-前几次作业会从零教你怎么用 PyTorch，
-再逐步让你自己搭建和训练讲座里出现的模型。
-六个 Assignment 加一个 Mini-Project，难度由浅入深。
+它的特点是**作业不用现成的层**：前几个作业用 PyTorch 的张量运算自己写 kNN、线性分类器、全连接网络、卷积网络和反向传播，
+到第四个作业才开始用 autograd，然后一路做到图像描述、目标检测和生成模型。课程不假设你用过深度学习框架，第一个作业就是 PyTorch 入门。
+
+注意：**课程网站 web.eecs.umich.edu/~justincj 已经下线**（2026-09 核对为 404），下面的课程页、作业说明都链到互联网档案馆的存档。
 
 ## 先修要求
 
-- 需要 Python 基础。
-- 需要微积分与线性代数，熟悉矩阵求导即可。
+课程大纲列的是“有助于学好这门课的能力”：
 
-## 官方资源
+- 编程：熟练使用 Python，数据结构与算法达到密歇根 EECS 281 的水平；熟悉 NumPy 有帮助但不强制。
+- 概率：学过概率分布、随机变量、期望等（EECS 401 或 MATH 425 的水平）。
+- 向量微积分：要能对向量值函数求梯度。
+- 机器学习：学过 EECS 445 这样的机器学习课有帮助，但不强制，课上会复习需要的概念。
 
-- [讲座播放列表](https://www.youtube.com/playlist?list=PL5-TkQAfAZFbzxjBHtzdVCWE0Zbhomg7r)：教师本人发布的完整课程录像。
-- [CS231n 讲义（内容相近）](https://cs231n.github.io/)：可作为同主题的文字参考。
+## 课程结构
+
+公开录像对应的 2019 年秋季共 22 讲，外加两次客座讲座（视觉与语言、对抗攻击）：
+
+| 部分 | 讲什么 |
+|---|---|
+| 基础 | 课程导论；图像分类（kNN、超参数、交叉验证）；线性分类器（Softmax、SVM）；优化（SGD、动量、Adam） |
+| 神经网络 | 全连接网络与万能逼近；反向传播与计算图；卷积网络；CNN 架构（AlexNet、VGG、ResNet 等）；硬件与软件（GPU、PyTorch、TensorFlow） |
+| 训练 | 训练神经网络（一）（二）：激活函数、初始化、数据增强、正则化、学习率、迁移学习 |
+| 序列与注意力 | 循环网络（RNN、LSTM、图像描述）；注意力与 Transformer |
+| 视觉任务 | 可视化与理解（特征可视化、对抗样本、风格迁移）；目标检测；图像分割；3D 视觉；视频 |
+| 生成与决策 | 生成模型（一）（二）：自回归模型、VAE、GAN；强化学习 |
+| 总结 | 课程回顾与计算机视觉的未来 |
+
+2022 年冬季版扩成 25 讲，新增了 CNN 架构（二）、Vision Transformer、自监督学习几讲，去掉了强化学习。
+
+评分（2020 年秋季）：六个作业共 70%（第一个 10%，其余各 12%），期中考试 30%。
 
 ## 官方作业
 
-- [Assignments](https://www.youtube.com/playlist?list=PL5-TkQAfAZFbzxjBHtzdVCWE0Zbhomg7r)：六次作业与一个 Mini-Project，题面随讲座发布。
+2020 年秋季的六个作业（全部在 Google Colab 上做，代码写在 `.py` 文件里，Notebook 负责引导和测试）：
 
-授课教师的课程站点 web.eecs.umich.edu/~justincj 于 2026-09-18 核对时已下线；仍然有效的官方入口是教师本人发布的讲座播放列表。
+| 作业 | 内容 |
+|---|---|
+| A1 | PyTorch 101（张量基础）；kNN 分类器 |
+| A2 | 多类 SVM、Softmax 分类器；两层神经网络；数值梯度检验 |
+| A3 | 模块化的全连接网络与卷积网络；各种优化器；批归一化；Dropout |
+| A4 | 用 autograd 和 `nn.Module` 实现 ResNet；RNN/LSTM 加注意力做图像描述；网络可视化；风格迁移 |
+| A5 | 目标检测：类似 YOLO 的单阶段检测器、类似 Faster R-CNN 的两阶段检测器（PASCAL VOC 2007） |
+| A6 | 生成模型：在 MNIST 上实现 VAE 和 GAN |
+
+2022 年冬季版的作业顺序有调整：A4 是检测，A5 是图像描述加一个做简单算术的 Transformer，A6 是生成模型加可视化与风格迁移；
+另外新增了一个 **Mini-Project**，从图像分类、单图超分辨率、NeRF 新视角合成里选一个（也可以自己提），交一份像论文一样有文字、有代码、有结果的 Notebook。
+
+作业原本用 autograder.io 自动评分，校外用不了；存档里能下到部分作业的起始代码压缩包，但**不是每一个都存下来了**。
+
+## 学习建议
+
+- **跟着 2019 年的录像学。** 这是唯一公开的一版，内容和作业基本对得上；2022 年的新讲次（ViT、自监督学习）可以去 [CS231n](/docs/ai-machine-learning/deep-learning/cs231n) 补。
+- **A2、A3 一定要自己写。** 手写每层的前向和反向传播、再用数值梯度检验，是这门课最有价值的训练。写完 A3 再用 autograd，就知道框架替你做了什么。
+- **别急着上 autograd。** 前三个作业故意不让用，就是为了让你把反向传播彻底弄懂。
+- **做作业前先找存档。** 作业说明和起始代码都在互联网档案馆里，先确认你要做的那一个下得到。
+
+## 同类课怎么选
+
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)**：结构最接近的一门，而且还在每年更新（2026 年讲到扩散模型和世界模型），作业和网站都在线。想要最新内容选 CS231n，想要一整套完整录像配作业，这门也很好。
+- **[Stanford CS224n](/docs/ai-machine-learning/deep-learning/cs224n)**：语言方向的对应课。
+- **[吴恩达深度学习专项课程](/docs/ai-machine-learning/deep-learning/cs230)**：更平缓的入门，第四门课讲 CNN。
+
+## 官方资源
+
+- [2019 年秋季录像（YouTube）](https://www.youtube.com/playlist?list=PL5-TkQAfAZFbzxjBHtzdVCWE0Zbhomg7r)：教师本人发布，22 讲。
+- [2019 年秋季日程（存档）](https://web.archive.org/web/2024/https://web.eecs.umich.edu/~justincj/teaching/eecs498/FA2019/schedule.html)：每讲的幻灯片、录像和阅读，和公开录像一一对应。
+- [2020 年秋季课程页（存档）](https://web.archive.org/web/2024/https://web.eecs.umich.edu/~justincj/teaching/eecs498/FA2020/)：大纲和 A1～A6 作业说明。
+- [2022 年冬季课程页（存档）](https://web.archive.org/web/2025/https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/)：最后一次开课，含 Mini-Project 说明。
+- [CS231n 讲义笔记](https://cs231n.github.io/)：课程日程里指定的阅读材料之一。

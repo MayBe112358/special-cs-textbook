@@ -1,42 +1,79 @@
 ---
 title: "UC Berkeley CS285 深度强化学习"
-description: "伯克利的深度强化学习：从策略梯度到基于模型的方法，公式密集。"
-prereqCourses: [cs188, cs189]
-prereqKnowledge: ["CS188, CS189"]
+description: "Sergey Levine 的深度强化学习：模仿学习、策略梯度、演员-评论家、Q 学习、变分推断与控制即推断、大模型强化学习、基于模型的方法、离线强化学习、探索；五个编程作业和两个默认期末项目全部公开。"
+prereqCourses: [cs189]
+prereqKnowledge: ["CS189 或同等的机器学习基础", "对强化学习、数值优化有一定了解", "会用 PyTorch"]
 ---
 
 ## 课程简介
 
-CS285 是伯克利的深度强化学习课，由 Sergey Levine 讲授，
-覆盖这个领域的主要分支。
+CS285（研究生）/ CS185（本科）Deep Reinforcement Learning, Decision Making, and Control 是伯克利的深度强化学习课，
+由 Sergey Levine 讲授，最近一次是 **2026 年春季**。讲课录像放在 YouTube 上（官方特别说明：课程不作为网课提供，视频仅供个人了解）。
 
-课程从模仿学习起步，然后是马尔可夫决策过程与策略梯度、
-Actor-Critic 方法、值函数方法（Q-learning、DQN 及其改进）、
-基于模型的强化学习与规划，接着是探索问题、
-离线强化学习、逆强化学习、元学习，
-最后讨论强化学习与控制、与大模型的结合等前沿方向。
+强化学习研究的是：智能体怎么通过和环境交互、根据奖励信号学会做决策。这门课从最简单的**模仿学习**（照着专家的动作学）讲起，
+然后是强化学习的三大类方法——**策略梯度**、**基于价值的方法（Q 学习）**、**基于模型的方法**，以及把它们结合起来的演员-评论家方法；
+后半段讲概率推断视角（变分推断、控制即推断）、**离线强化学习**（只用已有数据、不再和环境交互）、探索、强化学习理论、多任务学习。
 
-这门课的公式密度很高，上课前需要一定的心理准备——
-它默认你已经熟悉马尔可夫决策过程这类概念。
-教授每年会根据最新研究进展更新内容与作业，
-所以不同学期的版本差别不小。
+2026 年的一个新变化是加了**大模型强化学习**（LLM RL）一讲和一个对应的作业，这正是现在大模型后训练（比如 RLHF 和推理模型训练）的核心技术。
 
-五次编程作业覆盖模仿学习、策略梯度、Q-learning、
-基于模型的方法与离线强化学习。
+课程以公式密集著称，每个方法都会从目标函数推导到算法。
 
 ## 先修要求
 
-- 指南列出的学前准备是 CS188 与 CS189。
-- 需要熟悉马尔可夫决策过程、概率与深度学习基础。
+- 官方写的是：**CS189 或同等课程**是先修；课程会假设你对强化学习、数值优化和机器学习有一定了解。
+- 官方还推荐用 CS188 的 edX 版和 Sutton 与 Barto 的《强化学习》教材的部分章节补基础。
+  强化学习完全没接触过的话，先学 [CS188](/docs/ai-machine-learning/artificial-intelligence/cs188) 的马尔可夫决策过程和强化学习部分。
+- 作业用 PyTorch。仓库默认配置了在 Modal 云平台上运行，需要 GPU 的作业可以租用云端显卡。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](http://rail.eecs.berkeley.edu/deeprlcourse/)：当前学期的日程、幻灯片与作业。
-- [课程日程](https://rail.eecs.berkeley.edu/deeprlcourse/calendar)：每讲的主题与配套阅读。
-- [资源与往年版本](https://rail.eecs.berkeley.edu/deeprlcourse/resources)：教材推荐、相关课程与历年录像。
+2026 年春季共 25 讲：
+
+| 部分 | 讲什么 |
+|---|---|
+| 入门 | 导论；行为克隆（两讲）；强化学习基础 |
+| 无模型方法 | 策略梯度；演员-评论家；基于价值的强化学习；Q 学习的实践；高级策略梯度（两讲） |
+| 推断视角 | 变分推断；强化学习中的变分推断；控制即推断 |
+| 大模型 | 大模型强化学习（LLM RL） |
+| 基于模型 | 基于模型的强化学习（两讲） |
+| 离线与探索 | 离线强化学习（两讲）；探索；强化学习理论 |
+| 收尾 | 期中复习（两讲）；高级探索；多任务强化学习；挑战与开放问题 |
+
+评分：五个编程作业共 50%（每个 10%），期末项目 20%，考试 20%，小测 10%。
 
 ## 官方作业
 
-- [Homework 1](https://rail.eecs.berkeley.edu/deeprlcourse/static/homeworks/hw1.pdf)：模仿学习；后续作业在课程主页上依次列出。
+**作业说明 PDF 在课程主页，代码框架在公开的 GitHub 仓库 [berkeleydeeprlcourse/homework_spring2026](https://github.com/berkeleydeeprlcourse/homework_spring2026)**：
 
-作业框架开源，本地可运行；部分实验需要较长的训练时间。
+| 作业 | 内容 |
+|---|---|
+| HW1 模仿学习 | 在 Push-T 任务上训练“动作块”策略：先做一个简单的均方误差策略，再做一个类似扩散策略（diffusion policy）的流匹配策略 |
+| HW2 策略梯度 | 实现策略梯度算法 |
+| HW3 Q 学习与演员-评论家 | 离散动作空间用深度 Q 网络（DQN），连续动作空间用软演员-评论家（SAC） |
+| HW4 大模型强化学习 | 用强化学习训练语言模型；默认在云端 GPU 平台 Modal 上跑（需要 H100 这类大显卡） |
+| HW5 离线强化学习 | 实现离线强化学习算法 |
+
+**期末项目**：可以自选题目，也可以做两个默认项目之一——“离线到在线强化学习”或“大模型强化学习”，说明文档都在课程主页和仓库里。
+
+不在伯克利选课的人，官方提供了一个 Reddit 论坛（r/berkeleydeeprlcourse）用来讨论。
+
+## 学习建议
+
+- **每个算法都从目标函数推一遍。** 这门课的讲法是先写出要优化的目标，再推导出梯度或更新规则。自己推一遍，才知道每个算法的假设在哪。
+- **HW2 的策略梯度要调通。** 策略梯度对超参数和实现细节很敏感，第一次调通会让你理解为什么后面要引入基线、优势函数和演员-评论家。
+- **强化学习训练慢、方差大，多跑几个随机种子。** 一次跑不好不一定是代码错了，看几次的平均表现再下结论。
+- **看往年录像补充。** 课程主页链接了 2023 年秋季的完整录像，和 2026 年的内容大部分重合。
+
+## 同类课怎么选
+
+- **[CS188](/docs/ai-machine-learning/artificial-intelligence/cs188)** 讲了马尔可夫决策过程、值迭代、Q 学习的基础，是很好的前置。
+- **[CS189](/docs/ai-machine-learning/machine-learning/cs189)** 是官方先修。
+- 想把强化学习用到大模型上，学完可以接 [CMU 11-667 大语言模型](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-667)。
+
+## 官方资源
+
+- [课程主页](https://rail.eecs.berkeley.edu/deeprlcourse/)：日程、幻灯片、作业说明、期末项目说明。
+- [大纲](https://rail.eecs.berkeley.edu/deeprlcourse/syllabus)：先修、评分、合作与迟交政策。
+- [资源页](https://rail.eecs.berkeley.edu/deeprlcourse/resources)：往届课程、相关课程和推荐教材。
+- [作业代码仓库](https://github.com/berkeleydeeprlcourse/homework_spring2026)
+- [2023 秋季讲课录像](https://www.youtube.com/playlist?list=PL_iWQOsE6TfVYGEGiAOMaOzzv41Jfm_Ps)

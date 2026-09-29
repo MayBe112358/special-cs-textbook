@@ -1,39 +1,84 @@
 ---
 title: "台湾大学 李宏毅 机器学习"
-description: "李宏毅的中文机器学习课：覆盖面极广，十五个 lab 从回归做到大模型。"
+description: "李宏毅的中文机器学习课，每年大改一次：2021 年的经典版从回归讲到元学习，15 个作业覆盖深度学习全貌；2026 年版全面转向大模型与 AI 智能体，10 个作业从防御恶意指令做到口语语言模型。"
 prereqCourses: []
-prereqKnowledge: ["熟练掌握 Python"]
+prereqKnowledge: ["熟练的 Python", "微积分、线性代数、概率的基础（2021 版推导较多）", "2026 版建议先看完 2025 秋季的《生成式人工智能与机器学习导论》"]
 ---
 
 ## 课程简介
 
-李宏毅老师的这门课挂着“机器学习”的名字，但内容之广令人吃惊，
-实际上是一门覆盖现代深度学习全景的中文课程。
+这是台湾大学电机系李宏毅老师的《机器学习》（Machine Learning），**中文授课**，讲课录像全部公开在他的 [YouTube 频道](https://www.youtube.com/channel/UC2ggjtuuWvxrHHHiaDH1dlQ/playlists)，
+以生动的比喻和动画著称（宝可梦、凉宫春日是常客），是中文世界最受欢迎的机器学习课之一。
 
-作业列表最能说明覆盖范围：回归、分类、卷积网络、自注意力、
-Transformer、生成对抗网络、BERT、异常检测、可解释 AI、
-对抗攻击、领域自适应、强化学习、终身学习、元学习，
-近年版本还加入了大语言模型相关的内容。
+这门课几乎每年都会大改，[课程主页](https://speech.ee.ntu.edu.tw/~hylee/index.php)上保留了 2016 年以来的每一个版本。对自学者来说，最有用的是两个版本：
 
-讲课风格轻松幽默，幻灯片里常出现宝可梦之类的动漫元素，
-但内容并不因此变浅。对中文母语的学习者来说，
-这是理解深度学习概念最省力的路径之一。
-
-课程每年更新，不同年份的作业和主题会有调整。
+- **2021 春季（经典版）**：系统讲一遍深度学习——回归、分类、CNN、自注意力、Transformer、GAN、自监督学习（BERT）、自编码器、可解释性与对抗攻击、领域适应、强化学习、模型压缩、终身学习、元学习。
+  配套 15 个作业，是入门深度学习最完整的中文材料之一。
+- **2026 春季（最新版）**：内容全面转向**大模型和 AI 智能体**——智能体的运作原理（以 OpenClaw 为例拆解）、上下文工程、推理加速（FlashAttention、KV Cache）、位置编码、Harness Engineering、自我纠错、自我提升与自我进化的智能体，以及业界和学界的客座演讲。
 
 ## 先修要求
 
-- 需要熟练掌握 Python。
-- 需要基础的线性代数与概率概念。
+- 熟练的 Python。
+- 2021 版有不少推导，需要微积分、线性代数、概率的基础。
+- 2026 版的很多作业把 2025 年秋季的《生成式人工智能与机器学习导论》（GenAI-ML）的某一讲列为“先修视频”，比如作业 3 要求先看“解剖大型语言模型”那一讲。
+  建议先看完 [GenAI-ML 2025 秋季](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall.php) 再学 2026 版。
 
-## 官方资源
+## 课程结构
 
-- [2023 春季课程页](https://speech.ee.ntu.edu.tw/~hylee/ml/2023-spring.php)：讲座视频、幻灯片与作业。
-- [2025 春季课程页](https://speech.ee.ntu.edu.tw/~hylee/ml/2025-spring.php)：最新版本，含大模型相关内容。
-- [教师主页](https://speech.ee.ntu.edu.tw/~hylee/)：历年课程的总入口。
+**2021 春季**按主题推进，每个主题配一个作业：
+
+| 主题 | 作业 |
+|---|---|
+| 回归；分类 | HW1 回归、HW2 分类 |
+| CNN 与自注意力 | HW3 CNN、HW4 自注意力 |
+| Transformer | HW5 Transformer |
+| 生成对抗网络（含 WGAN、CycleGAN） | HW6 GAN |
+| 自监督学习（BERT）、自编码器 | HW7 BERT、HW8 异常检测 |
+| 可解释 AI、对抗攻击 | HW9 可解释 AI、HW10 对抗攻击 |
+| 领域适应、强化学习 | HW11 领域适应、HW12 强化学习 |
+| 模型压缩、终身学习、元学习 | HW13 模型压缩、HW14 终身学习、HW15 元学习 |
+
+**2026 春季**每周一个主题：AI 智能体（两周）→ 加快模型推理 → 处理超长输入（位置编码）→ 如何“教育”模型（Harness Engineering、自我纠错）→
+模型的自我成长（两周）→ 客座演讲。
 
 ## 官方作业
 
-- [15 个 Lab](https://speech.ee.ntu.edu.tw/~hylee/ml/2023-spring.php)：从回归到大模型，每个 lab 都有 Colab 框架与排行榜。
+**2021 版**：15 个作业，每个都有说明幻灯片和 Colab 示例代码，多数在 Kaggle 上有排行榜。
 
-作业以 Colab Notebook 形式提供，可直接运行；评分通过 Kaggle 排行榜进行。
+**2026 版**：10 个作业，说明 PDF 都能在课程主页下载：
+
+| 作业 | 内容 |
+|---|---|
+| HW1 | 大模型的恶意指令防御 |
+| HW2 | 让 AI 智能体当 AI 工程师：只给数据集，用大模型自动写代码解决一个图像分类任务；说明里专门讲了怎么和 Claude Code、Codex、Cursor 这类编程智能体协作 |
+| HW3 | 大模型快速推理：推测解码、FlashAttention、vLLM |
+| HW4 | 训练一个只有解码器的 Transformer |
+| HW5 | 微调而不遗忘 |
+| HW6 | 模型编辑 |
+| HW7 | 模型合并 |
+| HW8 | 测试时扩展（Test-Time Scaling） |
+| HW9 | 流匹配（Flow Matching）生成模型 |
+| HW10 | 口语语言模型 |
+
+作业在台大的评测平台 JudgeBoi 或 Kaggle 上评分，校外无法提交，但说明和示例代码（Colab/Kaggle Notebook）大多公开，可以自己跑。
+
+## 学习建议
+
+- **想打深度学习基础，从 2021 版开始。** 它的 15 个作业从回归一路做到元学习，每个都是一个完整的小项目，配套材料最全。
+- **想跟上大模型和智能体，看 2026 版。** 它讲的是这一两年最新的东西：上下文工程、推理加速、模型合并、测试时扩展。先补 GenAI-ML 2025 秋季的视频再看。
+- **作业跟着说明幻灯片做。** 李宏毅课的作业说明写得非常细，有背景、有基线、有提示，照着一步步做就行。
+- **视频可以倍速看。** 每讲都有完整录像，熟悉的部分快进，不懂的地方反复看。
+
+## 同类课怎么选
+
+- **[吴恩达机器学习专项课程](/docs/ai-machine-learning/machine-learning/coursera-machine-learning)** 和 **[深度学习专项课程](/docs/ai-machine-learning/deep-learning/cs230)**：英文、更平缓、更结构化。
+- **[Stanford CS224n](/docs/ai-machine-learning/deep-learning/cs224n)**：英文课里讲大模型最新进展最系统的一门，和 2026 版可以互补。
+- **[CMU 11-667 大语言模型](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-667)**：专讲大模型方法。
+
+## 官方资源
+
+- [课程主页](https://speech.ee.ntu.edu.tw/~hylee/index.php)：列出了机器学习、生成式 AI、线性代数等全部课程的各个版本。
+- [机器学习 2026 春季](https://speech.ee.ntu.edu.tw/~hylee/ml/2026-spring.php)：大模型与智能体版。
+- [机器学习 2021 春季](https://speech.ee.ntu.edu.tw/~hylee/ml/2021-spring.php)：经典深度学习版，15 个作业。
+- [生成式 AI 与机器学习导论 2025 秋季](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall.php)：2026 版的前置课。
+- [YouTube 频道](https://www.youtube.com/channel/UC2ggjtuuWvxrHHHiaDH1dlQ/playlists)：全部课程录像。

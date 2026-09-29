@@ -1,39 +1,89 @@
 ---
 title: "Stanford CS224n 自然语言处理"
-description: "Stanford 的 NLP 课：词向量、注意力、Transformer 与预训练模型。"
+description: "斯坦福的自然语言处理与深度学习：词向量、反向传播、RNN、Transformer，再到预训练、后训练（RLHF、DPO）、智能体与 RAG、推理、评测；四个作业和一个自己实现 GPT-2 的默认期末项目全部公开。"
 prereqCourses: []
-prereqKnowledge: ["深度学习基础 + Python"]
+prereqKnowledge: ["熟练的 Python（会用 NumPy）", "微积分与线性代数：会求多元导数、熟悉矩阵运算", "概率统计基础", "机器学习基础（如 CS229、CS230 的水平）"]
 ---
 
 ## 课程简介
 
-CS224n 是 Stanford 的自然语言处理课，由 Chris Manning 领衔。
-它几乎是这个方向最被推荐的一门公开课，并且每年跟着领域一起更新。
+CS224N（Natural Language Processing with Deep Learning）是斯坦福的自然语言处理课，**2026 年冬季**由 Diyi Yang 和 Yejin Choi 讲授。
 
-课程从词向量开始（word2vec、GloVe），
-接着是神经网络基础与反向传播、依存句法分析、
-循环网络与 LSTM、机器翻译与序列到序列模型、注意力机制，
-然后是 Transformer、预训练语言模型、大模型的提示与微调，
-以及问答、代码生成等应用，最后讨论模型分析与伦理问题。
+课程主页的介绍：自然语言处理是人工智能的关键部分，应用无处不在——网页搜索、广告、邮件、客服、机器翻译、虚拟助手、医疗报告、政治……
+2010 年代深度学习方法在很多 NLP 任务上取得了很高的性能；2020 年代，大语言模型（比如 ChatGPT）的规模化又带来了惊人的进步。
+这门课全面介绍 NLP 深度学习的前沿研究，通过讲课、作业和期末项目，让学生掌握为 NLP 问题设计、实现、理解自己的神经网络模型的能力，
+并接触大语言模型的前沿研究。
 
-五次编程作业难度循序渐进：词向量、word2vec 实现、
-依存分析、神经机器翻译、Transformer 微调。
-最终的大作业是在 SQuAD 这类基准上做一个完整项目。
+2026 年的内容非常新：讲完词向量、反向传播、RNN 和 Transformer 这些基础后，
+一半的课在讲大模型——预训练（规模化、系统、数据）、后训练（RLHF、SFT、DPO）、高效适配（提示与参数高效微调）、
+智能体与工具调用和 RAG、评测、推理，还有一系列客座讲座（分词与多语言、可解释性、多模态，以及 John Schulman 讲 LoRA）。
 
 ## 先修要求
 
-- 需要 Python 编程能力。
-- 需要线性代数、概率与基础的深度学习概念。
+课程主页写的先修：
 
-## 官方资源
+- **熟练的 Python**：所有作业都用 Python（NumPy 和 PyTorch）。第一周有 Python 复习课；主页说有其他语言丰富经验的人一般也没问题。
+- **微积分与线性代数**（如 MATH 51）：要能熟练求多元导数，熟悉矩阵和向量的记号与运算。
+- **基础概率统计**（如 CS109）：概率、高斯分布、均值、标准差等。
+- **机器学习基础**（如 CS221、CS229、CS230 或 CS124）：会写代价函数、求导、用梯度下降优化。
 
-- [课程主页](http://web.stanford.edu/class/cs224n/)：当前学期的日程与材料。
-- [课程日程](https://web.stanford.edu/class/cs224n/index.html#schedule)：每讲的主题、讲义与配套阅读。
-- [课程作业页](https://web.stanford.edu/class/cs224n/)：作业与项目要求的入口。
+## 课程结构
+
+2026 年冬季，每周两讲，另有周五的辅导课：
+
+| 周 | 讲什么 |
+|---|---|
+| 1 | NLP 的历史；词向量；Python 复习 |
+| 2 | 反向传播与神经网络基础；语言模型与 RNN；PyTorch 教程 |
+| 3 | Transformer；期末项目介绍与实用建议 |
+| 4 | 预训练（规模化、系统、数据）；后训练（RLHF、SFT、DPO） |
+| 5 | 高效适配（提示与 PEFT）；智能体、工具调用与 RAG；Hugging Face 教程 |
+| 6 | 评测与基准；推理（一） |
+| 7 | 推理（二）；客座讲座：分词与多语言 |
+| 8 | 客座讲座：可解释性；NLP 的社会影响与风险 |
+| 9 | 客座讲座：多模态；客座讲座：Tinker 与 LoRA |
+| 10 | 2026 年 NLP 的开放问题；期末项目海报展示 |
+
+评分：作业 48%（四份），期末项目 49%（提案 8%、中期 6%、海报 3%、报告 32%）。
 
 ## 官方作业
 
-- [Assignments](https://web.stanford.edu/class/cs224n/)：五次编程作业，从词向量到 Transformer 微调。
-- [Final Project](https://web.stanford.edu/class/cs224n/project.html)：自选或指定题目的完整 NLP 项目。
+**四份作业的代码包和说明 PDF 都能在课程主页直接下载**（`assignments_w26/` 目录下）：
 
-作业框架公开；自动评分依赖校内系统，本地可运行自带测试。
+| 作业 | 占比 | 内容 |
+|---|---|---|
+| A1 | 6% | 词向量入门（Notebook） |
+| A2 | 14% | 神经网络基础、张量求导、依存句法分析 |
+| A3 | 14% | 自注意力与 Transformer |
+| A4 | 14% | 大语言模型的基准测试与评估 |
+
+**期末项目（49%）** 有两种选择：
+
+- **默认项目**：自己实现 GPT-2 架构的关键部分，再用它解决三个下游任务。说明文档《Build GPT-2》是公开的。
+  （2024 年春季的默认项目基于 BERT，现在换成了 GPT-2。）
+- **自选项目**：任何和人类语言与深度学习相关的课题，会分配一位导师。
+
+可以一个人做，也可以最多三人一组，官方强烈建议组队。项目要交提案、中期报告和期末报告，说明文档都在主页上。
+
+校外旁听的人作业不会被批改（主页说因为选课人数太多，只能批改正式选课学生的作业），但所有材料都可以自己做。
+
+## 学习建议
+
+- **A2 的张量求导一定要手推。** 这是很多人第一次在矩阵层面推反向传播，推一遍之后，后面的 Transformer 和大模型就不再神秘。
+- **做默认期末项目。** 自己写 GPT-2 的注意力、前馈层、位置编码，再在下游任务上微调，是这门课最接近“真正理解大模型”的一步。
+- **配合往年录像。** 主页链接了 2024 年的 YouTube 播放列表，基础部分（词向量、RNN、Transformer）讲得和今年大同小异；大模型的新内容看今年的幻灯片。
+- **读讲义里的笔记。** 前几讲除了幻灯片还有讲义笔记（notes），推导比幻灯片完整。
+
+## 同类课怎么选
+
+- **[CMU 11-711 高级 NLP](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-711)**：卡内基梅隆的 NLP 研究生课，覆盖面更广。
+- **[CMU 11-667 大语言模型](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-667)**：专讲大模型的方法与应用。
+- **[Karpathy 从零到英雄](/docs/ai-machine-learning/artificial-intelligence/neural-networks-zero-to-hero)**：只讲怎么从零写出 GPT，适合配合 CS224n 的默认项目一起看。
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)**：视觉方向的对应课。
+
+## 官方资源
+
+- [课程主页](https://web.stanford.edu/class/cs224n/)：2026 冬季日程、幻灯片、讲义、作业、期末项目说明。
+- [2024 年 YouTube 播放列表](https://www.youtube.com/playlist?list=PLoROMvodv4rOaMFbaqxPDoLWjDaRAdP9D)
+- [期末项目默认题目：Build GPT-2](https://web.stanford.edu/class/cs224n/project_w25/CS_224n__Default_Final_Project__Build_GPT_2.pdf)
+- 往届课程存档：主页底部列出了 2021 年以来各学期的归档链接，比如 [2025 冬季](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1254/)。
