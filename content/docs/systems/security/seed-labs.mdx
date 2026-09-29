@@ -1,38 +1,66 @@
 ---
 title: "雪城大学 SEED Labs 安全实验"
-description: "雪城大学的安全实验集：四十多个动手实验，覆盖软件、网络与 Web 安全。"
+description: "雪城大学杜文亮（Wenliang Du）主持的安全教学实验库：2002 年起步、美国国家科学基金会资助、全球 1180 多所院校采用；四十多个动手实验覆盖软件安全（缓冲区溢出、格式化字符串、竞态、脏牛）、网络安全（嗅探与伪造、ARP/TCP/BGP 攻击、防火墙、VPN、Morris 蠕虫）、Web 安全、硬件安全（Meltdown、Spectre）、密码学、区块链和移动安全；每个实验有详细手册，环境用官方虚拟机或 Docker 一键搭好。"
 prereqCourses: []
-prereqKnowledge: ["无"]
+prereqKnowledge: ["没有硬性先修，不同实验难度差别很大", "C 语言与 Linux 基础", "部分实验需要汇编、网络或 Web 的基础"]
 ---
 
 ## 课程简介
 
-SEED Labs 是雪城大学开发的一套安全教学实验，
-由美国国家科学基金会资助，目前全球有上千家院校在使用。
+SEED Labs 是雪城大学 **杜文亮**（Wenliang Du）教授主持的安全教学实验项目。官网介绍：项目 **2002 年起步**，累计获得美国国家科学基金会（NSF）130 万美元资助，
+目前**全球有 1180 多所院校**在使用。目标是开发用于网络安全教育的动手实验（SEED labs），并帮助老师把它们用进自己的课程。
 
-它不是一门课，而是一个实验库：四十多个实验按主题分类，
-包括软件安全（缓冲区溢出、格式化字符串、竞态、脏牛漏洞）、
-网络安全（ARP 欺骗、TCP 攻击、DNS 攻击、防火墙、VPN）、
-Web 安全（XSS、CSRF、SQL 注入）、密码学（加密、哈希、PKI、TLS），
-以及区块链等新主题。
+它不是一门课，而是一个**实验库**：四十多个实验，覆盖软件安全、网络安全、Web 安全、操作系统安全、移动应用安全等方向，还在不断增加。
+每个实验都有详细的实验手册，讲清背景、步骤和思考题；环境用官方的虚拟机或 Docker 容器快速搭好，省掉了安全实验里最耗时的配置环节。
 
-每个实验都有详细的实验手册，说明背景、步骤和思考题。
-环境可以用官方提供的虚拟机或 Docker 快速搭好，
-省掉了安全实验里最耗时的配置环节。
+杜文亮老师还基于这些实验写了一本教材《Computer & Internet Security: A Hands-on Approach》，并录制了配套的讲课视频；官网也有中文版入口。
 
 ## 先修要求
 
-- 没有硬性先修要求，不同实验的难度差别很大。
-- 需要 C 语言与 Linux 基础；部分实验涉及汇编。
+- 没有硬性先修，不同实验的难度差别很大，可以从简单的开始。
+- 需要 C 语言和 Linux 命令行基础；软件安全类实验会用到汇编和调试器，网络类要懂 TCP/IP，Web 类要懂 HTTP 和一点 JavaScript、SQL。
 
-## 官方资源
+## 课程结构
 
-- [SEED 官网](https://seedsecuritylabs.org/index.html)：全部实验与配套材料的入口。
-- [实验环境搭建](https://seedsecuritylabs.org/labsetup.html)：虚拟机与 Docker 环境的安装说明。
-- [开源讲义](https://github.com/seed-labs/seed-labs)：全部实验手册的源文件。
+按官网 Ubuntu 20.04 版实验的分类：
+
+| 类别 | 实验 |
+|---|---|
+| 软件安全 | 环境变量与 Set-UID；缓冲区溢出（Set-UID 版、服务器版、ARM64 版）；Return-to-Libc；Shellcode 开发；格式化字符串漏洞；竞态条件漏洞；脏牛（Dirty COW） |
+| 网络安全 | 包嗅探与伪造；ARP 缓存投毒；ICMP 重定向；TCP 攻击（会话劫持、SYN 洪泛、RST 攻击）；Mitnick 攻击；防火墙探索与绕过；VPN 隧道与 VPN；BGP 探索与攻击；Morris 蠕虫；Heartbleed |
+| Web 安全 | 跨站脚本（XSS）；跨站请求伪造（CSRF）；SQL 注入；点击劫持；Shellshock |
+| 硬件与系统安全 | Meltdown；Spectre |
+| 密码学 | TLS（用 Python 写 TLS 客户端、服务器和代理）；PKI；RSA 加密与签名；MD5 碰撞；哈希长度扩展攻击；对称加密 |
+| 区块链 | 区块链探索；智能合约；智能合约重入攻击 |
+| 移动安全 | Android 重打包攻击；Android Root 攻击 |
 
 ## 官方作业
 
-- [Labs](https://seedsecuritylabs.org/Labs_20.04/)：四十多个实验，按软件、网络、Web、密码学分类。
+实验本身就是作业。每个实验都有：
 
-实验手册含思考题；没有自动评分，以能否复现攻击与防御为准。
+- **实验手册**：背景知识、分步任务和思考题，手册的源文件在 GitHub 上开源；
+- **实验环境**：官方提供预装好的 SEED Ubuntu 20.04 虚拟机，很多实验用 Docker Compose 一次起好攻击者、受害者、服务器等多个容器（有的实验要十几个）。
+  Apple Silicon 的 Mac 跑不了官方的 x86 虚拟机，官网给了用 VMware Fusion 装 ARM 版环境的说明，多数实验可以在上面做。
+
+没有自动评分，自学者按手册的要求自己验证攻击效果；官网另外为老师准备了教师手册作补充。
+
+## 学习建议
+
+- **从软件安全的前几个开始。** 环境变量与 Set-UID、缓冲区溢出（Set-UID 版）是经典入门，做完再挑感兴趣的方向。
+- **配合教材或课程学原理。** 实验手册讲“怎么做”，原理最好配着杜老师的书，或者 [CS161](/docs/systems/security/cs161) 这样的课程一起学。
+- **用 Docker 环境。** 网络类实验要好几台“机器”，Docker 版比开多个虚拟机轻松得多。
+- **注意版本。** 个别实验只能在旧版虚拟机上完整运行（比如 Meltdown 在 20.04 上只能部分完成、Heartbleed 只能在 12.04 上做），手册开头会写明。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS161](/docs/systems/security/cs161)**：系统地讲安全原理，和 SEED 实验正好互补。
+- **[ASU CSE365](/docs/systems/security/asu-cse365)**：pwn.college 的在线题库，按模块推进、自动判分。
+- **[MIT 6.1600](/docs/systems/security/mit-6-1600)**：安全与密码学的系统入门课。
+
+## 官方资源
+
+- [SEED 官网](https://seedsecuritylabs.org/index.html)
+- [实验总览（Ubuntu 20.04 版）](https://seedsecuritylabs.org/Labs_20.04/)
+- [实验环境搭建](https://seedsecuritylabs.org/labsetup.html)：虚拟机、Docker 与 Apple Silicon 说明。
+- [实验手册源文件（GitHub）](https://github.com/seed-labs/seed-labs)
+- [配套教材与讲课视频](https://www.handsonsecurity.net/)
