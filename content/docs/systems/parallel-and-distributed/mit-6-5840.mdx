@@ -1,41 +1,85 @@
 ---
 title: "MIT 6.5840 分布式系统"
-description: "精读分布式系统经典论文，并用 Go 实现 MapReduce、Raft 与容错存储。"
+description: "MIT 的分布式系统研究生课（原 6.824，2026 春季）：每节课精读一篇经典论文——MapReduce、GFS、Paxos、Raft、ZooKeeper、Spanner、链式复制、FaRM、Memcached、Ray、比特币、拜占庭容错；五个 Go 实验从 MapReduce、单机键值服务器写到 Raft、基于 Raft 的容错键值存储和分片存储，测试反复模拟网络分区和宕机。实验代码、历年试题和 2020 年录像都公开。"
 prereqCourses: []
-prereqKnowledge: ["计算机体系结构，并行编程"]
+prereqKnowledge: ["计算机组成（MIT 6.1910）", "操作系统或计算机系统设计（MIT 6.1810 或 6.1800）", "扎实的编程经验；Go 语言课上会带着入门"]
 ---
 
 ## 课程简介
 
-6.5840（原 6.824）出自 MIT 的 PDOS 实验室，授课者是 Robert Morris。
-课程形式是每节课精读一篇分布式系统领域的经典论文——
-MapReduce、GFS、Raft、Spanner、ZooKeeper 等等——
-从论文里提炼出分布式系统设计的核心原则：
-容错、一致性、性能之间怎么权衡。
+6.5840 Distributed Systems（2022 年及以前叫 6.824）是 MIT PDOS 研究组的研究生核心课，2026 年春季由 **Frans Kaashoek 和 Robert Morris** 讲授，
+官网保留着 2000 年以来每一年的课程网站。
 
-它真正出名的是实验：四个 Lab 用 Go 完成，难度逐级上升。
-Lab 1 实现 MapReduce；Lab 2 实现键值服务器；
-Lab 3 从零实现 Raft 共识算法——这是最难的一个，
-你要处理选举、日志复制、持久化与快照；
-Lab 4 在 Raft 之上构建容错的分片键值存储。
+课程讲**构建分布式系统的抽象和实现技术**，核心话题是**容错、复制和一致性**。大部分时间用来研读和讨论真实的分布式系统案例：
+几乎每节课读一篇经典论文，课前要交一道关于论文的小问题。
 
-测试非常严格，会反复模拟网络分区、节点崩溃与消息乱序。
-能把 Raft 的全部测试跑绿，是很多人学分布式系统的一个里程碑。
+它真正出名的是**实验**：用 Go 一步步写出 MapReduce、Raft 共识算法、基于 Raft 的容错键值存储，最后是分片存储。
+测试非常严格，会反复模拟网络分区、节点崩溃、消息丢失和乱序——能把 Raft 的全部测试跑绿，是很多人学分布式系统的一个里程碑。
 
 ## 先修要求
 
-- 需要计算机系统基础与并发编程经验。
-- 需要 Go 语言（课程提供入门指引，上手不难）。
+官方写的先修：**6.1910（计算机组成）加上 6.1800（计算机系统工程）或 6.1810（操作系统）之一，或同等课程**；
+大量的编程经验会对实验很有帮助。
 
-## 官方资源
+对应到本站：[CS61C](/docs/systems/computer-architecture/cs61c) 或 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)，
+再加上 [MIT 6.S081](/docs/systems/operating-systems/mit-6-s081)。Go 语言不要求事先会，第二讲就用 Go 讲 RPC 和线程，官方还指定了在线 Go 教程。
 
-- [课程主页](https://pdos.csail.mit.edu/6.5840/)：当前学期的日程与全部材料。
-- [课程日程](https://pdos.csail.mit.edu/6.5840/schedule.html)：每次课的论文、讲义与视频。
-- [往年版本](http://nil.csail.mit.edu/6.5840/2025/)：历年课程材料，含论文列表与实验。
+## 课程结构
+
+2026 年春季 22 讲（括号里是要读的论文）：
+
+| 部分 | 讲什么 |
+|---|---|
+| 入门 | 导论（MapReduce）；RPC 与线程（Go 示例）；GFS；Go 的并发模式（Go 团队的 Russ Cox 客座） |
+| 共识与复制 | Paxos；Raft（两讲）；一致性与线性一致性；ZooKeeper |
+| 事务 | 分布式事务（两阶段提交等）；Spanner；链式复制；乐观并发控制（FaRM） |
+| 真实系统 | 分布式系统的形式化验证（IronFleet）；Facebook 的 Memcached；AWS Lambda（客座）；Ray |
+| 去信任 | 分叉一致性（SUNDR）；比特币；拜占庭容错（PBFT） |
+| 收尾 | 课程项目展示 |
+
+中间有两个“黑客日”不上课，专门写实验。
+
+评分：实验 40%（含选做的课程项目）、实验当面检查 15%、期中 20%、期末 20%、论文小问题 5%。
 
 ## 官方作业
 
-- [Lab 1：MapReduce](https://pdos.csail.mit.edu/6.5840/labs/lab-mr.html)：第一个实验，后续实验在日程页上依次列出。
-- [Lab 3：Raft](https://pdos.csail.mit.edu/6.5840/labs/lab-raft1.html)：全课难度最高的一项：选举、日志复制、持久化与快照。
+**五个 Go 实验**（个人完成）：
 
-课程编号自 2023 年春季由 6.824 改为 6.5840，内容不变。实验自带严格的测试脚本，本地即可运行。
+| 实验 | 内容 |
+|---|---|
+| Lab 1：MapReduce | 实现一个 MapReduce 系统（协调者和工作者） |
+| Lab 2：Key/Value Server | 单机键值服务器，保证在网络故障下每个 Put 最多执行一次、所有操作线性一致，再用它实现一把锁 |
+| Lab 3：Raft | 分四部分：领导者选举、日志复制、持久化、日志压缩（快照） |
+| Lab 4：KV Raft | 用自己的 Raft 库搭一个容错的键值存储，只要多数服务器活着就能继续服务 |
+| Lab 5：Sharded KV | 把键分片到多个 Raft 复制组上，支持分片迁移；也可以换成自己设计的课程项目 |
+
+实验代码公开：`git clone git://g.csail.mit.edu/6.5840-golabs-2026 6.5840`。官方提供了打分时用的全部测试，本地用 `make`（底层是 `go test -race`）就能跑。
+
+**历年试题**：官网有 2018～2025 年的期中期末卷，大多附答案。
+
+**AI 政策**：官方的原话是，想让 AI 助手替你写代码的时候，想一想你从实验里学到的也会相应变少；无论如何，你都要能解释交上去的每一行代码，并能在考试里推理实验相关的问题。
+另外官方明确要求不要把实验代码公开到 GitHub 上。
+
+## 学习建议
+
+- **先把 Lab 1 当 Go 练习。** MapReduce 实验不难，正好用来熟悉 Go 的 goroutine、channel 和 RPC。
+- **Raft 前先把论文读透。** 论文里的图 2 几乎就是实现规格，实验说明里多次提到要对照它来写。
+- **测试要反复跑。** 分布式的 bug 常常几百次才出现一次，一次跑过不代表对了。
+- **加日志、看时序。** Raft 出问题时，打印每个节点的任期、角色和日志变化，比单步调试有用得多。
+- **看 2020 年的录像。** 2020 年春季的课程网站上大多数讲都有录像，论文和现在大部分重合。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS162](/docs/systems/operating-systems/cs162)**：操作系统课的最后几讲讲分布式，作业里也有 Raft 和 MapReduce，可以当入门。
+- **[CMU 15-418 / Stanford CS149](/docs/systems/parallel-and-distributed/cmu-15-418-cs149)**：并行计算，关心的是性能和单机多核、GPU，和这门课的容错视角互补。
+- **[CMU 15-445](/docs/systems/databases/cmu-15-445)**：数据库系统，事务、并发控制、恢复讲得更系统。
+
+## 官方资源
+
+- [课程主页（2026 春季）](https://pdos.csail.mit.edu/6.5840/)：课程说明与历年网站。
+- [课程日程](https://pdos.csail.mit.edu/6.5840/schedule.html)：每讲的论文、FAQ、讲义和实验时间。
+- [课程说明与评分](https://pdos.csail.mit.edu/6.5840/general.html)
+- [Lab 1：MapReduce](https://pdos.csail.mit.edu/6.5840/labs/lab-mr.html)
+- [Lab 3：Raft](https://pdos.csail.mit.edu/6.5840/labs/lab-raft1.html)
+- [历年试题](https://pdos.csail.mit.edu/6.5840/quizzes.html)
+- [2020 春季日程（带录像）](http://nil.csail.mit.edu/6.824/2020/schedule.html)
