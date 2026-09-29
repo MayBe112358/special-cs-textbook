@@ -1,38 +1,83 @@
 ---
 title: "Stanford CS143 编译原理"
-description: "为教学语言 COOL 实现完整编译器，一路编译到能在模拟器上跑的汇编。"
+description: "斯坦福的编译器课（2026 春季，Fredrik Kjolstad）：词法分析、语法分析（自顶向下与自底向上）、语义分析与类型检查、运行时环境、代码生成、操作语义、中间代码与局部/全局优化、寄存器分配、自动内存管理；四个编程作业用 Flex、Bison 和 C++ 为教学语言 Cool 写出一个完整的编译器，生成能在 SPIM 模拟器上运行的 MIPS 汇编。讲义、书面作业与答案、近年试卷公开，edX 上有免费的自学版。"
 prereqCourses: []
-prereqKnowledge: ["计算机体系结构"]
+prereqKnowledge: ["C++ 编程", "数据结构与算法", "计算机组成与汇编的基本概念"]
 ---
 
 ## 课程简介
 
-CS143 是 Stanford 的编译原理课，也是这个方向流传最广的公开课之一。
-课程设计了一门教学语言 COOL（Classroom Object-Oriented Language），
-整门课的主线就是为它实现一个完整的编译器，
-把 COOL 源程序编译成 MIPS 汇编并在 Spim 模拟器上成功运行。
+CS143 Compilers 是斯坦福的编译原理课，2026 年春季由 **Fredrik Kjolstad** 讲授。Alex Aiken 讲过的版本至今还作为免费的自学课放在 edX 上。
 
-理论部分基本按龙书的顺序：词法分析（正则与有限自动机）、
-语法分析（上下文无关文法、LL 与 LR 分析）、语义分析与类型检查、
-运行时环境与活动记录、代码生成、寄存器分配与代码优化。
+课程的主线是一个贯穿全学期的项目：为一门专门设计的教学语言 **Cool**（Classroom Object-Oriented Language）写一个**完整的编译器**。
+Cool 虽小，却有类、继承、静态类型、垃圾回收这些真实语言的特性。你会依次写出词法分析器、语法分析器、语义分析器和代码生成器，
+最后编译出的 MIPS 汇编能在 SPIM 模拟器上真正跑起来。
 
-实践部分相应地分成词法、语法、语义、代码生成四个编程作业，
-外加五次书面作业。每个阶段都有官方测试用例，
-做完最后一个阶段，你会有一个真正能用的编译器。
+讲课覆盖编译器的全流程：词法分析、语法分析、语义分析与类型检查、运行时组织、代码生成，再到中间代码、优化、寄存器分配和自动内存管理。
 
 ## 先修要求
 
-- 需要计算机体系结构基础（要能读懂汇编）。
-- 需要 C++ 或 Java 编程能力，以及基本的形式语言概念。
+官网没有单列先修。实际上你需要：
 
-## 官方资源
+- **C++**：作业的支持代码和你要写的代码都是 C++；
+- 数据结构与算法（树、图、哈希表）；
+- 计算机组成与汇编的基本概念，代码生成那部分要写 MIPS 汇编（本站的 [CS61C](/docs/systems/computer-architecture/cs61c) 或 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)）。
 
-- [课程主页](http://web.stanford.edu/class/cs143/)：作业、讲义与全部材料。
-- [课程信息](https://web.stanford.edu/class/cs143/course_info.html)：先修要求、教材、评分与课程安排。
+## 课程结构
+
+2026 年春季的讲义：
+
+| 部分 | 讲什么 |
+|---|---|
+| 导论 | 课程概述；Cool 语言与课程项目 |
+| 词法分析 | 词法分析；词法分析的实现（正则表达式、有限自动机） |
+| 语法分析 | 语法分析导论；语法制导翻译；自顶向下分析；自底向上分析 |
+| 语义分析 | 语义分析与类型检查（两讲） |
+| 代码生成 | 运行时环境；代码生成；操作语义 |
+| 优化 | 中间代码与局部优化；全局优化（数据流分析）；寄存器分配 |
+| 运行时 | 自动内存管理（垃圾回收） |
+
+没有指定教材，可选参考“龙书”《Compilers: Principles, Techniques, and Tools》（Aho、Lam、Sethi、Ullman）。
+
+评分：四个编程作业 50%（前两个各 10%、后两个各 15%）、四次书面作业 10%、期中 15%、期末 25%。
 
 ## 官方作业
 
-- [编程作业 PA1](https://web.stanford.edu/class/cs143/handouts/PA1.pdf)：词法分析；PA2–PA5 在课程主页上依次列出。
-- [书面作业 WA1](https://web.stanford.edu/class/cs143/handouts/WA1.pdf)：配套理论题，覆盖自动机与文法分析。
+**编程作业**（C++，每个都建立在前一个之上）：
 
-作业框架与测试用例公开；官方评分依赖校内系统，本地可运行测试脚本自测。
+| 作业 | 内容 |
+|---|---|
+| PA1 词法分析 | 用 Flex 写 Cool 的词法分析器 |
+| PA2 语法分析 | 用 Bison 写语法分析器，在语义动作里构建抽象语法树 |
+| PA3 语义分析 | 实现 Cool 的静态语义：类型检查，拒绝错误程序，为代码生成收集信息 |
+| PA4 代码生成 | 生成 MIPS 汇编，做完就是一个完整的 Cool 编译器 |
+| PA5 优化（加分） | 在编译器里实现一些优化，完全选做 |
+
+**书面作业**：四次，题目、LaTeX 模板和**答案**都在网站上。
+
+**往年试题**：网站上有 2024～2026 年的期中、期末卷及答案。
+
+**注意**：作业的起始代码要在斯坦福的 myth 机器上用课程脚本获取，校外拿不到。Cool 语言手册、支持代码导览、运行时说明和 SPIM 手册都公开。
+想要讲课视频，可以看 **edX 上的自学版**（Alex Aiken 讲，免费），内容覆盖词法分析到运行时系统的完整流程。
+
+## 学习建议
+
+- **先读 Cool 手册。** 整个学期都在给这门语言写编译器，语法和类型规则要熟到能随手查。
+- **PA3 最难。** 类型检查要处理继承、SELF_TYPE、方法分派，规则要一条条对照手册实现。
+- **书面作业配答案做。** 自动机构造、LL/LR 分析表、数据流分析这些题，官方答案公开，适合检验理解。
+- **往年试卷做一遍。** 三年的期中期末都附答案，覆盖了整门课的重点。
+
+## 同类课怎么选
+
+- **[北京大学 编译原理实践](/docs/systems/compilers/pku-compilers)**：中文课，从零把 SysY（C 的子集）编译到 RISC-V，文档和评测全公开，最适合自学动手。
+- **[KAIST CS420](/docs/systems/compilers/kaist-cs420)**：用 Rust 在 KECC 框架上做 SSA 中间代码、优化和后端，偏现代编译器。
+- **[南京大学 编译原理](/docs/systems/compilers/nju-compilers)**：中文课，用 ANTLR 辅助前端，重点放在编译器的设计上。
+- 想从另一头接近编译器，可以看 [Nand2Tetris](/docs/systems/computer-architecture/nand2tetris) 的后半段，它也要写一个简单编译器。
+
+## 官方资源
+
+- [课程主页（2026 春季）](https://web.stanford.edu/class/cs143/)：讲义、作业、书面作业答案、往年试卷。
+- [课程信息](https://web.stanford.edu/class/cs143/course_info.html)：评分与参考书。
+- [Cool 语言手册](https://web.stanford.edu/class/cs143/materials/cool-manual.pdf)
+- [PA1 说明](https://web.stanford.edu/class/cs143/handouts/PA1.pdf)
+- [edX 自学版（Alex Aiken）](https://www.edx.org/learn/computer-science/stanford-university-compilers)
