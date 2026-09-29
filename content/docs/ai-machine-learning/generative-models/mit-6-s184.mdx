@@ -1,38 +1,81 @@
 ---
 title: "MIT 6.S184 用随机微分方程理解生成式 AI"
-description: "用随机微分方程的视角讲扩散模型与流匹配，并动手从零实现。"
+description: "MIT 一月小学期的流匹配与扩散模型入门：从常微分和随机微分方程推出流匹配、分数匹配、无分类器引导，再到潜空间扩散、Diffusion Transformer 和离散扩散；讲义自成一体，三个 Colab 实验从零搭一个潜空间扩散模型，参考答案公开。"
 prereqCourses: []
-prereqKnowledge: ["深度学习基础，微积分与线性代数"]
+prereqKnowledge: ["线性代数、多元微积分、基础概率论", "Python，用过 PyTorch", "深度学习基础"]
 ---
 
 ## 课程简介
 
-6.S184 是 MIT CSAIL 在一月独立活动月开的扩散模型入门课，
-由两位 MIT 学生 Peter Holderrieth 和 Ezra Erives 主讲。
+6.S184（Generative AI with Stochastic Differential Equations）是 MIT 在一月独立活动期（IAP）开的短课，
+正式名字叫《流匹配与扩散模型导论》（Introduction to Flow Matching and Diffusion Models）。
+讲课的是 MIT 博士生 Peter Holderrieth，实验由 Ezra Erives 和 Ron Shprints 负责，Tommi Jaakkola 教授指导。
+2025 年第一次开，2026 年改版后又开了一次，两版的讲课录像都嵌在课程网站上。
 
-课程的角度是数学的：从常微分方程与随机微分方程出发，
-推导流匹配（flow matching）与扩散模型的理论基础，
-说明这两条路线其实是同一套框架下的不同参数化。
-这比从“加噪去噪”直觉入手的讲法更清楚，
-也更容易解释为什么各种采样器有效。
+课程的角度是**数学的**：它不从“加噪声再去噪声”的直觉讲起，而是从常微分方程（ODE）和随机微分方程（SDE）出发，
+把“从噪声变成数据”看成沿着一个向量场流动，再推出流匹配（flow matching）和分数匹配（score matching）的训练目标。
+这样讲的好处是，流模型和扩散模型落在同一个框架里，各种采样器为什么有效也说得清楚。
 
-理论之外有配套实践：从零构建一个扩散模型，
-以及在条件生成上的练习。最后几讲介绍它在分子设计、
-机器人学等前沿方向的应用。
-
-课程配套的教材笔记写得非常好，值得仔细读。
+课程的骨架是一份**自成一体的讲义**（也发在 arXiv 上，编号 2506.02070），官方强烈建议以讲义为主。
+学完你会从零搭出一个潜空间扩散模型。官方特别说明：这门课**不讲大语言模型**，关心的是图像、视频、蛋白质结构这类连续数据。
 
 ## 先修要求
 
-- 需要深度学习基础。
-- 需要熟悉微积分与线性代数；随机过程的基础概念会有帮助。
+官方写的先修：
 
-## 官方资源
+- 线性代数、多元微积分、基础概率论。
+- 熟悉 Python，用过 PyTorch。
+- 官方另外建议有一些概率论和深度学习的经验。
 
-- [课程主页](https://diffusion.csail.mit.edu/)：讲座、讲义与实验的总入口。
+随机过程不要求学过，讲义会从头介绍需要的部分。
+
+## 课程结构
+
+2026 年版共 5 讲（第 3 讲分 A、B 两部分）：
+
+| 讲次 | 主题 | 讲什么 |
+|---|---|---|
+| 1 | 流模型与扩散模型 | 生成模型导论；常微分与随机微分方程；从流模型和扩散模型采样 |
+| 2 | 流匹配 | 条件与边缘概率路径；条件与边缘向量场；流匹配训练目标 |
+| 3-A | 分数函数与分数匹配 | 分数函数；去噪分数匹配；SDE 采样 |
+| 3-B | 无分类器引导 | 引导生成；分类器引导；无分类器引导（CFG） |
+| 4 | 潜空间与网络架构 | 变分自编码器与潜空间；Diffusion Transformer 与 U-Net；大模型案例 |
+| 5 | 离散扩散模型 | 连续时间马尔可夫链（CTMC）；采样与训练 |
+
+2025 年版共 6 讲，前 4 讲是同样的主线（多讲了连续性方程和 Fokker-Planck 方程），
+后两讲是客座讲座：生成式机器人（丰田研究院的 Benjamin Burchfiel）和生成式蛋白质设计（MIT 的 Jason Yim）。
 
 ## 官方作业
 
-- [Labs](https://diffusion.csail.mit.edu/)：三个实验，从零构建扩散模型并做条件生成。
+三个实验，都是 Jupyter Notebook，可以直接在 Google Colab 里打开：
 
-实验以 Notebook 形式提供，可直接运行。
+| 实验 | 内容 |
+|---|---|
+| Lab 1 | 用 ODE 和 SDE 做模拟 |
+| Lab 2 | 流匹配与分数匹配 |
+| Lab 3 | Diffusion Transformer 与 VAE（2025 年版是条件图像生成） |
+
+MIT 学生把做完的 Notebook 导出 PDF 交到 Gradescope，校外交不了；
+但**参考答案在 GitHub 上公开**（[2026 版](https://github.com/eje24/iap-diffusion-labs/tree/2026)），做完可以自己对。
+
+## 学习建议
+
+- **讲义是主角。** 录像和幻灯片都围绕讲义展开，推导最完整的地方在讲义里。每讲之前先读对应章节。
+- **边读边做实验。** 每个实验对应一两讲的内容：读完 ODE/SDE 做 Lab 1，读完流匹配和分数匹配做 Lab 2。
+  公式在代码里跑出来，比光看推导好懂得多。
+- **先自己写，再看答案。** 答案公开是方便对照，不是让你抄的；卡住了再去看。
+- **概率要够用。** 条件概率、边缘分布、高斯分布的性质会反复出现，这些不熟的话先补一下。
+
+## 同类课怎么选
+
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)**：视觉深度学习课，讲生成模型时会讲到扩散模型，作业里也实现一个，但不像这门课这样从数学上推。
+- **[CMU 11-785](/docs/ai-machine-learning/deep-learning/cmu-11-785)**：深度学习全景课，VAE、扩散、GAN 都有，适合先打基础。
+- **[台湾大学 李宏毅 机器学习](/docs/ai-machine-learning/deep-learning/ntu-hung-yi-lee-ml)**：2026 版有一个流匹配作业，中文讲解，可以当作这门课的热身。
+
+## 官方资源
+
+- [课程主页（2026）](https://diffusion.csail.mit.edu/2026/index.html)：讲课录像、幻灯片、实验链接。
+- [2025 年版](https://diffusion.csail.mit.edu/2025/index.html)：含两讲客座讲座。
+- [讲义 PDF（2026）](https://diffusion.csail.mit.edu/2026/docs/lecture_notes.pdf)
+- [讲义 arXiv 版](https://arxiv.org/abs/2506.02070)
+- [实验参考答案](https://github.com/eje24/iap-diffusion-labs/tree/2026)
