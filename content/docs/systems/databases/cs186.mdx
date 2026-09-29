@@ -1,39 +1,81 @@
 ---
 title: "UC Berkeley CS186 数据库系统导论"
-description: "伯克利的数据库导论：讲清 SQL 如何被执行，再用 Java 实现一个数据库。"
+description: "伯克利的数据库导论（2026 秋季，Alvin Cheung）：SQL、磁盘与文件、B+ 树与索引、空间与向量索引、缓冲区管理、排序与哈希、连接与查询优化、事务与并发控制、数据库设计、恢复、并行与分布式、NoSQL、MapReduce 与 Spark、共识；项目先写 SQL，再用 Java 在教学数据库 RookieDB 上实现 B+ 树、连接与查询优化、多粒度锁和恢复，最后一个 NoSQL 项目，项目骨架公开。"
 prereqCourses: [cs61a, cs61b, cs61c]
-prereqKnowledge: ["CS61A, CS61B, CS61C"]
+prereqKnowledge: ["CS61A 和 CS61B（强制）", "CS61C 的内容（2026 秋季不再强制，但默认你熟悉）", "Java"]
 ---
 
 ## 课程简介
 
-CS186 从一串很具体的问题开始：一条 SQL 查询是怎么被拆解、优化、
-变成一个个磁盘操作的？怎么让很多人同时读写还不出错？数据库崩了怎么恢复？
+CS186 Introduction to Database Systems 是伯克利的数据库课，2026 年秋季由 **Alvin Cheung**（研究数据系统）讲授。
 
-课程依次讲 SQL 与关系模型、磁盘与缓冲区管理、B+ 树索引、
-排序与哈希、连接算法、查询优化与代价估计、
-并发控制（两阶段锁、死锁处理）、日志与恢复（ARIES），
-最后是分布式事务与 NoSQL。
+课程要讲清楚两件事：**SQL 是怎样被执行的**，以及**一个数据库系统内部是怎样搭起来的**——从磁盘上的文件和页、索引、缓冲区，
+到查询的执行和优化、事务的并发控制和崩溃恢复，再到并行、分布式和 NoSQL 系统。
 
-项目用 Java 完成，你会实现一个支持 SQL 查询、B+ 树索引、
-并发控制和故障恢复的关系型数据库。
-和 CMU 15-445 相比，这门课的 SQL 与关系理论部分讲得更多，
-项目语言是 Java 而不是 C++。
+项目是这门课的核心：除了第一个写 SQL、最后一个写 NoSQL，中间的项目都用 Java 在一个极简的教学数据库 **RookieDB** 上实现核心组件。
+RookieDB 一开始只能串行执行简单事务，你要给它加上 B+ 树索引、高效的连接算法、查询优化、允许事务并发执行的多粒度锁，以及数据库恢复。
 
 ## 先修要求
 
-- 指南列出的学前准备是 CS61A、CS61B、CS61C。
-- 需要 Java 编程能力。
+官方的说法：**默认你上过 CS61A、CS61B 和 CS61C**。其中 61A、61B 强制；2026 年秋季起 61C 不再强制，但仍然默认你熟悉相关内容。
 
-## 官方资源
+对应到本站：[CS61A](/docs/programming-intro/cs61a)、[CS61B](/docs/data-structures-algorithms/cs61b)（项目用 Java，61B 正好是 Java 课）、[CS61C](/docs/systems/computer-architecture/cs61c)。
 
-- [课程主页](https://cs186berkeley.net/)：当前学期的日程与材料。
-- [课程大纲](https://cs186berkeley.net/syllabus)：课程范围、先修要求与评分。
-- [课程讲义](https://cs186berkeley.net/notes/)：每讲一份的自编 Notes。
+官方还提醒：往届的经验是这门课**落下了很难追**，要跟紧进度。
+
+## 课程结构
+
+按官方在线笔记的主题：
+
+| 部分 | 讲什么 |
+|---|---|
+| SQL | 基本查询；连接与子查询；关系代数 |
+| 存储与索引 | 磁盘与文件；代价模型；B+ 树；索引文件及其代价；空间与向量索引；缓冲区管理 |
+| 查询处理 | 排序；哈希；迭代器与连接算法；查询优化 |
+| 事务 | 事务与并发控制（两讲）；恢复 |
+| 设计 | 数据库设计（函数依赖与范式） |
+| 大规模数据 | 并行查询处理；分布式事务；NoSQL；MapReduce 与 Spark；共识 |
+
+课程网站上还有连接算法的动画演示。官方提醒在线笔记还在建设中、不完全，以讲课内容为准。
+
+评分（2026 年秋季）：每周小测（Vitamins）5%、项目 40%、考试 55%（两次期中按好坏分别算 18% 和 12%、期末 25%），参加讨论课有少量加分。
 
 ## 官方作业
 
-- [Projects](https://cs186berkeley.net/projects/)：六个项目，逐步实现一个关系型数据库。
-- [Homework](https://cs186berkeley.net/)：日程页上发布的 SQL 与理论作业。
+**项目**（Project 0 是环境配置，不计分）：
 
-项目框架公开在 GitHub 上，自带单元测试，本地可运行。
+| 项目 | 内容 | 占比 |
+|---|---|---|
+| Project 1：SQL | 写 SQL 查询 | 5% |
+| Project 2：B+ Trees | 在 RookieDB 上实现 B+ 树索引 | 6% |
+| Project 3：Joins and Query Optimization | 连接算法与查询优化（分两部分交） | 8% |
+| Project 4 | 多粒度锁，让事务可以并发执行 | 8% |
+| Project 5 | 数据库恢复 | 8% |
+| Project 6 | NoSQL | 5% |
+
+官方维护了一个**只读的公开仓库**放项目骨架（`berkeley-cs186/fa26-rookiedb`），校外可以直接拿来做，项目说明也都在课程网站上。
+选课学生每个项目截止后会被随机抽去做一次口试，回答 4～5 个关于自己代码和相关概念的问题，答不上来会扣项目分。
+
+**讨论课**：每周的讨论课幻灯片、练习题和答案（包括“考试准备”专场）都挂在课程网站上，是很好的练习材料。
+
+## 学习建议
+
+- **每周跟着笔记和讨论题走。** 讨论题和答案公开，难度接近考试，比光看讲义扎实得多。
+- **B+ 树项目最能打基础。** 在一个真实的数据库代码库里实现插入、分裂、批量加载，能把索引的原理彻底吃透。
+- **用连接算法动画辅助理解。** 各种连接算法的 I/O 代价是考试重点，网站上的动画能帮你看清每一步读了哪些页。
+- **讲课录像在校内平台上**，校外看不到，以笔记、讨论题和项目为主线自学。
+
+## 同类课怎么选
+
+- **[CMU 15-445](/docs/systems/databases/cmu-15-445)**：同样讲数据库内部，项目用 C++ 在 BusTub 上做，更硬核，录像公开，校外还能用 Gradescope 自动评分。
+- **[Stanford CS346](/docs/systems/databases/stanford-cs346)**：老一点的数据库实现课，分层实现一个小数据库 RedBase。
+- **[Caltech CS122](/docs/systems/databases/caltech-cs122)**：数据库实现课，重点在 SQL 层和查询优化器。
+
+## 官方资源
+
+- [课程主页（2026 秋季）](https://cs186berkeley.net/)：日程、讲义、讨论课材料。
+- [课程大纲](https://cs186berkeley.net/syllabus/)：先修、评分、口试与考试安排。
+- [项目](https://cs186berkeley.net/projects/)：各项目说明。
+- [在线笔记](https://cs186berkeley.net/notes/)
+- [连接算法动画](https://cs186berkeley.net/resources/join-animations/)
+- [项目骨架（GitHub）](https://github.com/berkeley-cs186/fa26-rookiedb)
