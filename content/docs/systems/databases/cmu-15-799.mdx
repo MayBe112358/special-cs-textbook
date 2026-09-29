@@ -1,39 +1,72 @@
 ---
 title: "CMU 15-799 数据库系统前沿专题"
-description: "CMU 的数据库前沿专题：用机器学习让数据库自己调优。"
+description: "Andy Pavlo 的数据库专题课，每次开主题都不同。最近一次（2025 春季）专讲查询优化：从 System R、Starburst、Volcano、Cascades 讲起，到连接顺序枚举、并行优化、子查询展开、统计信息与基数估计、学习型代价模型、参数化与自适应优化，再拆解 Calcite、Orca、MongoDB、Fabric 等真实优化器；个人项目用 Apache Calcite 给 DuckDB 做优化器，录像公开。2022 春季那一期讲自治（自动驾驶）数据库。"
 prereqCourses: [cmu-15-445]
-prereqKnowledge: ["CMU 15-445"]
+prereqKnowledge: ["数据库系统内部原理（CMU 15-445 的水平）", "扎实的系统编程能力", "读论文的习惯"]
 ---
 
 ## 课程简介
 
-15-799 是 CMU 数据库方向的专题研讨课。2022 春季这一版的主题是
-自治数据库（Self-Driving DBMS）——用机器学习自动完成数据库的配置、
-优化与管理，而不是靠 DBA 手工调参。
+15-799 Special Topics in Databases 是卡内基梅隆大学数据库组（**Andy Pavlo**）开的研究生专题课，**每次开的主题都不一样**。
 
-课程形式以论文研读加动手项目为主。内容涉及负载预测、
-索引与物化视图的自动选择、旋钮配置的自动调优、
-查询优化器的学习化，以及这些方法在真实系统里的代价。
+**2025 年春季：查询优化（Query Optimization）**。官方把它称作“计算机科学里最难的问题”——怎样把一条 SQL 语句转换成高效的物理执行计划。
+课程讲经典和最新的方法与算法，外加代价模型、反馈机制和自适应查询优化；所有项目都基于一个开源的查询优化器服务，用真实世界的查询来做。
+官方说这门课适合软件系统方向的研究生，以及“编程能力彪悍、准备过以数据库为中心的生活”的高年级本科生。
 
-项目在真实数据库上进行：先手工调优 PostgreSQL 建立基线，
-再基于 NoisePage Pilot 实现自动化的调优组件。
-2013 秋季那一版的主题不同，讨论的是流式处理、图数据库与非易失内存。
-
-这门课面向已经有系统基础的人，官方的说法是需要“dirty systems programming skills”。
+**2022 年春季：自治数据库（Self-Driving DBMS）**。讲怎样用机器学习自动完成数据库的配置、优化和管理，项目都在真实的数据库系统上做。
 
 ## 先修要求
 
-- 需要完成 CMU 15-445 或同等的数据库课程。
-- 需要较强的系统编程能力，项目在真实数据库代码上进行。
+官网没有单列先修，但课程是研究生专题课，实际上默认你：
 
-## 官方资源
+- 上过 [CMU 15-445](/docs/systems/databases/cmu-15-445) 或同等的数据库系统课，懂查询执行、连接算法、索引和基本的查询优化；
+- 有扎实的系统编程能力（项目要读懂并改动 Calcite、DuckDB 这样的真实系统）；
+- 能每周读论文并写总结。
 
-- [课程主页（2022 春季）](https://15799.courses.cs.cmu.edu/spring2022/)：日程、论文列表与项目说明。
-- [课程日程](https://15799.courses.cs.cmu.edu/spring2022/schedule.html)：每次课的论文与讨论主题。
-- [NoisePage Pilot](https://github.com/cmu-db/noisepage-pilot)：项目所基于的自治数据库组件。
+## 课程结构
+
+2025 年春季共 23 讲，几乎每讲配一两篇必读论文：
+
+| 部分 | 讲什么 |
+|---|---|
+| 优化器框架 | 查询优化导论；IBM System R；IBM Starburst；Volcano；Cascades；变换规则 |
+| 连接顺序 | 自底向上的连接枚举；自顶向下的连接枚举；并行化（自底向上与自顶向下） |
+| 查询改写 | 嵌套子查询的展开 |
+| 代价模型 | 统计信息；基数估计（两讲）；学习型方法 |
+| 进阶 | 参数化查询优化；自适应：反馈与运行时处理；用户自定义函数的优化 |
+| 真实系统 | Apache Calcite；Orca；MongoDB；Microsoft Fabric |
+
+主要参考书是《Extensible Query Optimizers in Practice》（EQOP），各讲标了对应章节。
+
+评分：论文总结 15%、课堂笔记 10%、个人项目 20%、小组项目 40%、期末考试 15%。
 
 ## 官方作业
 
-- [Projects](https://15799.courses.cs.cmu.edu/spring2022/project1.html)：两个个人项目加一个小组项目，都在真实数据库上完成。
+- **Project #1：查询优化器评测（个人）**：用 **Apache Calcite** 优化 SQL 查询，再交给 Calcite 自己的执行器和 **DuckDB** 执行。
+  三部分：弄清查询优化和查询执行的边界；基于规则的启发式优化；基于代价的优化与统计信息。按正确性和性能打分，官方提供说明和样例数据。
+- **Project #2：小组项目**：分组实现一个较大的系统或原型，要和课程内容相关、工作量大，有多个里程碑；官网有往届项目展示。
+- **论文总结**：每讲的必读论文交一段总结。
 
-论文列表与项目说明公开；评分依赖校内系统。
+项目说明公开，校外可以照着做 Project #1（Calcite 和 DuckDB 都是开源的）；评分和提交只对选课学生开放。
+
+## 学习建议
+
+- **按时间顺序读论文。** 从 System R 到 Cascades 再到现代的 Orca、Calcite，这几篇就是查询优化器的发展史，读完就知道今天的优化器为什么长这样。
+- **Project #1 值得自己做。** 亲手写规则、加统计信息，看一条查询的计划怎样一步步变好、执行时间差多少，比读十篇论文都直观。
+- **看 YouTube 录像。** 2025 年春季的讲课录像在 CMU 数据库组的 YouTube 播放列表上。
+- **基数估计是关键。** 优化器的大多数错误来自基数估计不准，那几讲和相关论文（如“Query Optimization Through the Looking Glass”）要重点读。
+
+## 同类课怎么选
+
+- **[CMU 15-445](/docs/systems/databases/cmu-15-445)**：先修课，数据库内部的全景。
+- **[Caltech CS122](/docs/systems/databases/caltech-cs122)**：本科数据库实现课里讲查询翻译和优化最细的一门，可以当这门课的热身。
+- **[CMU 15-779](/docs/ai-machine-learning/generative-models/large-language-models/cmu-15-779)**：同样是论文研讨加项目的形式，主题是机器学习系统。
+
+## 官方资源
+
+- [课程主页（2025 春季）](https://15799.courses.cs.cmu.edu/spring2025/)
+- [日程与论文](https://15799.courses.cs.cmu.edu/spring2025/schedule.html)：每讲的幻灯片、笔记、录像和阅读。
+- [课程大纲](https://15799.courses.cs.cmu.edu/spring2025/syllabus.html)：评分与各部分要求。
+- [项目](https://15799.courses.cs.cmu.edu/spring2025/projects.html)
+- [2025 春季录像（YouTube）](https://www.youtube.com/playlist?list=PLSE8ODhjZXjYCZfIbmEWH7f6MnYqyPwCE)
+- [2022 春季版（自治数据库）](https://15799.courses.cs.cmu.edu/spring2022/)
