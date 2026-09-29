@@ -1,43 +1,82 @@
 ---
 title: "CMU 15-418 / Stanford CS149 并行计算"
-description: "理解并行硬件的设计原则，再写出真正跑得快的并行程序。"
-prereqCourses: []
-prereqKnowledge: ["计算机体系结构，熟悉 C++"]
+description: "同一套课在两校开：先理解多核、SIMD、多线程、GPU、加速器这些并行硬件的性能特征，再学怎样写出真正跑得快的并行程序——工作分配与调度、局部性与通信、数据并行、CUDA、DNN 在 GPU 上的高效执行、缓存一致性、同步与内存一致性、无锁编程、事务内存；Stanford 的五个编程作业（线程与 ISPC、任务图调度、CUDA 渲染器、Trainium2 加速器、H100 上的最快内核）代码全部公开。"
+prereqCourses: [cmu-15-213-csapp]
+prereqKnowledge: ["计算机系统（CMU 15-213 / 斯坦福 CS111 的水平）", "熟练的 C/C++", "计算机体系结构（有更好）"]
 ---
 
 ## 课程简介
 
-这门课把并行硬件和并行软件放在一起讲，理由很直接：
-不理解机器的性能特征，就写不出好的并行程序。
+**Kayvon Fatahalian** 曾在 CMU 讲 15-418，后来到斯坦福开了 CS149，两门课一脉相承，现在两校各自在开：
 
-课程先讲现代并行体系结构——多核、SIMD、GPU、
-缓存一致性与内存一致性模型，再讲并行编程的抽象与模型——
-数据并行、任务并行、消息传递，以及它们各自的开销来源。
-后半程讨论具体场景：并行算法的设计、锁与无锁数据结构、
-事务内存、领域专用语言，以及大规模分布式并行。
+- **Stanford CS149 Parallel Computing**：2025 年秋季由 Kayvon Fatahalian 和 Kunle Olukotun 讲，作业最新，代码全部公开在 GitHub 上。
+- **CMU 15-418/15-618 Parallel Computer Architecture and Programming**：2026 年秋季由 Brian Railing 和 Dimitrios Skarlatos 讲，更重硬件，最后有一个自选的期末项目。
 
-作业是这门课的重头戏：用 ISPC 写 SIMD 代码、
-用 CUDA 写 GPU 程序、实现一个任务调度库、
-优化一个真实的并行渲染器。每个作业都以加速比作为评价标准，
-调优过程本身就是最好的学习。
-
-CMU 的 15-418 与 Stanford 的 CS149 是同一位教师在两校开设的课程，
-15-418 的课程录像更完整，CS149 的作业更新一些。
+两边的官方介绍几乎一样：从手机、多核 CPU、GPU、AI 加速器，到世界上最大的超级计算机和网站，并行处理无处不在。
+课程要让你深入理解**设计现代并行计算系统的基本原理和工程取舍**，同时教会你充分利用这些机器的并行编程技术。
+因为**写出好的并行程序需要理解机器的关键性能特征**，所以硬件和软件放在一起讲。
 
 ## 先修要求
 
-- 需要计算机体系结构基础。
-- 需要熟悉 C++。
+- **Stanford CS149**：强烈建议先修 CS111（操作系统）。没上过但自认为有同等背景的，可以找老师聊。
+- **CMU 15-418**：15-213（CSAPP）是**严格先修**，课程直接建立在存储层次、内存管理和基础网络之上；要求是熟练的 C/C++ 程序员；
+  计算机体系结构（18-447）有帮助但不强制，操作系统、分布式系统、编译器课也会有帮助。
 
-## 官方资源
+对应到本站：[CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)，体系结构可以看 [ETH DDCA](/docs/systems/computer-architecture/eth-ddca)。
 
-- [Stanford CS149 课程主页](https://gfxcourses.stanford.edu/cs149/fall23)：日程、讲义与作业。
-- [CMU 15-418 课程主页](https://www.cs.cmu.edu/afs/cs/academic/class/15418-s18/www/index.html)：含完整课程录像的版本。
-- [讲座与阅读材料](https://gfxcourses.stanford.edu/cs149/fall23/lecture/)：按主题排列的幻灯片。
-- [课程信息](https://gfxcourses.stanford.edu/cs149/fall23/courseinfo)：先修要求、作业安排与评分。
+## 课程结构
+
+Stanford CS149 2025 年秋季的讲次：
+
+| 部分 | 讲什么 |
+|---|---|
+| 并行硬件 | 为什么要并行与能效；现代多核处理器（多核、SIMD、多线程；延迟与带宽）；ISPC 编程抽象 |
+| 写并行程序 | 并行化的思考过程；工作分配与调度（Cilk 的工作窃取）；局部性与通信（消息传递、算术强度、避免争用） |
+| GPU 与数据并行 | GPU 架构与 CUDA 编程；数据并行思维（map、reduce、scan、前缀和） |
+| AI 与专用硬件 | 在 GPU 上高效执行 DNN（卷积、Transformer、层融合）；硬件专用化与 DNN 加速器；专用硬件的编程系统；把 AI 应用映射到数据中心；领域专用编程系统与 AI 驱动的性能优化 |
+| 共享内存 | 缓存一致性（MSI、MESI、伪共享）；同步实现与内存一致性；细粒度锁与无锁编程（ABA 问题） |
+| 事务内存 | 软件与硬件事务内存；答疑 |
+
+CMU 15-418 的开头更偏硬件（第二讲就是乱序执行和流水线），第一次考试一直讲到基于监听的多处理器设计。
+
+评分（CS149）：五个编程作业 56%、四次书面作业 12%、每讲课堂小测 4%、期中 12%、期末 16%。
 
 ## 官方作业
 
-- [Assignments](https://gfxcourses.stanford.edu/cs149/fall23)：五个编程作业：ISPC、CUDA、任务调度、并行渲染器优化。
+**Stanford CS149 的五个编程作业**（可以两人一组，代码都在 GitHub 的 stanford-cs149 组织下）：
 
-作业框架公开在 GitHub 上，自带性能测试脚本。
+| 作业 | 内容 |
+|---|---|
+| 1 四核 CPU 上的并行程序性能分析 | 用线程并行分形生成；用 SIMD 内建函数向量化；用 ISPC 写并行代码；迭代开方、saxpy、K-Means 的性能分析与优化 |
+| 2 多核 CPU 上的任务图调度 | 写一个任务调度库，支持有依赖关系的任务图 |
+| 3 CUDA 圆形渲染器 | 用 CUDA 写一个正确又快速的并行渲染器 |
+| 4 Trainium2 加速器上的卷积加最大池化 | 在 AWS 的 Trainium2 AI 加速器上写一个融合算子 |
+| 5 写出世界上最快的 CUDA 内核 | 开放式作业：从一组 AI 相关的内核里挑一个，在 H100 上做到尽可能快，有全班排行榜 |
+
+还有四次书面作业，题目 PDF 在课程网站上。
+
+**CMU 15-418**：作业通过 GitHub 分发、在 Autolab 上提交；最后是**自选的期末项目**，要交提案、中期报告、最终报告，并做海报展示，网站上列着往年的优秀项目。
+
+自学的话，CS149 的作业最方便：代码公开，前两个作业用多核 CPU，第三个需要一块 NVIDIA GPU；
+第 4 个要用 AWS 的 Trainium2，第 5 个针对 H100，校外得自己想办法弄到算力。
+
+## 学习建议
+
+- **看 2023 年的录像。** CS149 官方说今年的录像不能对外，但 2023 年版的录像在斯坦福的 YouTube 频道上公开。
+- **每个作业都以加速比为目标。** 写对只是开始，调到快才是这门课要练的；动手前先想清楚瓶颈是计算、访存还是同步。
+- **作业 1 是整门课的缩影。** 线程、SIMD、ISPC 三种并行方式在同一个问题上对比，做完就明白“并行”有多少层。
+- **缓存一致性那几讲要吃透。** 伪共享、锁的实现、内存一致性模型，是多线程程序里最隐蔽的性能和正确性问题来源。
+
+## 同类课怎么选
+
+- **[MIT 6.5840 分布式系统](/docs/systems/parallel-and-distributed/mit-6-5840)**：关心多台机器之间的容错和一致性，而不是单机性能。
+- **[CMU 15-442 机器学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-15-442)**：把 GPU 编程和并行用到机器学习系统上，有 Blackwell GPU 的 GEMM 作业。
+- **[ETH 计算机体系结构](/docs/systems/computer-architecture/eth-computer-architecture)**：从体系结构研究的角度讲缓存一致性、GPU、SIMD 等。
+
+## 官方资源
+
+- [Stanford CS149（2025 秋季）](https://gfxcourses.stanford.edu/cs149/fall25)：日程、讲义、作业链接。
+- [CS149 课程信息](https://gfxcourses.stanford.edu/cs149/fall25/courseinfo)：先修、评分、分组与迟交规则。
+- [CS149 作业代码（GitHub）](https://github.com/stanford-cs149)
+- [CS149 2023 年录像（YouTube）](https://www.youtube.com/playlist?list=PLoROMvodv4rMp7MTFr4hQsDEcX7Bx6Odp)
+- [CMU 15-418（2026 秋季）](https://www.cs.cmu.edu/~418/)：先修、日程、作业、项目。
