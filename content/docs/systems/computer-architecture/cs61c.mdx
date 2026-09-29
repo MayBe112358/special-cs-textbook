@@ -1,40 +1,86 @@
 ---
 title: "UC Berkeley CS61C"
-description: "顺着 C 到 RISC-V 汇编，再到流水线、Cache、虚存与并行，打通软硬件之间。"
+description: "伯克利 CS61 系列的第三门（2026 秋季，Dan Garcia）：数字表示、C 语言与内存管理、浮点、RISC-V 汇编与指令格式、编译链接加载、数字电路与有限状态机、单周期数据通路与流水线、缓存、并行（SIMD、多线程）、虚拟内存；三个项目用 C 写贪吃蛇、用 RISC-V 汇编做手写数字分类、在 Logisim 里搭一个跑 RISC-V 的 CPU，起始代码公开。"
 prereqCourses: [cs61a, cs61b]
-prereqKnowledge: ["CS61A, CS61B"]
+prereqKnowledge: ["CS61A 和 CS61B，或者会一门 C 系语言（Java、C++）"]
 ---
 
 ## 课程简介
 
-CS61C 是伯克利 CS61 系列的最后一门，把前两门课建立的“程序”概念一路拆到硬件。
+CS61C Great Ideas in Computer Architecture (Machine Structures) 是伯克利 CS61 系列的第三门，2026 年秋季由 **Dan Garcia** 讲授。
+前两门课（[CS61A](/docs/programming-intro/cs61a)、[CS61B](/docs/data-structures-algorithms/cs61b)）建立了“程序”的概念，这门课把它一路拆到硬件。
 
-课程主线是：数字的机器表示 → C 语言与内存布局 → RISC-V 汇编 →
-编译、汇编、链接、加载的全过程 → 数字逻辑与 CPU 数据通路 →
-流水线与冒险 → Cache 与存储层次 → 虚拟内存 → 并行（SIMD、多线程、MapReduce）。
-学完你会知道一行 C 语句如何变成指令，指令又如何在流水线里执行。
+官方课程描述列的主题是：C 语言和汇编编程、把高级语言翻译成机器语言、计算机组成、缓存、性能测量、并行、CPU 设计、仓储级计算。
+学完你会知道一行 C 代码怎样变成 RISC-V 指令，指令又怎样在你亲手搭的 CPU 里一级一级流过去。
 
-课程项目很有特点：有一次是用 C 写一个小程序（做过《生命游戏》），
-有一次是用 RISC-V 汇编实现神经网络的矩阵运算，
-还有 Cache 与并行优化的性能竞赛。
-
-它和 CSAPP 覆盖面接近，区别是 CS61C 更偏硬件一侧，
-会真的让你画数据通路、算流水线周期。
+从 2026 年春季起，课程有了一套专门编写的**在线课程笔记**，官方说它是考试、作业、项目的范围依据，比讲课本身更完整。
 
 ## 先修要求
 
-- 指南列出的学前准备是 CS61A 与 CS61B。
-- 需要能熟练读写 C 语言。
+官方先修：**CS61A 和 CS61B（或同等课程），或者有一门 C 系语言（如 Java、C++）的经验**。
 
-## 官方资源
+C 语言课上从头讲，但节奏很快，之前没写过 C 的话，前三周要多花时间。
 
-- [课程主页](https://cs61c.org/)：当前学期的日程、讲义与实验。
-- [课程资源页](https://cs61c.org/fa26/resources/)：课程讲义、参考卡与常见错误整理。
-- [Venus RISC-V 模拟器](https://venus.cs61c.org/)：课程自制的在线汇编模拟器。
+## 课程结构
+
+按往年试题的主题分类和 2026 年秋季的日程，课程大致是：
+
+| 部分 | 讲什么 |
+|---|---|
+| 数据与 C | 数字表示；C 基础、指针、数组、字符串；内存管理；C 的泛型与抽象数据类型；浮点数 |
+| RISC-V | RISC-V 基础、数据传送、条件与分支、过程调用与调用约定；指令格式；编译、汇编、链接、加载（CALL） |
+| 数字电路 | 同步数字系统；布尔代数；有限状态机；用 Logisim 搭电路 |
+| 处理器 | 单周期数据通路与控制；流水线与冒险 |
+| 存储与并行 | 缓存；并行（SIMD、多线程）；管理者—工作者框架；虚拟内存 |
+
+教材以课程笔记为主，笔记基于 Patterson 和 Hennessy 的《计算机组成与设计（RISC-V 版）》、K&R《C 程序设计语言》和《The Datacenter as a Computer》。
+
+评分（满分 300，固定分数线不调曲线）：讨论课 10、实验 20、作业 30、三个项目 10/20/30、小测（Quest）20、期中 40、期末 120。
+除期末外，考试都在学校的机考中心进行，可以补考一次。
 
 ## 官方作业
 
-- [Labs 与 Homework](https://cs61c.org/)：日程页上按周发布的实验与作业。
-- [Projects](https://cs61c.org/)：日程页上标注 Project 的几次大作业：C 程序、RISC-V 矩阵运算与性能优化。
+**三个项目**（可以两人结对，结对时必须同步写代码）：
 
-课程使用校内自动评分系统，校外自学者可下载框架本地运行测试。
+| 项目 | 内容 |
+|---|---|
+| Project 1：snek | 用 C 实现一个贪吃蛇游戏的逻辑（棋盘上可以有多条蛇，用 `game_t`、`snake_t` 等结构体表示） |
+| Project 2：CS61Classify | 用 RISC-V 汇编实现一个简单的机器学习算法，识别手写数字；要严格遵守调用约定 |
+| Project 3：CS61CPU | 在 Logisim 里搭一个能真正运行 RISC-V 指令的 CPU，分两部分交 |
+
+另有一个选做的 **Project 4 / Lab 8：61kaChow**，2026 年秋季和春季一样是选做。
+
+**实验**（在 Gradescope 上自动评分，按通过的测试用例给分）：环境搭建、C、C 调试、RISC-V 与 Venus 模拟器、RISC-V 调用约定、Logisim、CPU 与流水线、并行（写 SIMD 代码）。
+**作业**在 PrairieLearn 上做，按正确性给分。
+
+**自学怎么做**：项目和实验的**起始代码仓库在 GitHub 上公开**（61c-teach 组织，如 fa26-proj1-starter、fa26-lab-starter），可以直接克隆；
+项目说明写得很细，还附了调试视频。Gradescope、PrairieLearn 的自动评分和作业校外用不了。
+讨论课的题目和答案 PDF 都放在课程网站上，可以当练习题用。
+
+**注意**：伯克利把往届的课程存档（inst.eecs.berkeley.edu/~cs61c/ 下的 fa25、sp26 等）和往年试题 PDF 都放到了校内登录后面，
+2026-09 核对时校外打不开，只有当前学期的 cs61c.org 能公开访问。
+
+**AI 政策**：只允许谨慎地用大模型问概念，比如“C 里为什么要用指针”；“把项目要求给你、帮我写”“帮我调这段代码”都不允许。
+
+## 学习建议
+
+- **读课程笔记。** 官方明确说笔记是考试范围的依据，讲课可能讲不全。每讲都标了对应的笔记章节。
+- **Project 2 前先把调用约定练熟。** Lab 4 专门练调用约定，CS61Classify 里的函数互相调用，哪个寄存器该谁保存错一个就全乱了。
+- **用 Venus 调汇编。** 课程自己的在线 RISC-V 模拟器 Venus 可以单步执行、看寄存器和内存。
+- **Logisim 早点上手。** Lab 5、Lab 6 和 Project 3 都在 Logisim 里连电路，界面操作本身就要花时间熟悉。
+- **趁学期中下载。** 当前学期结束后网站可能也会被放到登录后面，想完整保存材料的话，学期中就把需要的讲义和讨论题下载下来。
+
+## 同类课怎么选
+
+- **[CMU 15-213 CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)**：覆盖面接近，用 x86-64；更偏软件一侧（链接、异常控制流、网络、并发），实验的自学版全部公开。CS61C 更偏硬件，会让你画数据通路、搭 CPU。
+- **[Nand2Tetris](/docs/systems/computer-architecture/nand2tetris)**：从与非门搭到操作系统，没有先修要求，适合先建立整体图景。
+- **[ETH 数字设计与计算机体系结构](/docs/systems/computer-architecture/eth-ddca)**：从晶体管和 Verilog 讲起，硬件部分更深，录像完整公开。
+
+## 官方资源
+
+- [课程主页（2026 秋季）](https://cs61c.org/)：日程、讲义、实验、项目、讨论课题目与答案。
+- [课程政策](https://cs61c.org/fa26/policies/)：先修、评分、考试、AI 政策。
+- [课程笔记](https://notes.cs61c.org/)
+- [资源索引](https://cs61c.org/fa26/resources/)：参考卡、常见错误等。
+- [Venus RISC-V 模拟器](https://venus.cs61c.org/)
+- [起始代码（GitHub 61c-teach）](https://github.com/61c-teach)

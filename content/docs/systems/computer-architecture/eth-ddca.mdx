@@ -1,35 +1,84 @@
 ---
 title: "ETH Zurich 数字设计与计算机体系结构"
-description: "Onur Mutlu 的数字设计与体系结构：从晶体管一路搭到完整的微架构。"
+description: "Onur Mutlu 在苏黎世联邦理工的本科体系结构课：组合与时序逻辑、有限状态机、Verilog、时序与验证、指令集与汇编、单周期/多周期/流水线处理器、精确异常、乱序执行、分支预测、VLIW 与脉动阵列、SIMD 与 GPU、存储器、缓存、预取、虚拟内存；每年的直播录像都在 YouTube 上，九个 FPGA 实验和带答案的作业、历年试题全部公开。"
 prereqCourses: []
-prereqKnowledge: ["CS50 或同阶课程，最好有 C 语言基础"]
+prereqKnowledge: ["官方说没有先修要求", "编程基础（能写 C 更好，汇编实验用 MIPS）"]
 ---
 
 ## 课程简介
 
-DDCA 由体系结构领域的 Onur Mutlu 讲授，起点比大多数体系结构课更低、
-终点又比它们更高：从晶体管和逻辑门开始，讲组合逻辑、时序逻辑、有限状态机，
-然后是硬件描述语言 Verilog，接着构建单周期与多周期处理器、
-流水线处理器，最后进入缓存、虚拟内存以及体系结构领域最新的研究方向。
+Digital Design and Computer Architecture（DDCA，课号 227-0003-10V）是苏黎世联邦理工学院（ETH）的本科课，
+由体系结构领域的 **Onur Mutlu** 主讲，2026 年春季和 Mohammad Sadrosadati 一起讲。
 
-这门课最难得的地方是讲授者会把前沿研究带进课堂——
-内存系统、近数据计算这些他本人的研究方向都会出现在后半程。
+官方的描述是：这门课是数字电路设计和计算机体系结构的**第一门入门课**，讲一个计算平台怎样从底层一层层设计出来，
+介绍各种执行范式、硬件描述语言，以及数字设计和体系结构的原则，重点是现代微处理器的基本技术和软硬件接口。
+学完你应该能：理解一台现代计算机从下到上怎样工作、评估不同设计的取舍、**亲手实现一个简单的微处理器**、系统地调试越来越复杂的系统。
 
-实验用 Basys 3 FPGA 开发板配 Xilinx Vivado 完成。
-没有开发板也能学：仿真部分在软件里就能跑完。
+它的起点比多数体系结构课低（从逻辑门开始），终点又更高：后半程会讲乱序执行、GPU、缓存与预取，Mutlu 本人的研究方向（内存系统）也会带进课堂。
 
 ## 先修要求
 
-- 需要 CS50 或同等的编程入门课程。
-- 最好有 C 语言基础。不需要预先了解数字电路。
+官方写的是：**没有先修要求**。
 
-## 官方资源
+不过实验里要写 Verilog 和 MIPS 汇编，有一点编程基础会顺很多。
 
-- [课程主页](https://safari.ethz.ch/digitaltechnik/spring2023/)：讲座录像、幻灯片与全部课程材料。
-- [SAFARI 研究组课程页](https://safari.ethz.ch/)：该组开设的各门体系结构课程。
+## 课程结构
+
+2025 年春季共 29 讲（2026 年春季的安排基本相同）：
+
+| 部分 | 讲什么 |
+|---|---|
+| 数字逻辑 | 导论；组合逻辑；时序逻辑与有限状态机；实验与 FPGA 入门；硬件描述语言与 Verilog（两讲）；时序与验证（两讲） |
+| 指令集 | 冯·诺依曼模型与指令集体系结构（两讲）；指令集与微体系结构；汇编编程 |
+| 处理器设计 | 微体系结构基础与设计（两讲）；多周期与流水线处理器（两讲）；精确异常 |
+| 高级执行 | 乱序执行；数据流与超标量；分支预测与高级分支预测；乱序执行中的访存处理；VLIW；脉动阵列；SIMD；解耦访存执行；GPU 体系结构（两讲） |
+| 存储系统 | 存储器组织与技术；缓存（两讲）；多核中的缓存问题；预取（两讲）；虚拟内存 |
+| 收尾 | 未来的计算体系结构；四次习题讲解课 |
+
+教材是 Harris 和 Harris 的《Digital Design and Computer Architecture》，以及 Patt 和 Patel 的《Introduction to Computing Systems》（部分章节可在课程页下载）。
 
 ## 官方作业
 
-- [Labs](https://safari.ethz.ch/digitaltechnik/spring2023/doku.php?id=labs)：九个实验，从逻辑门到完整处理器。
+**九个实验**（两人一组，用 Basys 3 FPGA 开发板和 Xilinx Vivado）：
 
-实验需要 FPGA 开发板与 Vivado；仿真部分可以纯软件完成。
+| 实验 | 内容 |
+|---|---|
+| Lab 1 | 画一个基本电路 |
+| Lab 2 | 把电路映射到 FPGA 上 |
+| Lab 3 | 用 Verilog 写组合电路 |
+| Lab 4 | 有限状态机 |
+| Lab 5 | 实现一个 ALU |
+| Lab 6 | 测试 ALU |
+| Lab 7 | 写汇编代码 |
+| Lab 8 | 整个系统的集成（占两次实验课） |
+| Lab 9 | MIPS 处理器的性能 |
+
+每个实验都有说明手册、报告模板和补充讲义，课程页上直接下载。ETH 的学生在实验课上由助教当面检查。
+没有开发板的话，Vivado 的仿真部分在软件里就能跑；课程页还有在自己电脑上安装 Vivado 的说明。
+
+**选做作业**：2025 年春季有四次，都附答案：逻辑完备性、布尔代数与组合逻辑；字节序、MIPS 指令集、数据流、微体系结构与指令集的区别；分支预测、VLIW 与脉动阵列；SIMD 与 GPU。
+
+**历年试题**：考试页上收了 2012 年到 2025 年（缺 2024 年）的考卷，而且带答案，是这门课最好的练习材料之一。
+
+## 学习建议
+
+- **跟着 YouTube 录像学。** 每年的课都在 YouTube 直播并留存，2025 年春季的播放列表有 37 个视频；课程页的资源栏还列了 2018 年以来每年的录像。
+- **实验按顺序做。** 前几个实验在搭后面处理器要用的零件（ALU、有限状态机），Lab 8 再把它们集成成一个完整的系统。
+- **作业和试题一起刷。** 选做作业附答案，历年试题也带答案，后半程的乱序执行、缓存、GPU 这些内容，做题是最好的检验。
+- **想再往深走，接他的研究生课。** Mutlu 在 ETH 的[计算机体系结构](/docs/systems/computer-architecture/eth-computer-architecture)课是这门课的续篇。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS61C](/docs/systems/computer-architecture/cs61c)**：从 C 和 RISC-V 汇编讲起，更偏软件一侧，也要在 Logisim 里搭 CPU。
+- **[Nand2Tetris](/docs/systems/computer-architecture/nand2tetris)**：更轻量，硬件部分用它自己的简化 HDL，后半段一路做到编译器和操作系统。
+- **[CMU 15-213 CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)**：从程序员视角看系统，基本不涉及电路设计。
+
+## 官方资源
+
+- [课程主页（2026 春季）](https://safari.ethz.ch/ddca/spring2026/doku.php?id=start)
+- [课程主页（2025 春季）](https://safari.ethz.ch/ddca/spring2025/doku.php?id=start)：最近一个完整版本。
+- [讲课日程（2025 春季）](https://safari.ethz.ch/ddca/spring2025/doku.php?id=schedule)：每讲的幻灯片和录像。
+- [实验（2026 春季）](https://safari.ethz.ch/ddca/spring2026/doku.php?id=labs)
+- [选做作业（2025 春季）](https://safari.ethz.ch/ddca/spring2025/doku.php?id=homeworks)
+- [历年试题](https://safari.ethz.ch/ddca/spring2025/doku.php?id=exams)
+- [2025 春季录像（YouTube）](https://www.youtube.com/playlist?list=PL5Q2soXY2Zi9Eo29LMgKVcaydS7V1zZW3)
