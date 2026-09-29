@@ -1,35 +1,85 @@
 ---
 title: "Stanford CS110 计算机系统原理"
-description: "Stanford 的系统编程课：多进程、多线程、网络与大型系统的取舍。"
+description: "斯坦福接在 CS107 之后的系统编程课（2020 冬季存档）：文件系统、多进程与 execvp、管道与信号、多线程与同步、线程池、网络编程、MapReduce 与系统设计原则；八个作业从读 Unix v6 文件系统写到 shell、RSS 聚合器、线程池、HTTP 代理和 MapReduce，七个实验都附解答。"
 prereqCourses: []
-prereqKnowledge: ["编程基础、Unix、GDB、Valgrind"]
+prereqKnowledge: ["C 和 C++（斯坦福 CS107 的水平）", "Unix/Linux、make、gcc、gdb、valgrind", "x86 汇编与基本的计算机体系结构"]
 ---
 
 ## 课程简介
 
-CS110 接在 CS107 之后，主题是“一个程序怎么跨越进程、线程和机器运行”。
+CS110 Principles of Computer Systems 是斯坦福接在 CS107（C 语言与计算机组成）之后的系统课。
+这里收的是 **2020 年冬季**（Chris Gregg 和 Nick Troccoli 讲）的存档，讲义、作业和实验都完整保留。
 
-课程按主题推进：文件系统与文件描述符、多进程与 Unix 工具的实现方式、
-信号与进程间通信、多线程与同步原语、线程池，然后是网络编程——
-HTTP 服务器、并发爬虫，最后讨论跨多台机器的系统设计。
+课程关心的是：**一个程序怎样借助操作系统，跨越多个进程、多个线程、多台机器运行**。它依次讲文件系统、多进程、进程间通信与信号、
+多线程与同步、网络编程，最后是 MapReduce 这样的分布式计算和系统设计原则。
 
-它和 CSAPP 有相当的重叠，但重心不同：CSAPP 更偏“机器内部发生了什么”，
-CS110 更偏“怎么用系统调用把并发和网络组织好”。作业量大，
-每个 assignment 都是一个完整的可运行程序，比如 Unix 工具的重实现、
-多线程的新闻聚合器、网络代理。
+它和 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp) 有不少重叠——CS110 的指定教材之一就是 CSAPP——
+但重心不同：CSAPP 更关心“机器内部发生了什么”，CS110 更关心“怎样用系统调用把并发和网络程序组织好”。
+
+注意：CS110 最后一次开是 2022 年冬季。现在斯坦福的 [CS111 操作系统原理](https://web.stanford.edu/class/cs111/) 覆盖了它的主要内容
+（文件系统、系统调用、多进程、多线程、同步，外加虚拟内存），而且作业也从读 Unix v6 文件系统开始。
 
 ## 先修要求
 
-- 需要扎实的 C/C++ 编程基础（官方按 CS107 设定）。
-- 需要会用 Unix 命令行、gdb 与 valgrind。
+官方写的先修是 **CS107**。非正式地说，你要熟悉：
 
-## 官方资源
+- C 和 C++ 编程（课上两种语言混着用）；
+- Unix/Linux、make 与 Makefile、gcc/g++、valgrind、gdb；
+- 基本的计算机体系结构（CS107 讲的 x86，或者学过别的架构、有信心边学边捡起 x86）。
 
-- [课程主页](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/)：2020 冬季存档，讲义与实验齐全。
-- [课程日程](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/calendar.html)：按周排列的主题、阅读与作业。
+## 课程结构
+
+2020 年冬季共 20 讲左右：
+
+| 部分 | 讲什么 |
+|---|---|
+| 文件系统 | 文件系统导论；分层、命名与文件系统设计；文件系统数据结构与系统调用 |
+| 多进程 | 理解 `execvp`；管道与进程间通信；信号；竞争条件、死锁与数据完整性 |
+| 多线程 | 线程入门；线程与互斥锁；条件变量与信号量；多线程设计模式；线程示例（冰淇淋店模拟） |
+| 网络 | 线程池与网络入门；网络客户端；网络系统调用 |
+| 分布式与设计 | MapReduce；系统设计原则；今天的系统 |
+
+教材是 CSAPP（第 2 或第 3 版），以及 Saltzer 和 Kaashoek 的《Principles of Computer System Design》。
+
+评分：编程作业 60%、期中 15%、期末 20%、讨论课参与 5%。
 
 ## 官方作业
 
-- [Labs 与 Assignments](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/)：七个实验与八个作业，课程页左侧导航里按编号列出，多数附官方解答。
+**八个作业**，每个都是一个完整的可运行程序：
 
-存档课程，无自动评分；部分实验提供官方解答可供对照。
+| 作业 | 内容 |
+|---|---|
+| Assign1 | 亚马逊评论搜索 |
+| Assign2 | 读 Unix v6 文件系统 |
+| Assign3 | 多进程的方方面面 |
+| Assign4 | stsh：斯坦福 shell |
+| Assign5 | RSS 新闻聚合器（多线程） |
+| Assign6 | 线程池 |
+| Assign7 | HTTP 网页代理与缓存 |
+| Assign8 | MapReduce |
+
+**七个实验**（讨论课的练习）：文件系统；多进程与 Unix 工具；并行处理；作业 3 回顾；读写锁与事件屏障；网络；线程池与代理。
+**每个实验都附有官方解答**，可以做完再对。
+
+作业的说明都在存档里，但**起始代码要在斯坦福的 myth 机器上用 `git clone /usr/class/cs110/...` 获取**，校外拿不到，
+所以自学的话要照着说明自己搭框架。
+
+## 学习建议
+
+- **实验比作业好上手。** 实验题目和解答都公开，而且每个实验对应一两讲的内容，适合当作每周的练习。
+- **作业挑着做。** 起始代码拿不到，可以挑 stsh（shell）、线程池、HTTP 代理这几个最有代表性的，自己从零写一个简化版。
+- **配合 CSAPP 读。** 进程、信号、并发、网络这几讲和 CSAPP 第 8、10、11、12 章基本对应，书上的讲解更系统。
+- **想找作业完整的替代品，看 CSAPP 或 CS111。** CSAPP 的 Shell Lab 和 Proxy Lab 有公开的自学版代码；CS111 是现在的在开课程。
+
+## 同类课怎么选
+
+- **[CMU 15-213 CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)**：覆盖面更广，实验的自学版代码全部公开，更适合自学。
+- **[UC Berkeley CS162](/docs/systems/operating-systems/cs162)**：操作系统课，进程、线程、同步、文件系统讲得更深，并且要动手改一个教学操作系统。
+- **[MIT 6.S081](/docs/systems/operating-systems/mit-6-s081)**：从内核的角度讲，实验都在 xv6 上做。
+
+## 官方资源
+
+- [课程主页（2020 冬季存档）](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/)：讲义幻灯片、八个作业说明、七个实验及解答。
+- [课程日程](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/calendar.html)
+- [课程信息](https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/static/handouts/CS110-Course-Information.pdf)：先修、教材、评分。
+- [Stanford CS111（当前）](https://web.stanford.edu/class/cs111/)：现在在开的操作系统课，覆盖了 CS110 的主要内容。

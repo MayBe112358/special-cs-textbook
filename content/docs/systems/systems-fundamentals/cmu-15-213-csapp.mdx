@@ -1,39 +1,90 @@
 ---
 title: "CMU 15-213 深入理解计算机系统"
-description: "从程序员视角看整台计算机：数据表示、汇编、内存层次、链接、并发与网络。"
+description: "CMU 的系统入门课，配套教材 CSAPP：数据表示、x86-64 汇编、链接、存储器层次与缓存、虚拟内存、动态内存分配、代码优化、异常控制流与进程、系统 I/O、网络编程与并发；Data、Bomb、Attack、Cache、Malloc、Shell、Proxy 等实验的自学版在教材官网免费下载。"
 prereqCourses: [cs61a, cs61b]
-prereqKnowledge: ["CS61A, CS61B"]
+prereqKnowledge: ["扎实的 C 语言（CMU 15-122 的水平）", "会用 Linux 命令行、gdb、make"]
 ---
 
 ## 课程简介
 
-15-213 是 CMU 的系统入门课，配套教材《Computer Systems: A Programmer's Perspective》
-（简称 CSAPP）被公认为这一领域最好的一本书。
+15-213 Introduction to Computer Systems（ICS）是卡内基梅隆大学的系统入门课，2026 年秋季由 Phillip Gibbons 和 Seth Goldstein 讲授。
+配套教材《Computer Systems: A Programmer's Perspective》（简称 CSAPP，中译《深入理解计算机系统》，第 3 版）
+由 CMU 的 Randal Bryant 和 David O'Hallaron 编写，被很多学校当作系统课的教材。
 
-这门课的角度很特别：它不从硬件设计讲起，而是从“你写的程序在机器上到底发生了什么”入手。
-课程依次讲数据的位级表示与浮点、x86-64 汇编与程序的机器级表示、
-处理器体系结构与优化、存储器层次与缓存、链接、异常控制流、虚拟内存、
-系统级 I/O、网络编程与并发编程。
+官方的定位是：**从程序员的视角看计算机系统怎样执行程序、存储信息、相互通信**。
+学完你会写出更好的程序——尤其是在性能、可移植性和健壮性上；它也是编译器、网络、操作系统、体系结构这些后续课的基础。
 
-真正让这门课出名的是它的实验（Labs）：Data Lab 用位运算实现各种函数、
-Bomb Lab 逼你读汇编拆炸弹、Attack Lab 让你做缓冲区溢出攻击、
-Cache Lab 写缓存模拟器、Malloc Lab 实现一个内存分配器、
-Shell Lab 写一个 shell、Proxy Lab 写一个并发代理服务器。
-这套实验的代码框架全部开源，是自学者能拿到的最有价值的材料。
+这门课最出名的是它的**实验**。官方原话：“实验是这门课的核心，你在这门课里学到的大部分东西都来自完成这些实验。”
 
 ## 先修要求
 
-- 需要扎实的 C 语言能力，CS61A + CS61B 或同等课程。
-- 需要会用命令行、gdb 和 make。
+- 官方先修：CMU 15-122（C 语言的命令式编程与数据结构）。对应到本站，[CS61A](/docs/programming-intro/cs61a) 和 [CS61B](/docs/data-structures-algorithms/cs61b) 再加上一点 C 语言的练习。
+- 课上会用到 Linux 命令行、Git、gdb、gcc 和 make。CMU 会开几次“训练营”（bootcamp）专门教这些，自学的话事先熟悉一下。
 
-## 官方资源
+## 课程结构
 
-- [教材官网](http://csapp.cs.cmu.edu/)：CSAPP 第三版的官方站点。
-- [学生资源页](http://csapp.cs.cmu.edu/3e/students.html)：配套材料、Web Asides 与勘误。
-- [Web Asides](http://csapp.cs.cmu.edu/3e/waside.html)：书中未展开的补充专题。
+2026 年秋季的讲次（括号里是 CSAPP 对应章节）：
+
+| 部分 | 讲什么 |
+|---|---|
+| 数据 | 位、字节与整数（2.1～2.3） |
+| 机器级程序 | x86-64 机器级编程（四讲，第 3 章） |
+| 链接与调试 | 链接（第 7 章）；设计与调试 |
+| 存储器 | 存储器层次；缓存（第 6 章）；虚拟内存的概念与细节（9.1～9.8）；动态内存分配基础与进阶（9.9～9.12） |
+| 性能 | 代码优化（第 5 章） |
+| 进程与异常 | 进程与多任务；异常控制流（第 8 章） |
+| I/O 与网络 | 系统级 I/O 与文件系统；网络编程（两讲，第 11 章） |
+| 并发 | 并发编程；同步基础与进阶；线程级并行（第 12 章） |
+| 收尾 | 计算的前沿 |
+
+评分：实验共 50%；十次书面作业 6%（同学互评）；十次课堂小测共 4%；期中 15%；期末（三小时闭卷，可带两张小抄）占其余部分。
 
 ## 官方作业
 
-- [全部 Labs（开源）](http://csapp.cs.cmu.edu/3e/labs.html)：Data、Bomb、Attack、Cache、Malloc、Shell、Proxy 等实验的框架与说明。
+**实验**（2026 年秋季，括号里是占总成绩的比例）：
 
-实验自带评分脚本，本地即可自测；Bomb Lab 的个人化版本需要自行生成。
+| 实验 | 内容 |
+|---|---|
+| L0 C 编程（2%） | C 语言热身 |
+| L1 Data Lab（7%） | 只用受限的位运算和直线代码实现整数和浮点函数，比如不用分支求绝对值 |
+| L2 Bomb Lab（6%） | 一个只给二进制的“炸弹”，要读反汇编、用 gdb 找出 6 个口令拆掉它 |
+| L3 Attack Lab（4%） | 对有缓冲区溢出漏洞的程序做代码注入和面向返回编程（ROP）攻击 |
+| L4 Cache Lab（5%） | 写一个缓存模拟器，再优化矩阵转置让缓存不命中最少 |
+| L5 Malloc Lab（4% + 7%） | 自己实现 `malloc`/`free`/`realloc`，分检查点和最终版两次交 |
+| L6 Shell Lab（7%） | 写一个带作业控制的小 shell，处理进程和信号 |
+| L7 Proxy Lab（4%） | 写一个多线程、带缓存的 HTTP 代理 |
+| L8 SFS Lab（4%） | 排在文件系统那几讲之后（日程上叫 sfslab），教材官网没有这个实验，校外拿不到材料 |
+
+CMU 的学生还要做代码审查：和助教讨论代码风格，并做一个 10 分钟的小测证明自己理解实验内容。
+
+**自学怎么做**：教材官网给自学者提供了各实验的“自学版”（Self-Study Handout），不用注册就能下载，但**不含答案**，答案只给授课老师。
+包括 Data、Bomb、Attack、Architecture（Y86-64 处理器）、Cache、Performance、Shell、Malloc、Proxy 等实验。
+Bomb Lab 的自学版关掉了向评分服务器报告的功能，炸了也不扣分。多数实验的自学版带本地测试脚本。
+
+**往年考试**：考试页上有从 2001 年起的历年期末卷和参考答案，还有一份最新的模拟卷。注意早年的卷子有些是 32 位 x86 汇编，现在只考 64 位。
+
+## 学习建议
+
+- **实验比讲课重要。** 每章读完就做对应的实验，Data Lab 和 Bomb Lab 适合在学完第 2、3 章后马上做。
+- **Bomb Lab 练熟 gdb。** 断点、单步、看寄存器和内存，这门课后面所有实验都会用到这些调试技巧。
+- **Malloc Lab 最花时间，提前开始。** CMU 给它排了将近一个月，还拆成检查点和最终版两次交。
+- **书上的练习题要做。** 官方复习建议里专门提到做书里的练习题（书后有答案）和往年考题。
+- **在 Linux 上做。** 实验针对 x86-64 Linux，Windows 用 WSL 或虚拟机，Apple Silicon 的 Mac 要找一台 x86-64 的机器或用模拟环境。
+
+## 同类课怎么选
+
+- **[Stanford CS110](/docs/systems/systems-fundamentals/stanford-cs110)**：接在 C 语言课之后，更侧重用系统调用组织多进程、多线程和网络程序。
+- **[UC Berkeley CS61C](/docs/systems/computer-architecture/cs61c)**：从更靠近硬件的角度讲，涵盖 RISC-V、数字电路和并行，和 CSAPP 互补。
+- **[Nand2Tetris](/docs/systems/computer-architecture/nand2tetris)**：从与非门一路搭到操作系统，适合想先建立整体图景的人。
+- 学完可以接 [MIT 6.S081](/docs/systems/operating-systems/mit-6-s081)（操作系统）、[CS144](/docs/systems/networking/cs144)（网络）或 [CS143](/docs/systems/compilers/cs143)（编译器）。
+
+## 官方资源
+
+- [课程主页（2026 秋季）](https://www.cs.cmu.edu/~213/)：这个地址总是指向当前学期。
+- [日程](https://www.cs.cmu.edu/~213/schedule.html)：每讲的幻灯片、代码和教材章节。
+- [实验安排](https://www.cs.cmu.edu/~213/labs.html)
+- [考试与往年试题](https://www.cs.cmu.edu/~213/exams.html)
+- [CSAPP 教材官网](https://csapp.cs.cmu.edu/)
+- [自学用实验下载](https://csapp.cs.cmu.edu/3e/labs.html)：各实验的说明和自学版代码。
+- [学生资源页](https://csapp.cs.cmu.edu/3e/students.html)：代码示例、gdb 速查表等。
+- [2015 年秋季课程主页](https://www.cs.cmu.edu/afs/cs/academic/class/15213-f15/www/)：那一学期的讲课和习题课有录像链接。
