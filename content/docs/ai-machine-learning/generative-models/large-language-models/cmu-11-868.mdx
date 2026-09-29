@@ -1,37 +1,94 @@
 ---
 title: "CMU 11-868 大语言模型系统"
-description: "CMU 的大语言模型系统：从 CUDA 算子到分布式训练与推理加速。"
+description: "李磊在 CMU 开的大模型系统课：GPU 编程、深度学习框架与自动微分、Transformer 在 GPU 上的加速、数据并行与模型并行、MoE、ZeRO、量化、LoRA、FlashAttention、vLLM 与 SGLang、TPU、强化学习系统；七个作业在自己写的 MiniTorch 上从 CUDA 算子一路做到分布式训练和 RLHF，作业代码全部公开。"
 prereqCourses: []
-prereqKnowledge: ["建议已修 Deep Learning 或 Advanced NLP"]
+prereqKnowledge: ["线性代数、微积分、概率统计", "Python 和 C/C++ 编程（CMU 15-122 的水平）", "机器学习基础（有更好，不强制）", "计算机系统与体系结构（有更好）"]
 ---
 
 ## 课程简介
 
-11-868 聚焦“从算法到工程”的大语言模型系统构建全过程，面向研究生开设。
+11-868（Large Language Model Systems）是卡内基梅隆大学语言技术研究所的研究生课，由 **李磊**（Lei Li）讲授，
+2024 年春季第一次开，之后 2025 年春季、2026 年春季、2026 年秋季又开过，每学期的网站都保留着。
 
-课程内容大致分四块：GPU 编程与自动微分——
-CUDA kernel 的调用与并行编程基础，以及深度学习框架的设计原理；
-模型训练与分布式系统——高效训练算法、通信优化（ZeRO、FlashAttention）、
-分布式训练框架（DDP、GPipe、Megatron-LM）；
-模型压缩与加速——量化（GPTQ）、稀疏化（MoE）、编译技术；
-以及推理服务系统的设计。
+课程回答的是：**训练、微调、部署一个大模型，背后的系统要怎么做**。它不只是教你用现成的工具，
+而是带你看 vLLM、SGLang、FlashAttention 这些系统内部怎么工作：写 GPU 核函数（CUDA/Triton）、搭分布式训练、
+设计高吞吐的推理服务、为微调、量化和强化学习优化系统。课上常请业界的人来讲，2026 年秋季有 Google 讲 TPU 和 JAX，
+FlashAttention 的作者 Tri Dao、vLLM 的作者 Woosuk Kwon 讲自己的系统。
 
-作业要求动手实现这些系统组件，
-是少数把 GPU 编程与大模型系统结合起来讲的课程之一。
+官方 FAQ 讲了它和 [11-667](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-667) 的区别：
+11-667 讲模型、学习算法和应用；11-868 讲**给大模型搭系统**，关心性能、延迟、可靠性。不想写底层代码的话，官方推荐去上 11-667。
 
 ## 先修要求
 
-- 强烈建议已修读深度学习（11-785）或高级 NLP（11-611 / 11-711）。
-- 需要 Python 与一定的 CUDA/系统编程基础。
+官方写的先修：
 
-## 官方资源
+- 数学：线性代数、微积分、概率统计。
+- 编程：Python，外加 C、C++ 或 Java 之一（CMU 15-122 或同等水平）；FAQ 里说要能熟练写 Python 和 C/C++，不熟的话先上一门 C/C++ 课。
+- 机器学习：有更好，但不强制。**不需要学过 NLP，也不需要了解大模型。**
+- 计算机系统与体系结构：有更好。
 
-- [课程主页](https://llmsystem.github.io/llmsystem2025spring/)：课程信息、日程与材料。
-- [课程大纲](https://llmsystem.github.io/llmsystem2025spring/docs/Syllabus)：课程范围与评分。
-- [课程安排](https://llmsystem.github.io/llmsystem2025spring/docs/Logistics)：上课节奏与作业安排。
+GPU 编程没学过的话，官方推荐读《Programming Massively Parallel Processors》（第 4 版）。
+FAQ 估计：学过机器学习、写 C 顺手的人，每周大约要花 12 小时。
+
+## 课程结构
+
+2026 年秋季每周两讲加一次习题课（recitation）：
+
+| 部分 | 讲什么 |
+|---|---|
+| GPU 与框架 | 大模型导论；GPU 编程基础；GPU 加速；深度学习框架与自动微分 |
+| 模型本身 | 大模型架构与预训练；分词与嵌入；生成与推测解码（speculative decoding） |
+| Transformer 加速 | 在 GPU 上加速 Transformer（两讲，以 LightSeq 为例）；TPU 与 JAX、Pallas 与 Splash Attention（Google 客座） |
+| 分布式训练 | 数据并行（DDP）；模型并行（GPipe、Megatron-LM）；MoE 模型的系统；分布式训练的显存优化（ZeRO） |
+| 压缩与微调 | 模型量化（两讲，含 LLM.int8()、GPTQ）；高效微调（LoRA、QLoRA）；面向现代硬件的注意力优化（FlashAttention 1～4，Tri Dao） |
+| 推理服务 | 用 SGLang 做推理服务（RadixAttention）；PagedAttention 与 vLLM（Woosuk Kwon）；预填充与解码分离（DistServe）；更好的 KV Cache（LMCache） |
+| 其他 | TPU 加速；大模型的高效强化学习系统 |
+
+评分：作业共 44%、小测 10%、参与 2%（另有最多 2% 加分）、项目 44%（提案 2%、中期报告 2%、展示 20%、最终报告 20%）。
 
 ## 官方作业
 
-- [Homework](https://llmsystem.github.io/llmsystemhomework)：围绕 GPU 算子、分布式训练与推理优化的实践作业。
+七个编程作业（五个必做、两个选做），都建立在 **MiniTorch** 上。MiniTorch 原本是 Sasha Rush 为教学写的迷你深度学习框架，
+这门课把它扩展成能跑真正 CUDA 核函数的版本。你会一步步把它变成能训练、能加速、能分布式的大模型框架：
 
-课程单独的作业站点 llmsystem2025springhw 于 2026-09-18 核对时已下线；作业信息见课程主页。
+| 作业 | 内容 |
+|---|---|
+| A1 CUDA 编程 | 用 CUDA C++ 为张量运算写高性能核函数，接进 MiniTorch 的后端 |
+| A2 MiniTorch 框架 | 实现自动微分、简单的前馈网络和训练流程，做情感分类 |
+| A3 Transformer 架构 | 在 MiniTorch 里实现只有解码器的 Transformer（GPT-2），在 IWSLT14 德英翻译上训练并测速 |
+| A4 Transformer 的 CUDA 加速 | 为 Softmax 和 LayerNorm 写融合的 CUDA 核函数，加速训练和推理 |
+| A5 分布式训练 | 实现数据并行和流水线并行 |
+| A6 训练与推理系统 | 上手业界常用的训练和推理框架（如 SGLang），用 Llama 模型做实验 |
+| A7 RLHF 入门 | 仿照 VERL 写一个简单的强化学习框架，用 RLHF 把一个小模型调得更有用、更无害 |
+
+作业说明在[作业网站](https://llmsystem.github.io/llmsystemhomework)，起始代码都在 [GitHub 组织 llmsystem](https://github.com/llmsystem) 下公开。
+作业需要 GPU：官方建议没有 GPU 的话用 Google Colab；CMU 学生能用匹兹堡超算中心（PSC）的机器，校外用不了。
+
+**项目**：2～3 人一组，要么在 MiniTorch 里复现一篇大模型系统论文的组件（比如 FlashAttention、PagedAttention、混合精度训练、DPO），
+要么做一个开放研究题目，目标是投 MLSys、OSDI 这类会议。网站上有往届学生项目可以参考。
+
+**AI 政策**：严禁用 AI 智能体写作业，大模型只能用来解释概念；你要能讲清楚你交的每一行代码。
+
+## 学习建议
+
+- **A1、A2 打牢基础。** 后面每个作业都建立在前面的 MiniTorch 上，前两个没写好，后面会一直出问题。
+- **先补 CUDA。** 课一开始就写 CUDA 核函数，没写过的话先读《Programming Massively Parallel Processors》的前几章。
+- **提前准备算力。** A1 的说明推荐用 Colab 的 GPU；A5 要做数据并行和流水线并行，A6 要跑 Llama 2 7B，校外得自己准备多卡机器或云资源。
+- **边读论文边做作业。** 每讲都列了对应的论文（DDP、Megatron-LM、ZeRO、FlashAttention、vLLM……），作业做的正是这些论文里的核心想法。
+
+## 同类课怎么选
+
+- **[CMU 10-414 深度学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-10-414)**：同样是从零写深度学习框架（needle），更侧重框架本身；11-868 更侧重大模型的训练和推理系统。
+- **[CMU 15-779 机器学习系统前沿专题](/docs/ai-machine-learning/generative-models/large-language-models/cmu-15-779)**：研讨课，偏编译和自动生成核函数，以读论文为主。
+- **[CMU 11-667 大语言模型方法与应用](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-667)**：关心模型和应用、不想写底层代码，选这门。
+- **[CMU 15-418 / Stanford CS149](/docs/systems/parallel-and-distributed/cmu-15-418-cs149)**：并行计算基础，想先把 GPU 和并行编程学扎实可以先上。
+
+## 官方资源
+
+- [课程总入口](https://llmsystem.github.io/)：各学期的网站。
+- [2026 秋季课程主页](https://llmsystem.github.io/llmsystem2026fall/)
+- [2026 秋季日程](https://llmsystem.github.io/llmsystem2026fall/docs/Syllabus)：每讲幻灯片和论文。
+- [课程安排与评分](https://llmsystem.github.io/llmsystem2026fall/docs/Logistics)
+- [项目说明](https://llmsystem.github.io/llmsystem2026fall/docs/Projects)
+- [作业网站](https://llmsystem.github.io/llmsystemhomework)
+- [作业与示例代码（GitHub）](https://github.com/llmsystem)

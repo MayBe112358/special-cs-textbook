@@ -1,37 +1,69 @@
 ---
 title: "CMU 15-779 机器学习系统前沿专题"
-description: "回答一个问题：PyTorch 写的模型怎样变成 kernel 并在 GPU 集群上跑。"
+description: "贾志豪在 CMU 开的研讨式机器学习系统课（大模型版，2025 秋季）：一个 PyTorch 模型怎样拆成核函数、在 GPU 集群上跑起来——CUDA 与 FlashAttention、Warp 特化与 Mega Kernel、Triton 与 TVM、核函数自动调优与超优化、ZeRO 与流水线并行、自动并行、vLLM 与推测解码、LoRA、MoE；每讲读两三篇论文写短评，外加一个课程项目。"
 prereqCourses: []
-prereqKnowledge: ["建议具备机器学习与深度学习训练经验，熟悉 PyTorch"]
+prereqKnowledge: ["机器学习入门（官方说有帮助，不强制）", "深度学习训练经验、熟悉 PyTorch（建议）", "GPU 与 CUDA 基础（建议）"]
 ---
 
 ## 课程简介
 
-15-779 从系统视角系统性回答一个核心问题：
-一个用高层框架（例如 PyTorch）写出来的模型，
-是如何被分解为底层 kernel，
-并在异构硬件加速器（GPU/TPU）与分布式环境中高效执行的。
+15-779（Advanced Topics in Machine Learning Systems，LLM Edition）是卡内基梅隆大学计算机系的研究生课，由 **贾志豪**（Zhihao Jia）讲授，
+最近一次是 2025 年秋季。他和学生做的 TASO、Mirage 等机器学习编译和超优化工作，课上都会讲到。
 
-课程覆盖：表达机器学习模型的编程模型、深度学习加速器、
-机器学习编译、现代 GPU（H100、B200）上的编程技术、
-分布式训练技术与自动并行化、计算图优化、
-自动 kernel 生成、内存优化，以及大模型推理服务与加速。
+课程回答一个问题：**一个用 PyTorch 这样的高级框架写的模型，是怎样被拆成底层核函数，再在 GPU、TPU 这些异构加速器上分布式执行的**。
+内容包括表达模型的编程模型、深度学习加速器、机器学习编译、在 H100、B200 这类新 GPU 上的编程技巧、分布式训练与自动并行、
+计算图优化、自动生成核函数、显存优化，以及大模型的推理服务和微调。目标是让你全面理解现有的机器学习系统怎么工作，
+以及设计背后的原则。
 
-课程的组织形式偏研讨：需要持续完成课前论文阅读与评述。
-它适合希望把“框架层经验”向“算子、编译、硬件、集群执行”打通的人。
+这是一门**研讨课**：没有编程作业，每讲之前读两三篇论文、写短评，最后做一个课程项目。
 
 ## 先修要求
 
-- 官方无硬性先修要求。
-- 建议具备机器学习入门与深度学习训练经验，熟悉 PyTorch；了解 CUDA/GPU 基础会显著提升效率。
+- 官方没有硬性先修，只说上过一门机器学习入门课会有帮助。课程主要讲系统，不会深入学习算法本身。
+- 官方给的入门材料：《Deep Learning》、《动手学深度学习》（d2l.ai）、[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)。
+- 实际上，用 PyTorch 训练过模型、了解 GPU 和 CUDA 的基本概念，会读得轻松很多。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://www.cs.cmu.edu/~zhihaoj2/15-779/)：课程信息、日程与阅读材料。
-- [课程日程](https://www.cs.cmu.edu/~zhihaoj2/15-779/schedule.html)：每次课的主题与指定论文。
+2025 年秋季的讲次：
+
+| 部分 | 讲什么 |
+|---|---|
+| 基础 | 课程导论（必读《怎样读论文》）；机器学习系统入门（TensorFlow、PyTorch 论文） |
+| GPU 编程 | GPU 架构与 CUDA 编程（两讲）；案例：Transformer、注意力与 FlashAttention；高级 CUDA：Warp 特化、Mega Kernel |
+| 机器学习编译 | 基于分块的 DSL（Triton、TVM）；核函数自动调优（Ansor 等）；计算图级优化（TASO、PET）；张量程序超优化（Mirage） |
+| 并行训练 | 数据并行、ZeRO 与 PyTorch FSDP；模型并行与流水线并行（PipeDream、Megatron-LM）；自动并行（Alpa 等） |
+| 大模型 | 推理服务：批处理、PagedAttention（vLLM）、RadixAttention（SGLang）；推测解码；参数高效微调（LoRA、QLoRA）；混合专家（MoE）的架构、核函数与并行 |
+| 客座与项目 | 大模型后训练系统的新问题；训练开放语言模型；项目讨论与项目时间 |
+
+评分：课程项目 50%、论文短评 30%、课堂参与（展示、Piazza 讨论）20%。
 
 ## 官方作业
 
-- [论文评述与课程项目](https://www.cs.cmu.edu/~zhihaoj2/15-779/)：课前论文阅读评述，以及一个系统方向的课程项目。
+这门课**没有编程作业**，考核分两块：
 
-研讨课形式，没有统一的自动评分作业。
+- **论文短评**：从第二周起，每讲指定 2～3 篇论文，上课前交短评。格式是每篇论文一小段自己的话总结，
+  再写一段两篇之间的联系：对比异同、一篇的想法能不能用到另一篇的问题上、能不能结合出新想法。官方说写清要点就行，不用长篇大论，还给了一个满分范例。
+- **课程项目**：1～3 人一组，可以从官方给的题目清单里挑，也可以做和自己研究相关的题目。
+  要交一页提案、8～10 分钟录制的展示，以及一篇不超过 8 页、按 MLSys 会议论文格式写的报告。
+
+## 学习建议
+
+- **把阅读清单当主线。** 日程上每讲都标了必读和选读论文，从 TensorFlow、PyTorch 一路到 FlashAttention、Triton、ZeRO、vLLM，几乎就是这个领域的必读论文集。
+- **照官方格式写短评。** 自学也可以每读两篇写一段总结加一段比较，逼自己想清楚两篇论文之间的关系，比光读收获大得多。
+- **动手补一个实现。** 这门课没有编程作业，建议配一门有作业的课一起学，把读到的东西写出来。
+- **幻灯片都公开。** 日程上每讲的幻灯片都能直接下载，配合论文读。
+
+## 同类课怎么选
+
+- **[CMU 11-868 大语言模型系统](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-868)**：内容有不少重叠，但有七个编程作业，从 CUDA 算子写到分布式训练和 RLHF。想动手选它，想读论文、做研究选 15-779。
+- **[CMU 10-414 深度学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-10-414)**：从零写一个深度学习框架，打基础用。
+- **[MLC 机器学习编译](/docs/ai-machine-learning/machine-learning-systems/mlc)**：陈天奇讲的机器学习编译，和这门课的编译部分正好衔接。
+- **[CMU 15-418 / Stanford CS149](/docs/systems/parallel-and-distributed/cmu-15-418-cs149)**：并行计算和 GPU 编程基础。
+
+## 官方资源
+
+- [课程主页](https://www.cs.cmu.edu/~zhihaoj2/15-779/)：课程介绍、讲师。
+- [日程](https://www.cs.cmu.edu/~zhihaoj2/15-779/schedule.html)：每讲的幻灯片与必读/选读论文。
+- [课程安排](https://www.cs.cmu.edu/~zhihaoj2/15-779/logistics.html)：评分、项目要求、论文短评格式与范例。
+- [入门材料](https://www.cs.cmu.edu/~zhihaoj2/15-779/materials.html)
