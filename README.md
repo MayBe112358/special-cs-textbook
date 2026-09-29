@@ -143,7 +143,7 @@ npm run check:letters   # 检查每个源码文件顶部都有完整的注释块
 npm run build           # 类型检查并静态导出到 out/
 ```
 
-`npm run dev` 和 `npm run build` 都会先自动跑一次 `npm run index`。
+`npm run dev`、`npm test` 和 `npm run build` 都会先自动跑一次 `npm run index`。
 
 推送到 GitHub 后，Actions 会自动跑测试、注释块检查和构建（`.github/workflows/check.yml`）；
 推到 `main` 时检查通过才会部署到 GitHub Pages（`.github/workflows/deploy-pages.yml`）。
@@ -168,11 +168,15 @@ npm run build           # 类型检查并静态导出到 out/
 
 ## 当前进度
 
-阶段 0～14.5 已完成：文档站骨架、数据层、终端、教材闭环、心得系统、课程树
+**1.0 已完成，作者已确认验收通过（2026-09-29）。**
+
+阶段 0～15 已完成：文档站骨架、数据层、终端、教材闭环、心得系统、课程树
 （130 门课程，覆盖 [CS 自学指南](https://csdiy.wiki/) 的全部分支）、进度与理解度、
 自定义学习路径、命令进阶、静态搜索、先修关系、课程页的公式/代码着色/流程图、界面美化，
 以及工作区重构（标签页、心得空间、导图、导图版学习路径）和 AI 助手（多厂商、读写心得、改动确认、终端 agent）。
-正在进行阶段 15（开源打磨 → 1.0）。完整规划见 `开发指导文档/ROADMAP.md`。
+当前以课程介绍、源码讲解的文字深化、资源更新与勘误为主，按 `1.0.x` 发布内容与修复版本。
+新增兼容功能使用 `1.x.0`，不兼容变更再考虑主版本升级。日常修改正常提交，积累一批后再发布版本，无需每次改字都打标签。
+版本记录见 [GitHub Releases](https://github.com/MayBe112358/special-cs-textbook/releases)，内部规划见 `开发指导文档/ROADMAP.md`。
 
 ## 参与贡献
 

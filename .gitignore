@@ -8,3 +8,12 @@ output/
 
 # 知识索引是构建时生成的，不进版本库
 core/knowledge/generated/
+
+# 本地配置、日志和临时文件
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+*.bak
+__pycache__/
