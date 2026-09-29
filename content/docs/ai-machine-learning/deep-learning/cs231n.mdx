@@ -1,41 +1,76 @@
 ---
-title: "Stanford CS231n 视觉识别中的卷积神经网络"
-description: "Stanford 的计算机视觉课：从零实现反向传播、CNN 与训练技巧。"
+title: "Stanford CS231n 计算机视觉中的深度学习"
+description: "斯坦福李飞飞团队的视觉深度学习课：从线性分类器、反向传播、CNN 讲到 Transformer、检测与分割、自监督学习、生成模型、3D 视觉与世界模型；三个作业用 NumPy 从零实现各种层，一直做到扩散模型和 CLIP。"
 prereqCourses: []
-prereqKnowledge: ["机器学习基础"]
+prereqKnowledge: ["熟练的 Python 和 NumPy", "微积分与线性代数：会求导、熟悉矩阵运算", "基础概率统计：概率、高斯分布、均值、标准差"]
 ---
 
 ## 课程简介
 
-CS231n 是计算机视觉方向流传最广的公开课，
-最初由李飞飞团队开设，现在的标题是 Deep Learning for Computer Vision。
+CS231n（Deep Learning for Computer Vision）是斯坦福的计算机视觉深度学习课，2026 年春季由李飞飞、Ehsan Adeli、Justin Johnson 等人讲授。
+从 2015 年冬季开课至今，每年都有存档，是深度学习入门最经典的课之一。
 
-课程从图像分类问题入手，先讲最近邻与线性分类器，
-再引出损失函数与优化，然后是反向传播与神经网络、
-卷积神经网络的结构与训练技巧（初始化、批归一化、数据增强、迁移学习）、
-经典网络架构，之后是检测与分割、循环网络与注意力、
-生成模型（GAN、扩散模型），以及自监督学习。
+课程主页的介绍：计算机视觉已经遍布社会的方方面面——搜索、图像理解、应用、地图、医疗、无人机、自动驾驶。
+这些应用的核心是图像分类、定位和检测这类视觉识别任务，而神经网络方法大大提高了它们的性能。
+这门课深入讲深度学习结构的细节，重点是为这些任务学习端到端模型，尤其是图像分类。
+十周里，学生会**亲手实现并训练自己的神经网络**，并详细了解计算机视觉的前沿研究；期末项目让学生在自己选的真实视觉问题上训练、应用上百万参数的网络。
 
-它最被称道的是作业：三次作业要求你用 NumPy 从零实现
-反向传播、全连接网络、卷积层与批归一化，
-之后才允许用框架。亲手实现过一遍梯度计算，
-对后面读任何论文都有帮助。
+它的作业以“从零实现”闻名：前两个作业大部分要用 NumPy 自己写前向和反向传播，不能直接调框架。
+课程配套的[讲义笔记](https://cs231n.github.io/)（cs231n.github.io）也非常有名，把线性分类、反向传播、卷积网络讲得非常清楚。
 
 ## 先修要求
 
-- 需要 Python 与 NumPy 能力。
-- 需要线性代数、微积分与基础的机器学习概念。
+课程主页写的先修：
 
-## 官方资源
+- **熟练的 Python**：所有作业都用 Python 和 NumPy，主页提供了一份 [Python/NumPy 教程](https://cs231n.github.io/python-numpy-tutorial/)；有其他语言丰富经验的人一般也没问题。
+- **微积分与线性代数**（如 MATH 19、MATH 51）：会求导，熟悉矩阵和向量的运算与记号。
+- **基础概率统计**（如 CS109）：对概率、高斯分布、均值、标准差有直观理解。
+- 主页没把机器学习列为先修，但学过一门机器学习入门课（比如 [吴恩达机器学习](/docs/ai-machine-learning/machine-learning/coursera-machine-learning)）会轻松很多。
 
-- [课程主页](http://cs231n.stanford.edu/)：日程、作业与项目要求。
-- [课程讲义](https://cs231n.github.io/)：写得极好的公开笔记，可独立当教材读。
-- [课程日程](http://cs231n.stanford.edu/schedule.html)：每讲的主题与配套阅读。
+## 课程结构
+
+2026 年春季 18 讲：
+
+| 部分 | 讲什么 |
+|---|---|
+| 基础 | 导论；用线性分类器做图像分类；正则化与优化；神经网络与反向传播 |
+| 网络结构 | 用 CNN 做图像分类；CNN 架构；循环神经网络；注意力与 Transformer |
+| 视觉任务 | 目标检测、图像分割、可视化与理解；视频理解 |
+| 规模与表示 | 大规模分布式训练；自监督学习 |
+| 生成与前沿 | 生成模型（两讲）；3D 视觉；视觉与语言；世界模型；以人为本的 AI |
+
+评分：作业 45%、期中 20%、期末项目 35%，另有最多 3% 的参与加分。
 
 ## 官方作业
 
-- [Assignments](https://cs231n.stanford.edu/assignments.html)：三次作业：从零实现反向传播、CNN 与训练技巧。
-- [Assignment 1 讲义](https://cs231n.github.io/assignments2026/assignment1/)：图像分类、kNN、Softmax 与全连接网络。
-- [课程项目](http://cs231n.stanford.edu/project.html)：自选题目的完整视觉项目。
+**三个作业全部公开在 [cs231n.github.io](https://cs231n.github.io/) 上**，每个都是一组 Jupyter Notebook，可以在 Google Colab 上做：
 
-作业框架与测试公开，本地可运行；部分作业用 Colab 更省事。
+| 作业 | 占比 | 内容 |
+|---|---|---|
+| [Assignment 1](https://cs231n.github.io/assignments2026/assignment1/) | 12% | k 近邻分类器；Softmax 分类器；两层神经网络；用图像特征做分类；训练全连接网络 |
+| [Assignment 2](https://cs231n.github.io/assignments2026/assignment2/) | 18% | 批归一化；Dropout；卷积神经网络；用 PyTorch 在 CIFAR-10 上训练；用 RNN 做图像描述 |
+| [Assignment 3](https://cs231n.github.io/assignments2026/assignment3/) | 15% | 用 Transformer 做图像描述；自监督学习；去噪扩散概率模型；CLIP 与 DINO |
+
+**期末项目（35%）**：自选一个视觉问题，训练和应用大规模网络，要交提案、中期报告和期末报告。
+
+## 学习建议
+
+- **作业 1 和作业 2 一定要自己写。** 用 NumPy 手写反向传播、批归一化和卷积层，是这门课最有价值的训练。写完再用 PyTorch，你会清楚框架替你做了什么。
+- **用数值梯度检验。** 每写完一层的反向传播，就用有限差分算一遍数值梯度和你的解析梯度比一比，能省掉大量调试时间。
+- **配合讲义笔记读。** cs231n.github.io 的笔记比幻灯片完整，尤其是反向传播和卷积网络那几篇。
+- **看 2025 年的录像。** Stanford Online 在 YouTube 上公开了 2025 年的讲课录像，内容和 2026 年的安排基本一致。
+
+## 同类课怎么选
+
+- **[UMich EECS 498-007](/docs/ai-machine-learning/deep-learning/umich-eecs-498-007)**：Justin Johnson 在密歇根大学开的视觉深度学习课，内容和 CS231n 高度相似，作业直接用 PyTorch 的张量从零实现，录像完整公开。
+- **[Stanford CS224n](/docs/ai-machine-learning/deep-learning/cs224n)**：语言方向的对应课。
+- **[吴恩达深度学习专项课程](/docs/ai-machine-learning/deep-learning/cs230)**：更平缓的入门，第四门课讲 CNN。
+- **[GAMES101](/docs/computer-graphics/games101)**：图形学是“从三维到图像”，视觉是“从图像到理解”，两边可以对照着学。
+
+## 官方资源
+
+- [课程主页](https://cs231n.stanford.edu/)：课程介绍、先修、评分，以及 2015 年以来的往届存档。
+- [日程](https://cs231n.stanford.edu/schedule.html)：每讲的幻灯片和阅读。
+- [作业](https://cs231n.stanford.edu/assignments.html)
+- [讲义笔记与作业](https://cs231n.github.io/)
+- [2025 年课程录像](https://www.youtube.com/playlist?list=PLoROMvodv4rOmsNzYBMe0gJY2XS8AQg16)

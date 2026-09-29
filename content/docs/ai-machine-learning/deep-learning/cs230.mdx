@@ -1,39 +1,73 @@
 ---
 title: "吴恩达 深度学习专项课程"
-description: "吴恩达的深度学习专项：五门课，从神经网络基础讲到序列模型。"
+description: "吴恩达、Kian Katanforoosh 等人在 Coursera 上的深度学习专项（也是斯坦福 CS230 的线上部分）：五门课讲神经网络基础、调参与优化、机器学习项目策略、卷积网络、序列模型与 Transformer。"
 prereqCourses: [coursera-machine-learning]
-prereqKnowledge: ["机器学习基础 + Python"]
+prereqKnowledge: ["中级 Python", "基础线性代数（推荐）", "机器学习基本概念（推荐）"]
 ---
 
 ## 课程简介
 
-这是吴恩达在 Coursera 上的深度学习专项，由五门课组成，
-是深度学习领域流传最广的入门课。
+Deep Learning Specialization 是 DeepLearning.AI 在 Coursera 上的深度学习专项课程，由吴恩达、Younes Bensouda Mourri 和 Kian Katanforoosh 讲授，
+是深度学习领域流传最广的入门课之一。Coursera 标注为**中级**，五门课总共约 129 小时：
 
-第一门讲神经网络与深度学习的基础——前向与反向传播、
-浅层与深层网络。第二门讲怎么把网络训练好：
-初始化、正则化、Dropout、梯度检验、优化算法、超参数调优、批归一化。
-第三门讲机器学习项目的工程决策——怎么划分数据、
-怎么定位误差来源、什么时候该用迁移学习。
-第四门是卷积神经网络与计算机视觉。第五门是序列模型：
-RNN、LSTM、注意力机制与 Transformer。
+1. **神经网络与深度学习**（约 25 小时）：前向与反向传播、浅层与深层网络。
+2. **改进深层神经网络：超参数调优、正则化与优化**（约 24 小时）：初始化、正则化、Dropout、梯度检验、优化算法、超参数调优、批归一化。
+3. **构建机器学习项目**（约 7 小时）：怎么划分数据、怎么定位误差来源、什么时候用迁移学习和端到端学习。
+4. **卷积神经网络**（约 36 小时）：CNN 基础、经典网络结构、目标检测、人脸识别与风格迁移。
+5. **序列模型**（约 37 小时）：RNN、LSTM、词嵌入、序列到序列模型、注意力与 Transformer。
 
-第三门课在同类课程里比较少见：它讲的不是模型，
-而是做深度学习项目时的判断力，非常实用。
+**斯坦福的 CS230 就是用这套课程上的**：吴恩达和 Kian Katanforoosh 在斯坦福开的 CS230 采用“翻转课堂”，
+学生每周课前在 Coursera 上学完对应的模块（CS230 大纲里写作 C1M1、C1M2……，也就是第几门课第几周），
+课上再讨论应用和进阶话题，另外做一个课程项目。
+
+第三门课在同类课程里比较少见：它讲的不是模型，而是做深度学习项目时的判断力，非常实用。
 
 ## 先修要求
 
-- 需要 Python 编程能力与基础的线性代数。
-- 建议先完成一门机器学习入门课程。
+- Coursera 上写的是：中级 Python 经验；推荐有基础线性代数和机器学习概念。
+- 建议先学 [吴恩达机器学习专项课程](/docs/ai-machine-learning/machine-learning/coursera-machine-learning)，两套课的风格和记号一脉相承。
+- 用到的工具：Python、TensorFlow，另外还用到 Hugging Face。
 
-## 官方资源
+## 课程结构
 
-- [专项课程主页](https://www.coursera.org/specializations/deep-learning)：五门课的总入口。
-- [Stanford CS230 课程页](https://cs230.stanford.edu/)：Stanford 校内版本的日程与项目要求。
+按斯坦福 CS230 的大纲，五门课的模块和十次课是这样对应的：
+
+| CS230 课次 | 课前要学的 Coursera 模块 |
+|---|---|
+| 1–2 | C1：深度学习导论、神经网络基础 |
+| 3 | C1：浅层神经网络、深层神经网络 |
+| 4 | C2：深度学习的实践问题、优化算法 |
+| 5 | C2：超参数调优与批归一化；C3：机器学习策略（两周） |
+| 6 | C4：卷积网络基础、深度卷积模型 |
+| 7 | C4：卷积网络的应用（两周） |
+| 8 | C5：循环神经网络 |
+| 9 | C5：自然语言处理与词嵌入、序列到序列模型 |
+| 10 | C5：Transformer |
 
 ## 官方作业
 
-- [课内编程作业](https://www.coursera.org/specializations/deep-learning)：每周的 Notebook 作业，平台自动评分。
-- [CS230 课程项目](https://cs230.stanford.edu/project/)：Stanford 版本的结课项目要求与往年范例。
+- **Coursera 上**：每周有测验和编程作业（Jupyter Notebook，自动评分），从用 NumPy 从零实现神经网络开始，后面用 TensorFlow 做人脸识别、风格迁移、机器翻译等。
+  可以免费注册学习，但**计分的作业和证书需要付费**，Coursera 提供助学金申请。
+- **斯坦福 CS230**：每周交 Coursera 的测验和编程作业，另有期中考试和课程项目（提案、中期报告、期末报告、海报展示）。
+  CS230 的 2018 年秋季课堂录像公开在 YouTube 上。
 
-Coursera 旁听可看全部内容；作业评分需要付费订阅。
+## 学习建议
+
+- **编程作业一定要做。** 这套课的精华在 Notebook：先用 NumPy 从零写一遍前向和反向传播，再用框架，你会清楚框架替你做了什么。
+- **第三门课别跳。** 它只有 7 小时，但讲的“怎么诊断模型问题、先做什么后做什么”，是实际项目里最常用的判断。
+- **学完做一个自己的项目。** CS230 的核心是期末项目。自学时照 CS230 的节奏，找一个自己感兴趣的问题，走完“提案 → 中期 → 报告”。
+
+## 同类课怎么选
+
+- **[吴恩达机器学习专项课程](/docs/ai-machine-learning/machine-learning/coursera-machine-learning)** 是前置课。
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)**：视觉方向更深，作业更硬核（从零实现反向传播和各种层）。
+- **[Stanford CS224n](/docs/ai-machine-learning/deep-learning/cs224n)**：语言方向，讲到大模型的最新进展。
+- **[CMU 11-785](/docs/ai-machine-learning/deep-learning/cmu-11-785)**：强度大得多，每个作业都要从零实现再打 Kaggle。
+
+## 官方资源
+
+- [Coursera 深度学习专项课程](https://www.coursera.org/specializations/deep-learning)：五门课的入口、时长、先修与收费说明。
+- [Stanford CS230 主页](https://cs230.stanford.edu/)：课程介绍与安排。
+- [CS230 大纲](https://cs230.stanford.edu/syllabus/)：每次课对应的 Coursera 模块和幻灯片。
+- [CS230 讲课录像](https://cs230.stanford.edu/lecture/)：2018 年秋季的课堂录像（YouTube）。
+- [CS230 项目页](https://cs230.stanford.edu/project/)：项目说明、选题建议，以及往届项目（Past Projects）的链接；官方说一个很好的 CS230 项目应该接近可以发表的水平。

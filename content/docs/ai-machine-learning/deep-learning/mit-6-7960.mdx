@@ -1,39 +1,76 @@
 ---
 title: "MIT 6.7960 深度学习"
-description: "MIT 的深度学习课，覆盖面广，不押注单一方向。"
+description: "MIT 的深度学习研究生课（2024 秋季 OCW）：训练与逼近理论、网格和图上的结构、泛化与优化的缩放规律、Transformer、表示学习、生成模型、分布外泛化、迁移学习、缩放定律与语言模型；期末项目要写一篇研究型博客。"
 prereqCourses: []
-prereqKnowledge: ["线性代数、概率统计、机器学习基础"]
+prereqKnowledge: ["概率与统计（MIT 18.05 的水平）", "一门机器学习或统计数据分析入门课", "线性代数与多元微积分"]
 ---
 
 ## 课程简介
 
-6.7960 的定位是建立“多方向通识”而不是只走一条赛道：
-除了当下最热的语言模型与自然语言处理主线，
-课程也会涉及计算机视觉等其他任务与方法。
+6.7960（Deep Learning）是 MIT 的深度学习课，OCW 上公开的是 **2024 年秋季**版，由 Phillip Isola、Sara Beery 和 Jeremy Bernstein 讲授，
+讲课录像、讲义、作业、阅读和期末项目说明都公开。
 
-内容把理论、模型设计与应用案例结合起来：
-从表示学习与优化的基本原理出发，
-讨论不同架构（卷积、循环、Transformer）如何对应不同的数据结构假设，
-再看同一套深度学习思想如何在不同任务上落地。
+官方的课程说明：这门课讲深度学习的基础，**理论和应用都讲**。主题包括神经网络结构（MLP、CNN、RNN、图网络、Transformer）、
+深度学习中的几何与不变性、反向传播与自动微分、高维中的学习理论与泛化，以及在计算机视觉、自然语言处理、机器人中的应用。
 
-OCW 上的这一版材料完整：讲义、讲座视频、阅读材料、
-作业与结课项目的要求都公开，对想系统补一轮深度学习的人很合适。
+和其他深度学习课比，这门课理论和“为什么”的比重更大：有专门的逼近理论、泛化、优化的缩放规则、缩放定律、分布外泛化几讲，
+还有一讲叫“深度学习的黑客指南”，讲实际训练中的经验。
+
+阅读材料大量来自 Torralba、Isola 和 Freeman 合著的《[Foundations of Computer Vision](https://visionbook.mit.edu/)》（MIT 出版社，2024），**这本书可以在线免费阅读**。
 
 ## 先修要求
 
-- 需要线性代数、概率统计基础。
-- 需要机器学习基础与 Python 编程能力。
+- 官方写的是：学过 18.05（概率与统计导论），并且学过以下三门之一：6.3720（统计数据分析导论）、6.3900（机器学习导论）、6.C01（机器学习建模）。
+- 换成本站的课：概率统计可以看 [CS70](/docs/advanced-mathematics/cs70) 的后半部分，机器学习入门可以看 [吴恩达机器学习](/docs/ai-machine-learning/machine-learning/coursera-machine-learning) 或 [CS189](/docs/ai-machine-learning/machine-learning/cs189)。
 
-## 官方资源
+## 课程结构
 
-- [课程主页（OCW）](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/)：2024 秋季完整存档。
-- [讲义](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/lists/lecture-notes/)：每讲的文字材料。
-- [阅读材料](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/pages/readings/)：配套论文与参考阅读。
-- [课程大纲](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/pages/syllabus/)：课程范围与评分方式。
+2024 年秋季的讲次（OCW 上的讲义）：
+
+| 部分 | 讲什么 |
+|---|---|
+| 基础 | 深度学习导论；怎么训练神经网络；逼近理论 |
+| 结构 | 网格数据的结构（CNN）；图神经网络；Transformer；记忆与序列建模 |
+| 泛化与优化 | 神经网络的泛化；优化的缩放规则；深度学习黑客指南 |
+| 表示学习 | 表示学习；基于相似度的表示学习；结构对表示的影响 |
+| 生成模型 | 深度生成模型（三讲） |
+| 迁移与规模 | 分布外泛化；迁移学习（两讲）；缩放定律；语言模型 |
+| 前沿 | 度量化的深度学习；深度学习的推理方法 |
+
+评分：作业 65%、期末项目 35%。
 
 ## 官方作业
 
-- [Homework](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/lists/homework/)：官方作业与配套材料。
-- [Final Project](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/pages/final-project/)：结课项目的要求与选题建议。
+- **Homework 1～5**：题目 PDF 都在 OCW 上，第 3～5 份附了 LaTeX 模板或补充文件，第 5 份还附了解答。
+- **期末项目**：自选一个深度学习的研究问题，做实验、做分析，**写成一篇研究型博客**。
+  官方要求很具体：2000～3000 字，4～6 张图表；每个论断都要有引用、实验或数学论证支撑；
+  不能只是文献综述或照搬复现已有方法，要带来新的理解。可以最多三人一组，人越多要求的深度越大，每人大约投入 36 小时。
+  官方还给了一个例子对比：“用深度网络给分子毒性分类，证明 Transformer 比 RNN 准”是平庸的项目；
+  “发现分子大小差异很大，设计一个深度或宽度随分子大小自适应的 Transformer，并分析时间、内存和准确率的权衡”是好项目。
 
-OCW 存档课程，没有助教批改。
+**AI 助手政策**：官方的规则很有意思——对待 AI 助手和对待人类助手一样。
+可以像问助教一样问 AI 概念问题，但不能让它替你写作业；用了的话要在作业开头写清楚用了哪个 AI、怎么用的。
+官方还说，这是一门深度学习课，你**应该**多试试最新的 AI 助手，了解它们能做什么、不能做什么，这本身就是课程内容的一部分。
+
+## 学习建议
+
+- **配合在线教材读。** 《Foundations of Computer Vision》免费、写得清楚，很多讲次的阅读都指向它。
+- **别跳过理论讲次。** 逼近理论、泛化、缩放定律这几讲是这门课和“教你调包”的课最大的区别，能帮你理解为什么深度学习会这样工作。
+- **把期末项目当一次小研究。** 照官方的要求提一个具体问题、设计对照实验、用图说清结果。这是从“会用深度学习”走向“研究深度学习”的第一步。
+
+## 同类课怎么选
+
+- **[CMU 11-785](/docs/ai-machine-learning/deep-learning/cmu-11-785)**：作业更重、偏工程，每个作业都要从零实现再打比赛。
+- **[NYU 深度学习](/docs/ai-machine-learning/deep-learning/nyu-dlsp21)**：Yann LeCun 主讲，同样偏研究视角，能量模型和自监督学习讲得多。
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)**：专注视觉，作业更系统、更适合入门。
+
+## 官方资源
+
+- [OCW 课程主页](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/)：可以整门课打包下载。
+- [课程大纲](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/pages/syllabus/)：先修、评分、合作与 AI 政策。
+- [讲义](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/lists/lecture-notes/)
+- [讲课录像](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/video_galleries/lecture-videos/)
+- [阅读](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/pages/readings/)
+- [作业](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/lists/homework/)
+- [期末项目说明](https://ocw.mit.edu/courses/6-7960-deep-learning-fall-2024/pages/final-project/)
+- [Foundations of Computer Vision](https://visionbook.mit.edu/)：免费在线教材。

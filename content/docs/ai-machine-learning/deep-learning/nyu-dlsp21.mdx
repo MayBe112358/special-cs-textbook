@@ -1,39 +1,76 @@
 ---
 title: "NYU 深度学习（Yann LeCun 主讲）"
-description: "Yann LeCun 亲自授课的深度学习，偏研究视角，讲直觉也讲理论。"
+description: "Yann LeCun 和 Alfredo Canziani 的 NYU 研究生深度学习课（2021 春季）：以基于能量的模型（EBM）为主线，从反向传播、卷积与循环网络讲到隐变量 EBM、自编码器与 GAN、注意力、图网络、控制、自监督学习；全部录像、幻灯片和 Notebook 公开。"
 prereqCourses: []
-prereqKnowledge: ["线性代数、概率论、Python 编程"]
+prereqKnowledge: ["一门研究生水平的机器学习课，或数据科学导论（官方原话）", "线性代数、多元微积分、概率论", "Python 与 PyTorch 基础"]
 ---
 
 ## 课程简介
 
-这门课最具辨识度的地方是授课者：Yann LeCun 亲自讲授，
-对多数人来说，这是极少见的、能完整听到顶级学者从一线研究者视角
-讲解深度学习的公开资源。
+这是纽约大学数据科学中心的研究生课 DS-GA 1008 Deep Learning，2021 年春季由 **Yann LeCun**（图灵奖得主、卷积网络的提出者）和 **Alfredo Canziani** 共同讲授：
+LeCun 上理论课，Canziani 上配套的实践课（practicum）。讲课录像、幻灯片、Notebook 都公开在[课程网站](https://atcold.github.io/NYU-DLSP21/)上。
 
-课程按周组织，内容包括：监督学习与反向传播的几何直觉、
-参数化模型与能量模型、卷积网络及其在信号处理上的动机、
-循环网络与注意力、自监督学习、生成模型与隐变量模型、
-图神经网络，以及基于能量的方法这一 LeCun 本人主张的框架。
+和别的深度学习课最大的不同是它的**视角**：2021 年版把“**隐变量能量模型**”（latent-variable energy-based model，LV-EBM）当作基础模块，
+后面的自编码器、GAN、自监督学习、控制都放在这个框架里讲。Canziani 在仓库说明里写得很直白：学生已经学过 EBM，
+再照去年的方式讲后半学期就“不诚实”了，所以他把后半学期的幻灯片全部重做。
 
-讲解兼顾理论与直觉，整体偏研究导向，
-适合已经完成入门课、想提升“问题意识”和“建模品味”的人。
-把它作为主线课程之外的高质量补充会很有价值。
-课程网站提供文字版讲义，且有多语言翻译。
+讲解兼顾理论和直觉，整体偏研究导向，适合已经学过一门入门课、想提升“问题意识”和“建模品味”的人。
 
 ## 先修要求
 
-- 需要线性代数与概率论。
-- 需要 Python 编程能力与基础的深度学习概念。
+- 官方先修：NYU 的 DS-GA 1001 数据科学导论，**或一门研究生水平的机器学习课**。
+- 数学：线性代数、多元微积分、概率论要熟，课上大量用向量和矩阵的记号推导。
+- 编程：Python 和 PyTorch 基础。实践课的 Notebook 用 PyTorch，从张量讲起。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://atcold.github.io/NYU-DLSP21/)：按周组织的讲义、视频与代码。
-- [2020 版课程](https://atcold.github.io/NYU-DLSP20/)：另一版本，部分章节讲得更细。
-- [代码仓库](https://github.com/Atcold/NYU-DLSP21)：配套的 Notebook 与练习。
+2021 年版按主题组织，前半学期三个主题，每个主题两周、后面跟一次作业：
+
+| 主题 | 讲什么 |
+|---|---|
+| 1. 导论 | 历史与资源；梯度下降与反向传播；神经网络的推理与训练（螺旋分类） |
+| 2. 参数共享 | 循环网络与卷积网络；卷积网络实践；自然信号的性质与卷积；RNN 与 LSTM |
+| 3. 能量模型基础 | 能量模型（一）（二）；隐变量 EBM 的推理与训练 |
+| 4. 能量模型进阶 | 无监督学习与自编码器；从隐变量 EBM 到目标传播再到自编码器；用 PyTorch 写自编码器与 GAN；联合嵌入方法（对比式与正则化式） |
+| 5. 联想记忆 | 注意力与 Transformer |
+| 6. 图 | 图 Transformer 网络（语音识别）；图卷积网络 |
+| 7. 控制 | 规划与控制；倒车入库问题（Truck Backer-Upper）；不确定性下的预测与规划 |
+| 8. 优化 | 优化（一）（二） |
+| 其他 | 视觉中的自监督学习；低资源机器翻译（Marc'Aurelio Ranzato 的客座讲座）；拉格朗日视角的反向传播 |
+
+官方估计每周约 2.5～3 小时视频，加上记笔记和跑 Notebook，每周 5 小时左右。
 
 ## 官方作业
 
-- [配套 Notebook 与练习](https://github.com/Atcold/NYU-DLSP21)：随各周发布的实践材料。
+- **三次作业**，都放在网站上的 Google Drive 文件夹里，对应前半学期的三个主题：
+  - **Homework 1**：反向传播。
+  - **Homework 2**：RNN 与 CNN。
+  - **Homework 3**：结构化预测。
+- **Jupyter Notebook**：螺旋分类、回归、卷积网络、序列分类、自编码器、VAE、倒车入库控制、Transformer 等，
+  分散在 [2021 仓库](https://github.com/Atcold/NYU-DLSP21)和 [2020 仓库](https://github.com/Atcold/NYU-DLSP20)里，网站上每讲旁边都标了对应的 Notebook。
 
-没有统一的自动评分；练习以 Notebook 形式提供，可直接运行。
+没有自动评分，也没有公开的参考答案。官方 FAQ 明说这门课**不提供证书**，内容也不是按能给校外学生评分来设计的。
+
+## 学习建议
+
+- **以视频为准，网站为辅。** 官方 FAQ 特意提醒：网站上的文字是学生记的课堂笔记，视频里有更多例子、学生提问和论文出处。点网页上的段落标题可以直接跳到视频对应的位置。
+- **Notebook 自己跑一遍。** 2020 仓库的说明里有用 Miniconda 建环境的步骤（`conda env create -f environment.yml`）。
+- **先学一门常规深度学习课再来。** 这门课的能量模型框架和别的课讲法差别很大，已经熟悉 CNN、RNN、反向传播之后再看，更能体会它换了什么视角。
+- **想要更全的文字材料，看 2020 年版。** 2020 年版讲义更完整，还被译成十几种语言，包括[中文](https://atcold.github.io/NYU-DLSP20/zh/)。
+- **有问题在 YouTube 评论区问。** FAQ 说 Canziani 会在视频下面回答，记得带上时间戳；也可以去课程的 Discord。
+
+## 同类课怎么选
+
+- **[MIT 6.7960](/docs/ai-machine-learning/deep-learning/mit-6-7960)**：同样偏研究视角，更侧重泛化、缩放规律和表示学习。
+- **[CMU 11-785](/docs/ai-machine-learning/deep-learning/cmu-11-785)**：作业量大、工程训练扎实，适合想把代码能力练上来的人。
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)**：视觉方向，作业用 NumPy 从零实现各种层，比这门课更“动手”。
+- **[吴恩达深度学习专项课程](/docs/ai-machine-learning/deep-learning/cs230)**：还没入门的话先学这个，更平缓。
+
+## 官方资源
+
+- [2021 春季课程网站](https://atcold.github.io/NYU-DLSP21/)：每讲的录像、幻灯片、笔记和 Notebook。
+- [FAQ 与说明](https://atcold.github.io/NYU-DLSP21/en/faq/)：先修、每周时间、提问渠道、许可（CC BY-NC-SA 4.0）。
+- [YouTube 播放列表](https://www.youtube.com/playlist?list=PLLHTzKZzVU9e6xUfG10TkTWApKSZCzuBI)
+- [2021 代码仓库](https://github.com/Atcold/NYU-DLSP21)
+- [2020 春季课程网站](https://atcold.github.io/NYU-DLSP20/)：上一个完整版本，讲义更全，有多语言翻译。
+- [Canziani 的全部课程](https://atcold.github.io/didactics.html)：之后还有 2022 秋季版（只公开了新讲的部分）和 2025 秋季的本科课《深度学习研究导论》。

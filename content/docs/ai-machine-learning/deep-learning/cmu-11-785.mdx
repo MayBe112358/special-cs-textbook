@@ -1,40 +1,82 @@
 ---
 title: "CMU 11-785 深度学习导论"
-description: "CMU 的深度学习核心课，强度接近研究生训练，作业要求理解而非套模板。"
+description: "卡内基梅隆的深度学习课：从万能近似和反向传播讲到 CNN、RNN 与 CTC、Transformer 和大模型、VAE、扩散、GAN、图神经网络；四个作业每个分两半——从零实现一个模块，再在 Kaggle 上打一场比赛。"
 prereqCourses: []
-prereqKnowledge: ["线性代数、概率论、Python 编程、机器学习基础"]
+prereqKnowledge: ["线性代数、概率论、微积分", "扎实的 Python", "机器学习基础会有帮助"]
 ---
 
 ## 课程简介
 
-11-785 是 CMU 的深度学习核心课，风格扎实、节奏快，
-几乎没有可以略过的内容。
+11-785（Introduction to Deep Learning）是卡内基梅隆大学语言技术研究所的深度学习课，每个春季和秋季都开，
+课号还有 11-485（本科，不做项目）和 11-685。课程网站每学期都更新，最新是 **2026 年秋季**。
 
-课程从神经网络基础出发：感知机、多层网络、通用逼近定理、
-反向传播的严格推导，然后是优化与正则化、
-卷积网络、循环网络与序列建模、
-注意力机制与 Transformer，最后是生成模型与表示学习。
+这门课以**强度大、作业硬**出名。它的讲法很“从底层往上”：前八讲都在讲神经网络为什么能工作、怎么训练——
+万能近似定理、经验风险最小化、梯度下降、反向传播的微积分、收敛问题与损失曲面、动量、各种优化器、损失函数的选择、批归一化、Dropout，
+然后才进入各种网络结构。
 
-它的作业强度是出了名的：不只是把模板跑通，
-而是要求你理解模型行为、训练细节和实验设计。
-每次作业通常分两部分——一部分从零实现组件，
-一部分在真实数据集上训练并冲榜（Kaggle 形式）。
-
-如果你想建立的是长期可迁移的深度学习能力，
-而不只是会调几个现成 API，这门课的投入产出比很高。
+作业的设计也很特别：每个作业分两半。
+**Part 1** 要你从零实现一个深度学习模块（不用 PyTorch 的现成层），
+**Part 2** 是一场班内的 Kaggle 比赛，用 PyTorch 在真实数据上把效果做到尽量好，成绩按排行榜分档。
 
 ## 先修要求
 
-- 需要线性代数、概率论与 Python 编程能力。
-- 需要机器学习基础。
+- 线性代数、概率论、微积分（反向传播那几讲会做大量矩阵求导）。
+- 扎实的 Python 编程；Part 2 要熟练使用 PyTorch，课程安排了配套的习题课和训练营（Recitations & Bootcamps）带你上手。
+- 学过机器学习基础会轻松很多，比如 [吴恩达机器学习专项课程](/docs/ai-machine-learning/machine-learning/coursera-machine-learning)。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://deeplearning.cs.cmu.edu/)：当前学期的日程、讲义与作业。
-- [往年课程材料](https://deeplearning.cs.cmu.edu/S26/index.html)：按学期归档的幻灯片与录像。
+2026 年秋季共 28 讲：
+
+| 部分 | 讲什么 |
+|---|---|
+| 基础 | 导论；神经网络是万能近似器 |
+| 训练（六讲） | 学习问题与经验风险最小化；梯度下降；反向传播的微积分；收敛问题、损失曲面与动量；批大小、SGD、二阶方法；优化器与正则、损失函数、批归一化、Dropout |
+| 卷积网络 | CNN（四讲） |
+| 循环网络与序列 | RNN（两讲）；序列到序列模型与 CTC；CTC 的空白符与束搜索；语言模型与机器翻译 |
+| 注意力与大模型 | 注意力模型与 Transformer；Transformer 与新架构；大语言模型 |
+| 生成模型 | 表示学习与自编码器；变分自编码器；标准化流与扩散模型；生成对抗网络 |
+| 其他 | 图神经网络；Hopfield 网络；玻尔兹曼机；四个作业的复盘与部署 |
+
+评分：作业 50%、每周小测 24%（14 次取最好的 12 次）、课程项目 25%（11-485 不做项目）、出勤 1%。
 
 ## 官方作业
 
-- [Homework](https://deeplearning.cs.cmu.edu/)：每次作业分从零实现与实战训练两部分。
+四个作业，按 2026 年春季的安排：
 
-作业框架与自动评分部分依赖校内平台；讲义与作业题面公开。
+| 作业 | Part 1：从零实现 | Part 2：Kaggle 比赛 |
+|---|---|---|
+| HW1 | 实现并训练多层感知机 | 用 MLP 做音素状态标注 |
+| HW2 | 实现并训练卷积网络 | 用 CNN 做人脸验证 |
+| HW3 | 实现 RNN、GRU、CTC 与 CTC 解码 | 自动语音识别 |
+| HW4 | 实现注意力，训练一个只有解码器的 Transformer | 用编码器-解码器 Transformer 做语音识别 |
+
+每个作业还有加分题（比如自己实现自动微分）。Part 2 的分档线按排行榜定，大致分高（90%）、中（70%）、低（50%）、很低（30%）几档。
+
+- **每周小测**：一般周五发，48 小时内完成。
+- **课程项目**：11-785 学生必做，要交中期报告、项目视频和期末报告。
+
+**校外自学要注意**：作业材料通过 CMU 的 Canvas 和 Autolab 发布，**校外拿不到**。
+公开的是讲课录像（每讲都链接到 YouTube）、幻灯片和习题课材料。
+
+## 学习建议
+
+- **前八讲一定要看完再往后。** 这门课最有价值的是“训练”那六讲，把神经网络为什么难训练、每种技巧解决什么问题讲得非常透。
+- **自己实现一遍 Part 1 的内容。** 虽然拿不到官方作业，但“从零写 MLP、CNN、RNN、注意力”这件事本身可以照着讲义做。
+  可以参考 [Karpathy 从零到英雄](/docs/ai-machine-learning/artificial-intelligence/neural-networks-zero-to-hero) 的做法，用 NumPy 或最朴素的 PyTorch 张量写。
+- **找一个 Kaggle 比赛当 Part 2。** 选一个语音、图像或文本的公开比赛，把讲课里的训练技巧一个个用上去，看分数怎么变。
+- **习题课别跳。** 官方的 Recitations 和 Bootcamps 专门讲 PyTorch 实操、调试和作业技巧。
+
+## 同类课怎么选
+
+- **[MIT 6.7960](/docs/ai-machine-learning/deep-learning/mit-6-7960)**：MIT 的深度学习研究生课，理论和前沿话题更多。
+- **[NYU 深度学习](/docs/ai-machine-learning/deep-learning/nyu-dlsp21)**：Yann LeCun 主讲，偏研究视角，能量模型讲得多。
+- **[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)** 和 **[CS224n](/docs/ai-machine-learning/deep-learning/cs224n)**：分别专注视觉和语言，作业完全公开。
+- **[吴恩达深度学习专项课程](/docs/ai-machine-learning/deep-learning/cs230)**：更入门、更平缓。
+
+## 官方资源
+
+- [课程主页](https://deeplearning.cs.cmu.edu/)：自动转到当前学期，页面顶部可以切换往届学期。
+- [2026 秋季](https://deeplearning.cs.cmu.edu/F26/index.html)：日程、讲义、作业截止时间。
+- [2026 春季](https://deeplearning.cs.cmu.edu/S26/index.html)：上一个完整学期，全部讲次和作业安排都在。
+- 可选教材：《Dive into Deep Learning》（[d2l.ai](http://d2l.ai)）、Goodfellow 等人的《[Deep Learning](https://www.deeplearningbook.org/)》、Nielsen 的《[Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/)》。
