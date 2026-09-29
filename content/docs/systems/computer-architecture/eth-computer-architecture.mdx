@@ -1,34 +1,85 @@
 ---
 title: "ETH Zurich 计算机体系结构"
-description: "体系结构进阶：数据通路与控制、乱序执行、存储系统与前沿研究。"
+description: "Onur Mutlu 在苏黎世联邦理工的研究生体系结构课（2025 秋季），以存储系统为重心：以内存为中心的计算、DRAM 的数据保持与延迟、内存控制器、RowHammer 等内存可靠性问题、新型存储器与闪存、预取、多处理器与缓存一致性、虚拟内存、片上网络、VLIW、脉动阵列、SIMD 与 GPU；六个实验做缓存模拟、真实存内计算编程、预取器与内存调度，作业和历年试题都带答案。"
 prereqCourses: [eth-ddca]
-prereqKnowledge: ["DDCA 或同等的数字设计基础"]
+prereqKnowledge: ["数字设计与计算机体系结构（ETH DDCA 或同等课程）", "C/C++", "读研究论文的能力"]
 ---
 
 ## 课程简介
 
-这是 Onur Mutlu 在 ETH 开的体系结构进阶课，可以看作 DDCA 的续篇。
-课程目标是让你能为类 MIPS 处理器设计控制与数据通路、
-理解如何用流水线和超标量把指令并行执行、以及如何设计快的存储与内存系统。
+Computer Architecture（课号 227-2210-00L）是苏黎世联邦理工学院的研究生课，由 **Onur Mutlu** 和 Mohammad Sadrosadati 讲授，
+是本科课 [DDCA](/docs/systems/computer-architecture/eth-ddca) 的续篇。2026 年秋季正在开课，这里以最近一个完整学期（2025 秋季）为准。
 
-内容包括：指令集设计的取舍、流水线与冒险处理、分支预测、
-乱序执行与寄存器重命名、超标量与 VLIW、SIMD 与 GPU、
-多核与缓存一致性，以及大量篇幅的内存系统——DRAM、内存控制器、
-新型存储器与近数据计算。
+官方的描述是：计算机体系结构是设计、选择、连接硬件部件，造出满足功能、性能和成本目标的计算机的科学与艺术。
+课程介绍现代可编程计算机的基本硬件结构，包括性能评估背后的基本规律。
 
-课程难度明显高于 CS61C，后半程相当一部分内容直接来自近年的论文。
-实验偏向内存与缓存的模拟与优化。
+但实际上，这门课**大半篇幅在讲存储系统**——这正是 Mutlu 的研究方向。从以内存为中心的计算、DRAM 的延迟和可靠性（包括 RowHammer），
+到内存控制器、新型存储器、闪存和固态硬盘，很多讲直接来自他的研究组近年的论文。
+后半程再讲预取、多处理器、缓存一致性、虚拟内存、片上网络，以及 VLIW、脉动阵列、SIMD、GPU 等执行范式。
 
 ## 先修要求
 
-- 需要数字设计与体系结构基础，建议先完成 DDCA 或同等课程。
-- 需要 C/C++，实验中会用到 Verilog。
+- 官方先修：[DDCA](/docs/systems/computer-architecture/eth-ddca)（数字设计与计算机体系结构）。
+- 实验用 C/C++ 和各种模拟器，要能读懂和修改中等规模的代码。
+- 很多讲的内容来自近几年的论文，要有读论文的耐心。
 
-## 官方资源
+## 课程结构
 
-- [课程主页](https://safari.ethz.ch/architecture/fall2022/doku.php?id=start)：2022 秋季全部讲座与材料。
-- [SAFARI 研究组课程页](https://safari.ethz.ch/)：同一团队的其他体系结构课程。
+2025 年秋季共 31 讲左右（每次三小时，一周两次）：
+
+| 部分 | 讲什么 |
+|---|---|
+| 导论 | 导论与基础；存储系统的挑战与机遇 |
+| 以内存为中心的计算 | 存内计算（三讲） |
+| DRAM | 数据保持；内存延迟（两讲）；内存控制器与服务质量（四讲） |
+| 内存可靠性 | 内存鲁棒性（三讲）；RowHammer 与读干扰、侧信道等研究专题 |
+| 新型存储 | 新兴存储技术；闪存与固态硬盘（两讲） |
+| 预取与模拟 | 模拟方法；预取与预取器设计（三讲） |
+| 多处理器 | 多处理器；内存一致性模型；缓存一致性；虚拟内存 |
+| 互连 | 互连网络；片上网络与路由器设计 |
+| 执行范式 | 并行、异构与瓶颈加速；VLIW；脉动阵列；SIMD；GPU 体系结构与编程；推测执行 |
+
+还有一讲讲用新体系结构和新算法加速生物序列分析（Mutlu 组的另一个研究方向）。
 
 ## 官方作业
 
-- [Labs](https://safari.ethz.ch/architecture/fall2022/doku.php?id=labs)：五个项目，多数与内存和缓存相关。
+**六个实验**（2025 年秋季，说明和多数的代码压缩包都在课程页上）：
+
+| 实验 | 内容 |
+|---|---|
+| Lab 1 | 模拟并探索缓存行为 |
+| Lab 2 | 存储层次 |
+| Lab 3 | 在真实的存内计算（PIM）硬件上编程 |
+| Lab 4 | 硬件数据预取器的设计与分析 |
+| Lab 5 | 内存请求调度 |
+| Lab 6 | 虚拟内存的高级特性 |
+
+**五次作业**（除了登记信息的 HW0），**都附答案**：以内存为中心的计算；存内处理、数据保持与内存延迟；内存控制器与内存鲁棒性；
+新兴技术、闪存、预取与超前执行（runahead）；内存一致性、缓存一致性、互连、虚拟内存与并行。
+
+**历年试题**：考试页有 2017～2019 年的期中卷和 2017～2024 年的期末卷，都带答案。
+
+作业和实验提交走 ETH 的 Moodle，校外交不了，但题目、答案和代码都能下载。
+
+## 学习建议
+
+- **看 YouTube 录像。** 课程页资源栏列了 2021 年以来每年的录像播放列表，2025 年秋季的日程上大多数讲也都链着录像。
+- **先把 DDCA 学扎实。** 这门课默认你懂流水线、乱序执行、缓存的基本做法，一上来就讲内存系统的研究问题。
+- **作业配答案做。** 五次作业覆盖了全部主要内容，而且答案公开，是检验自己最直接的办法。
+- **挑自己感兴趣的研究专题深入。** RowHammer、存内计算、闪存这些讲都来自近年的论文，课件上标了出处，可以顺着读原文。
+
+## 同类课怎么选
+
+- **[ETH DDCA](/docs/systems/computer-architecture/eth-ddca)**：先修课，从逻辑门讲到乱序执行和缓存，覆盖体系结构的经典主线。
+- **[CMU 15-418 / Stanford CS149](/docs/systems/parallel-and-distributed/cmu-15-418-cs149)**：并行计算，从程序员的角度讲多核、SIMD、GPU 和缓存一致性。
+- **[UC Berkeley CS61C](/docs/systems/computer-architecture/cs61c)**：入门级的计算机组成，适合没学过体系结构的人先打底。
+
+## 官方资源
+
+- [课程主页（2025 秋季）](https://safari.ethz.ch/architecture/fall2025/doku.php?id=start)：最近一个完整学期。
+- [讲课日程（2025 秋季）](https://safari.ethz.ch/architecture/fall2025/doku.php?id=schedule)：每讲的幻灯片和录像。
+- [实验](https://safari.ethz.ch/architecture/fall2025/doku.php?id=labs)
+- [作业与答案](https://safari.ethz.ch/architecture/fall2025/doku.php?id=homeworks)
+- [历年试题](https://safari.ethz.ch/architecture/fall2025/doku.php?id=exams)
+- [课程主页（2026 秋季）](https://safari.ethz.ch/architecture/fall2026/doku.php?id=start)：正在进行的学期。
+- [2024 秋季录像（YouTube）](https://www.youtube.com/playlist?list=PL5Q2soXY2Zi-LfDdGgWyLcTSqzm6a26wD)
