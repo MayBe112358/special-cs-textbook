@@ -1,40 +1,71 @@
 ---
 title: "《计算机网络：自顶向下方法》配套课程"
-description: "《自顶向下方法》作者自制的配套课程：视频、交互测验与抓包实验。"
+description: "经典教材作者 Jim Kurose 和 Keith Ross 自己做的配套课程（第 9 版，2025 年出版）：从应用层一路讲到链路层、无线与安全，前七章有分节的讲课视频；每节配知识自测和可以无限生成新题的交互式习题，还有十几个用 Wireshark 抓真实数据包的实验，全部免费。"
 prereqCourses: []
-prereqKnowledge: ["有一定的计算机系统基础"]
+prereqKnowledge: ["一定的计算机系统基础", "基本的概率知识（算时延、吞吐量时会用到）", "不需要编程"]
 ---
 
 ## 课程简介
 
-《Computer Networking: A Top-Down Approach》是计算机网络领域流传最广的教材之一，
-两位作者 Jim Kurose 和 Keith Ross 为它做了一整套公开的配套材料。
+《Computer Networking: A Top-Down Approach》（中译《计算机网络：自顶向下方法》）是计算机网络领域流传最广的教材之一。
+作者 **Jim Kurose** 和 **Keith Ross** 在官网上说，第一版出版以来，这本书被上千所高校采用、翻译成 14 种语言。**第 9 版在 2025 年夏天出版**。
 
-“自顶向下”指的是讲授顺序：从你最熟悉的应用层（HTTP、DNS、邮件）开始，
-再往下走到传输层（UDP、TCP、拥塞控制）、网络层（IP、路由、SDN）、
-链路层，最后是无线与安全。这个顺序对自学者很友好——
-一开始讲的就是你每天在用的东西。
+作者为它做了一整套**对所有人免费开放**的配套材料，放在一起就是一门完整的课：分节录制的讲课视频、每节的知识自测、
+可以不断生成新题的交互式章末习题、交互动画，以及一组 Wireshark 抓包实验。
 
-配套材料包括作者录制的讲座视频、交互式的章节测验、
-可以直接在浏览器里做的章末习题，以及一组 Wireshark 抓包实验——
-用真实的数据包验证书上写的协议行为。
+“自顶向下”指的是讲授顺序：从你最熟悉的应用层（HTTP、DNS、邮件）开始，往下到传输层、网络层、链路层，最后是无线与安全。
+这个顺序对自学者很友好——一开始讲的就是你每天在用的东西。
 
-它的短板是没有硬核的编程作业，这一点可以用 CS144 来补。
+第 9 版的主要变化：第 2 章加入了 HTTP/3 和 QUIC、更多 CDN 的内容；第 3 章的拥塞控制兼顾传统的基于丢包的方法和更新的方法；
+第 5 章加入了更多 SDN 的内容（以 Google 的 Orion 为案例）；**第 7 章无线网络改动最大**；第 8 章加入了 TLS 1.3、WPA3 和 5G 的认证与密钥协商。
 
 ## 先修要求
 
-- 需要一定的计算机系统基础。
-- 没有编程要求，但抓包实验需要安装 Wireshark。
+- 教材是网络的第一门课，官网说它用于计算机、电子、信息系统甚至商学院，本科、研究生都有人用。
+- 有一些计算机系统基础会更容易理解；算时延和吞吐量时要用到一点概率。
+- **不需要编程**；做抓包实验要在自己电脑上装 Wireshark（Windows、macOS、Linux 都有）。
 
-## 官方资源
+## 课程结构
 
-- [配套资源主页](https://gaia.cs.umass.edu/kurose_ross/index.php)：视频、幻灯片与全部公开材料。
-- [在线讲座视频](https://gaia.cs.umass.edu/kurose_ross/videos/1/)：作者录制的分节讲解。
-- [交互式章末习题](https://gaia.cs.umass.edu/kurose_ross/interactive/)：可在浏览器里作答并即时判分。
+按教材章节（讲课视频覆盖前七章）：
+
+| 章 | 讲什么 |
+|---|---|
+| 1 计算机网络和因特网 | 什么是因特网；网络边缘与核心；分组交换与电路交换；时延、丢包与吞吐量；协议分层；网络攻击；网络历史 |
+| 2 应用层 | 网络应用原理；Web 与 HTTP；电子邮件；DNS；视频流与 CDN；套接字编程 |
+| 3 传输层 | 传输层服务；复用与分用；UDP；可靠数据传输原理；TCP；拥塞控制原理与 TCP 拥塞控制；传输层功能的演进 |
+| 4 网络层：数据平面 | 路由器内部；网际协议 IP；通用转发；中间盒 |
+| 5 网络层：控制平面 | 路由算法；OSPF；BGP；SDN 控制平面；ICMP；网络管理（SNMP、NETCONF/YANG） |
+| 6 链路层和局域网 | 差错检测与纠正；多路访问协议；交换局域网；链路虚拟化；数据中心网络；回顾：一次网页请求的全过程 |
+| 7 无线和移动网络 | 无线链路；WiFi（802.11）；蜂窝网络（4G/5G）；移动性管理的原理与实践；无线对高层协议的影响 |
+| 8 计算机网络中的安全 | 网络安全（第 9 版新增 TLS 1.3、WPA3，以及 WiFi 和 5G 中的认证与密钥协商） |
 
 ## 官方作业
 
-- [Wireshark Labs](https://gaia.cs.umass.edu/kurose_ross/wireshark.php)：抓真实数据包，对照书上的协议格式逐字段核实。
-- [Knowledge Checks](https://gaia.cs.umass.edu/kurose_ross/interactive/)：按章组织的交互式自测。
+- **知识自测（Knowledge Checks）**：每一小节视频旁边都有，看完马上检验。
+- **交互式章末习题**：每道题都和书上的章末习题类似（比如时延计算、TCP 序号与确认号、拥塞窗口变化、DNS 迭代与递归查询），
+  可以**不断生成新的题目实例**，做完显示答案，直到你真正掌握。页面上还按章节提供了 AI 助教（AI Tutors）。
+- **Wireshark 实验**：抓你自己电脑上的真实数据包，对照协议逐字段理解。第 9 版的实验有：入门、HTTP、DNS、UDP、TCP、IP、NAT、DHCP、
+  以太网与 ARP、TLS、WiFi 无线电、5G 无线电与入网等，每个都有 PDF 和 Word 版，还附有抓好的轨迹文件（trace），网络环境不方便时可以直接分析。
+  实验答案只提供给授课教师。
 
-习题自动判分；实验需要本地安装 Wireshark。
+## 学习建议
+
+- **视频、自测、习题三件套。** 每看完一节视频就做对应的知识自测，一章结束做交互式习题，比只看视频扎实得多。
+- **Wireshark 实验一定要做。** 书上的协议格式看十遍，不如自己抓一次包、点开每个字段看一遍。官方提醒浏览器默认开了 HTTP/3 和 QUIC、或者开着 VPN 时，要按“入门”实验里的说明调整。
+- **缺编程训练，就配一门动手的课。** 这套材料基本没有编程作业，想亲手写协议栈可以接 [Stanford CS144](/docs/systems/networking/cs144)。
+- **中文学习者可以配郑烇的课。** [中科大 计算机网络](/docs/systems/networking/ustc-networking)就是按这本书讲的中文课。
+
+## 同类课怎么选
+
+- **[中科大 计算机网络](/docs/systems/networking/ustc-networking)**：用这本教材的中文课。
+- **[Stanford CS144](/docs/systems/networking/cs144)**：用 C++ 从头实现 TCP/IP 协议栈，编程量大。
+- **[UC Berkeley CS168](/docs/systems/networking/cs168)**：从设计原则讲互联网，有免费的在线教材和 Python 项目。
+
+## 官方资源
+
+- [作者的配套资源网站](https://gaia.cs.umass.edu/kurose_ross/index.php)：视频、幻灯片、自测、习题、动画、实验的总入口。
+- [讲课视频（第 1 章起）](https://gaia.cs.umass.edu/kurose_ross/videos/1/)：每节附幻灯片和知识自测。
+- [交互式章末习题](https://gaia.cs.umass.edu/kurose_ross/interactive/)
+- [Wireshark 实验](https://gaia.cs.umass.edu/kurose_ross/wireshark.php)
+- [第 9 版的新内容](https://gaia.cs.umass.edu/kurose_ross/ninth.php)
