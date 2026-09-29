@@ -1,35 +1,89 @@
 ---
 title: "Stanford CS144 计算机网络"
-description: "用 C++ 从头实现整个 TCP/IP 协议栈，把协议文本变成能跑的代码。"
+description: "斯坦福的网络课（2026 秋季，Keith Winstein）：数据报与封装、从不可靠中造出可靠、TCP、分组交换、拥塞控制、路由、家庭网络、网络安全；八个 C++ 实验从抓网页、字节流一路写到 TCP 接收端和发送端、网络接口和 IP 路由器，最后让大家的实现连成一张网。起始代码和往年试题公开。"
 prereqCourses: [cs106l]
-prereqKnowledge: ["一定的计算机系统基础，CS106L"]
+prereqKnowledge: ["官方先修是斯坦福 CS111（操作系统）", "非常熟练的 C++ 和调试工具", "Linux 命令行"]
 ---
 
 ## 课程简介
 
-CS144 的讲授者之一是网络领域的 Nick McKeown。
-课程按自顶向下的顺序讲：应用层、传输层、网络层、链路层，
-每一层都先讲设计目标，再讲具体协议。
+CS144 Introduction to Computer Networking 是斯坦福的计算机网络课，2026 年秋季由 **Keith Winstein** 讲授。
 
-真正让这门课与众不同的是它的项目：你要用现代 C++ 循序渐进地实现一个完整的 TCP 协议栈——
-先写字节流抽象，再写重组器处理乱序到达的分片，然后是接收方、发送方、
-重传逻辑，最后把它接到真实网络上，用你自己写的协议栈和外部服务器通信。
+这门课最有名的是它的**实验**：你要用 C++ 一步步写出一个能在真实互联网上工作的 TCP/IP 协议栈——从可靠的字节流，到 TCP 的接收端和发送端，
+再往下写网络接口和 IP 路由器，最后大家的实现互相连起来。协议文本变成你亲手写的、能和真实服务器通信的代码。
 
-做完之后，TCP 对你来说不再是 RFC 里的名词，而是你调试过的代码。
-很多人说这门课同时也是一门很好的现代 C++ 实践课。
+讲课侧重网络的基本思想：数据报、封装与复用；怎样**从不可靠的网络造出可靠的传输**；TCP；分组交换；为什么需要拥塞控制、它要控制什么、怎样控制；
+路由；家庭网络的演变；网络缓冲；互联网安全的历史与现状。
 
 ## 先修要求
 
-- 需要一定的计算机系统基础与 C++ 能力（指南建议先修 CS106L）。
-- 需要会用 Linux 命令行与调试工具。
+官方的说法很直白：
 
-## 官方资源
+- 正式先修是**斯坦福 CS111**（操作系统）。
+- 这是一门以实验为主的系统课，38% 的成绩来自 C++ 实验，所以你得**非常熟练地使用 C++ 和调试工具**。官方特意说：只学过 CS107（C 语言与计算机组成）是不够的，需要更多的编程经验。
+- 课程每年都开，官方建议准备好了再来上。
 
-- [Stanford Online 课程页](https://online.stanford.edu/courses/cs144-introduction-computer-networking)：仍然有效的官方课程入口。
-- [Stanford 课程页](https://web.stanford.edu/class/cs144/)：学校的课程主页。
+对应到本站：[CS106L](/docs/programming-intro/cs106l)（C++）、[CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp) 或 [Stanford CS110](/docs/systems/systems-fundamentals/stanford-cs110)。
+
+## 课程结构
+
+2026 年秋季约十周：
+
+| 周 | 讲什么 |
+|---|---|
+| 1～2 | 课程导论；数据报、封装与复用；从不可靠中造出可靠 |
+| 2～3 | TCP；分组交换 |
+| 4 | 拥塞控制：为什么、控制什么、怎样控制 |
+| 5 | 路由 |
+| 6～7 | 家庭网络的演变 |
+| 8 | 弹性缓冲 |
+| 10 | 互联网安全的历史；互联网安全 |
+
+没有指定教材，选读三本：Saltzer 和 Kaashoek《Principles of Computer System Design》第 7～8 章（网络与容错，MIT 开放课程上免费）、
+Kurose 和 Ross《计算机网络：自顶向下方法》、Peterson 和 Davie《Computer Networks: A Systems Approach》（免费在线）。
+
+评分：期中 20%、期末 20%；实验 38%（正确性 20% + 代码质量等主观分 18%）；辅导课 3%、小测 16%、参与 3%。
 
 ## 官方作业
 
-- [Lab Checkpoints](https://online.stanford.edu/courses/cs144-introduction-computer-networking)：分阶段实现字节流、重组器、TCP 接收方与发送方。
+**八个实验 checkpoint**（C++）：
 
-课程自建实验站点 cs144.github.io 于 2026-09-18 核对时已无法访问；实验框架仍可从课程发布的仓库获取。
+| Checkpoint | 内容 |
+|---|---|
+| 0 | 网络热身：手动完成一些网络操作，写一个抓网页的小程序 webget，实现内存中的可靠字节流 |
+| 1 | 把乱序到达的子串拼成字节流 |
+| 2 | TCP 接收端 |
+| 3 | TCP 发送端 |
+| 4 | 测量真实世界的网络 |
+| 5 | 往下一层：网络接口 |
+| 6 | 搭一个 IP 路由器 |
+| 7 | 把大家的实现连成一张网，再做点有创意的东西 |
+
+2026 年的实验框架叫 **Imp**，公开在 GitHub 上（`git clone https://github.com/cs144/imp`），官方建议在 Linux 虚拟机里做（VirtualBox 或 UTM）。
+框架带测试，本地就能跑。2026-09 核对时只发布了 Checkpoint 0 的说明，后面的会在学期中陆续放出（主页上已经列了标题）。
+
+**往年试题**：主页上有 2021 年秋季和 2023 年春季的期中、期末卷及答案。
+
+**AI 政策**：官方要求把 ChatGPT、Claude Code 这类聊天机器人和 AI 智能体**当成“一个已经上过这门课的同学”**看待——也就是说，你不能让它替你写实验代码，就像不能抄往届同学的代码一样。
+
+## 学习建议
+
+- **Checkpoint 0 别跳过。** 先用 telnet 手动发 HTTP 请求、手动发一封邮件（SMTP），再写 webget，能让你对“网络上到底在传什么”有直观感受。
+- **字节流和重组器要写扎实。** 八个 checkpoint 是一层层叠上去的，TCP 接收端、发送端都建立在前面的字节流上，前面的边界情况没处理好，后面会反复出问题。
+- **对照 TCP 规范读。** TCP 发送端、接收端的很多细节（窗口、重传计时器）光看讲义不够，要对照 TCP 的 RFC 理解。
+- **在虚拟机里做。** 官方给了 VirtualBox 和 UTM（Apple Silicon 的 Mac）的配置说明，按官方环境来能少踩很多坑。
+
+## 同类课怎么选
+
+- **[UC Berkeley CS168](/docs/systems/networking/cs168)**：更侧重设计原则和路由、拥塞控制的理论，项目用 Python 写。
+- **[《计算机网络：自顶向下方法》配套课程](/docs/systems/networking/kurose-ross-top-down)**：教材作者的视频、交互题和 Wireshark 实验，适合打基础。
+- **[中科大 计算机网络](/docs/systems/networking/ustc-networking)**：郑烇按《自顶向下方法》讲的中文课。
+- 学完可以接 [MIT 6.5840 分布式系统](/docs/systems/parallel-and-distributed/mit-6-5840)。
+
+## 官方资源
+
+- [课程主页（2026 秋季）](https://cs144.github.io/)：日程、讲义、实验说明、往年试题。web.stanford.edu/class/cs144 会跳到这里。
+- [课程安排说明](https://cs144.github.io/logistics.pdf)：先修、评分、协作与 AI 政策。
+- [实验常见问题](https://cs144.github.io/lab_faq.html)
+- [实验框架 Imp（GitHub）](https://github.com/cs144/imp)
+- [Checkpoint 0 说明](https://cs144.github.io/assignments/check0.pdf)
