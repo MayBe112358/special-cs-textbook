@@ -1,36 +1,76 @@
 ---
 title: "哥伦比亚大学 STAT8201 深度生成模型"
-description: "哥伦比亚大学的深度生成模型研讨班，以论文展示与讨论为主。"
+description: "John Cunningham 在哥伦比亚大学开的深度生成模型博士研讨课（2019 春季）：从 VAE 和 GAN 出发，读给生成模型加结构（动态、离散变量）、重参数化与控制变量、更好的 ELBO 与解耦表示、GAN 的改进与理论、GAN 在 NLP 和 CV 中的应用；每周两篇论文加学生报告，外加一个研究项目。"
 prereqCourses: []
-prereqKnowledge: ["机器学习、深度学习、图模型"]
+prereqKnowledge: ["概率机器学习（Blei 的 Foundations of Graphical Models 的水平）", "深度学习", "Python 和一个机器学习框架", "能独立读研究论文"]
 ---
 
 ## 课程简介
 
-STAT 8201 是一门博士研讨班，主题是深度生成模型——
-图模型与神经网络的结合，也是现代机器学习最重要的方向之一。
+STAT GR8201 Deep Generative Models 是哥伦比亚大学统计系的**博士研讨课**，2019 年春季由 **John Cunningham** 讲授。
 
-课程形式是每周展示并讨论论文，覆盖变分自编码器、
-生成对抗网络、归一化流、自回归模型等主要路线，
-以及它们与概率图模型、变分推断之间的理论联系。
+官方的课程介绍说：深度生成模型想把概率模型的**可解释表示和不确定性量化**，和深度神经网络的**灵活性和可扩展的学习**结合起来。
+这个方向包括变分自编码器（VAE）、生成对抗网络（GAN）等，是统计机器学习里最活跃、变化最快的领域之一。这门研讨课带你读这个方向的前沿工作。
 
-授课者是 John Cunningham。
-研讨班的价值主要在论文列表和讨论问题本身，
-适合已经有扎实基础、想系统读一遍这个方向经典工作的人。
+形式是每周一个主题、两篇必读论文（外加若干选读）。前两讲由 Cunningham 讲，之后多数由学生两人一组上台讲。
+课程的另一半是一个**大项目**，按顶级机器学习会议的格式写提案和报告，官方希望有的项目能发展成论文。
 
-课程材料公开在授课者的教学页面上。
+注意：这个页面是 2019 年的材料，那时扩散模型、归一化流都还不是主角，论文清单集中在 VAE 和 GAN 两条线上。
 
 ## 先修要求
 
-- 需要机器学习、深度学习与概率图模型基础。
-- 需要能独立阅读研究论文。
+官方写的先修：
 
-## 官方资源
+- 概率机器学习，达到或超过 David Blei 的 Foundations of Graphical Models 课程的水平；
+- 深度学习，达到或超过 Cunningham 自己的应用机器学习课程的水平；
+- 会用 Python 和一个机器学习库。
 
-- [课程主页](http://stat.columbia.edu/~cunningham/teaching/GR8201/)：论文列表与课程安排。
+对应到本站，概率图模型可以先学 [CMU 10-708](/docs/ai-machine-learning/advanced-machine-learning/cmu-10-708)，深度学习可以先学 [CMU 11-785](/docs/ai-machine-learning/deep-learning/cmu-11-785) 或 [CS231n](/docs/ai-machine-learning/deep-learning/cs231n)。
+
+## 课程结构
+
+2019 年春季的每周主题：
+
+| 周 | 主题 | 代表论文 |
+|---|---|---|
+| 1 | 导论与基础 | VAE（Kingma & Welling）；GAN（Goodfellow 等） |
+| 2 | 加结构（一）：动态 | Archer 等；Johnson 等（图模型与神经网络的组合） |
+| 3～4 | 加结构（二）：离散变量 | Concrete 分布（Maddison 等）；Gumbel-Softmax（Jang 等）；Xie & Ermon；Linderman 等 |
+| 5 | 更多重参数化与控制变量 | Miller 等；Ruiz 等 |
+| 6 | 改进 ELBO：更紧的下界 | IWAE（Burda 等）；Rainforth 等 |
+| 7～8 | 改进 ELBO：解耦表示 | β-VAE（Higgins 等）；Alemi 等；Mathieu 等；Locatello 等 |
+| 9 | 过渡到 GAN | Mescheder 等；Mohamed & Lakshminarayanan |
+| 10 | Wasserstein GAN | Arjovsky 等；Gulrajani 等 |
+| 11 | 改进 GAN | DCGAN（Radford 等）；Donahue 等 |
+| 12 | 细看 GAN：理论、数值与实证 | Mescheder 等；Arora 等 |
+| 13 | GAN 在 NLP 中的应用 | Zhao 等；Corro & Titov |
+| 14 | GAN 在 CV 中的应用 | pix2pix（Isola 等）；CycleGAN（Zhu 等） |
+
+多数讲的幻灯片都能在页面上下载。
 
 ## 官方作业
 
-- [论文展示与讨论](http://stat.columbia.edu/~cunningham/teaching/GR8201/)：研讨班形式，每周阅读并展示指定论文。
+这门课没有习题，考核是两件事：
 
-stat.columbia.edu 对部分网络和客户端返回 403；核对时无法直接读取页面内容，打不开时需换网络环境重试。
+- **论文报告**：学生两人一组，负责某一周的两篇论文，做成幻灯片上台讲。官方提供了 Beamer 模板和第一讲的 LaTeX 源文件。
+- **研究项目**：个人或两人一组，题目自由度很大，可以是新的研究方法、给开源机器学习项目做贡献、分析自己感兴趣的数据，或者探索一个理论问题。
+  和自己的研究方向结合的项目尤其受欢迎。提案和报告用 NeurIPS 的 LaTeX 模板写。
+
+## 学习建议
+
+- **把论文清单当主线。** 每周两篇必读论文加几篇选读，按顺序读下来，就是 VAE 和 GAN 这两条线 2013～2019 年的发展脉络。
+- **每周自己做一次“报告”。** 学研讨课最好的办法是模仿它的形式：读完两篇，写一页总结，讲清楚两篇解决了什么问题、彼此什么关系。
+- **配合实现。** 选几篇有代表性的（VAE、Gumbel-Softmax、IWAE、WGAN-GP），自己用 PyTorch 复现一个小版本。
+- **补上新进展。** 2019 年以后扩散模型和流匹配成了主流，读完这门课可以接 [MIT 6.S184](/docs/ai-machine-learning/generative-models/mit-6-s184)。
+
+## 同类课怎么选
+
+- **[CMU 10-708 概率图模型](/docs/ai-machine-learning/advanced-machine-learning/cmu-10-708)**：先修级的课，第三模块专讲图模型视角下的深度生成模型，有作业。
+- **[MIT 6.S184](/docs/ai-machine-learning/generative-models/mit-6-s184)**：从随机微分方程讲流匹配和扩散模型，补上这门课之后的新方向，有实验。
+- **[Toronto STA 4273](/docs/ai-machine-learning/advanced-machine-learning/toronto-sta4273)**：同样是研讨课，讲梯度估计、变分推断等“最小化期望”的方法，这门课第 3～5 周的重参数化和控制变量话题在那里讲得更系统。
+
+## 官方资源
+
+- [课程主页](http://stat.columbia.edu/~cunningham/teaching/GR8201/)：论文清单、幻灯片、项目与报告模板。
+  2026-09 核对时，这个站点先返回 Cloudflare 的人机验证页，脚本抓取打不开；遇到打不开的情况用下面的存档。
+- [课程主页的存档（2025 年 1 月）](http://web.archive.org/web/20250116194940/http://stat.columbia.edu/~cunningham/teaching/GR8201/)：原站打不开时用这个。
