@@ -1,38 +1,82 @@
 ---
 title: "UCSD CSE234 面向机器学习的数据系统"
-description: "UCSD 的机器学习数据系统课，围绕大语言模型系统组织。"
+description: "UCSD 张昊（Hao Zhang）的机器学习系统课（2025 冬季），名字叫“数据系统”，实际讲机器学习系统与大模型系统：计算图与自动微分、GPU 与 CUDA、Triton 与编译、显存与量化、各种并行、Transformer、缩放定律与 MoE、连续批处理与 PagedAttention、FlashAttention；三个编程作业从自动微分写到 Triton 矩阵乘、MPI 张量并行、MoE 与推测解码。"
 prereqCourses: []
-prereqKnowledge: ["线性代数，深度学习，操作系统，计算机网络，分布式系统"]
+prereqKnowledge: ["线性代数", "深度学习与 PyTorch、HuggingFace", "操作系统", "熟练的 Python"]
 ---
 
 ## 课程简介
 
-CSE234 把自己定位成一门大语言模型系统的入门课，
-内容分三部分（外加若干客座讲座）：
+CSE 234 Data Systems for Machine Learning 是加州大学圣地亚哥分校的研究生课，2025 年冬季由 **张昊**（Hao Zhang）讲授。
+课名里是“数据系统”，但官方说得明白：这一届的重心是**机器学习系统**，而不是数据系统。
 
-第一部分是基础：现代深度学习的计算表示、
-自动微分、算子与计算图。
-第二部分是系统与性能：GPU 架构与编程、算子优化、
-内存管理、分布式训练的并行策略（数据并行、张量并行、流水线并行）。
-第三部分面向大模型的具体问题：
-推理服务的调度与批处理、KV 缓存管理、量化与稀疏化、
-以及检索增强等应用系统。
+课程分三部分：
 
-作业用 Python 和 Triton 完成，涉及算子编写与性能调优。
-课程材料组织得很清晰，适合作为机器学习系统方向的切入点。
+- **基础**：深度学习、自动微分、CUDA 编程、机器学习硬件；
+- **机器学习系统与优化**：数据流图系统、机器学习编译、显存与计算图优化、机器学习并行与自动并行；
+- **大模型系统**：大模型训练、数据整理、推理与服务、注意力优化、缩放定律、RAG、大模型智能体。
+
+还有几次客座讲座，请的是这些关键技术的发明者（2025 年冬季有陈天奇等人）。
 
 ## 先修要求
 
-- 需要线性代数与深度学习基础。
-- 需要操作系统、计算机网络与分布式系统的基本概念。
+官方列了一串“没上过的话要多花时间准备”的课：
 
-## 官方资源
+- 线性代数（UCSD MATH 18 或同等）；
+- 深度学习（CSE 151B 或同等），熟悉 PyTorch、HuggingFace 等框架；
+- 操作系统（CSE 120 或 CSE 132C 或同等）；
+- 可扩展数据分析系统（DSC 102 或同等），或有大规模数据系统和机器学习算法的实践经验；
+- 熟练的 Python。
 
-- [课程主页](https://hao-ai-lab.github.io/cse234-w25/)：课程信息、日程与讲义。
-- [课程大纲](https://hao-ai-lab.github.io/cse234-w25/syllabus/)：课程范围、先修要求与评分。
+另外强烈推荐（但不强制）先学可扩展数据分析（DSC 204A）和机器学习（DSC 240）。
+
+## 课程结构
+
+2025 年冬季共 20 讲：
+
+| 部分 | 讲什么 |
+|---|---|
+| 基础 | 导论；现代深度学习、计算图与框架；自动微分与机器学习系统架构；张量格式、矩阵乘法与加速器 |
+| GPU 与编译 | GPU 与 CUDA；GPU 上的矩阵乘法与算子编译；Triton、计算图优化与编译 |
+| 显存与压缩 | 显存；量化 |
+| 并行 | 并行化（四讲）：集合通信、数据并行、算子间与算子内并行 |
+| 大模型 | Transformer 与注意力；缩放定律与 MoE；连续批处理、PagedAttention、预填充与解码分离；FlashAttention、DeepSeek-V3 解读 |
+| 客座 | 陈天奇；Hector Liu；Hongyang Zhang |
+
+每一两周有一组必读论文（TensorFlow、PyTorch、TVM、Triton、Deep Compression……），要交阅读总结。
+
+评分：三个编程作业各 15%、期末考试 37%（全是选择题，可以带任意多张小抄）、阅读总结 10%、课堂笔记（scribe）8%，另有最多 6% 加分。没有期中考试。
 
 ## 官方作业
 
-- [Assignments](https://hao-ai-lab.github.io/cse234-w25/assignments/)：用 Python 与 Triton 完成的算子与系统实验。
+三个编程作业（PA），起始代码公开在 GitHub 上：
 
-作业框架公开；部分实验需要 GPU 环境。
+| 作业 | 内容 |
+|---|---|
+| PA1 自动微分与 Transformer | 实现自动微分，用它搭 Transformer，并写融合算子 |
+| PA2 矩阵乘优化与张量并行通信 | 用 Triton 写一个“矩阵乘 + ReLU + 加法”融合核函数：分块、共享内存分块与协作加载、寄存器分块、算子融合、写回，再做网格搜索调参；第二部分用 MPI 实现张量并行的通信 |
+| PA3 MoE、缩放定律、推测解码 | 用张量并行和专家并行两种方式实现 MoE 层并测速；分析模型训练成本、设计自己的训练方案；实现并优化推测解码；最后个人写一篇议论文：大模型和 AI 的未来是什么 |
+
+PA2 的矩阵乘部分官方要求用 Colab 的免费 T4 GPU 跑，按在 T4 上的加速比给分，所以校外也能按同样的标准自测。
+PA2、PA3 可以最多 3 人一组，PA3 的议论文必须个人完成。
+
+## 学习建议
+
+- **讲课录像只对 UCSD 开放。** 录像放在 UCSD 的课程播客平台上，要登录才能看；但幻灯片和学生整理的课堂笔记（scribe notes）公开可下，第一讲之后基本每讲都有笔记。
+- **课堂笔记很有用。** 官方要求每份笔记写 6～12 页，比幻灯片完整，可以当讲义读。
+- **PA2 用 T4 做。** 官方按 T4 上的性能打分，自学时也用 Colab 的 T4，才能和官方的基线比。
+- **阅读清单值得跟。** 每周的必读论文基本覆盖了机器学习系统领域的经典，读完再做作业会更有方向。
+
+## 同类课怎么选
+
+- **[CMU 15-442 机器学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-15-442)**：内容很接近，作业也有“GEMM + ReLU + 加法”的矩阵乘优化（用 TVM），还多了 Blackwell GPU 的核函数作业。
+- **[CMU 10-414 深度学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-10-414)**：从零写一个完整的深度学习框架，更偏基础。
+- **[CMU 11-868 大语言模型系统](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-868)**：专讲大模型系统，作业更多、更偏工程。
+- **[MIT 6.5940](/docs/ai-machine-learning/machine-learning-systems/mit-6-5940)**：从模型压缩的角度讲效率，录像完整公开。
+
+## 官方资源
+
+- [课程主页（2025 冬季）](https://haoailab.com/cse234-w25/)：每讲的幻灯片、课堂笔记和阅读清单。
+- [课程大纲](https://haoailab.com/cse234-w25/syllabus/)：先修、考核方式与评分。
+- [作业](https://haoailab.com/cse234-w25/assignments/)
+- [作业起始代码（GitHub）](https://github.com/hao-ai-lab/cse234-w25-PA)

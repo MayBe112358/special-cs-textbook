@@ -1,39 +1,79 @@
 ---
 title: "MIT 6.5940 TinyML 与高效深度学习计算"
-description: "MIT 的高效深度学习：剪枝、量化、蒸馏，以及大模型的推理加速。"
+description: "韩松在 MIT 开的高效深度学习课：剪枝、量化、神经架构搜索、知识蒸馏、微控制器上的 TinyML，再到大模型的量化部署、后训练、长上下文、ViT 与扩散模型加速、分布式训练与端侧训练；五个 Colab 实验，最后一个把大模型部署到自己的笔记本上，讲课录像全部公开。"
 prereqCourses: []
-prereqKnowledge: ["体系结构、深度学习基础"]
+prereqKnowledge: ["计算机组成（MIT 6.191 的水平）", "机器学习导论（MIT 6.390 的水平）", "Python 与 PyTorch"]
 ---
 
 ## 课程简介
 
-6.5940（TinyML and Efficient Deep Learning Computing）由 Song Han 讲授，
-主题是让深度学习跑得更省、更快。
+6.5940（TinyML and Efficient Deep Learning Computing）是 MIT 的研究生课，由 **韩松**（Song Han）讲授。
+他提出的“深度压缩”（剪枝 + 量化 + 编码）和后来的 MCUNet、AWQ、SmoothQuant、StreamingLLM 等工作，都是这门课的内容来源。
+课程 2022 年秋季以 6.S965 开出，2023、2024 年秋季改为 6.5940，**2026 年秋季正在开课，课名改成了 TinyML and Efficient AI Computing**。
 
-课程分三部分。第一部分是让神经网络轻量化的基础技术：
-剪枝、量化、知识蒸馏、神经网络架构搜索。
-第二部分面向具体场景做优化，覆盖当下最热的方向：
-大语言模型的推理加速、长上下文支持、后训练量化、
-扩散模型加速、端侧微调。
-第三部分是系统与硬件：TinyML 在微控制器上的部署、
-分布式训练与并行策略。
-
-五个实验都在真实模型上做，能直接看到模型体积和延迟的变化。
-对想把模型真正跑到设备上的人，这门课非常对口。
+深度神经网络的计算量太大，既难以部署到日常设备上，也给云端带来沉重负担。
+这门课讲的就是**让深度学习跑得更省、更快**的技术：模型压缩、剪枝、量化、神经架构搜索、分布式训练、模型服务、
+模型并行、梯度压缩、端侧微调，以及针对大语言模型和扩散模型的专门加速方法。
+官方说这是一门博士水平的课，学完你应该能**把大语言模型部署到自己的笔记本上**。课程没有考试。
 
 ## 先修要求
 
-- 需要深度学习基础。
-- 需要计算机体系结构的基本概念与 Python 能力。
+官方写的先修是 **MIT 6.191 计算机组成** 和 **6.390 机器学习导论**，两门都要。
 
-## 官方资源
+对应到本站：计算机组成可以看 [CS61C](/docs/systems/computer-architecture/cs61c) 或 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)，
+机器学习可以看 [吴恩达机器学习](/docs/ai-machine-learning/machine-learning/coursera-machine-learning) 或 [CS229](/docs/ai-machine-learning/machine-learning/cs229)。
+实验用 Python 和 PyTorch。
 
-- [课程主页（2024 秋）](https://hanlab.mit.edu/courses/2024-fall-65940)：讲座视频、幻灯片与实验。
-- [2023 秋季版本](https://hanlab.mit.edu/courses/2023-fall-65940)：另一版本，部分主题讲得更细。
-- [HAN Lab](https://hanlab.mit.edu/)：讲授团队的研究与开源工具。
+## 课程结构
+
+2024 年秋季约 24 讲，分四章：
+
+| 章节 | 讲什么 |
+|---|---|
+| 导论 | 课程介绍；深度学习基础 |
+| 第一章 高效推理 | 剪枝与稀疏（两讲）；量化（两讲）；神经架构搜索（两讲）；知识蒸馏；MCUNet：微控制器上的 TinyML；TinyEngine 与并行处理 |
+| 第二章 面向领域的优化 | Transformer 与大模型；高效的大模型部署；大模型后训练；长上下文大模型；Vision Transformer；GAN、视频与点云；扩散模型 |
+| 第三章 高效训练 | 分布式训练（两讲）；端侧训练与迁移学习 |
+| 第四章 进阶专题 | 课程总结；量子机器学习（两讲） |
+
+2026 年秋季的安排基本相同，第二章把量子机器学习换成了客座讲座，扩散模型扩成两讲。
+
+评分（2024 年秋季）：五个实验各 15%、期末项目 25%（提案 5%、展示与报告 20%），课堂参与另有最多 4% 加分。
 
 ## 官方作业
 
-- [Labs](https://hanlab.mit.edu/courses/2024-fall-65940)：五个实验：剪枝、量化、架构搜索与大模型推理优化。
+五个实验（外加一个热身的 Lab 0），2024 年秋季全部放在 Google Colab 上，课程主页上直接能打开：
 
-实验以 Notebook 形式提供，可在 Colab 上运行。
+| 实验 | 内容 |
+|---|---|
+| Lab 0 | 热身（2024 年秋季第二讲后发布） |
+| Lab 1 | 剪枝 |
+| Lab 2 | 量化 |
+| Lab 3 | 神经架构搜索 |
+| Lab 4 | 大模型压缩 |
+| Lab 5 | 把大模型部署到笔记本上 |
+
+MIT 学生通过 Canvas 提交，校外交不了，但 Notebook 都能自己跑。2026 年秋季把第一个实验换成了 GPU 基础。
+
+**期末项目**：分组完成，从官方题目清单里选或自己提，做海报展示，交一份 4 页、NeurIPS 格式的报告。
+
+## 学习建议
+
+- **实验是这门课的核心。** 每个实验都在真实模型上做，剪完、量化完直接看模型体积、精度和延迟的变化，比光听讲清楚得多。
+- **Lab 5 一定要做。** 在自己的笔记本上跑起一个量化过的大模型，是把前面所有压缩技术串起来最好的方式。
+- **看 2024 年的录像。** 2024 年版每讲都有幻灯片和 YouTube 录像，最完整；2026 年版正在上，录像会陆续更新。
+- **挑感兴趣的论文读。** 很多讲的内容就是韩松组自己的论文（深度压缩、MCUNet、AWQ 等），课上讲完可以直接去读原文。
+
+## 同类课怎么选
+
+- **[CMU 10-414 深度学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-10-414)**：从零写框架，讲的是框架怎么工作；这门课讲的是怎么让模型本身变小变快。
+- **[CMU 11-868 大语言模型系统](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-868)**：也讲量化、LoRA 和推理服务，但更偏系统实现，作业要写 CUDA。
+- **[MLC 机器学习编译](/docs/ai-machine-learning/machine-learning-systems/mlc)**：从编译器的角度让模型跑得更快，和这门课的“压缩”角度互补。
+
+## 官方资源
+
+- [课程主页（2026 秋季）](https://hanlab.mit.edu/courses/2026-fall-65940)：正在开课，日程与录像陆续更新。
+- [课程主页（2024 秋季）](https://hanlab.mit.edu/courses/2024-fall-65940)：最近一个完整版本，每讲的幻灯片、录像与实验链接。
+- [2023 秋季版本](https://hanlab.mit.edu/courses/2023-fall-65940)
+- [efficientml.ai](https://efficientml.ai)：课程的固定入口，会转到 HAN Lab 的课程列表页。
+- [HAN Lab YouTube 频道](https://www.youtube.com/c/MITHANLab)：全部讲课录像。

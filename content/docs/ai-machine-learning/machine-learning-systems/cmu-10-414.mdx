@@ -1,38 +1,88 @@
 ---
 title: "CMU 10-414 深度学习系统"
-description: "从零实现一个类 PyTorch 框架：自动微分、算子、优化器与 GPU 后端。"
+description: "陈天奇和 Tim Dettmers 的深度学习系统课：从零写一个类 PyTorch 的框架 Needle——自动微分、神经网络模块与优化器、CPU/CUDA 的 NDArray 后端，再用它训练卷积网络、RNN 和 Transformer；作业用 Colab 做，带本地单元测试，2022 年的讲课录像公开。"
 prereqCourses: [cmu-15-213-csapp]
-prereqKnowledge: ["系统入门（如 15-213）、深度学习入门、基本数学"]
+prereqKnowledge: ["系统编程（CMU 15-213 的水平）", "线性代数、微积分、概率与基本证明", "Python 和 C++", "机器学习基础（官方要求有实际经验）"]
 ---
 
 ## 课程简介
 
-深度学习的普及很大程度上得益于 PyTorch、TensorFlow 这类框架，
-但大多数使用者对框架内部知之甚少。10-414 就是为此开的：
-它让你从零实现一个自己的深度学习框架。
+10-414/714 Deep Learning Systems: Algorithms and Implementation 是卡内基梅隆大学的深度学习系统课，
+2026 年秋季由 **陈天奇**（TVM、XGBoost、MLC 的作者）和 **Tim Dettmers**（QLoRA、bitsandbytes 的作者）讲授。
 
-课程分两条线。理论线讲：自动微分的原理（前向与反向模式）、
-计算图的构建与优化、神经网络库的抽象设计、
-硬件加速与算子实现、训练大模型的系统技术。
-实践线是四个作业，逐步构建一个名为 needle 的框架——
-先实现自动微分，再实现神经网络库与优化器，
-然后实现 NDArray 后端（含 CUDA 版本），
-最后用自己的框架训练 CNN 和 Transformer。
+PyTorch、TensorFlow 人人会用，但很少有人真正懂它们内部怎么工作。这门课讲深度学习系统的“全栈”：
+从上层的模型设计，到自动微分的实现，再到设备层面的高效算法。整个学期你会**从零写一个完整的深度学习库 Needle**
+（Necessary Elements of Deep Learning），支持 GPU 上的高效运算、自动微分、带参数的层、损失函数、数据加载器和优化器，
+再用它实现卷积网络、循环网络、自注意力模型和生成模型。
 
 做完之后，PyTorch 对你就不再是黑盒了。
 
 ## 先修要求
 
-- 需要系统编程基础（指南建议先修 CMU 15-213 或同等课程）。
-- 需要深度学习入门与基本的数学基础；作业用 Python 与 C++/CUDA。
+官方要求熟练掌握：
 
-## 官方资源
+- 系统编程（CMU 15-213 或同等课程，本站的 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)）；
+- 线性代数（CMU 21-240 或 21-241）；
+- 微积分、概率与基本证明（CMU 21-127 或 15-151）；
+- Python 和 C++ 编程；
+- 机器学习基础（要求有实际经验）。
 
-- [课程主页](https://dlsyscourse.org/)：讲座视频、幻灯片与全部材料。
-- [课程讲座](https://dlsyscourse.org/lectures/)：按主题排列的视频与讲义。
+**Homework 0 就是先修的诊断测试**：里面的内容都得会，才能跟上这门课。
+
+## 课程结构
+
+2026 年秋季约 25 讲，理论课和“实现课”交替进行，实现课直接在 Notebook 里写代码：
+
+| 部分 | 讲什么 |
+|---|---|
+| 基础 | 导论；机器学习复习与 Softmax 回归；手推神经网络与反向传播 |
+| 自动微分 | 自动微分原理；自动微分的实现 |
+| 神经网络库 | 优化；神经网络库的抽象；归一化与 Dropout；神经网络库的实现 |
+| 硬件加速 | 线性代数的硬件加速；GPU 加速；硬件加速的实现 |
+| 模型 | 卷积网络与实现；序列模型与 RNN 及实现；Transformer 与自回归模型及实现 |
+| 进阶 | 训练大模型；生成模型与实现；定制预训练模型；模型部署；未来方向 |
+
+评分：作业 45%、期末项目 45%、课程论坛参与 10%。
 
 ## 官方作业
 
-- [Assignments](https://dlsyscourse.org/assignments/)：四次作业，逐步构建 needle 框架。
+五个编程作业，一步步搭出 Needle：
 
-作业有公开的自动评分（Colab 与本地均可运行）。
+| 作业 | 内容 |
+|---|---|
+| HW0 | 背景复习：加载 MNIST，Python 实现 Softmax 回归和两层神经网络的 SGD，再用 C++ 写一遍 Softmax 回归 |
+| HW1 | 自动微分框架 |
+| HW2 | 神经网络模块与优化器 |
+| HW3 | 带 CPU 和 CUDA 后端的 NDArray 库 |
+| HW4 | 卷积、RNN 等更复杂的架构 |
+
+每个作业是一个 Jupyter Notebook 加一个 GitHub 仓库，官方推荐用带 GPU 的 Google Colab 做。
+每道题都有**本地单元测试**（`python3 -m pytest -k ...`），写完先在本地跑通，再提交到课程自己的评分系统 mugrade。
+mugrade 账号是给 CMU 选课学生自动开的；校外做的话，本地测试就是你的反馈。
+2026 年的 HW0～HW2 仓库已经公开，HW3、HW4 会在学期中按时发布。
+
+**期末项目**：2～3 人一组，在 Needle 里实现一个不简单的新模型或新组件，而且**必须用 Needle 写，不能用 PyTorch 或 TensorFlow**。
+官方给的例子有：给求逆、特征值分解这类线性代数算子加自动微分；支持傅里叶变换；支持稀疏矩阵做图神经网络；
+给 Apple M 系列芯片或 AMD GPU 写加速后端；算子融合等编译优化。
+
+## 学习建议
+
+- **先做 HW0 摸底。** 它是官方的先修诊断，做得吃力就先补基础。
+- **本地测试是好帮手。** 每道题都有 pytest 测试，遇到失败就去读测试文件，看它到底期望什么。官方也建议多读测试来理解接口。
+- **实现课一定要跟着写。** 自动微分、神经网络库、硬件加速、卷积、RNN、Transformer 都有专门的实现课 Notebook，作业正是在这些代码的基础上扩展。
+- **录像看 2022 年版。** 讲课页上每讲都附了 2022 年的 YouTube 录像，和今年的内容基本对应。
+
+## 同类课怎么选
+
+- **[CMU 15-442 机器学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-15-442)**：CMU 的另一门系统课，更侧重大模型时代的训练与推理系统。
+- **[MLC 机器学习编译](/docs/ai-machine-learning/machine-learning-systems/mlc)**：陈天奇讲的机器学习编译，接着这门课的硬件加速部分往下走。
+- **[CMU 11-868 大语言模型系统](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-868)**：同样在自写框架（MiniTorch）上做作业，但一路做到分布式训练和 RLHF。
+- **[Karpathy 从零到英雄](/docs/ai-machine-learning/artificial-intelligence/neural-networks-zero-to-hero)**：从零写一个极简的自动微分引擎 micrograd，是这门课很好的热身。
+
+## 官方资源
+
+- [课程主页](https://dlsyscourse.org/)：先修、评分、作业与项目安排。
+- [讲课日程](https://dlsyscourse.org/lectures/)：每讲的幻灯片、Notebook 和 2022 年录像。
+- [作业](https://dlsyscourse.org/assignments/)：各作业的 Colab 与 GitHub 链接。
+- [期末项目](https://dlsyscourse.org/project/)
+- [课程 GitHub](https://github.com/dlsyscourse)：作业起始代码与讲课 Notebook。
