@@ -1,39 +1,83 @@
 ---
 title: "CMU 10-708 概率图模型"
-description: "CMU 的概率图模型：表示、推断、学习，以及与神经网络的结合。"
+description: "Eric Xing 在 CMU 的概率图模型博士课（2019 春季）：有向与无向图模型、精确推断与参数学习、变分推断与 MCMC、深度生成模型、作为推断的强化学习、贝叶斯非参数与高斯过程、大规模系统；录像、讲义、学生笔记和四个作业全部公开。"
 prereqCourses: []
-prereqKnowledge: ["机器学习、深度学习、强化学习"]
+prereqKnowledge: ["一门机器学习入门课（CMU 10-601/10-701 的水平）", "扎实的概率论与统计", "算法基础", "Python（后两个作业用 Colab）"]
 ---
 
 ## 课程简介
 
-10-708 是 CMU 的概率图模型课，由 Eric Xing 讲授，内容相当硬核。
+10-708 Probabilistic Graphical Models 是卡内基梅隆大学机器学习系的博士课。这里收的是 **Eric Xing** 讲的 2019 年春季版，
+官网、讲课录像、幻灯片、学生笔记和作业都公开，是这门课最完整的一版公开材料。
 
-课程围绕图模型的三个基本问题组织：表示（有向图与无向图模型、
-贝叶斯网络、马尔可夫随机场、条件随机场）、
-推断（精确推断、变量消元、信念传播、变分推断、蒙特卡洛方法）、
-学习（参数估计、结构学习、EM 算法）。
+官方的开场白说：人工智能、统计、计算机系统、视觉、自然语言、计算生物学里的很多问题，都可以看成是**从局部信息里拼出一个自洽的全局结论**。
+概率图模型给这类问题提供了一个统一的视角，让我们在属性极多、数据极大的问题上也能高效地推断、决策和学习。
 
-之后课程把这套框架推向现代：图模型与深度学习的结合
-（深度生成模型、变分自编码器）、图模型在强化学习中的应用、
-非参数贝叶斯方法，以及大规模图模型的分布式实现。
-
-课程网站上有完整的讲义、笔记与作业，组织得很清楚。
+课程先讲经典的“表示—推断—学习”三件事，再把这套框架推到现代：图模型视角下的深度生成模型、把强化学习看成推断、
+贝叶斯非参数方法，以及大规模图模型的系统实现。官方说这是一门博士水平的课，**没有考试**。
 
 ## 先修要求
 
-- 需要机器学习、深度学习基础。
-- 需要扎实的概率论与统计学，以及强化学习的基本概念。
+2019 年版的官网没有单列先修。CMU 后来的版本（Andrej Risteski 讲的 2023 年春季版）写得比较明确：
 
-## 官方资源
+- 学过一门机器学习入门课（CMU 10-601、10-701 或 10-715）；
+- 有概率、统计和算法的实际功底；数学底子好的同学课上可以补上来。
 
-- [课程主页](https://sailinglab.github.io/pgm-spring-2019/)：2019 春季全部材料。
-- [课程笔记](https://sailinglab.github.io/pgm-spring-2019/notes/)：学生整理的分讲笔记。
-- [讲座列表](https://sailinglab.github.io/pgm-spring-2019/lectures/)：每讲的幻灯片与阅读。
+后面几讲会用到深度学习和强化学习，事先了解一些会轻松很多。
+
+## 课程结构
+
+2019 年春季共 28 讲，分六个模块：
+
+| 模块 | 讲什么 |
+|---|---|
+| 1 表示与精确推断 | 图模型导论；有向图模型（贝叶斯网络）；无向图模型（马尔可夫随机场）；精确推断；完全观测与部分观测贝叶斯网络的参数学习；无向图模型的极大似然学习；因果发现与推断；网络建模；序列模型 |
+| 2 近似推断 | 平均场与环状信念传播；变分推断理论；蒙特卡洛与序贯蒙特卡洛；马尔可夫链蒙特卡洛（MCMC） |
+| 3 深度学习与生成模型 | 深度学习的统计与算法基础；深度生成模型的理论基础与联系（含客座讲座） |
+| 4 强化学习与控制即推断 | 序列决策的框架；策略梯度与 Q 学习 |
+| 5 非参数方法 | 狄利克雷过程及其推断；正则化贝叶斯方法；谱方法与核图模型；高斯过程与元学习 |
+| 6 模块化与可扩展的算法和系统 | 大规模机器学习系统（客座讲座）；从工程角度看 AI |
+
+教材是 Koller 和 Friedman 的《Probabilistic Graphical Models: Principles and Techniques》，另外会用 Michael Jordan 未出版的图模型讲义的部分章节；
+Kevin Murphy 的《Machine Learning: A Probabilistic Perspective》是选读。
+
+评分：四个作业 40%、期末项目 46%、课堂笔记（scribe）10%、参与 4%。
 
 ## 官方作业
 
-- [Homework](https://sailinglab.github.io/pgm-spring-2019/homework/)：四次作业，偏重推导与实现。
-- [Project](https://sailinglab.github.io/pgm-spring-2019/project/)：结课研究项目的要求。
+四个作业，题目、LaTeX 模板和代码都能在官网下载，推导和编程都有：
 
-题面公开；没有自动评分。
+| 作业 | 内容 |
+|---|---|
+| HW1 | 贝叶斯网络；无向图模型与局部、成对、全局马尔可夫性质；高斯图模型；精确推断（网格上的变量消元）；参数学习 |
+| HW2 | 词性标注的序列模型：HMM 与线性链 CRF；重要性采样与 MCMC；LDA 与变分推断实践 |
+| HW3 | 变分自编码器；剖析 GAN（配 Colab） |
+| HW4 | 强化学习；狄利克雷分布与狄利克雷过程；高斯过程（配 Colab） |
+
+没有自动评分，也没有公开答案。**期末项目**是一个研究型项目，要交提案、中期报告、海报和最终报告；
+官网的 reports 页收了这一届完成的学生项目报告，可以看看项目的规模和写法。
+
+## 学习建议
+
+- **看录像，配学生笔记。** YouTube 播放列表里有 27 个讲课录像；学生整理、讲师审过的笔记把推导重新写了一遍，比幻灯片好读。
+- **前两个模块是地基。** 表示、精确推断、参数学习、变分推断、MCMC 这些后面反复用，HW1、HW2 一定要自己推一遍。
+- **教材当字典用。** Koller 的书很厚，不必从头读到尾，哪一讲没懂就去翻对应章节。
+- **后半段挑着看。** 非参数、谱方法、系统这几块偏专题，可以按自己的兴趣取舍。
+
+## 同类课怎么选
+
+- **[Stanford CS229](/docs/ai-machine-learning/machine-learning/cs229)**：机器学习的概率视角入门，学完再来上这门更顺。
+- **[Columbia STAT 8201 深度生成模型](/docs/ai-machine-learning/advanced-machine-learning/columbia-stat-8201)**：专讲深度生成模型的研讨课，接这门课的第三模块往深走。
+- **[Toronto STA 4273](/docs/ai-machine-learning/advanced-machine-learning/toronto-sta4273)**：用“最小化期望”统一推断与控制，和这门课“把强化学习看成推断”的思路相通。
+- **[UC Berkeley CS188](/docs/ai-machine-learning/artificial-intelligence/cs188)**：本科 AI 课里的贝叶斯网络和 HMM 部分是很好的前置。
+
+## 官方资源
+
+- [2019 春季课程主页](https://sailinglab.github.io/pgm-spring-2019/)
+- [讲课日程](https://sailinglab.github.io/pgm-spring-2019/lectures/)：每讲的幻灯片、录像与阅读。
+- [学生笔记](https://sailinglab.github.io/pgm-spring-2019/notes/)
+- [作业](https://sailinglab.github.io/pgm-spring-2019/homework/)
+- [期末项目](https://sailinglab.github.io/pgm-spring-2019/project/)
+- [课程安排](https://sailinglab.github.io/pgm-spring-2019/logistics/)：教材、评分。
+- [讲课录像（YouTube）](https://www.youtube.com/playlist?list=PLoZgVqqHOumTY2CAQHL45tQp6kmDnDcqn)
+- [2023 春季版（Andrej Risteski）](https://andrejristeski.github.io/10708-S23/)：更侧重深度生成模型、图神经网络与因果推断。
