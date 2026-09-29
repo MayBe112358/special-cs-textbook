@@ -1,39 +1,82 @@
 ---
 title: "CMU 15-442 机器学习系统"
-description: "CMU 的机器学习系统课：现代 ML 系统的组成要素与工程取舍。"
+description: "陈天奇和贾志豪合开的机器学习系统课（2026 春季）：编程抽象与自动微分、线性代数加速、GPU 与 CUDA、数据/模型/流水线并行、显存优化、机器学习编译与现代 GPU 上的 GEMM、大模型推理服务与推测解码、PEFT、MoE、超优化与 Mega Kernel；三个实验从自动微分写到 Blackwell GPU 上的 GEMM 核函数，外加一个课程项目。"
 prereqCourses: [cmu-15-213-csapp]
-prereqKnowledge: ["系统入门（如 15-213）、深度学习入门、基本数学"]
+prereqKnowledge: ["系统编程（CMU 15-213 的水平）", "线性代数、基本数学证明", "Python 和 C/C++", "机器学习或人工智能基础"]
 ---
 
 ## 课程简介
 
-15-442/15-642 的目标是给出现代机器学习系统的整体图景。
+15-442/15-642 Machine Learning Systems 是卡内基梅隆大学计算机系的课，2026 年春季由 **陈天奇**（TVM、MLC 的作者）
+和 **贾志豪**（TASO、Mirage 的作者）一起讲，两人轮流上课。从作业里的说明看，2026 年春季是第二次开。
 
-随着大语言模型的爆发，如何高效训练和部署这些庞然大物
-成了 AI 领域最核心的工程挑战之一。这门课面向的正是
-不满足于调用 PyTorch API、想知道 vLLM、SGLang 这类推理框架
-内部是怎么回事的人。
-
-内容覆盖：机器学习框架的设计与自动微分、
-GPU 编程与算子优化、模型并行与分布式训练、
-内存优化技术、推理服务系统（批处理、KV 缓存、调度）、
-模型压缩与量化，以及机器学习编译。
-
-作业以动手实现为主，仓库公开在课程的 GitHub 组织里。
+课程目标是让你理解**现代机器学习系统由哪些部分组成**：主流框架背后的设计思路，以及为了扩大规模、省显存、利用异构硬件而发展出来的系统技术。
+这学期还专门用大模型的训练和推理系统做案例。官方说，它为想做机器学习系统研究、或去做机器学习工程的人打基础。
 
 ## 先修要求
 
-- 需要系统编程基础（指南建议先修 CMU 15-213 或同等课程）。
-- 需要深度学习入门；作业使用 Python、C++ 与 CUDA。
+官方写的先修：
 
-## 官方资源
+- 系统编程：CMU 15-213（本站的 [CSAPP](/docs/systems/systems-fundamentals/cmu-15-213-csapp)）；
+- 线性代数：CMU 21-240 或 21-241；
+- 数学基础：CMU 21-127 或 15-151；
+- 熟悉 Python 和 C/C++，学过机器学习或人工智能。
 
-- [课程主页](https://mlsyscourse.org/)：课程信息、日程与材料。
-- [课程日程](https://mlsyscourse.org/schedule)：每讲的主题与配套阅读。
-- [课程材料](https://mlsyscourse.org/materials)：幻灯片与参考资源。
+课程主要讲系统，不会深入学习算法本身。官方给的入门材料有《Deep Learning》、《动手学深度学习》、
+[Stanford CS231n](/docs/ai-machine-learning/deep-learning/cs231n)，以及在线书《Machine Learning Systems》（mlsysbook.ai）。
+
+## 课程结构
+
+2026 年春季的讲次：
+
+| 部分 | 讲什么 | 主讲 |
+|---|---|---|
+| 基础 | 为什么需要机器学习系统；机器学习系统导论；深度学习与编程抽象；自动微分；线性代数的优化 | 陈天奇 |
+| GPU 编程 | GPU 架构与 CUDA 编程（两讲）；案例：Transformer、注意力及其优化 | 贾志豪 |
+| 并行与显存 | 数据并行与 ZeRO；模型并行与流水线并行；显存优化：重计算与卸载 | 两人 |
+| 机器学习编译 | 数据布局；现代 GPU 上的 GEMM；Blackwell GPU 与 TIRx | 陈天奇 |
+| 大模型 | 推理服务：连续批处理、PagedAttention、RadixAttention；推测解码；参数高效微调；混合专家（MoE） | 两人 |
+| 进阶专题 | 机器学习编译；张量程序超优化；Mega Kernel | 两人 |
+| 客座 | Google TPU；大模型智能体 | — |
+
+评分：三个作业各 15%（共 45%）、课程项目 45%（提案 5%、海报展示 20%、报告 20%）、课堂参与 10%。
 
 ## 官方作业
 
-- [Assignments](https://github.com/mlsyscourse)：作业仓库，按编号发布。
+作业仓库公开在 GitHub 组织 [mlsyscourse](https://github.com/mlsyscourse) 下，前两个可以直接在 Colab 里打开，仓库里带测试，官方还鼓励你自己补测试用例：
 
-作业自带测试；部分实验需要 GPU 环境。
+| 仓库 | 内容 |
+|---|---|
+| assignment1 | 在计算图上实现反向模式自动微分；用它写 SGD 训练逻辑回归 |
+| assignment2 | 用 TVM 手工优化一个“GEMM + ReLU + 加法”融合算子：共享内存分块、寄存器分块、协作加载、写缓存、尾部融合，再用自动调优进一步加速（需要 NVIDIA GPU，Colab 的 T4 就行） |
+| assignment-distributed-training | 用 MPI 和 NumPy 从零实现数据并行和张量模型并行的通信部分 |
+| assignment-tirx-gemm | 在 NVIDIA Blackwell（SM100）GPU 上用 TVM/TIRx 一步步写出高性能 FP16 GEMM：TMA 异步加载、软件流水线、持久化核函数、Warp 特化、多 CTA 集群…… |
+
+2026 年春季布置了三个实验，从日程上的时间看，大致对应自动微分、分布式训练和 Blackwell GEMM 这几个仓库。
+作业交到 CMU 的 Autolab，校外交不了，但测试都在仓库里。注意 Blackwell GEMM 那个作业需要 B200 这类新卡，
+课程的算力由 Modal 赞助，自学的话得自己想办法。
+
+**课程项目**：1～3 人一组，可以从官方题目清单里挑，也可以做自己的研究题目；交一页提案、做海报展示、写一篇不超过 8 页、MLSys 会议格式的报告。
+官方还分享了往届学生的项目报告作参考。
+
+## 学习建议
+
+- **从 assignment1 开始。** 自动微分是整门课的地基，写完这个再看框架设计的那几讲会清楚很多。
+- **GEMM 优化是这门课的精华。** assignment2 和 Blackwell GEMM 把一个矩阵乘法怎么一步步优化到接近生产级实现拆成了具体任务，做完会对 GPU 性能有实打实的体感。
+- **幻灯片都公开。** 日程上每讲的幻灯片都能下载，其中编译相关的几讲（数据布局、现代 GPU 上的 GEMM、TIRx）做成了网页。
+- **配合 10-414 学。** 这门课默认你懂深度学习框架的基本构成，没学过的话先上 [CMU 10-414](/docs/ai-machine-learning/machine-learning-systems/cmu-10-414)。
+
+## 同类课怎么选
+
+- **[CMU 10-414 深度学习系统](/docs/ai-machine-learning/machine-learning-systems/cmu-10-414)**：陈天奇的另一门课，从零写深度学习框架，更基础。
+- **[CMU 15-779 机器学习系统前沿专题](/docs/ai-machine-learning/generative-models/large-language-models/cmu-15-779)**：贾志豪的研讨课，内容有重叠，以读论文为主，没有编程作业。
+- **[CMU 11-868 大语言模型系统](/docs/ai-machine-learning/generative-models/large-language-models/cmu-11-868)**：专讲大模型系统，七个作业更多。
+- **[MLC 机器学习编译](/docs/ai-machine-learning/machine-learning-systems/mlc)**：陈天奇讲机器学习编译，和这门课的编译部分一脉相承。
+
+## 官方资源
+
+- [课程主页](https://mlsyscourse.org/)：课程介绍、讲师与助教。
+- [日程](https://mlsyscourse.org/schedule)：每讲幻灯片与作业时间。
+- [课程安排](https://mlsyscourse.org/logistics)：先修、评分、项目要求。
+- [入门材料](https://mlsyscourse.org/materials)
+- [作业仓库（GitHub）](https://github.com/mlsyscourse)
